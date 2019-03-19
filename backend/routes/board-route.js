@@ -1,6 +1,6 @@
 const boardService = require('../services/boardService')
 const listService = require('../services/listService')
-const userService = require('../services/userService')
+const cardService = require('../services/cardService')
 const BOARD_URL = '/api/board'
 
 
@@ -10,7 +10,7 @@ function addBoardRoutes(app) {
     // LIST
     app.get(BOARD_URL, (req, res) => {
         const userId = req.data
-        boardService.query({userId})
+        boardService.query({ userId })
             .then(boards => res.json(boards))
 
     })
@@ -35,7 +35,10 @@ function addBoardRoutes(app) {
         listService.query({ boardId }).then(lists => {
             boardService.removeBoard(boardId)
                 .then(() => {
-                    Promise.all(lists.map(list => listService.removeReview(list._id)))
+                    Promise.all(lists.map(list => Promise.all([
+                        listService.removeList(list._id),
+                        cardService.removeCards(list._id)
+                    ]).then(() => Promise.resolve())))
                         .then(() => {
                             res.end(`The Board ${boardId} Was Deleted `)
                         })

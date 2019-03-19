@@ -23,6 +23,10 @@ function getCardById(cardId) {
         .then(db => db.collection(CARDS_DB).findOne({ _id }))
 }
 
+function removeCards({listId}) {
+    return this.query({listId}).then(cards => Promise.all(cards.map(card => this.removeCard(card._id))))
+}
+
 function removeCard(cardId) {
     const _id = new ObjectId(cardId);
     return mongoService.connect()
@@ -42,5 +46,5 @@ module.exports = {
     getCardById,
     removeCard,
     updateCard,
-    getUserCards,
+    removeCards,
 }

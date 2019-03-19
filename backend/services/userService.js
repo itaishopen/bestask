@@ -1,16 +1,16 @@
-const mongoService = require('./mongo-service')
-const usersDb = 'users';
+const mongoService = require('./mongoService')
+const USERS_DB = 'users';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query(boardId = null) {
+function query({ boardId = null }) {
     return mongoService.connect()
-        .then(db => db.collection(usersDb).filter({ boardId }).toArray())
+        .then(db => db.collection(USERS_DB).filter({ boardId }).toArray())
 }
 
 function addUser(user) {
     return mongoService.connect()
-        .then(db => db.collection(usersDb).insertOne(user).then(res => {
+        .then(db => db.collection(USERS_DB).insertOne(user).then(res => {
             return getUserById(res.insertedId).then(user => user)
         }))
 }
@@ -18,24 +18,24 @@ function addUser(user) {
 function getUserById(userId) {
     const _id = new ObjectId(userId)
     return mongoService.connect()
-        .then(db => db.collection(usersDb).findOne({ _id }))
+        .then(db => db.collection(USERS_DB).findOne({ _id }))
 }
 
 function removeUser(userId) {
     const _id = new ObjectId(userId);
     return mongoService.connect()
-        .then(db => db.collection(usersDb).remove({ _id }))
+        .then(db => db.collection(USERS_DB).remove({ _id }))
 }
 
 function updateUser(user) {
     user._id = new ObjectId(user._id);
     return mongoService.connect()
-        .then(db => db.collection(usersDb).updateOne({ _id: user._id }, { $set: user }))
+        .then(db => db.collection(USERS_DB).updateOne({ _id: user._id }, { $set: user }))
 }
 
 function checkLogin(userCredentials) {    
     return mongoService.connect()
-        .then(db => db.collection(usersDb).findOne(userCredentials))
+        .then(db => db.collection(USERS_DB).findOne(userCredentials))
 }
 
 

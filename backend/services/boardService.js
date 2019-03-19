@@ -1,86 +1,47 @@
-const mongoService = require('./mongo-service')
-const TOYS_COLLECTION = 'toys';
+const mongoService = require('./mongoService')
+const BOARDS_DB = 'boards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query(query) {
-    var sortToMongo = {}
-    switch (query.sortBy) {
-        case 'name':
-            sortToMongo.name = +query.order;
-            break;
-        case 'price':
-            sortToMongo.price = +query.order;
-            break;
-    }
-    let filterToMongo = {}
-    let types = {};
-    let names = {};
-    if (query.byType) {
-        types.$or = query.byType.split(',').map(type =>  type = { type });
-        filterToMongo = types
-    }
-    if(query.searchName) {
-        names.$or = query.searchName.split(',').map(name =>  name = { name });
-        filterToMongo = names
-    }
-    if (query.byType && query.searchName) {
-        filterToMongo = {};
-        filterToMongo.$and = [types, names];
-    }
-    if (query.byStock && query.byStock !== 'false') filterToMongo.inStock = true;
+function query({ userId }) {
     return mongoService.connect()
         .then(db => {
-            return db.collection(TOYS_COLLECTION).find({}).filter(filterToMongo).sort(sortToMongo).toArray()
+            return db.collection(BOARDS_DB).find({ userId }).toArray()
         })
-    //     return db.collection(toysDb).aggregate([
-    //         {
-    //             $match: {
-    //                 $and: [
-    //                     { name: filter.searchName },
-    //                     { inStock: filter.byStock },
-    //                     { type: filter.byType },
-    //                 ]
-    //             }
-    //         },
-    //         {
-    //             $sort: { post: filter.order}
-    //         }
-    //     ]).toArray()
-    // })
 }
 
-function addToy(toy) {
-    if (toy._id) toy._id = new ObjectId(toy._id);
+function addBoard(board) {
+    if (board._id) board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(TOYS_COLLECTION).insertOne(toy).then(res => {
-            return getToyById(res.insertedId).then(toy => toy)
+        .then(db => db.collection(BOARDS_DB).insertOne(board).then(res => {
+            board._id = res.insertedId
+            return board
         }))
 }
 
-function getToyById(toyId) {
-    const _id = new ObjectId(toyId)
+function getBoardById(boardId) {
+    const _id = new ObjectId(boardId)
     return mongoService.connect()
-        .then(db => db.collection(TOYS_COLLECTION).findOne({ _id }))
+        .then(db => db.collection(BOARDS_DB).findOne({ _id }))
 }
 
-function removeToy(toyId) {
-    const _id = new ObjectId(toyId);
+function removeBoard(boardId) {
+    const _id = new ObjectId(boardId);
     return mongoService.connect()
-        .then(db => db.collection(TOYS_COLLECTION).deleteOne({ _id }))
+        .then(db => db.collection(BOARDS_DB).deleteOne({ _id }))
 }
 
-function updateToy(toy) {
-    toy._id = new ObjectId(toy._id);
+function updateBoard(board) {
+    board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(TOYS_COLLECTION).updateOne({ _id: toy._id }, { $set: toy }))
+        .then(db => db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board }))
 }
 
 
 module.exports = {
     query,
-    addToy,
-    getToyById,
-    removeToy,
-    updateToy
+    addBoard,
+    getBoardById,
+    removeBoard,
+    updateBoard
 }

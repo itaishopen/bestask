@@ -1,3 +1,4 @@
+import CardStore from './CardStore.js'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import UserModule from './modules/user.js'
@@ -18,5 +19,8 @@ export default new Vuex.Store({
   },
   actions: {
 
+  },
+  modules: {
+    CardStore
   }
 })

@@ -1,38 +1,38 @@
 const userService = require('../services/userService')
-const reviewService = require('../services/reviewService')
-
+const boardService = require('../services/boardService')
+const USER_URL = '/api/user'
 
 function addUserRoutes(app) {
     // Users REST API:
 
     // LIST
-    app.get('/api/user', (req, res) => {
-        userService.query()
+    app.get(USER_URL, (req, res) => {
+        const boardId = req.data        
+        userService.query({ boardId })
             .then(users => res.json(users))
-            
     })
 
-    // SINGLE - GET Full details including reviews
-    app.get('/api/user/:userId', (req, res) => {
+    // SINGLE - GET Full details including boards
+    app.get(`${USER_URL}/:userId`, (req, res) => {
         const userId = req.params.userId;
         Promise.all([
             userService.getUserById(userId),
-            reviewService.query({userId})
+            boardService.query({userId})
         ])
-        .then(([user,reviews]) => {
-            res.json({ user,reviews })
+        .then(([user,boards]) => {
+            res.json({ user,boards })
         })
     })
 
     // DELETE
-    app.delete('/api/user/:userId', (req, res) => {
+    app.delete(`${USER_URL}/:userId`, (req, res) => {
         const userId = req.params.userId;
         userService.removeUser(userId)
             .then(() => res.end(`The User ${userId} Was Deleted `))
     })
 
     // UPDATE
-    app.put('/api/user/:userId', (req, res) => {
+    app.put(`${USER_URL}/:userId`, (req, res) => {
         const user = req.body;
         userService.update(user)
             .then(user => res.json(user))

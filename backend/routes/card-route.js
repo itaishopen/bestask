@@ -1,45 +1,46 @@
-const reviewService = require('../services/reviewService')
+const cardService = require('../services/cardService')
+const CARD_URL = '/api/card'
 
-
-function addReviewRoutes(app) {
-    // reviews REST API:
+function addCardRoutes(app) {
+    // cards REST API:
 
     // LIST
-    app.get('/api/review', (req, res) => {
-        reviewService.query(req.data)
-            .then(reviews => res.json(reviews))
+    app.get(CARD_URL, (req, res) => {
+        const listId = req.body;
+        cardService.query(listId)
+            .then(cards => res.json(cards))
             
     })
 
-    // SINGLE - GET Full details including reviews
-    app.get('/api/review/:reviewId', (req, res) => {
-        const reviewId = req.params.reviewId;
-        reviewService.getReviewById(reviewId)
-            .then(review => res.json(review))
+    // SINGLE - GET Full detail
+    app.get(`${CARD_URL}/:cardId`, (req, res) => {
+        const cardId = req.params.cardId;
+        cardService.getCardById(cardId)
+            .then(card => res.json(card))
     })
 
     // DELETE
-    app.delete('/api/review/:reviewId', (req, res) => {
-        const reviewId = req.params.reviewId;
-        reviewService.removeToy(reviewId)
-            .then(() => res.end(`The Review ${reviewId} Was Deleted `))
+    app.delete(`${CARD_URL}/:cardId`, (req, res) => {
+        const cardId = req.params.cardId;
+        cardService.removeCard(cardId)
+            .then(() => res.end(`The Card ${cardId} Was Deleted `))
     })
 
     // CREATE
-    app.post('/api/review', (req, res) => {
-        const review = req.body;
-        reviewService.addToy(review)
-            .then(review => res.json(review))
+    app.post(CARD_URL, (req, res) => {
+        const card = req.body;
+        cardService.addCard(card)
+            .then(card => res.json(card))
     })
 
     // UPDATE
-    app.put('/api/review/:reviewId', (req, res) => {
-        const review = req.body;
-        reviewService.update(review)
-            .then(review => res.json(review))
+    app.put(`${CARD_URL}/:cardId`, (req, res) => {
+        const card = req.body;
+        cardService.update(card)
+            .then(card => res.json(card))
     })
 
 }
 
 
-module.exports = addReviewRoutes;
+module.exports = addCardRoutes;

@@ -4,6 +4,10 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+     <div class="login-container">
+        <router-link class="login-btn" tag="button" to="/login/" >login</router-link>
+        <router-link class="new-user-btn" tag="button" to='/sign-up/' >creat new acount</router-link>
+      </div>
     <router-view/>
   </div>
 </template>

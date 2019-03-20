@@ -2,7 +2,7 @@
     <section>
         <button v-on:click="editCard">Edit Card</button>
         <!-- <modal v-if="showModal"></modal> -->
-        <modal v-if="showModal" v-on:close="closeModal">
+        <modal v-if="showModal" v-on:close="closeModal" v-on:save="saveCard">
             <input type="text" slot="header" v-model="card.title">
             <div class="container flex" slot="body">
                 <div class="content flex">
@@ -11,7 +11,9 @@
                     <label>Add Comment</label>
                     <input type="text" v-model="comment">
                     <button v-on:click="addComment">Save</button>
-                    <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
+                    <div v-for="comment in card.comments" :key="comment" class="flex">
+                        <div>{{comment}}</div>
+                    </div>
 
                     <!-- <ul class="comments">
                         <li v-for="comment in card.comments" :key="comment">
@@ -46,6 +48,7 @@
 
 <script>
 import Modal from '../components/Modal.vue';
+import moment from 'moment';
 
 export default {
     name: 'CardEdit',
@@ -66,8 +69,10 @@ export default {
             // return JSON.parse(JSON.stringify(this.$store.state.currItem));
             get() { return this.$store.getters.currCardItem },
             set(cardItem) { this.$store.commit('setCardItem', { cardItem }) }
+        },
+        formattedDate() {
+            return
         }
-
     },
     methods: {
         editCard() {
@@ -76,13 +81,17 @@ export default {
         closeModal() {
             this.showModal = false;
         },
+        saveCard() {
+            console.log('Saving card');
+            this.showModal = false;
+        },
         addComment() {
-            this.card.comments.unshift(this.comment);
+            var date = moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a');
+            var comment = this.comment + '\t' + date;
+            this.card.comments.unshift(comment);
             this.comment = '';
         },
-        formattedDate() {
-            return moment(date.now()).format('MMMM Do YYYY, h:mm:ss a');
-        },
+
     },
     components: {
         Modal

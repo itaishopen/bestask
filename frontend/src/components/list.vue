@@ -1,9 +1,9 @@
 <template>
 <section class="list">
         <ul class="board-list">
-            <li v-for="list in lists"
-                :key="list._id">
-                <CardList :list="list"/>
+            <li v-for="card in cards"
+                :key="card._id">
+                <CardList><CardList/>
             </li>
         </ul>
         <button>add card</button>
@@ -17,7 +17,7 @@ export default {
     },
   name: 'board',
   components: {
-      
+
   }
 }
 </script>

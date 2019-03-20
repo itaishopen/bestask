@@ -6,20 +6,17 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header">
-                        <slot name="header">default header</slot>
+                        <slot name="header"></slot>
                     </div>
 
                     <div class="modal-body">
-                        <slot name="body">default body</slot>
+                        <slot name="body"></slot>
                     </div>
 
                     <div class="modal-footer">
                         <slot name="footer">
-                            default footer
-                            <button
-                                class="modal-default-button"
-                                @click="$emit('close')"
-                            >OK</button>
+                            <button class="modal-default-button" v-on:click="emitSave">Save</button>
+                            <button class="modal-default-button" v-on:click="emitClose">Close</button>
                         </slot>
                     </div>
                 </div>
@@ -32,6 +29,14 @@
 <script>
 export default {
     name: 'Modal',
+    methods: {
+        emitClose() {
+            this.$emit('close');
+        },
+        emitSave() {
+            this.$emit('save');
+        },
+    }
 
 }
 </script>
@@ -57,6 +62,7 @@ export default {
 
 .modal-container {
     width: 600px;
+    height: auto;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;

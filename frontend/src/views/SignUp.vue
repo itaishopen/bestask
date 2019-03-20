@@ -39,7 +39,7 @@ export default {
             this.isWorng = true
           } else {
             this.isWorng = false
-            router.push({ path: 'about' })
+            router.push({ path: '/about' })
           }
       })
     }

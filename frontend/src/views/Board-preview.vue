@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import  BoardService  from "../services/BoardService";
+import  BoardService from "../services/BoardService";
 export default {
   name: 'board-preview',
   components: {

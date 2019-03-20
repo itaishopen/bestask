@@ -5,18 +5,19 @@
 </template>
 
 <script>
-import  BoardService from "../services/BoardService.js";
+// import  BoardService from "../services/BoardService.js";
+import  Board from "../components/Board.vue";
 export default {
   name: 'board-preview',
   components: {
-
+    Board
   },
   created(){
       this.$store.dispatch({type: loadBoard})
   },
    computed:{
         board(){
-            return this.$store.getters.boardToDisplay
+            return this.$store.getters.getBoard
         }
    }
 }

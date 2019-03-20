@@ -1,24 +1,40 @@
 <template>
-<section class="list">
-        <ul class="board-list">
-            <li v-for="card in cards"
-                :key="card._id">
-                <CardList><CardList/>
-            </li>
-        </ul>
-        <button>add card</button>
-</section>
+  <section class="list">
+    {{list.title}}
+    <ul class="list-cards">
+      <li v-for="card in cards" :key="card._id">
+        <CardPreview :card="card"/>
+      </li>
+    </ul>
+    <button>add card</button>
+  </section>
 </template>
 
+
 <script>
+import CardPreview from "@/components/CardPreview.vue";
 export default {
-    props: {
-        board: Array
-    },
-  name: 'board',
+  name: "list",
+   props: {
+    list: Array
+  },
+  data() {
+    return {};
+  },
   components: {
+    CardPreview
+  },
+  computed: {
 
   }
-}
+};
 </script>
 
+<style lang="sass">
+.list-cards {
+     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+</style>

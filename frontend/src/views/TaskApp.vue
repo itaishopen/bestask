@@ -1,6 +1,6 @@
 <template>
     <section class="task-app task-wrapper">
-        <h1>Task App</h1>
+        <!-- <h1>Task App</h1> -->
         <board-preview></board-preview>
         <!-- <card-edit></card-edit> -->
     </section>

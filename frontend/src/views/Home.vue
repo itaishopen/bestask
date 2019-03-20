@@ -12,7 +12,7 @@ export default {
   components: {
   },
   created(){
-    // router.push({ path: '/board' })
+    
   }
 }
 </script>

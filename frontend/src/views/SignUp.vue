@@ -24,7 +24,7 @@ export default {
     }
   },
   methods: {
-    login(){
+    submit(){
       this.$store.dispatch({
         type: 'signup',
         user: {

@@ -15,9 +15,9 @@ export default {
       this.$store.dispatch({type: loadBoard})
   },
    computed:{
-    board(){
-        return this.$store.getters.boardToDisplay
-    }
+        board(){
+            return this.$store.getters.boardToDisplay
+        }
    }
 }
 </script>

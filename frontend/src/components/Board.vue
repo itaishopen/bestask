@@ -1,12 +1,10 @@
 <template>
 <section class="board">
       <h1>title<h1>
-        <ul class="board-list">
-            <li v-for="list in lists"
-                :key="list._id">
-            </li>
-        </ul>
-        <button>add card</button>
+
+        <div class="board-list">
+                <CardList :list="list"/>
+        </div>
 </section>
 </template>
 
@@ -20,4 +18,3 @@ export default {
   }
 }
 </script>
-

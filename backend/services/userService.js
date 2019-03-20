@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 function query({ boardId = null }) {
     return mongoService.connect()
-        .then(db => db.collection(USERS_DB).filter({ boardId }).toArray())
+        .then(db => db.collection(USERS_DB).find({ boardId }).toArray())
 }
 
 function addUser(user) {

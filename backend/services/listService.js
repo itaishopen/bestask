@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 function query({ boardId }) {    
     return mongoService.connect().then(db => {
-        return db.collection(LIST_DB).find({ boardId }).toArray()
+        return db.collection(LIST_DB).find({ boardId, archived: false}).sort({order: 1}).toArray()
     })
 }
 
@@ -65,5 +65,4 @@ module.exports = {
     getListById,
     removeList,
     updateList,
-    getUserLists,
 }

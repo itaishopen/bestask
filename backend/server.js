@@ -4,8 +4,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
-const addToyRoutes = require('./routes/toy-route')
-const addReviewRoutes = require('./routes/review-route')
+const addBoardRoutes = require('./routes/board-route')
+const addCardRoutes = require('./routes/card-route')
 const addUserRoutes = require('./routes/user-route')
 
 const app = express()
@@ -27,8 +27,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-addToyRoutes(app)
-addReviewRoutes(app)
+addBoardRoutes(app)
+addCardRoutes(app)
 addUserRoutes(app)
 
 const port = process.env.PORT || 3000;

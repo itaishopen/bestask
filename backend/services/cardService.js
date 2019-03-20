@@ -3,9 +3,10 @@ const CARDS_DB = 'cards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ listId = null }) {    
+function query({ listId }) {
+    listId = `${listId}`           
     return mongoService.connect().then(db => {
-        return db.collection(CARDS_DB).find({ listId }).toArray()
+        return db.collection(CARDS_DB).find({listId, archived: false}).sort({order: 1}).toArray()
     })
 }
 

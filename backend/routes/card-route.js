@@ -6,8 +6,8 @@ function addCardRoutes(app) {
 
     // LIST
     app.get(CARD_URL, (req, res) => {
-        const listId = req.data
-        cardService.query({ listId })
+        const listId = req.body;
+        cardService.query(listId)
             .then(cards => res.json(cards))
             
     })
@@ -22,14 +22,14 @@ function addCardRoutes(app) {
     // DELETE
     app.delete(`${CARD_URL}/:cardId`, (req, res) => {
         const cardId = req.params.cardId;
-        cardService.removeToy(cardId)
+        cardService.removeCard(cardId)
             .then(() => res.end(`The Card ${cardId} Was Deleted `))
     })
 
     // CREATE
     app.post(CARD_URL, (req, res) => {
         const card = req.body;
-        cardService.addToy(card)
+        cardService.addCard(card)
             .then(card => res.json(card))
     })
 

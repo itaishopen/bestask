@@ -7,10 +7,9 @@ function addUserRoutes(app) {
 
     // LIST
     app.get(USER_URL, (req, res) => {
-        const boardId = req.data
+        const boardId = req.data        
         userService.query({ boardId })
             .then(users => res.json(users))
-            
     })
 
     // SINGLE - GET Full details including boards

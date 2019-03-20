@@ -74,6 +74,7 @@ export default {
 
 .modal-header h3 {
     margin-top: 0;
+    margin: 20px 0;
     color: #42b983;
 }
 
@@ -81,8 +82,14 @@ export default {
     margin: 20px 0;
 }
 
+.modal-footer {
+    height: 10px;
+    margin: 20px 0;
+}
+
 .modal-default-button {
     float: right;
+    margin: 5px;
 }
 
 /*

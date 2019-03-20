@@ -3,24 +3,23 @@
         <button v-on:click="editCard">Edit Card</button>
         <!-- <modal v-if="showModal"></modal> -->
         <modal v-if="showModal" v-on:close="closeModal" v-on:save="saveCard">
-            <input type="text" slot="header" v-model="card.title">
+            <h1 slot="header">Edit Card</h1>
             <div class="container flex" slot="body">
                 <div class="content flex">
-                    <label>Description</label>
-                    <textarea rows="5" cols="30" v-model="card.description"></textarea>
-                    <label>Add Comment</label>
-                    <input type="text" v-model="comment">
+                    <input type="text" v-model="card.title" placeholder="Title">
+                    <!-- <label>Description</label> -->
+                    <textarea
+                        rows="5"
+                        cols="30"
+                        v-model="card.description"
+                        placeholder="Description"
+                    ></textarea>
+                    <!-- <label>Add Comment</label> -->
+                    <input type="text" v-model="comment" placeholder="Add comment">
                     <button v-on:click="addComment">Save</button>
                     <div v-for="comment in card.comments" :key="comment" class="flex">
                         <div>{{comment}}</div>
                     </div>
-
-                    <!-- <ul class="comments">
-                        <li v-for="comment in card.comments" :key="comment">
-                            {{comment}}
-                            <input type="text" value="{{comment}}">
-                        </li>
-                    </ul>-->
                 </div>
                 <div class="nav flex">
                     <label>Add to Card</label>
@@ -34,14 +33,6 @@
                     <button>Share</button>
                 </div>
             </div>
-            <!-- <h6 slot="body">{{book.title}}</h6>
-            <h6 slot="body">{{pageCount}}</h6>
-            <h6 slot="body">{{publishedDate}}</h6>
-            <h6 slot="body" v-bind:class="classObject">{{bookPrice}}</h6>
-            <h6 slot="body">{{onSale}}</h6>
-            <long-text slot="body" v-bind:txt="book.description"></long-text>
-            <review-display slot="body" v-bind:reviews="book.reviews" v-on:delete="onDeleteReview"></review-display>
-            <review-add slot="body" v-on:reviewed="onSaveReview"></review-add>-->
         </modal>
     </section>
 </template>

@@ -1,26 +1,25 @@
-import CardStore from './CardStore.js'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserModule from './modules/user.js'
-import CardsModule from './modules/cards.js'
+import cardStore from './modules/cardStore.js';
+import userStore from './modules/userStore.js';
+import boardStore from './modules/boardStore.js';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    UserModule,
-    CardsModule
-  },
-  state: {
-      
-  },
-  mutations: {
+    modules: {
+        cardStore,
+        userStore,
+        boardStore
+    },
+    state: {
 
-  },
-  actions: {
+    },
+    mutations: {
 
-  },
-  modules: {
-    CardStore
-  }
+    },
+    actions: {
+
+    },
+
 })

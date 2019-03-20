@@ -9,7 +9,6 @@ const resolveData = res => res.data
 export default {
     query,
     saveBoard,
-    getEmpty,
     getBoardById,
     removeBoard
 }

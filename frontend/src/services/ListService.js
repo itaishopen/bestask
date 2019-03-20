@@ -9,7 +9,7 @@ const resolveData = res => res.data
 export default {
     query,
     saveList,
-    getEmpty,
+    // getEmpty,
     getListById,
     removeList,
     updateLists

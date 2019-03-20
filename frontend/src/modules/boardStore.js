@@ -1,5 +1,5 @@
-import BoardService from '../services/BoardService';
-import ListService from '../services/ListService';
+import BoardService from '../services/BoardService.js';
+import ListService from '../services/ListService.js';
 
 export default {
     state: {

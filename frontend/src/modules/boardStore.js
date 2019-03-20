@@ -8,7 +8,7 @@ export default {
     },
     getters: {
         getBoard: state => state.board,
-        getLists: state => state.lists
+        getLists: state => state.lists,
     },
     mutations: {
         setBoard(state, { board }) {

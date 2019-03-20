@@ -1,4 +1,4 @@
-import BoardService from '../services/BoardService';
+import BoardService from '../services/BoardSerivce.js';
 
 export default {
     state: {

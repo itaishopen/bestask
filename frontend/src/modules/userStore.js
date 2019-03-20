@@ -2,7 +2,7 @@ import AuthService from '../services/AuthService.js';
 export default {
     state: {
         user: {
-            nickname: '',
+            userName: '',
             password: '',
             _id: ''
         }

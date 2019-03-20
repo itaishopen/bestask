@@ -1,12 +1,58 @@
-<template></template>
+<template>
+    <section>
+        <button v-on:click="editCard">Edit Card</button>
+        <!-- <modal v-if="showModal"></modal> -->
+        <modal v-if="showModal" v-on:close="closeModal">
+            <input type="text" slot="header" v-model="card.title">
+            <div class="container flex" slot="body">
+                <div class="content flex">
+                    <label>Description</label>
+                    <textarea rows="5" cols="30" v-model="card.description"></textarea>
+                    <label>Add Comment</label>
+                    <input type="text" v-model="comment">
+                    <button v-on:click="addComment">Save</button>
+                    <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
+
+                    <!-- <ul class="comments">
+                        <li v-for="comment in card.comments" :key="comment">
+                            {{comment}}
+                            <input type="text" value="{{comment}}">
+                        </li>
+                    </ul>-->
+                </div>
+                <div class="nav flex">
+                    <label>Add to Card</label>
+                    <button>Members</button>
+                    <button>Labels</button>
+                    <button>Checklist</button>
+                    <label>Actions</label>
+                    <button>Move</button>
+                    <button>Copy</button>
+                    <button>Archive</button>
+                    <button>Share</button>
+                </div>
+            </div>
+            <!-- <h6 slot="body">{{book.title}}</h6>
+            <h6 slot="body">{{pageCount}}</h6>
+            <h6 slot="body">{{publishedDate}}</h6>
+            <h6 slot="body" v-bind:class="classObject">{{bookPrice}}</h6>
+            <h6 slot="body">{{onSale}}</h6>
+            <long-text slot="body" v-bind:txt="book.description"></long-text>
+            <review-display slot="body" v-bind:reviews="book.reviews" v-on:delete="onDeleteReview"></review-display>
+            <review-add slot="body" v-on:reviewed="onSaveReview"></review-add>-->
+        </modal>
+    </section>
+</template>
 
 <script>
+import Modal from '../components/Modal.vue';
 
 export default {
     name: 'CardEdit',
     data() {
         return {
-
+            showModal: false,
+            comment: ''
         };
     },
     created() {
@@ -24,10 +70,22 @@ export default {
 
     },
     methods: {
-
+        editCard() {
+            this.showModal = true;
+        },
+        closeModal() {
+            this.showModal = false;
+        },
+        addComment() {
+            this.card.comments.unshift(this.comment);
+            this.comment = '';
+        },
+        formattedDate() {
+            return moment(date.now()).format('MMMM Do YYYY, h:mm:ss a');
+        },
     },
     components: {
-
+        Modal
     },
 };
 </script>
@@ -40,14 +98,6 @@ export default {
 }
 .flex {
     display: flex;
-}
-.md-dialog {
-    // max-width: 768px;
-}
-
-.md-button {
-    text-transform: capitalize !important; /*For Lower case use lowercase*/
-    width: 100px;
 }
 
 .main-container {
@@ -72,7 +122,9 @@ export default {
 }
 
 .content {
+    flex-direction: column;
     flex-basis: 80%;
+    align-items: flex-start;
     // background-color: #46A3A3;
 }
 

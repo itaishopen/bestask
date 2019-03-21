@@ -3,15 +3,15 @@ const CARDS_DB = 'cards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ listId, archived = false }) {
-    listId = new ObjectId(listId)
+function query({ listId = null, archived = false }) {
+    if (listId) listId = new ObjectId(listId)
     return mongoService.connect().then(db => {
-        return db.collection(CARDS_DB).find({listId, archived}).sort({order: 1}).toArray()
+        return db.collection(CARDS_DB).find({ listId, archived }).sort({order: 1}).toArray()
     })
 }
 
 function addCard(card) {
-    card.listId = new ObjectId(listId)
+    card.listId = new ObjectId(card.listId)
     return mongoService.connect()
         .then(db => db.collection(CARDS_DB).insertOne(card).then(res => {
             card._id = res.insertedId
@@ -32,7 +32,7 @@ function removeCards({listId}) {
 function removeCard(cardId) {
     const _id = new ObjectId(cardId);
     return mongoService.connect()
-        .then(db => db.collection(CARDS_DB).remove({ _id }))
+        .then(db => db.collection(CARDS_DB).removeOne({ _id }))
 }
 
 function updateCard(card) {

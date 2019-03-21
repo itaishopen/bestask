@@ -7,11 +7,12 @@
      
       <button v-if="!isAddListClick" class="new-list-btn" @click="newList">
         new list<i class="fa fa-plus"></i></button>
-      <!-- <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
+
+      <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
         <button @click="closeAdd">&times;</button>
         <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
         <button type="submit"><i class="fa fa-plus"></i></button>
-      </form> -->
+      </form>
 
     </ul>
   </section>
@@ -33,14 +34,6 @@ export default {
   },
 
  computed: {
-    //  card: {
-    //   get() {
-    //     return this.$store.getters.getEmptyList;
-    //   },
-    //   set(cardItem) {
-    //     this.$store.commit("setCardItem", { cardItem });
-    //   }
-    // },
      lists() {
       return this.$store.getters.getLists;
     }
@@ -53,16 +46,12 @@ export default {
       this.list = 
     this.isAddListClick = !this.isAddListClick;
     },
-
-
     closeAdd() {
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
-      this.card.listId = this.list._id;
-      // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-      (this.card.order = this.list.cards.length + 1);
-        this.$store.dispatch({ type: "addCard", card: this.card });
+      this.list.listId = this.list._id;
+        this.$store.dispatch({ type: "saveList", list: this.list });
 
       this.isAddListClick = !this.isAddListClick;
     }
@@ -72,6 +61,8 @@ export default {
   watch: {
     board: function() {
       console.log("change in board");
+    this.$store.dispatch({ type: "saveBoard", board: this.board });
+
     }
   }
 };

@@ -48,7 +48,6 @@ export default {
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       this.card.order = this.list.cards.length + 1;
       this.$store.dispatch({ type: "saveCard", card: this.card });
-    //   this.$store.dispatch({ type: "saveCard", card: this.card });
       this.isAddClick = !this.isAddClick;
     }
   },
@@ -68,10 +67,10 @@ export default {
     // this.currList = this.list;
   },
   watch: {
-    // currList: function () {
-    //     console.log("change in list");
-    //     this.currList = this.list;
-    // }
+    board: function() {
+    console.log("change in list");
+    this.$store.dispatch({ type: "saveList", list: this.list });
+    }
   }
 };
 </script>

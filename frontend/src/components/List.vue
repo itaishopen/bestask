@@ -1,8 +1,8 @@
 <template>
     <section class="list">
-        <div class="title-list">{{currList.title}}</div>
+        <div class="title-list">{{list.title}}</div>
         <ul class="list-cards">
-            <li v-for="card in currList.cards" :key="card._id">
+            <li v-for="card in list.cards" :key="card._id">
                 <card-preview :card="card"></card-preview>
             </li>
         </ul>

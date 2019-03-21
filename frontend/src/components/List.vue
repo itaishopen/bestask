@@ -48,6 +48,7 @@ export default {
       (this.cardTitle.order =
         this.currList.cards[this.currList.cards.length - 1].order + 1),
         this.$store.dispatch({ type: "addItem", item: this.cardTitle });
+        
       this.isAddClick = !this.isAddClick;
     }
   },

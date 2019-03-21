@@ -12,8 +12,8 @@ export default {
 }
 var cards = [];
 const BASE_URL = (process.env.NODE_ENV !== 'development')
-    ? '/card'
-    : '//localhost:3003/card';
+    ? '/api/card'
+    : '//localhost:3000/api/card';
 
 function query(filterQuery = '') {
     console.log(filterQuery);

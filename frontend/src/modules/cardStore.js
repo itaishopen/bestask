@@ -48,6 +48,7 @@ const cardStore = {
                 })
         },
         loadCardItem(context, { itemId }) {
+            // console.log(itemId);
             CardService.getById(itemId)
                 .then(cardItem => {
                     context.commit({ type: 'setCardItem', cardItem })

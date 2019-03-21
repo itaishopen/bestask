@@ -1,6 +1,8 @@
 <template>
     <div class="card-preview flex">
-        <div class="title-card">{{card.title}}</div>
+        <router-link :to="'/card/edit/' + card._id">
+            <div class="title-card">{{card.title}}</div>
+        </router-link>
     </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
 };
 </script>
 <style>
-.title-card{
+.title-card {
     padding: 30px;
     width: 150px;
     background-color: rgb(255, 255, 255);

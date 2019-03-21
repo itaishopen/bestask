@@ -36,7 +36,7 @@ function addCardRoutes(app) {
     // UPDATE
     app.put(`${CARD_URL}/:cardId`, (req, res) => {
         const card = req.body;
-        cardService.update(card)
+        cardService.updateCard(card)
             .then(card => res.json(card))
     })
 

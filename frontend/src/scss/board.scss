@@ -1,0 +1,26 @@
+.board {
+	.board-title {
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+		font-size: 20px;
+		color: #FFFFFF;
+		align-self: flex-start;
+		width: 275px - 14px;
+		margin: 0;
+		padding: 2px 7px;
+		outline: 0;
+		border: 0;
+		background-color: #0079BF;
+		border-radius: 3px;
+		&:focus {
+			background-color: #FFFFFF !important;
+			color: #4D4D4D !important;
+		}
+	}
+	.board-info {
+		width: 97%;
+		margin: 2% auto 0 auto;
+		height: auto;
+		display: flex;
+	}
+}

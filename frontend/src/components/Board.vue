@@ -4,7 +4,9 @@
       <li class="board-list-li" v-for="list in lists" :key="list._id">
         <list :list="list"/>
       </li>
-      <button class="new-list-btn" @click="newList">new list<i class="fa fa-plus"></i></button>
+      <button class="new-list-btn" @click="newList">new list
+        <i class="fa fa-plus"></i>
+      </button>
     </ul>
   </section>
 </template>
@@ -27,6 +29,9 @@ export default {
     newList() {
       //  todo: add list
       console.log("new list");
+        // addList(state, { list }) {
+        //     state.lists.push(list);
+        // },
     }
   },
   watch: {
@@ -55,8 +60,8 @@ export default {
   align-items: flex-start;
 }
 .new-list-btn {
-    width: 200px;
-    height: 30px;
+  width: 200px;
+  height: 30px;
   background-color: rgba(255, 255, 255, 0);
   border: none;
   font-size: 20px;

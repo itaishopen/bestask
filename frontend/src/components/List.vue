@@ -74,10 +74,10 @@ export default {
     // this.currList = this.list;
   },
   watch: {
-    // currList: function () {
-    //     console.log("change in list");
-    //     this.currList = this.list;
-    // }
+    board: function() {
+    console.log("change in list");
+    this.$store.dispatch({ type: "saveList", list: this.list });
+    }
   }
 };
 </script>

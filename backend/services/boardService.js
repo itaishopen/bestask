@@ -22,7 +22,22 @@ function addBoard(board) {
 function getBoardById(boardId) {
     const _id = new ObjectId(boardId)
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).findOne({ _id }))
+        .then(db => db.collection(BOARDS_DB)
+            // .aggregate([
+            //     {
+            //         $match: { _id }
+            //     },
+            //     {
+            //         $lookup:
+            //         {
+            //             from: 'activities',
+            //             localField: '_id',
+            //             foreignField: 'boardId',
+            //             as: 'activities'
+            //         }
+            //     },
+        
+        .findOne({ _id }))
 }
 
 function removeBoard(boardId) {

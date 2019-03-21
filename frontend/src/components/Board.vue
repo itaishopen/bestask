@@ -56,6 +56,7 @@ export default {
     },
     addList() {
       this.list.boardId = this.board._id;
+      this.list.order = this.lists.length + 1;
       console.log(this.list, "list in add click");
       this.$store.dispatch({ type: "saveList", list: this.list });
       this.isAddListClick = !this.isAddListClick;

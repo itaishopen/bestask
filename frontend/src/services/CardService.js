@@ -12,8 +12,8 @@ export default {
 }
 var cards = [];
 const BASE_URL = (process.env.NODE_ENV !== 'development')
-    ? '/card'
-    : '//localhost:3003/card';
+    ? '/api/card'
+    : '//localhost:3000/api/card';
 
 function query(filterQuery = '') {
     console.log(filterQuery);
@@ -44,6 +44,7 @@ function removeItem(itemId) {
 }
 
 function addItem(item) {
+    console.log(item , 'service');
     var api = `${BASE_URL}`;
     return axios.post(api, item)
         .then(res => res.data)
@@ -75,7 +76,7 @@ function getEmpty() {
         checklist: [],
         dueDate: '',
         attachments: [],
-        order: 1,
+        order: 0,
         archived: false,
         emt: '',
         amt: ''

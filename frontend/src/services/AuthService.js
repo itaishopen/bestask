@@ -1,7 +1,7 @@
 import axios from 'axios'
 const BASE_URL = process.env.NODE_ENV !== 'development'
     ? '/api'
-    : '//localhost:3003/api';
+    : '//localhost:3000/api';
 const resolveData = res => res.data
 
 function login(userCredentials){

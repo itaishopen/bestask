@@ -61,8 +61,8 @@ export default {
     addList() {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-      (this.card.order = this.list.cards.length + 1),
-        this.$store.dispatch({ type: "addItem", item: this.card });
+      (this.card.order = this.list.cards.length + 1);
+      this.$store.dispatch({ type: "addCard", card: this.card });
 
       this.isAddListClick = !this.isAddListClick;
     }

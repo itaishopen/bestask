@@ -63,11 +63,16 @@ export default {
     created() {
         console.log('CardEdit was created');
         var cardId = this.$route.params.cardId;
-        // console.log(itemId);
         this.$store.dispatch({ type: 'loadCard', cardId });
     },
     mounted() {
-        this.$refs.myModalRef.show();
+        if (this.card) this.$refs.myModalRef.show();
+    },
+    watch: {
+        card: val => {
+            console.log(val);
+            this.$refs.myModalRef.show();
+        }
     },
     computed: {
         card: {
@@ -81,7 +86,7 @@ export default {
         },
         saveCard() {
             console.log('Saving card..', this.card);
-            this.$store.dispatch({ type: 'updateCard', card: this.card })
+            this.$store.dispatch({ type: 'saveCard', card: this.card })
                 .then(res => {
                     console.log(res);
                     // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });

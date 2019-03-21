@@ -21,7 +21,7 @@ function getListById(listId) {
 }
 
 function query({boardId, archived = false}) {
-    return axios.get(LIST_URL, {boardId, archived = false}).then(resolveData);
+    return axios.get(LIST_URL, {boardId, archived }).then(resolveData);
 }
 
 function updateLists(lists) {
@@ -46,7 +46,6 @@ function getEmptyList() {
     return {
         title: '',
         boardId: null,
-        cards: [],
         order: null,
         archived: false
     }

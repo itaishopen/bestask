@@ -16,27 +16,39 @@ function query({ boardId = null, userId = null } = {}) {
                 {
                     $lookup:
                     {
-                        from: 'boards',
-                        localField: 'boardId',
+                        from: 'users',
+                        localField: 'userId',
                         foreignField: '_id',
-                        as: 'boards'
+                        as: 'user'
                     }
-                },
-                {
-                    $unwind: '$boards'
                 },
                 {
                     $lookup:
                     {
-                        from: 'users',
-                        localField: 'userId',
+                        from: 'boards',
+                        localField: 'boardId',
                         foreignField: '_id',
-                        as: 'users'
+                        as: 'board'
                     }
                 },
                 {
-                    $unwind: '$users'
-                }
+                    $lookup:
+                    {
+                        from: 'lists',
+                        localField: 'listId',
+                        foreignField: '_id',
+                        as: 'list'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'cards',
+                        localField: 'cardId',
+                        foreignField: '_id',
+                        as: 'card'
+                    }
+                },
             ]).toArray()
     })
 }
@@ -46,8 +58,8 @@ function addActivity(activity) {
     activity.boardId = new ObjectId(activity.boardId);
     return mongoService.connect()
         .then(db => db.collection(ACTIVITY_DB).insertOne(activity).then(res => {
-            list._id = res.insertedId
-            return list
+            activity._id = res.insertedId
+            return activity
         }))
 }
 
@@ -97,10 +109,11 @@ function updateList(list) {
 
 module.exports = {
     query,
-    addList,
+    addActivity,
     getListById,
     removeList,
     updateList,
+    getUserActivities
 }
 
 const mongoService = require('./mongo-service')

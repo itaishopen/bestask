@@ -1,84 +1,54 @@
-// import axios from 'axios';
 import Axios from 'axios';
 var axios = Axios.create({ withCredentials: true });
+const resolveData = res => res.data
 
 export default {
     query,
-    getById,
-    removeItem,
-    addItem,
-    updateItem,
-    getEmpty
+    getCardById,
+    removeCard,
+    saveCard,
+    getEmptyCard
 }
-var cards = [];
-const BASE_URL = (process.env.NODE_ENV !== 'development')
+const CARD_URL = (process.env.NODE_ENV !== 'development')
     ? '/api/card'
     : '//localhost:3000/api/card';
 
-function query(filterQuery = '') {
-    console.log(filterQuery);
-    var api = `${BASE_URL}?${filterQuery}`;
-    return axios.get(api)
-        .then(res => res.data)
-        .then(loadedCards => {
-            cards = loadedCards;
-            // console.log(cards);
-            return cards;
-        });
+function query() {
+    return axios.get(CARD_URL)
+        .then(resolveData);
 }
 
-function getById(itemId) {
-    // console.log(itemId);
-    var api = `${BASE_URL}/${itemId}`;
-    return axios.get(api)
-        .then(res => {
-            // console.log(res.data);
-            return res.data;
-        });
+function getCardById(cardId) {
+    return axios.get(`${CARD_URL}/${cardId}`)
+        .then(resolveData);
 }
 
-function removeItem(itemId) {
-    var api = `${BASE_URL}/${itemId}`;
-    return axios.delete(api)
-        .then(res => res.data);
+function removeCard(cardId) {
+    return axios.delete(`${CARD_URL}/${cardId}`)
+        .then(resolveData);
 }
 
-function addItem(item) {
-    console.log(item , 'service');
-    var api = `${BASE_URL}`;
-    return axios.post(api, item)
-        .then(res => res.data)
-        .then(addedCard => {
-            console.log(addedCard);
-            // cards.push(addedCard);
-            return addedCard;
-        });
+function saveCard(card) {
+    if (card._id) {
+        return axios.put(`${CARD_URL}/${card._id}`, card)
+    } else {
+        return axios.post(CARD_URL, card)
+    }
 }
 
-function updateItem(item) {
-    // console.log(item._id);
-    var api = `${BASE_URL}/${item._id}`;
-    return axios.put(api, item)
-        .then(res => res.data)
-        .then(updatedCard => {
-            return updatedCard;
-        });
-}
-
-function getEmpty() {
+function getEmptyCard() {
     return {
+        listId: null,
         title: '',
-        description: '',
-        comments: [],
-        activity: [],
-        membres: [],
+        description: null,
+        members: [],
         labels: [],
-        checklist: [],
-        dueDate: '',
+        checklists: [],
+        dueDate: null,
         attachments: [],
-        order: 0,
+        order: null,
         archived: false,
-        emt: '',
-        amt: ''
+        emt: null,
+        amt: null
     }
 }

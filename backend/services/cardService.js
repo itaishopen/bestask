@@ -20,6 +20,7 @@ function addCard(card) {
 }
 
 function getCardById(cardId) {
+    console.log(cardId);
     const _id = new ObjectId(cardId)
     return mongoService.connect()
         .then(db => db.collection(CARDS_DB).findOne({ _id }))

@@ -14,15 +14,21 @@ export default {
         setBoard(state, { board }) {
             state.board = board;
         },
+        addBoard(state, { savedBoard }) {
+            state.board = savedBoard;
+        },
+        updateBoard(state, { savedBoard }) {
+            state.board = savedBoard;
+        },
         setLists(state, { lists }) {
             state.lists = lists
         },
-        updateList(state, { list }) {
-            const idx = state.lists.findIndex(currList => currList._id === list._id);
-            state.lists.split(idx, 1, list);
+        updateList(state, { savedList }) {
+            const idx = state.lists.findIndex(list => list._id === savedList._id);
+            state.lists.split(idx, 1, savedList);
         },
-        addList(state, { list }) {
-            state.lists.push(list);
+        addList(state, { savedList }) {
+            state.lists.push(savedList);
         },
         deleteList(state, { list }) {
             const idx = state.lists.findIndex(currList => currList._id === list._id);
@@ -37,6 +43,14 @@ export default {
                     context.commit({ type: 'setLists', lists });
                 })
         },
+        saveBoard(context, { board }) {
+            const isEdit = !!board._id
+            return BoardService.saveBoard(board)
+                .then(savedBoard => {
+                    context.commit({ type: 'updateBoard', savedBoard });
+                    context.commit({ type: 'addBoard', savedBoard });
+                })
+        },
         updateLists(context, { lists }) {
             return ListService.updateLists(lists)
                 .then(lists => {
@@ -46,9 +60,9 @@ export default {
         saveList(context, { list }) {
             const isEdit = !!list._id
             return ListService.saveList(list)
-                .then(list => {
-                    if (isEdit) context.commit({ type: 'updateList', list });
-                    else context.commit({ type: 'addList', list });
+                .then(savedList => {
+                    if (isEdit) context.commit({ type: 'updateList', list: savedList });
+                    else context.commit({ type: 'addList', list: savedList });
                 })
         }
     }

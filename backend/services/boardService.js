@@ -37,11 +37,20 @@ function updateBoard(board) {
         .then(db => db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board }))
 }
 
+function getEmptyBoard() {
+    return {
+        title: '',
+        members: [],
+        prefs:{}
+    }
+}
+
 
 module.exports = {
     query,
     addBoard,
     getBoardById,
     removeBoard,
-    updateBoard
+    updateBoard,
+    getEmptyBoard
 }

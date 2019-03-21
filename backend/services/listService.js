@@ -3,13 +3,56 @@ const LIST_DB = 'lists';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ boardId }) {    
+function query({ boardId = null, archived = false } = {}) {
+    const criteria = { archived: false }
+    if (boardId) criteria.boardId = new ObjectId(boardId);
+    if (archived) criteria.archived = true;
+    boardId = new ObjectId(boardId)
     return mongoService.connect().then(db => {
-        return db.collection(LIST_DB).find({ boardId, archived: false}).sort({order: 1}).toArray()
+        return db.collection(LIST_DB)
+            .aggregate([
+                {
+                    $match: criteria
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'boards',
+                        localField: 'boardId',
+                        foreignField: '_id',
+                        as: 'board'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'cards',
+                        let: { list_id: "$_id", archive: "$archived" },
+                        pipeline: [
+                            {
+                                $match:
+                                {
+                                    '$expr':
+                                    {
+                                        '$and': [
+                                            { '$eq': ["$listId", "$$list_id"] },
+                                            { '$eq': ["$archived", "$$archive"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            { $sort: { 'order': 1 } }
+                        ],
+                        as: 'cards'
+                    }
+                },
+                { $sort: { order: 1 } }
+            ]).toArray()
     })
 }
 
 function addList(list) {
+    list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
         .then(db => db.collection(LIST_DB).insertOne(list).then(res => {
             list._id = res.insertedId
@@ -20,7 +63,35 @@ function addList(list) {
 function getListById(listId) {
     const _id = new ObjectId(listId)
     return mongoService.connect()
-        .then(db => db.collection(LIST_DB).findOne({ _id }))
+        .then(db => db.collection(LIST_DB) 
+            .aggregate([
+                {
+                    $match: { _id }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'cards',
+                        let: { list_id: "$_id", archive: "$archived" },
+                        pipeline: [
+                            {
+                                $match:
+                                {
+                                    '$expr':
+                                    {
+                                        '$and': [
+                                            { '$eq': ["$listId", "$$list_id"] },
+                                            { '$eq': ["$archived", "$$archive"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            { $sort: { 'order': 1 } }
+                        ],
+                        as: 'cards'
+                    }
+                },
+            ]))
 }
 
 function removeList(listId) {
@@ -31,6 +102,7 @@ function removeList(listId) {
 
 function updateList(list) {
     list._id = new ObjectId(list._id);
+    list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
         .then(db => db.collection(LIST_DB).updateOne({ _id: list._id }, { $set: list }))
 }

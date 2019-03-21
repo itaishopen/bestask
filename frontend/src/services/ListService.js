@@ -1,9 +1,9 @@
 import Axios from 'axios';
 var axios = Axios.create({ withCredentials: true });
- 
+
 const LIST_URL = process.env.NODE_ENV !== 'development'
-? '/api/list'
-: '//localhost:3000/api/list' ;
+    ? '/api/list'
+    : '//localhost:3000/api/list';
 
 const resolveData = res => res.data
 
@@ -20,8 +20,8 @@ function getListById(listId) {
     return axios.get(`${LIST_URL}/${listId}`).then(resolveData)
 }
 
-function query({boardId, archived = false}) {
-    return axios.get(LIST_URL, {boardId, archived = false}).then(resolveData);
+function query({ boardId, archived = false }) {
+    return axios.get(LIST_URL, { boardId, archived }).then(resolveData);
 }
 
 function updateLists(lists) {

@@ -68,12 +68,12 @@ export default {
     mounted() {
         if (this.card) this.$refs.myModalRef.show();
     },
-    watch: {
-        card: val => {
-            console.log(val);
-            this.$refs.myModalRef.show();
-        }
-    },
+    // watch: {
+    //     card: val => {
+    //         console.log(val);
+    //         this.$refs.myModalRef.show();
+    //     }
+    // },
     computed: {
         card: {
             get() { return this.$store.getters.getCurrCard },

@@ -6,7 +6,7 @@
         <card-preview :card="card"></card-preview>
       </li>
     </ul>
-    <button v-if="!isAddClick" @click="newCard">add card</button>
+    <button class="new-card-btn" v-if="!isAddClick" @click="newCard">add card</button>
     <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
       <button @click="closeAdd">&times;</button>
       <textarea v-model="cardTitle.title" placeholder="Enter text here..."></textarea>
@@ -79,5 +79,9 @@ export default {
 }
 .form-add {
   border: 1px black solid;
+}
+.new-card-btn{
+    background-color: rgba(255, 255, 255, 0)
+    
 }
 </style>

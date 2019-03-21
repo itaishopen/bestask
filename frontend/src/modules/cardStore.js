@@ -59,12 +59,12 @@ const cardStore = {
                     context.commit({ type: 'removeItem', itemId })
                 })
             },
-            addItem(context, { item }) {
-                console.log(item , 'store');
-                return CardService.addItem(item)
-                .then((savedItem) => {
-                    context.commit({ type: 'addItem', item: savedItem });
-                })
+        addItem(context, { item }) {
+            console.log(item , 'store');
+            return CardService.addItem(item)
+            .then((savedItem) => {
+                context.commit({ type: 'addItem', item: savedItem });
+            })
         },
         updateItem(context, { item }) {
             // console.log(item);

@@ -25,9 +25,17 @@ export default {
   },
   methods: {
     newList() {
-     
+    //  todo: add list
+    console.log('new list');
+    
     }
-  }
+  },
+   watch: {
+   board: function(){
+       console.log('change in board');
+       
+   }
+    }
 };
 </script>
 

@@ -25,7 +25,7 @@ export default {
     return {
       isAddClick: false,
       cardTitle: null,
-      currList: null,
+      currList: null
     };
   },
   components: {
@@ -35,6 +35,9 @@ export default {
     newCard() {
       this.cardTitle = CardService.getEmpty();
       console.log("new card", this.cardTitle);
+      console.log(
+        this.currList.cards[this.currList.cards.length - 1].order + 1
+      );
       this.isAddClick = !this.isAddClick;
     },
     closeAdd() {
@@ -42,21 +45,20 @@ export default {
     },
     addCard() {
       this.cardTitle.listId = this.currList._id;
-      (this.cardTitle.order = this.currList.cards[
-        this.currList.cards.length - 1
-      ].order),
-        // console.log("add card");
+      (this.cardTitle.order =
+        this.currList.cards[this.currList.cards.length - 1].order + 1),
         this.$store.dispatch({ type: "addItem", item: this.cardTitle });
       this.isAddClick = !this.isAddClick;
     }
   },
   computed: {},
   created() {
-      this.currList = this.list
+    this.currList = this.list;
   },
   watch: {
-    list: function() {
-      this.currList = this.list
+    currList: function() {
+      console.log("change in list");
+      this.currList = this.list;
     }
   }
 };

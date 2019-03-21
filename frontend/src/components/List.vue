@@ -34,53 +34,35 @@ export default {
   methods: {
     newCard() {
       // this.cardTitle = CardService.getEmpty();
-      console.log("new card", this.card);
+      console.log("new card");
       console.log((this.card.order = this.list.cards.length + 1));
       this.isAddClick = !this.isAddClick;
     },
     closeAdd() {
       this.isAddClick = !this.isAddClick;
     },
-    methods: {
-        newCard() {
-            // this.cardTitle = CardService.getEmpty();
-            console.log("new card", this.card);
-            console.log(this.card.order = this.list.cards.length + 1);
-            this.isAddClick = !this.isAddClick;
-        },
-        closeAdd() {
-            this.isAddClick = !this.isAddClick;
-        },
-        addCard() {
-            this.card.listId = this.list._id;
-            // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-            (this.card.order = this.list.cards.length + 1);
-            this.$store.dispatch({ type: "saveCard", card: this.card });
+    addCard() {
+      this.card.listId = this.list._id;
+      // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
+      this.card.order = this.list.cards.length + 1;
+      this.$store.dispatch({ type: "saveCard", card: this.card });
 
-            this.isAddClick = !this.isAddClick;
-        }
-    },
-    computed: {
-        card: {
-            get() { return this.$store.getters.getCurrCard },
-            set(emptyCard) { this.$store.commit('setCard', { emptyCard }) }
-        }
-    },
-    created() {
-        var emptyCard = this.$store.getters.getEmptyCard;
-        this.$store.commit('setCard', { emptyCard });
-        // this.currList = this.list;
-    },
-    watch: {
-        // currList: function () {
-        //     console.log("change in list");
-        //     this.currList = this.list;
-        // }
+      this.isAddClick = !this.isAddClick;
+    }
+  },
+  computed: {
+    card: {
+      get() {
+        return this.$store.getters.getCurrCard;
+      },
+      set(emptyCard) {
+        this.$store.commit("setCard", { emptyCard });
+      }
     }
   },
   created() {
-    var cardItem = this.$store.getters.cardItemToAdd;
-    this.$store.commit("setCardItem", { cardItem });
+    var emptyCard = this.$store.getters.getEmptyCard;
+    this.$store.commit("setCard", { emptyCard });
     // this.currList = this.list;
   },
   watch: {

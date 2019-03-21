@@ -6,11 +6,13 @@
         <card-preview :card="card"></card-preview>
       </li>
     </ul>
-    <button v-if="!isAddClick" @click="newCard">add card</button>
+    <button v-if="!isAddClick" @click="newCard">add card <i class="fa fa-plus"></i></button>
     <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
-      <button @click="closeAdd">&times;</button>
-      <textarea v-model="card.title" placeholder="Enter text here..."></textarea>
-      <button type="submit">+</button>
+      <!-- <div v-if="card"> -->
+        <button @click="closeAdd">&times;</button>
+        <textarea v-model="card.title" placeholder="Enter text here..."></textarea>
+        <button type="submit"><i class="fa fa-plus"></i></button>
+      <!-- </div> -->
     </form>
   </section>
 </template>
@@ -34,7 +36,7 @@ export default {
   methods: {
     newCard() {
       // this.cardTitle = CardService.getEmpty();
-      console.log("new card");
+      console.log("new card", this.card);
       console.log((this.card.order = this.list.cards.length + 1));
       this.isAddClick = !this.isAddClick;
     },
@@ -55,14 +57,14 @@ export default {
       get() {
         return this.$store.getters.getCurrCard;
       },
-      set(emptyCard) {
-        this.$store.commit("setCard", { emptyCard });
+      set(cardItem) {
+        this.$store.commit("setCard", { cardItem });
       }
     }
   },
   created() {
-    var emptyCard = this.$store.getters.getEmptyCard;
-    this.$store.commit("setCard", { emptyCard });
+    var cardItem = this.$store.getters.getEmptyCard;
+    this.$store.commit("setCard", { card: cardItem });
     // this.currList = this.list;
   },
   watch: {

@@ -10,7 +10,7 @@
       <!-- <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
         <button @click="closeAdd">&times;</button>
         <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
-        <button type="submit">+</button>
+        <button type="submit"><i class="fa fa-plus"></i></button>
       </form> -->
 
     </ul>
@@ -62,7 +62,7 @@ export default {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       (this.card.order = this.list.cards.length + 1);
-      this.$store.dispatch({ type: "addCard", card: this.card });
+        this.$store.dispatch({ type: "addCard", card: this.card });
 
       this.isAddListClick = !this.isAddListClick;
     }

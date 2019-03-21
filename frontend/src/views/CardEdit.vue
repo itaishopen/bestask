@@ -1,7 +1,5 @@
 <template>
     <!-- <section> -->
-    <!-- <b-button v-on:click="editCard">Edit Card</b-button> -->
-    <!-- <b-button v-b-modal.modal1>Edit Card</b-button> -->
     <!-- Modal Component -->
     <b-modal
         v-if="card"
@@ -22,14 +20,9 @@
                     rows="6"
                     max-rows="10"
                 />
-                <!-- <div class="comments"> -->
                 <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
                 <b-button class="m-1" v-on:click="addComment">Save</b-button>
-                <div v-for="comment in card.comments" :key="comment">
-                    {{comment}}
-                    <!-- <div class="flex comments"></div> -->
-                </div>
-                <!-- </div> -->
+                <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
             </main>
             <div class="nav flex">
                 <label class="m-1">Add to Card</label>
@@ -43,19 +36,16 @@
                 <b-button class="m-1 btn-block">Share</b-button>
             </div>
         </div>
-
-        <!-- <p class="my-4">Hello from modal!</p> -->
         <div slot="modal-footer" class="w-100">
-            <!-- <p class="float-left">Modal Footer Content</p> -->
             <b-button class="m-1 float-right" variant="primary" @click="saveCard">Save</b-button>
-            <b-button class="m-1 float-right" @click="hideModal">Close</b-button>
+            <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
         </div>
     </b-modal>
     <!-- </section> -->
 </template>
 
 <script>
-// import Modal from '../components/Modal.vue';
+
 import moment from 'moment';
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
@@ -81,20 +71,13 @@ export default {
     },
     computed: {
         card: {
-            // return JSON.parse(JSON.stringify(this.$store.state.currItem));
             get() { return this.$store.getters.currCardItem },
             set(cardItem) { this.$store.commit('setCardItem', { cardItem }) }
         },
-        formattedDate() {
-            // return
-        }
     },
     methods: {
-        editCard() {
-
-        },
         closeModal() {
-
+            this.$refs.myModalRef.hide();
         },
         saveCard() {
             console.log('Saving card..', this.card);
@@ -108,8 +91,6 @@ export default {
                     console.log(err);
                     this.$router.push('/task');
                 });
-            // this.$store.dispatch({ type: 'updateItem', itemId });
-            // this.$router.push('/task');
         },
         addComment() {
             if (this.comment) {
@@ -124,9 +105,6 @@ export default {
             console.log('modalClosed');
             this.$router.push('/task');
         },
-        hideModal() {
-            this.$refs.myModalRef.hide();
-        }
     },
     components: {
     },

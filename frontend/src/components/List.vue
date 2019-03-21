@@ -35,7 +35,7 @@ export default {
         newCard() {
             // this.cardTitle = CardService.getEmpty();
             console.log("new card", this.card);
-            console.log(this.list.cards[this.list.cards.length - 1].order + 1);
+            console.log(this.card.order = this.list.cards.length + 1);
             this.isAddClick = !this.isAddClick;
         },
         closeAdd() {
@@ -43,8 +43,8 @@ export default {
         },
         addCard() {
             this.card.listId = this.list._id;
-            (this.card.order =
-                this.list.cards[this.list.cards.length - 1].order + 1),
+            // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
+            (this.card.order = this.list.cards.length + 1),
                 this.$store.dispatch({ type: "addItem", item: this.card });
 
             this.isAddClick = !this.isAddClick;

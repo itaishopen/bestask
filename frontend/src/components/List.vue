@@ -10,7 +10,7 @@
     <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
       <button @click="closeAdd">&times;</button>
       <textarea v-model="cardTitle.title" placeholder="Enter text here..."></textarea>
-      <button type="submit">+</button>
+      <button type="submit"><i class="fa fa-plus"></i></button>
     </form>
   </section>
 </template>

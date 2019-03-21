@@ -1,20 +1,17 @@
 import axios from 'axios'
 const BASE_URL = process.env.NODE_ENV !== 'development'
-    ? ''
-    : '//localhost:3000'
+    ? '/api'
+    : '//localhost:3000/api';
+const resolveData = res => res.data
 
-function login(user){
-    return axios.put(`${BASE_URL}/login`,{
-        user
-    })
-    .then(res => res.data)
+function login(userCredentials){
+    return axios.put(`${BASE_URL}/login`,userCredentials)
+    .then(resolveData)
 }
 
 function signup(user){
-    return axios.put(`${BASE_URL}/signup`,{
-        user
-    })
-    .then(res => res.data)
+    return axios.put(`${BASE_URL}/signup`,user)
+    .then(resolveData)
 }
 
 export default {

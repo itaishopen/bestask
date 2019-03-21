@@ -67,15 +67,18 @@ function updateItem(item) {
 
 function getEmpty() {
     return {
-        title : "", 
-        listId : "", 
-        dueDate : null, 
-        labels : null, 
-        checklist : null, 
-        attachments : null, 
-        order : null, 
-        archived : false, 
-        emt : null, 
-        amt : null
+        title: '',
+        description: '',
+        comments: [],
+        activity: [],
+        membres: [],
+        labels: [],
+        checklist: [],
+        dueDate: '',
+        attachments: [],
+        order: 0,
+        archived: false,
+        emt: '',
+        amt: ''
     }
 }

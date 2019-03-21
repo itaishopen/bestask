@@ -3,15 +3,13 @@ const LIST_DB = 'lists';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ boardId = null, archived = false } = {}) {
-    const criteria = { archived }
-    if (boardId) criteria.boardId = new ObjectId(boardId);
+function query({ boardId = null }) {
     boardId = new ObjectId(boardId)
     return mongoService.connect().then(db => {
         return db.collection(LIST_DB)
             .aggregate([
                 {
-                    $match: criteria
+                    $match: { boardId }
                 },
                 {
                     $lookup:
@@ -26,18 +24,13 @@ function query({ boardId = null, archived = false } = {}) {
                     $lookup:
                     {
                         from: 'cards',
-                        let: { list_id: "$_id", archive: "$archived" },
+                        let: { list_id: "$_id" },
                         pipeline: [
                             {
                                 $match:
                                 {
                                     '$expr':
-                                    {
-                                        '$and': [
-                                            { '$eq': ["$listId", "$$list_id"] },
-                                            { '$eq': ["$archived", "$$archive"] },
-                                        ]
-                                    }
+                                        { '$eq': ["$listId", "$$list_id"] },
                                 }
                             },
                             { $sort: { 'order': 1 } }
@@ -62,7 +55,7 @@ function addList(list) {
 function getListById(listId) {
     const _id = new ObjectId(listId)
     return mongoService.connect()
-        .then(db => db.collection(LIST_DB) 
+        .then(db => db.collection(LIST_DB)
             .aggregate([
                 {
                     $match: { _id }
@@ -71,25 +64,12 @@ function getListById(listId) {
                     $lookup:
                     {
                         from: 'cards',
-                        let: { list_id: "$_id", archive: "$archived" },
-                        pipeline: [
-                            {
-                                $match:
-                                {
-                                    '$expr':
-                                    {
-                                        '$and': [
-                                            { '$eq': ["$listId", "$$list_id"] },
-                                            { '$eq': ["$archived", "$$archive"] },
-                                        ]
-                                    }
-                                }
-                            },
-                            { $sort: { 'order': 1 } }
-                        ],
+                        localField: '_id',
+                        foreignField: 'listId',
                         as: 'cards'
                     }
                 },
+                { $sort: { order: 1 } }
             ]))
 }
 

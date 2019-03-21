@@ -6,7 +6,8 @@
                 <card-preview v-if="!card.archived" :card="card"></card-preview>
             </li>
         </ul>
-        <button v-if="!isAddClick" @click="newCard">add card
+        <button v-if="!isAddClick" @click="newCard">
+            add card
             <i class="fa fa-plus"></i>
         </button>
         <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
@@ -78,10 +79,10 @@ export default {
         // this.currList = this.list;
     },
     watch: {
-        // currList: function () {
-        //     console.log("change in list");
-        //     this.currList = this.list;
-        // }
+        board: function () {
+            console.log("change in list");
+            this.$store.dispatch({ type: "saveList", list: this.list });
+        }
     }
 };
 </script>

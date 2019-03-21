@@ -1,35 +1,45 @@
 <template>
-    <section class="list">
-        <div class="title-list">{{list.title}}</div>
-        <ul class="list-cards">
-            <li v-for="card in list.cards" :key="card._id">
-                <card-preview :card="card"></card-preview>
-            </li>
-        </ul>
-        <button v-if="!isAddClick" @click="newCard">add card</button>
-        <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
-            <button @click="closeAdd">&times;</button>
-            <textarea v-model="card.title" placeholder="Enter text here..."></textarea>
-            <button type="submit">+</button>
-        </form>
-    </section>
+  <section class="list">
+    <div class="title-list">{{list.title}}</div>
+    <ul class="list-cards">
+      <li v-for="card in list.cards" :key="card._id">
+        <card-preview :card="card"></card-preview>
+      </li>
+    </ul>
+    <button v-if="!isAddClick" @click="newCard">add card</button>
+    <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
+      <button @click="closeAdd">&times;</button>
+      <textarea v-model="card.title" placeholder="Enter text here..."></textarea>
+      <button type="submit">+</button>
+    </form>
+  </section>
 </template>
 
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
 export default {
-    name: "list",
-    props: ["list"],
-    data() {
-        return {
-            isAddClick: false,
-            // cardTitle: null,
-            // currList: null
-        };
+  name: "list",
+  props: ["list"],
+  data() {
+    return {
+      isAddClick: false
+      // cardTitle: null,
+      // currList: null
+    };
+  },
+  components: {
+    CardPreview
+  },
+  methods: {
+    newCard() {
+      // this.cardTitle = CardService.getEmpty();
+      console.log("new card", this.card);
+      console.log((this.card.order = this.list.cards.length + 1));
+      this.isAddClick = !this.isAddClick;
     },
-    components: {
-        CardPreview
+    closeAdd() {
+      this.isAddClick = !this.isAddClick;
     },
     methods: {
         newCard() {
@@ -67,27 +77,40 @@ export default {
         //     this.currList = this.list;
         // }
     }
+  },
+  created() {
+    var cardItem = this.$store.getters.cardItemToAdd;
+    this.$store.commit("setCardItem", { cardItem });
+    // this.currList = this.list;
+  },
+  watch: {
+    // currList: function () {
+    //     console.log("change in list");
+    //     this.currList = this.list;
+    // }
+  }
 };
 </script>
 
 <style>
 .title-list {
-    font-size: 22px;
-    color: black;
+  margin-top: 25px;
+  font-size: 22px;
+  color: black;
 }
 .list-cards {
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .form-add {
-    border: 1px black solid;
+  border: 1px black solid;
 }
 .new-card-btn {
   width: 200px;
-    height: 30px;
+  height: 30px;
   background-color: rgba(255, 255, 255, 0);
   border: none;
   font-size: 20px;

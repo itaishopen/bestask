@@ -36,35 +36,35 @@ const cardStore = {
             return JSON.parse(JSON.stringify(state.currCardItem))
         },
         cardItemToAdd(state) {
-            return CardService.getEmpty();
+            return CardService.getEmptyCard();
         },
     },
     actions: {
         loadCardItems(context) {
             return CardService.query()
-            .then(cardItems => {
-                context.commit({ type: 'setCardItems', cardItems })
-            })
+                .then(cardItems => {
+                    context.commit({ type: 'setCardItems', cardItems })
+                })
         },
         loadCardItem(context, { itemId }) {
             // console.log(itemId);
-            CardService.getById(itemId)
-            .then(cardItem => {
-                context.commit({ type: 'setCardItem', cardItem })
-            })
+            CardService.getCardById(itemId)
+                .then(cardItem => {
+                    context.commit({ type: 'setCardItem', cardItem })
+                })
         },
         removeItem(context, { itemId }) {
             return CardService.removeItem(itemId)
                 .then(() => {
                     context.commit({ type: 'removeItem', itemId })
                 })
-            },
+        },
         addItem(context, { item }) {
-            console.log(item , 'store');
+            console.log(item, 'store');
             return CardService.addItem(item)
-            .then((savedItem) => {
-                context.commit({ type: 'addItem', item: savedItem });
-            })
+                .then((savedItem) => {
+                    context.commit({ type: 'addItem', item: savedItem });
+                })
         },
         updateItem(context, { item }) {
             // console.log(item);

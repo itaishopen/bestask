@@ -4,37 +4,41 @@
       <li class="board-list-li" v-for="list in lists" :key="list._id">
         <list :list="list"/>
       </li>
-     
+
       <button v-if="!isAddListClick" class="new-list-btn" @click="newList">
-        new list<i class="fa fa-plus"></i></button>
+        new list
+        <i class="fa fa-plus"></i>
+      </button>
 
       <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
         <button @click="closeAdd">&times;</button>
         <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
-        <button type="submit"><i class="fa fa-plus"></i></button>
+        <button type="submit">
+          <i class="fa fa-plus"></i>
+        </button>
       </form>
-
     </ul>
   </section>
 </template>
 
 <script>
 import CardService from "../services/CardService.js";
+import ListService from "../services/ListService.js";
 import list from "./List.vue";
 export default {
   name: "board",
   props: ["board"],
-    data() {
+  data() {
     return {
-      isAddListClick: false,
+      isAddListClick: false
     };
   },
   components: {
-      list
+    list
   },
 
- computed: {
-     lists() {
+  computed: {
+    lists() {
       return this.$store.getters.getLists;
     }
   },
@@ -43,26 +47,24 @@ export default {
     newList() {
       //  todo: add list
       console.log("new list");
-      this.list = 
-    this.isAddListClick = !this.isAddListClick;
+      this.list = ListService.getEmptyList();
+      this.isAddListClick = !this.isAddListClick;
+      console.log(this.list, "list in new click");
     },
     closeAdd() {
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
-      this.list.listId = this.list._id;
-        this.$store.dispatch({ type: "saveList", list: this.list });
-
+      this.list.boardId = this.board._id;
+      console.log(this.list, "list in add click");
+      this.$store.dispatch({ type: "saveList", list: this.list });
       this.isAddListClick = !this.isAddListClick;
     }
-
-
   },
   watch: {
     board: function() {
       console.log("change in board");
-    this.$store.dispatch({ type: "saveBoard", board: this.board });
-
+      this.$store.dispatch({ type: "saveBoard", board: this.board });
     }
   }
 };

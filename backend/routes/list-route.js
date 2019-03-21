@@ -28,7 +28,9 @@ function addListRoutes(app) {
 
     // CREATE
     app.post(LIST_URL, (req, res) => {
+        
         const list = req.body;
+        console.log(req);
         listService.addList(list)
             .then(resolveData)
     })

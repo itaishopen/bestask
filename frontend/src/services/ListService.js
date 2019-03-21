@@ -33,9 +33,7 @@ function updateLists(lists) {
 function saveList(list) {
     if (list._id) {
         return axios.put(`${LIST_URL}/${list._id}`, list)
-    } else {
-        console.log(list, 'list in service');
-        
+    } else {        
         return axios.post(LIST_URL, list)
     }
 }

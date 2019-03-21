@@ -9,7 +9,7 @@ function addBoardRoutes(app) {
 
     // LIST
     app.get(BOARD_URL, (req, res) => {
-        const userId = req.data
+        const userId = req.body        
         boardService.query({ userId })
             .then(boards => res.json(boards))
     })

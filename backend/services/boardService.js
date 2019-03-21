@@ -4,10 +4,11 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ userId = 'guest' }) {
+    console.log(userId);
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB)
-            .find({"members": { userId }}).toArray()
+            .find({members: userId }).toArray()
         })
 }
 

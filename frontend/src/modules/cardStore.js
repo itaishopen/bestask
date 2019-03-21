@@ -36,7 +36,7 @@ const cardStore = {
             return JSON.parse(JSON.stringify(state.currCardItem))
         },
         cardItemToAdd(state) {
-            return CardService.getEmpty();
+            return CardService.getEmptyCard();
         },
     },
     actions: {

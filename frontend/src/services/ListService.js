@@ -46,7 +46,6 @@ function getEmptyList() {
     return {
         title: '',
         boardId: null,
-        cards: [],
         order: null,
         archived: false
     }

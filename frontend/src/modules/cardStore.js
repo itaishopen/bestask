@@ -49,7 +49,7 @@ const cardStore = {
             return JSON.parse(JSON.stringify(state.currCard));
         },
         getEmptyCard(state) {
-            return state.emptyCard;
+            return JSON.parse(JSON.stringify(state.emptyCard));
         },
     },
     actions: {

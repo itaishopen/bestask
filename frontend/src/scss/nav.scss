@@ -1,0 +1,43 @@
+nav.nav-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 55px;
+	background-color: #026AA7;
+	display: block;
+	.nav-boards {
+		position: absolute;
+		left: 10px;
+		top: (55px - 37px) / 2;
+	}
+	.nav-logo {
+		position: absolute;
+		top: (55px - 27.5px) / 2;
+		left: 50%;
+		margin: 0 0 0 -42px;
+		display: block;
+		overflow: hidden;
+		height: 55px / 2;
+	}
+	.nav-user {
+		position: absolute;
+		right: 10px;
+		top: (55px - 37px) / 2;
+		border-radius: 50%;
+	}
+	.nav-button {
+		display: block;
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+		font-size: 12px;
+		color: #FFFFFF;
+		background-color: #298FCA;
+		padding: 10px 15px;
+		border-radius: 3px;
+		cursor: pointer;
+		&:hover {
+			background-color: #5BA4CF;
+		}
+	}
+}

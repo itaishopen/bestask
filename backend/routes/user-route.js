@@ -1,7 +1,6 @@
 const userService = require('../services/userService')
 const boardService = require('../services/boardService')
 const USER_URL = '/api/user'
-
 function addUserRoutes(app) {
     // Users REST API:
 

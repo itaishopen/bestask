@@ -1,6 +1,6 @@
-const listService = require('../services/listService')
-const LIST_URL = '/api/list'
-const resolveData = res => res.data
+const listService = require('../services/listService');
+const LIST_URL = '/api/list';
+const resolveData = res => res.data;
 function addListRoutes(app) {
     // Lists REST API:
 

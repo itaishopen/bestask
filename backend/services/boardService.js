@@ -3,10 +3,11 @@ const BOARDS_DB = 'boards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ userId }) {
+function query({ userId = 'guest' }) {
     return mongoService.connect()
         .then(db => {
-            return db.collection(BOARDS_DB).find({ userId }).toArray()
+            return db.collection(BOARDS_DB)
+            .find({"members": { userId }}).toArray()
         })
 }
 
@@ -36,8 +37,8 @@ function getBoardById(boardId) {
             //             as: 'activities'
             //         }
             //     },
-        
-        .findOne({ _id }))
+
+            .findOne({ _id }))
 }
 
 function removeBoard(boardId) {
@@ -56,7 +57,7 @@ function getEmptyBoard() {
     return {
         title: '',
         members: [],
-        prefs:{}
+        prefs: {}
     }
 }
 

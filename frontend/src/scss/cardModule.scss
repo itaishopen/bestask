@@ -1,0 +1,75 @@
+.overlay {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+}
+.card-module {
+	background-color: #E2E4E6;
+	border-radius: 3px;
+	height: 375px;
+	width: 330px;
+	z-index: 2000;
+	margin: 4% 0;
+	padding: 0;
+	.card-module-exit {
+		width: 100%;
+		display: block;
+		position: relative;
+		height: 35px;
+		.Cancel {
+			position: absolute;
+			right: 14.7px;
+			top: 10px;
+			margin: 0;
+		}
+	}
+	.card-module-title {
+		color: #4D4D4D;
+		margin: 0 auto 1px auto;
+	}
+	.card-module-list {
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+		font-size: 12px;
+		color: #959DA1;
+		width: 88%;
+		margin: 0 auto;
+		strong {
+			text-decoration: underline;
+		}
+	}
+	.card-module-description {
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+		font-size: 12px;
+		color: #959DA1;
+		width: 88%;
+		margin: 0 auto;
+		padding: 0 0 20px 0;
+		cursor: pointer;
+	}
+	.card-module-description-title {
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+		font-size: 12px;
+		color: #4D4D4D;
+		margin: 15px auto 5px auto;
+		width: 88%;
+	}
+	.card-module-options {
+		width: 88%;
+		padding: 10px 4%;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-start;
+		margin: 0 auto;
+	}
+}

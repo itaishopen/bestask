@@ -7,7 +7,9 @@
         ref="myModalRef"
         @hide="modalClosed"
         title="Edit Card"
+        no-close-on-esc
         no-close-on-backdrop
+        hide-header-close
     >
         <div class="container flex">
             <main class="content flex">
@@ -30,9 +32,9 @@
                 <b-button class="m-1 btn-block">Labels</b-button>
                 <b-button class="m-1 btn-block">Checklist</b-button>
                 <label class="m-1">Actions</label>
-                <b-button class="m-1 btn-block">Move</b-button>
+                <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button>
                 <b-button class="m-1 btn-block">Copy</b-button>
-                <b-button class="m-1 btn-block">Archive</b-button>
+                <b-button class="m-1 btn-block" v-on:click="archiveCard">Archive</b-button>
                 <b-button class="m-1 btn-block">Share</b-button>
             </div>
         </div>
@@ -76,7 +78,8 @@ export default {
     },
     methods: {
         closeModal() {
-            this.$refs.myModalRef.hide();
+            // this.$refs.myModalRef.hide();
+            this.$router.push('/task');
         },
         saveCard() {
             console.log('Saving card..', this.card);
@@ -104,6 +107,17 @@ export default {
             console.log('modalClosed');
             this.$router.push('/task');
         },
+        archiveCard() {
+            this.card.archived = true;
+            this.saveCard();
+            console.log(this.card);
+            // this.$store.dispatch({ type: "loadBoard", boardId });
+            this.$router.push('/task');
+        },
+        moveCard() {
+            // console.log(this.$store.getters.getLists);
+            this.$store.getters.getLists.map(list => console.log(list.title));
+        }
     },
     components: {
     },
@@ -113,12 +127,6 @@ export default {
 <style lang="css" scoped>
 .flex {
     display: flex;
-}
-
-.modal-open {
-    overflow: hidden;
-    overflow-y: scroll;
-    padding-right: 0 !important;
 }
 
 .main-container {

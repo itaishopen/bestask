@@ -3,7 +3,7 @@ const LIST_DB = 'lists';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ boardId = null } = {}) {
+function query({ boardId = null }) {
     boardId = new ObjectId(boardId)
     return mongoService.connect().then(db => {
         return db.collection(LIST_DB)
@@ -24,7 +24,7 @@ function query({ boardId = null } = {}) {
                     $lookup:
                     {
                         from: 'cards',
-                        let: { list_id: "$_id"},
+                        let: { list_id: "$_id" },
                         pipeline: [
                             {
                                 $match:
@@ -64,25 +64,12 @@ function getListById(listId) {
                     $lookup:
                     {
                         from: 'cards',
-                        let: { list_id: "$_id", archive: "$archived" },
-                        pipeline: [
-                            {
-                                $match:
-                                {
-                                    '$expr':
-                                    {
-                                        '$and': [
-                                            { '$eq': ["$listId", "$$list_id"] },
-                                            { '$eq': ["$archived", "$$archive"] },
-                                        ]
-                                    }
-                                }
-                            },
-                            { $sort: { 'order': 1 } }
-                        ],
+                        localField: '_id',
+                        foreignField: 'listId',
                         as: 'cards'
                     }
                 },
+                { $sort: { order: 1 } }
             ]))
 }
 

@@ -6,7 +6,22 @@ const ObjectId = require('mongodb').ObjectId;
 function query({ listId = null }) {
     if (listId) listId = new ObjectId(listId)
     return mongoService.connect().then(db => {
-        return db.collection(CARDS_DB).find({ listId }).sort({order: 1}).toArray()
+        return db.collection(CARDS_DB)
+            .aggregate([
+                {
+                    $match: { listId }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'lists',
+                        localField: 'listId',
+                        foreignField: '_id',
+                        as: 'list'
+                    }
+                },
+                { $sort: { order: 1 } }
+            ]).toArray()
     })
 }
 
@@ -20,14 +35,13 @@ function addCard(card) {
 }
 
 function getCardById(cardId) {
-    console.log(cardId);
     const _id = new ObjectId(cardId)
     return mongoService.connect()
         .then(db => db.collection(CARDS_DB).findOne({ _id }))
 }
 
-function removeCards({listId}) {
-    return this.query({listId}).then(cards => Promise.all(cards.map(card => this.removeCard(card._id))))
+function removeCards({ listId }) {
+    return this.query({ listId }).then(cards => Promise.all(cards.map(card => this.removeCard(card._id))))
 }
 
 function removeCard(cardId) {

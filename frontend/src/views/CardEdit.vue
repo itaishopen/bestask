@@ -66,13 +66,7 @@ export default {
         this.$store.dispatch({ type: 'loadCard', cardId });
     },
     mounted() {
-        if (this.card) this.$refs.myModalRef.show();
-    },
-    watch: {
-        card: val => {
-            console.log(val);
-            this.$refs.myModalRef.show();
-        }
+        this.$refs.myModalRef.show();
     },
     computed: {
         card: {
@@ -119,6 +113,12 @@ export default {
 <style lang="css" scoped>
 .flex {
     display: flex;
+}
+
+.modal-open {
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-right: 0 !important;
 }
 
 .main-container {

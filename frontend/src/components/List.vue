@@ -47,7 +47,14 @@ export default {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       this.card.order = this.list.cards.length + 1;
-      this.$store.dispatch({ type: "saveCard", card: this.card });
+      this.$store.dispatch({ type: "saveCard", card: this.card }).then(() =>  {
+        var cardItem = this.$store.getters.getEmptyCard;
+        console.log(cardItem);
+        
+        this.$store.commit("setCard", { card: cardItem });
+        var boardId = this.list.boardId;
+        this.$store.dispatch({type: "loadBoard", boardId})
+        })
       this.isAddClick = !this.isAddClick;
     }
   },
@@ -57,12 +64,12 @@ export default {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
-        this.$store.commit("setCard", { cardItem });
+        this.$store.commit("setCard", { card: cardItem });
       }
     }
   },
   created() {
-    var cardItem = this.$store.getters.getEmptyCard;
+    var cardItem = JSON.parse(JSON.stringify(this.$store.getters.getEmptyCard));
     this.$store.commit("setCard", { card: cardItem });
     // this.currList = this.list;
   },

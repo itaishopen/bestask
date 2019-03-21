@@ -39,7 +39,6 @@ function removeCard(cardId) {
 function updateCard(card) {
     card._id = new ObjectId(card._id);
     card.listId = new ObjectId(card.listId)
-    if (card.mem)
     return mongoService.connect()
         .then(db => db.collection(CARDS_DB).updateOne({ _id: card._id }, { $set: card }))
 }

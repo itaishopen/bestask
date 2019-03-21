@@ -66,12 +66,18 @@ function updateItem(item) {
 
 function getEmpty() {
     return {
-        title: 'This is a test',
+        title: '',
         description: '',
         comments: [],
         activity: [],
         membres: [],
         labels: [],
-        checklist: []
+        checklist: [],
+        dueDate: '',
+        attachments: [],
+        order: 1,
+        archived: false,
+        emt: '',
+        amt: ''
     }
 }

@@ -4,7 +4,7 @@
       <li class="board-list-li" v-for="list in lists" :key="list._id">
         <list :list="list"/>
       </li>
-      <button class="new-list-btn" @click="newList">new list</button>
+      <button class="new-list-btn" @click="newList">new list<i class="fa fa-plus"></i></button>
     </ul>
   </section>
 </template>

@@ -4,7 +4,7 @@
       <li class="board-list-li" v-for="list in lists" :key="list._id">
         <list :list="list"/>
       </li>
-      <button @click="newList">new list</button>
+      <button class="new-list-btn" @click="newList">new list</button>
     </ul>
   </section>
 </template>
@@ -25,17 +25,15 @@ export default {
   },
   methods: {
     newList() {
-    //  todo: add list
-    console.log('new list');
-    
+      //  todo: add list
+      console.log("new list");
     }
   },
-   watch: {
-   board: function(){
-       console.log('change in board');
-       
-   }
+  watch: {
+    board: function() {
+      console.log("change in board");
     }
+  }
 };
 </script>
 
@@ -55,5 +53,20 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
+}
+.new-list-btn {
+    width: 200px;
+    height: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 20px;
+  border: 1px solid rgb(82, 82, 82);
+  color: rgb(82, 82, 82);
+  border-radius: 7px;
+}
+.new-list-btn:hover {
+  background-color: rgba(255, 255, 255, 0.849);
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
 }
 </style>

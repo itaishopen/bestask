@@ -48,7 +48,7 @@ export default {
       (this.cardTitle.order =
         this.currList.cards[this.currList.cards.length - 1].order + 1),
         this.$store.dispatch({ type: "addItem", item: this.cardTitle });
-        
+
       this.isAddClick = !this.isAddClick;
     }
   },
@@ -80,8 +80,19 @@ export default {
 .form-add {
   border: 1px black solid;
 }
-.new-card-btn{
-    background-color: rgba(255, 255, 255, 0)
-    
+.new-card-btn {
+  width: 200px;
+    height: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 20px;
+  border: 1px solid rgb(82, 82, 82);
+  color: rgb(82, 82, 82);
+  border-radius: 7px;
+}
+.new-card-btn:hover {
+  background-color: rgba(255, 255, 255, 0.849);
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
 }
 </style>

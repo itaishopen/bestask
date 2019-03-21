@@ -6,7 +6,7 @@
         <card-preview :card="card"></card-preview>
       </li>
     </ul>
-    <button v-if="!isAddClick" @click="newCard">add card</button>
+    <button class="new-card-btn" v-if="!isAddClick" @click="newCard">add card</button>
     <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
       <button @click="closeAdd">&times;</button>
       <textarea v-model="cardTitle.title" placeholder="Enter text here..."></textarea>
@@ -25,7 +25,7 @@ export default {
     return {
       isAddClick: false,
       cardTitle: null,
-      currList: null,
+      currList: null
     };
   },
   components: {
@@ -35,6 +35,9 @@ export default {
     newCard() {
       this.cardTitle = CardService.getEmpty();
       console.log("new card", this.cardTitle);
+      console.log(
+        this.currList.cards[this.currList.cards.length - 1].order + 1
+      );
       this.isAddClick = !this.isAddClick;
     },
     closeAdd() {
@@ -42,21 +45,21 @@ export default {
     },
     addCard() {
       this.cardTitle.listId = this.currList._id;
-      (this.cardTitle.order = this.currList.cards[
-        this.currList.cards.length - 1
-      ].order),
-        // console.log("add card");
+      (this.cardTitle.order =
+        this.currList.cards[this.currList.cards.length - 1].order + 1),
         this.$store.dispatch({ type: "addItem", item: this.cardTitle });
+        
       this.isAddClick = !this.isAddClick;
     }
   },
   computed: {},
   created() {
-      this.currList = this.list
+    this.currList = this.list;
   },
   watch: {
-    list: function() {
-      this.currList = this.list
+    currList: function() {
+      console.log("change in list");
+      this.currList = this.list;
     }
   }
 };
@@ -76,5 +79,9 @@ export default {
 }
 .form-add {
   border: 1px black solid;
+}
+.new-card-btn{
+    background-color: rgba(255, 255, 255, 0)
+    
 }
 </style>

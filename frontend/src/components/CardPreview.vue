@@ -1,31 +1,41 @@
 <template>
     <div class="card-preview flex">
-        <div class="title-card">{{card.title}}</div>
+        <router-link :to="'/card/edit/' + card._id">
+            <div class="title-card">{{card.title}}</div>
+        </router-link>
     </div>
 </template>
 
 <script>
+
 export default {
-    name: 'CardPreview',
-    props: ['card'],
+    name: "CardPreview",
+    props: ["card"],
     created() { },
     data() {
-        return {};
+        return {
+        };
     },
-    computed: {
+    computed: {},
+    methods: {
+
 
     },
-    methods: {},
-    components: {}
+    components: {
+
+    }
 };
 </script>
 <style>
-.title-card{
+.title-card {
     padding: 30px;
     width: 150px;
     background-color: rgb(255, 255, 255);
     border: 1px solid black;
     font-size: 22px;
     margin: 5px;
+}
+.card-preview {
+    cursor: pointer;
 }
 </style>

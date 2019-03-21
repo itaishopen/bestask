@@ -4,9 +4,8 @@ const LIST_DB = 'lists';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ boardId = null, archived = false } = {}) {
-    const criteria = { archived: false }
+    const criteria = { archived }
     if (boardId) criteria.boardId = new ObjectId(boardId);
-    if (archived) criteria.archived = true;
     boardId = new ObjectId(boardId)
     return mongoService.connect().then(db => {
         return db.collection(LIST_DB)

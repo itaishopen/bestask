@@ -1,10 +1,10 @@
-const listService = require('../services/listService')
-const LIST_URL = '/api/list'
-const resolveData = res => res.data
+const listService = require('../services/listService');
+const LIST_URL = '/api/list';
+const resolveData = res => res.data;
 function addListRoutes(app) {
     // Lists REST API:
 
-    // Lists
+    // LIST
     app.get(LIST_URL, (req, res) => {
         const boardId = req.body;
         listService.query(boardId)
@@ -27,7 +27,7 @@ function addListRoutes(app) {
     })
 
     // CREATE
-    app.post(LIST_URL, (req, res) => {
+    app.post(LIST_URL, (req, res) => {        
         const list = req.body;
         listService.addList(list)
             .then(resolveData)

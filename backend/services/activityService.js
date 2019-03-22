@@ -3,18 +3,90 @@ const ACTIVITY_DB = 'activities';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ boardId = null, userId = null }) {    
+function query({ boardId = null, userId = null } = {}) {
+    const criteria = {}
+    if (userId) criteria.userId = new ObjectId(userId)
+    if (boardId) criteria.boardId = new ObjectId(boardId)
     return mongoService.connect().then(db => {
-        return db.collection(ACTIVITY_DB).find({ boardId, archived: false}).sort({order: 1}).toArray()
+        return db.collection(ACTIVITY_DB)
+            .aggregate([
+                {
+                    $match: criteria
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'users',
+                        localField: 'userId',
+                        foreignField: '_id',
+                        as: 'user'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'boards',
+                        localField: 'boardId',
+                        foreignField: '_id',
+                        as: 'board'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'lists',
+                        localField: 'listId',
+                        foreignField: '_id',
+                        as: 'list'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'cards',
+                        localField: 'cardId',
+                        foreignField: '_id',
+                        as: 'card'
+                    }
+                },
+            ]).toArray()
     })
 }
 
-function addList(list) {
+function addActivity(activity) {
+    activity.userId = new ObjectId(activity.userId);
+    activity.boardId = new ObjectId(activity.boardId);
     return mongoService.connect()
-        .then(db => db.collection(ACTIVITY_DB).insertOne(list).then(res => {
-            list._id = res.insertedId
-            return list
+        .then(db => db.collection(ACTIVITY_DB).insertOne(activity).then(res => {
+            activity._id = res.insertedId
+            return activity
         }))
+}
+
+function getUserActivities(userId) {
+    userId = new ObjectId(userId)
+    return mongoService.connect()
+        .then(db =>
+            db.collection(ACTIVITY_DB)
+            .aggregate([
+                {
+                    $match: { userId }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'boards',
+                        localField: 'boardId',
+                        foreignField: '_id',
+                        as: 'board'
+                    }
+                }, 
+                {
+                    $unwind: '$board'
+                }
+            ]).toArray()
+        )
+
 }
 
 function getListById(listId) {
@@ -38,8 +110,9 @@ function updateList(list) {
 
 module.exports = {
     query,
-    addList,
+    addActivity,
     getListById,
     removeList,
     updateList,
+    getUserActivities
 }

@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/SignUp.vue'
 import TaskApp from './views/TaskApp.vue'
+import CardEdit from './views/CardEdit.vue';
 
 
 Vue.use(Router)
@@ -21,6 +22,8 @@ export default new Router({
             component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
         { path: '/task', component: TaskApp },
+        // { path: '/card/:cardId', component: TaskApp },
+        { path: '/card/edit/:cardId', component: CardEdit },
         {
           path: '/login',
           name: 'login',

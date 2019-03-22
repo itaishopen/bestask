@@ -9,7 +9,7 @@ function addBoardRoutes(app) {
 
     // LIST
     app.get(BOARD_URL, (req, res) => {
-        const userId = req.data
+        const userId = req.body        
         boardService.query({ userId })
             .then(boards => res.json(boards))
     })
@@ -21,15 +21,7 @@ function addBoardRoutes(app) {
             boardService.getBoardById(boardId),
             listService.query({ boardId }),
         ])
-            .then(([board, lists]) => {
-                Promise.all(
-                    lists.map(list => cardService.query({listId: list._id}).then(cards => {
-                        list.cards = cards
-                        return Promise.resolve()
-                    })
-                )).then(() => res.json({board, lists}))
-                
-            })
+            .then(([board, lists]) => res.json({board, lists}))
     })
 
     // DELETE

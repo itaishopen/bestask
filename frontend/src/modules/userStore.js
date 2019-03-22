@@ -1,11 +1,7 @@
 import AuthService from '../services/AuthService.js';
 export default {
     state: {
-        user: {
-            userName: '',
-            password: '',
-            _id: ''
-        }
+        user: {}
     },
     getters: {
         isUserLoggedIn: state => !!state.user._id,

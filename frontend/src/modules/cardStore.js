@@ -1,77 +1,85 @@
-import CardService from '../services/CardService.js'
+import CardService from '../services/CardService.js';
 
 const cardStore = {
     state: {
-        cardItems: [],
-        currCardItem: null,
+        cards: [],
+        currCard: null,
+        emptyCard: {
+            listId: null,
+            title: '',
+            description: null,
+            members: [],
+            labels: [],
+            checklists: [],
+            dueDate: null,
+            attachments: [],
+            order: null,
+            archived: false,
+            emt: null,
+            amt: null
+        }
     },
     mutations: {
-        setCardItems(state, payload) {
-            state.cardItems = payload.cardItems;
+        setCards(state, payload) {
+            state.cards = payload.cards;
         },
-        setCardItem(state, { cardItem }) {
-            state.currCardItem = cardItem;
+        setCard(state, { card }) {
+            state.currCard = card;
         },
-        removeItem(state, { itemId }) {
-            const idx = state.cardItems.findIndex(item => item._id === itemId);
-            state.cardItems.splice(idx, 1);
+        removeCard(state, { cardId }) {
+            const idx = state.cards.findIndex(card => card._id === cardId);
+            state.cards.splice(idx, 1);
         },
-        addItem(state, { item }) {
-            state.cardItems.push(item);
+        addCard(state, { savedCard }) {
+            state.cards.push(savedCard);
         },
-        updateItem(state, { item }) {
-            const idx = state.cardItems.findIndex(currItem => currItem._id === item._id);
-            state.cardItems.splice(idx, 1, item);
+        updateCard(state, { savedCard }) {
+            const idx = state.cards.findIndex(card => card._id === savedCard._id);
+            state.cards.splice(idx, 1, savedCard);
         },
     },
     getters: {
-        currCardItem(state) {
-            return state.currCardItem;
+        getCurrCard(state) {
+            return state.currCard;
         },
-        cardItems(state) {
-            return state.cardItems;
+        getCards(state) {
+            return state.cards;
         },
-        cardItemToEdit(state) {
-            return JSON.parse(JSON.stringify(state.currCardItem))
+        getEditableCurrcard(state) {
+            return JSON.parse(JSON.stringify(state.currCard));
         },
-        cardItemToAdd(state) {
-            return CardService.getEmpty();
+        getEmptyCard(state) {
+            return JSON.parse(JSON.stringify(state.emptyCard));
         },
     },
     actions: {
-        loadCardItems(context) {
-            console.log('CONTEXT', context);
+        loadCards(context) {
             return CardService.query()
-                .then(cardItems => {
-                    context.commit({ type: 'setCardItems', cardItems })
+                .then(cards => {
+                    context.commit({ type: 'setCards', cards })
                 })
         },
-        loadCardItem(context, { itemId }) {
-            CardService.getById(itemId)
-                .then(cardItem => {
-                    context.commit({ type: 'setCardItem', cardItem })
+        loadCard(context, { cardId }) {
+            // console.log(cardId);
+            CardService.getCardById(cardId)
+                .then(card => {
+                    context.commit({ type: 'setCard', card })
                 })
         },
-        removeItem(context, { itemId }) {
-            return CardService.removeItem(itemId)
+        removeCard(context, { cardId }) {
+            return CardService.removeCard(cardId)
                 .then(() => {
-                    context.commit({ type: 'removeItem', itemId })
+                    context.commit({ type: 'removeCard', cardId })
                 })
         },
-        addItem(context, { item }) {
-            // console.log(item);
-            return CardService.addItem(item)
-                .then((savedItem) => {
-                    context.commit({ type: 'addItem', item: savedItem });
+        saveCard(context, { card }) {
+            const isEdit = !!card._id
+            return CardService.saveCard(card)
+                .then(savedCard => {
+                    if (isEdit) context.commit({ type: 'updateCard', savedCard });
+                    else context.commit({ type: 'addCard', savedCard });
                 })
         },
-        updateItem(context, { item }) {
-            // console.log(item);
-            return CardService.updateItem(item)
-                .then((savedItem) => {
-                    context.commit({ type: 'updateItem', item: savedItem });
-                })
-        }
     }
 }
 

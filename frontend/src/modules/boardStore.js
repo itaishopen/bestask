@@ -36,13 +36,15 @@ export default {
             state.lists.split(idx, 1);
         },
         updateCard(state, { savedCard }) {
-            const cardList = state.lists.find(list => list._id === savedCard.listId);
+            
+            let cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.split(idx, 1, savedList);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
             state.lists.split(idx, 1, cardList);
         },
         addCard(state, { savedCard }) {
-            const cardList = state.lists.find(list => list._id === savedCard.listId);
+            console.log(savedCard);
+            let cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
             state.lists.split(idx, 1, cardList);
@@ -60,8 +62,8 @@ export default {
             const isEdit = !!board._id
             return BoardService.saveBoard(board)
                 .then(savedBoard => {
-                    context.commit({ type: 'updateBoard', savedBoard });
-                    context.commit({ type: 'addBoard', savedBoard });
+                    if (isEdit) context.commit({ type: 'updateBoard', savedBoard });
+                    else context.commit({ type: 'addBoard', savedBoard });
                 })
         },
         updateLists(context, { lists }) {

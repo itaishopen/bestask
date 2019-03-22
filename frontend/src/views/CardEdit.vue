@@ -80,7 +80,7 @@ export default {
         },
         saveCard() {
             console.log('Saving card..', this.card);
-            this.$store.dispatch({ type: 'saveCard', card: this.card })
+            this.$store.dispatch({ type: 'saveCardToList', card: this.card })
                 .then(res => {
                     console.log(res);
                     // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });

@@ -47,13 +47,11 @@ export default {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       this.card.order = this.list.cards.length + 1;
-      this.$store.dispatch({ type: "saveCard", card: this.card }).then(() =>  {
-        var cardItem = this.$store.getters.getEmptyCard;
-        console.log(cardItem);
-        
+      console.log(this.card);
+      
+      this.$store.dispatch({ type: "saveCardToList", card: this.card }).then(() =>  {
+        var cardItem = this.$store.getters.getEmptyCard;        
         this.$store.commit("setCard", { card: cardItem });
-        var boardId = this.list.boardId;
-        this.$store.dispatch({type: "loadBoard", boardId})
         })
       this.isAddClick = !this.isAddClick;
     }

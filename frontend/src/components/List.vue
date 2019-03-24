@@ -10,8 +10,8 @@
             :move="moveCard"
         >
             <transition-group>
-                <div v-for="card in list.cards" :key="card._id">
-                    <card-preview v-if="!card.archived" :card="card"></card-preview>
+                <div v-for="(card ,index) in list.cards" :key="card._id">
+                    <card-preview v-if="!card.archived" :card="card" :index="index"></card-preview>
                 </div>
             </transition-group>
         </draggable>
@@ -53,7 +53,7 @@ export default {
             toListId: null,
             fromList: null,
             toList: null,
-            // toListFutureIndex: -1
+            // toListFutureIndex: 0
             // cardTitle: null,
             // currList: null
         };
@@ -76,30 +76,45 @@ export default {
             this.toListId = evt.relatedContext.element.listId;
             this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
             this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
+            // console.log(this.fromList);
             // this.toListFutureIndex = evt.draggedContext.futureIndex;
             // console.log(this.toList);
         },
         endMoveCard(evt) {
             console.log('onEnd');
             // console.log(this.card);
-            if (this.fromListId !== this.toListId) {
-                this.card.listId = this.toListId;
-                this.$store.dispatch({ type: 'saveCard', card: this.card })
-                    .then(res => {
-                        console.log(res);
-                        console.log(this.toList);
-                        this.$store.dispatch({ type: "saveList", list: this.fromList });
-                        this.$store.dispatch({ type: "saveList", list: this.toList });
-                        // console.log(this.toList);
-                        // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
-                        // console.log(this.toList);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            } else {
-                this.$store.dispatch({ type: "saveList", list: this.fromList });
+            this.card.listId = this.toListId;
+            // this.card.order = this.toListFutureIndex;
+            // console.log(this.fromList.cards.length);
+            // console.log(this.toList.cards.length);
+
+            for (var i = 0; i < this.fromList.cards.length; i++) {
+                this.fromList.cards[i].order = i;
             }
+            this.$store.dispatch({ type: "saveList", list: this.fromList });
+
+            if (this.fromListId !== this.toListId) {
+                for (var i = 0; i < this.toList.cards.length; i++) {
+                    this.toList.cards[i].order = i;
+                }
+                this.$store.dispatch({ type: "saveList", list: this.toList });
+            }
+
+            // this.$store.dispatch({ type: 'saveCard', card: this.card })
+            //     .then(res => {
+            //         console.log(res);
+            //         console.log(this.toList);
+            //         this.$store.dispatch({ type: "saveList", list: this.fromList });
+            //         if (this.fromListId !== this.toListId) {
+            //             this.$store.dispatch({ type: "saveList", list: this.toList });
+            //         }
+            //         // console.log(this.toList);
+            //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
+            //         // console.log(this.toList);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
         },
         newCard() {
             // this.cardTitle = CardService.getEmpty();

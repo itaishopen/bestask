@@ -1,6 +1,17 @@
 <template>
   <section class="board">
-    <div class="board-title">{{board.title}}</div>
+    <div class="board-title" v-if="!isChangeTitle" @click.prevent="choseTitle">{{board.title}}</div>
+    <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
+      <input
+        class="input-title-board"
+        ref="title"
+        v-model="board.title"
+        placeholder="Enter title here..."
+      >
+      <button class="btn-title-board" type="submit">
+        <i class="fa fa-plus"></i>
+      </button>
+    </form>
     <ul class="board-list-ul">
       <!-- <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false"> -->
       <li class="board-list-li" v-for="list in lists" :key="list._id">
@@ -45,7 +56,8 @@ export default {
   props: ["board"],
   data() {
     return {
-      isAddListClick: false
+      isAddListClick: false,
+      isChangeTitle: false,
     };
   },
   components: {
@@ -106,6 +118,15 @@ export default {
           this.$store.dispatch({ type: "saveActivity", activity });
         });
       this.isAddListClick = !this.isAddListClick;
+    },
+    choseTitle() {
+      console.log("isChangeTitle", this.isChangeTitle);
+      this.isChangeTitle = !this.isChangeTitle;
+    },
+    changeTitle() {
+      console.log("this.board", this.board);
+      this.$store.dispatch({ type: "saveBoard", board: this.board });
+      this.isChangeTitle = !this.isChangeTitle;
     }
   },
 
@@ -218,6 +239,19 @@ export default {
   background-color: rgba(51, 236, 66, 0);
   border: none;
   width: 20px;
+}
+.input-title-board {
+  font-size: 18px;
+  font-weight: bold;
+  height: 32px;
+  width: 300px;
+  border: none;
+  background: rgba(255, 255, 255, 0.911);
+  padding-left: 10px;
+}
+.btn-title-board {
+  background: rgba(255, 255, 255, 0.911);
+  border: none;
 }
 </style>
 

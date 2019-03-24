@@ -64,7 +64,7 @@
         <i class="fa fa-check" v-if="labelIsChosen.red"></i>
       </div>
       <div class="LabelBlue" @click="changeLabel('blue')">
-        Duolicate
+        Duplicate
         <i class="fa fa-check" v-if="labelIsChosen.blue"></i>
       </div>
       <div class="LabelGreen" @click="changeLabel('green')">

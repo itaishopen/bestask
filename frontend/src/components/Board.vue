@@ -9,11 +9,10 @@
       <!-- </draggable> -->
       <div class="create-list">
         <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-          Add new list
-          <i class="fa fa-plus"></i>
+           Add new list <i class="fa fa-plus"></i>
         </button>
 
-        <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input">
+        <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input form-add-card">
           <button @click="closeAdd">&times;</button>
           <input v-model="list.title" placeholder="Enter text here...">
           <button class="create-list-options" type="submit">

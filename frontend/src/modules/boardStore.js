@@ -78,10 +78,8 @@ export default {
         },
         updateLists(context, { lists }) {
             return ListService.updateLists(lists)
-                .then(lists => {
-                    console.log(lists);
-                    
-                    context.commit({ type: 'setLists', lists: lists[0] });
+                .then(lists => {                    
+                    context.commit({ type: 'setLists', lists: lists });
                 })
         },
         saveList(context, { list }) {

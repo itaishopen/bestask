@@ -9,15 +9,24 @@
       <!-- </draggable> -->
       <div class="create-list">
         <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-           Add new list <i class="fa fa-plus"></i>
+          Add new list
+          <i class="fa fa-plus"></i>
         </button>
 
-        <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input form-add-card">
-          <button @click="closeAdd">&times;</button>
-          <input v-model="list.title" placeholder="Enter text here...">
-          <button class="create-list-options" type="submit">
-            <i class="fa fa-plus"></i>
-          </button>
+        <form
+          v-if="isAddListClick"
+          @submit.prevent="addList"
+          class="create-list-input form-add-list"
+        >
+          <div>
+            <input class="input-new-list" v-model="list.title" placeholder="Enter text here...">
+          </div>
+          <div class="container-add-list-btns">
+            <button class="create-list-options list-new-list-options" type="submit">
+              <i class="fa fa-plus"></i>
+            </button>
+            <button class="list-x-list-options" @click="closeAdd">&times;</button>
+          </div>
         </form>
       </div>
     </ul>
@@ -67,14 +76,16 @@ export default {
     addList() {
       this.list.boardId = this.board._id;
       this.list.order = this.lists.length;
-      this.$store.dispatch({ type: "saveNewList", list: this.list }).then(savedList => {
-        let activity = ActivityService.getEmptyActivity()
-        activity.text = ' added a new list to ';
-        activity.userId = this.$store.getters.loggedInUser._id;
-        activity.boardId = this.board._id;
-        activity.listId = savedList._id;
-        this.$store.dispatch({ type: "saveActivity", activity })
-      });
+      this.$store
+        .dispatch({ type: "saveNewList", list: this.list })
+        .then(savedList => {
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = " added a new list to ";
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.board._id;
+          activity.listId = savedList._id;
+          this.$store.dispatch({ type: "saveActivity", activity });
+        });
       this.isAddListClick = !this.isAddListClick;
     },
     closeAdd() {
@@ -95,7 +106,7 @@ export default {
           this.$store.dispatch({ type: "saveActivity", activity });
         });
       this.isAddListClick = !this.isAddListClick;
-    },
+    }
   },
 
   watch: {
@@ -148,6 +159,65 @@ export default {
 }
 .create-list-title:hover {
   color: rgb(22, 22, 22);
+}
+
+.form-add-list {
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+}
+.list-add-list {
+  padding: 10px 0;
+  width: 270px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 20px;
+  color: rgb(82, 82, 82);
+  border-radius: 7px;
+  transition: 0.3s;
+}
+.form-add-list {
+  width: 270px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #ebebeb;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+
+  margin: 3px;
+}
+.input-new-list {
+  min-width: 264px;
+  height: 40px;
+  border: none;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10px;
+}
+.container-list-card-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.list-add-list:hover {
+  background-color: rgba(199, 199, 199, 0);
+  color: rgb(0, 0, 0);
+}
+.list-new-list-options {
+  background-color: rgb(51, 236, 66);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 0 3px;
+}
+.list-x-list-options {
+  background-color: rgba(51, 236, 66, 0);
+  border: none;
+  width: 20px;
 }
 </style>
 

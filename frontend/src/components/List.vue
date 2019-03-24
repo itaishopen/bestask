@@ -10,8 +10,8 @@
             :move="moveCard"
         >
             <transition-group>
-                <div v-for="card in list.cards" :key="card._id">
-                    <card-preview v-if="!card.archived" :card="card"></card-preview>
+                <div v-for="(card, index) in list.cards" :key="card._id">
+                    <card-preview v-if="!card.archived" :card="card" :index="index"></card-preview>
                 </div>
             </transition-group>
         </draggable>

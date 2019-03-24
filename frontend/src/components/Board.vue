@@ -19,6 +19,7 @@
                 @start="drag=true"
                 @end="endMoveList"
                 :move="moveList"
+                 class="draggable"
             >
                 <li class="board-list-li" v-for="list in lists" :key="list._id">
                     <list :list="list"/>

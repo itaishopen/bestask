@@ -1,4 +1,4 @@
-import AuthService from '../services/AuthService.js';
+import UserService from '../services/UserService.js';
 export default {
     state: {
         user: {}
@@ -14,7 +14,7 @@ export default {
     },
     actions: {
         login(context, { user }) {
-            return AuthService.login(user)
+            return UserService.login(user)
                 .then(user => {
                     if (user) {
                         context.commit({ type: 'setUser', user })
@@ -23,7 +23,7 @@ export default {
                 })
         },
         signup(context, { user }) {
-            return AuthService.signup(user)
+            return UserService.signup(user)
                 .then(user => {
                     if (user) {
                         context.commit({ type: 'setUser', user })

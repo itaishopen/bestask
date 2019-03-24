@@ -1,6 +1,7 @@
 import BoardService from '../services/BoardService.js';
 import ListService from '../services/ListService.js';
 import CardService from '../services/CardService.js';
+import ActivityService from '../services/ActivityService.js';
 
 export default {
     state: {
@@ -10,6 +11,7 @@ export default {
     getters: {
         getBoard: state => state.board,
         getLists: state => state.lists,
+        getBoardActivities: state => state.board.activities,
     },
     mutations: {
         setBoard(state, { board }) {
@@ -49,6 +51,9 @@ export default {
             const idx = state.lists.findIndex(list => list._id === cardList._id);
             state.lists.split(idx, 1, cardList);
         },
+        addActivity(state, { savedActivity }) {
+            state.board.activities.unshift(savedActivity)
+        }
     },
     actions: {
         loadBoard(context, { boardId }) {
@@ -73,11 +78,13 @@ export default {
                 })
         },
         saveList(context, { list }) {
+            console.log({list});
             const isEdit = !!list._id
             return ListService.saveList(list)
                 .then(savedList => {
                     if (isEdit) context.commit({ type: 'updateList', savedList });
                     else context.commit({ type: 'addList', savedList });
+                    return savedList
                 })
         },
         saveCardToList(context, { card }) {
@@ -86,6 +93,13 @@ export default {
                 .then(savedCard => {
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });
                     else context.commit({ type: 'addCard', savedCard });
+                    return savedCard
+                })
+        },
+        saveActivity(context, { activity }) {
+            return ActivityService.saveActivity(activity)
+                .then(savedActivity => {
+                    context.commit({type: 'addActivity', savedActivity})
                 })
         }
     }

@@ -36,7 +36,7 @@ function addListRoutes(app) {
     // UPDATE
     app.put(`${LIST_URL}/:ListId`, (req, res) => {
         const list = req.body;
-        listService.update(list)
+        listService.updateList(list)
             .then(resolveData)
     })
 

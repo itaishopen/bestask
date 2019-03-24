@@ -48,7 +48,10 @@ export default {
             isAddClick: false,
             moveCardId: null,
             fromListId: null,
-            toListId: null
+            toListId: null,
+            fromList: null,
+            toList: null,
+            // toListFutureIndex: -1
             // cardTitle: null,
             // currList: null
         };
@@ -60,27 +63,40 @@ export default {
     methods: {
         moveCard(evt) {
             console.log('moveCard');
-            // console.log(evt);
+            // console.log(evt.draggedContext);
+            // console.log(evt.relatedContext);
             this.moveCardId = evt.draggedContext.element._id;
+            this.$store.dispatch({ type: 'loadCard', cardId: this.moveCardId })
+                .then(res => {
+                    // console.log(res);
+                })
             this.fromListId = evt.draggedContext.element.listId;
             this.toListId = evt.relatedContext.element.listId;
+            this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
+            this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
+            // this.toListFutureIndex = evt.draggedContext.futureIndex;
+            // console.log(this.toList);
         },
         endMoveCard(evt) {
             console.log('onEnd');
-            console.log(this.card);
+            // console.log(this.card);
             if (this.fromListId !== this.toListId) {
-                this.$store.dispatch({ type: 'loadCard', cardId: this.moveCardId });
                 this.card.listId = this.toListId;
                 this.$store.dispatch({ type: 'saveCard', card: this.card })
                     .then(res => {
                         console.log(res);
-                        // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
-                        // this.$router.push('/task');
+                        console.log(this.toList);
+                        this.$store.dispatch({ type: "saveList", list: this.fromList });
+                        this.$store.dispatch({ type: "saveList", list: this.toList });
+                        // console.log(this.toList);
+                        // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
+                        // console.log(this.toList);
                     })
                     .catch(err => {
                         console.log(err);
-                        // this.$router.push('/task');
                     });
+            } else {
+                this.$store.dispatch({ type: "saveList", list: this.fromList });
             }
         },
         newCard() {

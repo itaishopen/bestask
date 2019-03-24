@@ -54,7 +54,7 @@
             </div>
         </div>
         <div slot="modal-footer" class="w-100">
-            <b-button class="m-1 float-right" variant="primary" @click="saveCard">Save</b-button>
+            <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
             <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
         </div>
     </b-modal>
@@ -104,6 +104,7 @@ export default {
             this.$router.push('/task');
         },
         saveCard(archive) {
+            console.log('archive', archive);
             if (archive) this.card.archived = true;
             console.log('Saving card..', this.card);
             this.$store.dispatch({ type: 'saveCard', card: this.card })

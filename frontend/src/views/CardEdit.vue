@@ -29,7 +29,7 @@
       <div class="nav flex">
         <label class="m-1">Add to Card</label>
         <b-button class="m-1 btn-block" size="sm">Members</b-button>
-        <b-button v-b-modal.modal1 class="m-1 btn-block" size="sm">Labels</b-button>
+        <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
         <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>
@@ -56,15 +56,27 @@
     <div slot="modal-footer" class="w-100">
       <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
       <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
-    </div>
+    </div> 
     <!-- Modal Labels Component -->
-    <b-modal id="modal1" title="Labels">
-      <div class="LabelRed" @click="changeLabel('red')"><i class="fa fa-check"></i></div>
-      <div class="LabelBlue" @click="changeLabel('blue')"></div>
-      <div class="LabelGreen" @click="changeLabel('green')"></div>
-      <div class="LabeYellow" @click="changeLabel('yellow')"></div>
-      <div class="LabePurple" @click="changeLabel('purple ')"></div>
-      <div class="LabeOrange" @click="changeLabel('orange')"></div>
+    <b-modal id="modal4" title="Labels" :d="markChose()">
+      <div class="LabelRed" @click="changeLabel('red')">
+        <i class="fa fa-check" v-if="labelIsChosen.red"></i>
+      </div>
+      <div class="LabelBlue" @click="changeLabel('blue')">
+        <i class="fa fa-check" v-if="labelIsChosen.blue"></i>
+      </div>
+      <div class="LabelGreen" @click="changeLabel('green')">
+        <i class="fa fa-check" v-if="labelIsChosen.green"></i>
+      </div>
+      <div class="LabeYellow" @click="changeLabel('yellow')">
+        <i class="fa fa-check" v-if="labelIsChosen.yellow"></i>
+      </div>
+      <div class="LabePurple" @click="changeLabel('purple ')">
+        <i class="fa fa-check" v-if="labelIsChosen.purple"></i>
+      </div>
+      <div class="LabeOrange" @click="changeLabel('orange')">
+        <i class="fa fa-check" v-if="labelIsChosen.orange"></i>
+      </div>
       <p class="my-4">Labels!</p>
     </b-modal>
   </b-modal>
@@ -85,7 +97,14 @@ export default {
     return {
       comment: "",
       openModalMembers: false,
-      labelIsChosen: false
+      labelIsChosen: {
+        red: false,
+        blue: false,
+        green: false,
+        yellow: false,
+        purple: false,
+        orange: false
+      }
     };
   },
   created() {
@@ -112,6 +131,18 @@ export default {
     }
   },
   methods: {
+    markChose(){
+       this.card.labels.forEach(label => {
+      console.log(label);
+
+      this.labelIsChosen.forEach(color => {
+        console.log(color);
+        if (label === color) {
+          this.labelIsChosen = true;
+        }
+      });
+    });
+    },
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
       console.log({ index });

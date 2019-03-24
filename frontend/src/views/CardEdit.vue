@@ -87,7 +87,7 @@
     </b-modal>
 
     <!-- Modal Labels Component -->
-    <b-modal id="modal6" title="Members">
+    <!-- <b-modal id="modal6" title="Members">
       <form>
         <input type="search" name="q" placeholder="Search Members">
         <input type="submit">
@@ -107,7 +107,7 @@
       <button class="list-x-card-options">&times;</button></div>
     </form>
 
-    </b-modal>
+    </b-modal> -->
   </b-modal>
   <!-- </section> -->
 </template>

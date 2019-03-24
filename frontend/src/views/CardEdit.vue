@@ -91,6 +91,7 @@
       </div>
       <p class="my-4">Labels!</p>
     </b-modal>
+    </b-modal>
     <!-- </section> -->
 </template>
 

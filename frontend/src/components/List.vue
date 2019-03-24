@@ -1,125 +1,55 @@
 <template>
-  <!-- <section class="list">
-    <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
-    <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
-      <input
-        ref="title"
-        v-if="isChangeTitle"
-        v-model="list.title"
-        placeholder="Enter title here..."
-      >
-      <button type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-    <ul class="list-cards">
-      <li v-for="card in list.cards" :key="card._id">
-        <card-preview v-if="!card.archived" :card="card"></card-preview>
-      </li>
-    </ul>
-    <button class="new-card-btn" v-if="!isAddClick" @click="newCard">
-      add card
-      <i class="fa fa-plus"></i>
-    </button>
-    <form v-if="isAddClick" @submit.prevent="addCard" class="form-add">
-      <button @click="closeAdd">&times;</button>
-      <textarea v-model="card.title" placeholder="Enter text here..."></textarea>
-      <button type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-  </section>-->
-
-  <section class="list">
-    <!-- <div class="title-list">{{list.title}}</div>
-    <input class="Input" v-model="list.title">-->
-
-    <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
-    <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
-      <input
-        ref="title"
-        v-if="isChangeTitle"
-        v-model="list.title"
-        placeholder="Enter title here..."
-      >
-      <button type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-
-    <draggable
-      v-model="list.cards"
-      group="list"
-      @start="drag=true"
-      @end="endMoveCard"
-      :move="moveCard"
-    >
-      <transition-group class="list-cards">
-        <div v-for="card in list.cards" :key="card._id">
-          <card-preview v-if="!card.archived" :card="card"></card-preview>
-        </div>
-      </transition-group>
-    </draggable>
-    <button class="list-add-card" v-if="!isAddClick" @click="newCard">
-      add card
-      <i class="fa fa-plus"></i>
-    </button>
-    <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add">
-      <button @click="closeAdd">&times;</button>
-      <textarea class="text-area" v-model="card.title" placeholder="Enter text here..."></textarea>
-      <button class="list-new-card-options" type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-  </section>
+    <section class="list">
+        <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
+        <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
+            <input
+                ref="title"
+                v-if="isChangeTitle"
+                v-model="list.title"
+                placeholder="Enter title here..."
+            >
+            <button type="submit">
+                <i class="fa fa-plus"></i>
+            </button>
+        </form>
+        <draggable
+            v-model="list.cards"
+            group="list"
+            @start="drag=true"
+            @end="endMoveCard"
+            :move="moveCard"
+        >
+            <transition-group>
+                <div v-for="(card ,index) in list.cards" :key="card._id">
+                    <card-preview v-if="!card.archived" :card="card" :index="index"></card-preview>
+                </div>
+            </transition-group>
+        </draggable>
+        <!-- <ul class="list-cards">
+            <li v-for="card in list.cards" :key="card._id">
+                <card-preview v-if="!card.archived" :card="card"></card-preview>
+            </li>
+        </ul>-->
+        <button class="list-add-card" v-if="!isAddClick" @click="newCard">
+            add card
+            <i class="fa fa-plus"></i>
+        </button>
+        <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card">
+            <button @click="closeAdd">&times;</button>
+            <textarea class="text-area" v-model="card.title" placeholder="Enter text here..."></textarea>
+            <button class="list-new-card-options" type="submit">
+                <i class="fa fa-plus"></i>
+            </button>
+        </form>
+    </section>
 </template>
 
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
 import draggable from 'vuedraggable';
-
 import ListService from '../services/ListService.js';
 export default {
-
-  // name: "list",
-  // props: ["list"],
-  // data() {
-  //   return {
-  //     isAddClick: false,
-  //     isChangeTitle: false,
-  //     hasfocus: false
-  //   };
-  // },
-  // components: {
-  //   CardPreview
-  // },
-  // methods: {
-  //   newCard() {
-  //     // this.cardTitle = CardService.getEmpty();
-  //     console.log("new card", this.card);
-  //     console.log((this.card.order = this.list.cards.length + 1));
-  //     this.isAddClick = !this.isAddClick;
-  //   },
-  //   closeAdd() {
-  //     this.isAddClick = !this.isAddClick;
-  //   },
-  //   addCard() {
-  //     this.card.listId = this.list._id;
-  //     // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-  //     this.card.order = this.list.cards.length + 1;
-  //     this.$store.dispatch({ type: "saveCard", card: this.card }).then(() => {
-  //       var cardItem = this.$store.getters.getEmptyCard;
-  //       console.log(cardItem);
-
-  //       this.$store.commit("setCard", { card: cardItem });
-  //       var boardId = this.list.boardId;
-  //       this.$store.dispatch({ type: "loadBoard", boardId });
-  //     });
-  //     this.isAddClick = !this.isAddClick;
-  //   }
-  // },
-
     name: "list",
     props: ["list"],
     data() {
@@ -130,6 +60,7 @@ export default {
             toListId: null,
             fromList: null,
             toList: null,
+            // toListFutureIndex: 0
             isChangeTitle: false,
             hasfocus: false,
             // toListFutureIndex: -1
@@ -155,30 +86,42 @@ export default {
             this.toListId = evt.relatedContext.element.listId;
             this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
             this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
+            // console.log(this.fromList);
             // this.toListFutureIndex = evt.draggedContext.futureIndex;
             // console.log(this.toList);
         },
         endMoveCard(evt) {
             console.log('onEnd');
             // console.log(this.card);
-            if (this.fromListId !== this.toListId) {
-                this.card.listId = this.toListId;
-                this.$store.dispatch({ type: 'saveCard', card: this.card })
-                    .then(res => {
-                        console.log(res);
-                        console.log(this.toList);
-                        this.$store.dispatch({ type: "saveList", list: this.fromList });
-                        this.$store.dispatch({ type: "saveList", list: this.toList });
-                        // console.log(this.toList);
-                        // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
-                        // console.log(this.toList);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            } else {
-                this.$store.dispatch({ type: "saveList", list: this.fromList });
+            this.card.listId = this.toListId;
+            // this.card.order = this.toListFutureIndex;
+            // console.log(this.fromList.cards.length);
+            // console.log(this.toList.cards.length);
+            for (var i = 0; i < this.fromList.cards.length; i++) {
+                this.fromList.cards[i].order = i;
             }
+            this.$store.dispatch({ type: "saveList", list: this.fromList });
+            if (this.fromListId !== this.toListId) {
+                for (var i = 0; i < this.toList.cards.length; i++) {
+                    this.toList.cards[i].order = i;
+                }
+                this.$store.dispatch({ type: "saveList", list: this.toList });
+            }
+            // this.$store.dispatch({ type: 'saveCard', card: this.card })
+            //     .then(res => {
+            //         console.log(res);
+            //         console.log(this.toList);
+            //         this.$store.dispatch({ type: "saveList", list: this.fromList });
+            //         if (this.fromListId !== this.toListId) {
+            //             this.$store.dispatch({ type: "saveList", list: this.toList });
+            //         }
+            //         // console.log(this.toList);
+            //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
+            //         // console.log(this.toList);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
         },
         newCard() {
             // this.cardTitle = CardService.getEmpty();
@@ -210,70 +153,70 @@ export default {
         }
     },
     choseTitle() {
-      this.isChangeTitle = !this.isChangeTitle;
-      console.log("isChangeTitle", this.isChangeTitle);
+        this.isChangeTitle = !this.isChangeTitle;
+        console.log("isChangeTitle", this.isChangeTitle);
     },
     changeTitle() {
-      console.log("this.list", this.list);
-      this.$store.dispatch({ type: "saveList", list: this.list });
-      this.isChangeTitle = !this.isChangeTitle;
-  },
-  computed: {
-    card: {
-      get() {
-        return this.$store.getters.getCurrCard;
-      },
-      set(cardItem) {
-        this.$store.commit("setCard", { card: cardItem });
-      }
-    }
-  },
-  created() {
+        console.log("this.list", this.list);
+        this.$store.dispatch({ type: "saveList", list: this.list });
+        this.isChangeTitle = !this.isChangeTitle;
+    },
+    computed: {
+        card: {
+            get() {
+                return this.$store.getters.getCurrCard;
+            },
+            set(cardItem) {
+                this.$store.commit("setCard", { card: cardItem });
+            }
+        }
+    },
+    created() {
         var cardItem = CardService.getEmptyCard();
-    this.$store.commit("setCard", { card: cardItem });
-    // this.currList = this.list;
-  },
-  watch: {
-    board: function() {
-      console.log("change in list");
-      this.$store.dispatch({ type: "saveList", list: this.list });
+        this.$store.commit("setCard", { card: cardItem });
+        // this.currList = this.list;
+    },
+    watch: {
+        board: function () {
+            console.log("change in list");
+            this.$store.dispatch({ type: "saveList", list: this.list });
+        }
     }
-  }
 };
 </script>
 
 <style lang="scss">
 .title-list {
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 10px;
-  margin-top: 25px;
-  font-size: 22px;
-  color: black;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+    margin-top: 25px;
+    font-size: 22px;
+    color: black;
 }
 .list-cards {
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .form-add {
-  background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0);
 }
 .list-add-card {
-  padding: 10px 0;
-  width: 100%;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  font-size: 20px;
-  color: rgb(82, 82, 82);
-  border-radius: 7px;
+    padding: 10px 0;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    font-size: 20px;
+    color: rgb(82, 82, 82);
+    border-radius: 7px;
 }
 .list-add-card:hover {
-  background-color: rgba(199, 199, 199, 0.699);
-  color: rgb(0, 0, 0);
+    background-color: rgba(199, 199, 199, 0.699);
+    color: rgb(0, 0, 0);
 }
 </style>
 

@@ -1,6 +1,6 @@
 const cardService = require('../services/cardService')
 const CARD_URL = '/api/card'
-
+const resolveData = res => res.data;
 function addCardRoutes(app) {
     // cards REST API:
 
@@ -30,14 +30,15 @@ function addCardRoutes(app) {
     app.post(CARD_URL, (req, res) => {
         const card = req.body;
         cardService.addCard(card)
-            .then(card => res.json(card))
+            .then(resolveData)
     })
 
     // UPDATE
     app.put(`${CARD_URL}/:cardId`, (req, res) => {
         const card = req.body;
         cardService.updateCard(card)
-            .then(card => res.json(card))
+            .then(card => {                
+                res.send(card)})
     })
 
 }

@@ -76,6 +76,8 @@ const cardStore = {
             const isEdit = !!card._id
             return CardService.saveCard(card)
                 .then(savedCard => {
+                    
+                    
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });
                     else context.commit({ type: 'addCard', savedCard });
                 })

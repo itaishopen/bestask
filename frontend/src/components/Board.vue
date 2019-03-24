@@ -76,24 +76,24 @@ export default {
         }
     },
     addList() {
-      this.list.boardId = this.board._id;
-      this.list.order = this.lists.length + 1;
-      console.log(this.list, "list in add click");
-      this.$store.dispatch({ type: "saveList", list: this.list }).then(savedList => {
-        let activity = ActivityService.getEmptyActivity()
-        activity.text = ' added a new list to ';
-        activity.userId = this.$store.getters.loggedInUser._id;
-        activity.boardId = this.board._id;
-        activity.listId = savedList._id;
-        this.$store.dispatch({type: "saveActivity", activity})
-      });
-      this.isAddListClick = !this.isAddListClick;
+        this.list.boardId = this.board._id;
+        this.list.order = this.lists.length + 1;
+        console.log(this.list, "list in add click");
+        this.$store.dispatch({ type: "saveList", list: this.list }).then(savedList => {
+            let activity = ActivityService.getEmptyActivity()
+            activity.text = ' added a new list to ';
+            activity.userId = this.$store.getters.loggedInUser._id;
+            activity.boardId = this.board._id;
+            activity.listId = savedList._id;
+            this.$store.dispatch({ type: "saveActivity", activity })
+        });
+        this.isAddListClick = !this.isAddListClick;
     }
-  },
-  watch: {
+},
+watch: {
     board: function() {
-      console.log("change in board");
-      this.$store.dispatch({ type: "saveBoard", board: this.board });
+        console.log("change in board");
+        this.$store.dispatch({ type: "saveBoard", board: this.board });
     }
 };
 </script>
@@ -140,7 +140,7 @@ export default {
     border: 1px solid black;
     margin: 20px;
 }
-<<<<<<< head .board-list-ul {
+.board-list-ul {
     margin: 0 auto;
     width: 800px;
     background-color: rgb(255, 255, 255);
@@ -150,7 +150,7 @@ export default {
     justify-content: center;
     align-items: flex-start;
 }
-=======>>>>>>>master .new-list-btn {
+.new-list-btn {
     width: 300px;
     height: 100px;
     background-color: rgba(255, 255, 255, 0);

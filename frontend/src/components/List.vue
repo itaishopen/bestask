@@ -14,12 +14,13 @@
     </form>
     <draggable
       v-model="list.cards"
+      v-bind="dragOptions"
       group="list"
       @start="drag=true"
       @end="endMoveCard"
       :move="moveCard"
     >
-      <transition-group>
+      <transition-group type="transition">
         <div v-for="card in list.cards" :key="card._id">
           <card-preview v-if="!card.archived" :card="card"></card-preview>
         </div>
@@ -76,16 +77,12 @@ export default {
   methods: {
     moveCard(evt) {
       this.moveCardId = evt.draggedContext.element._id;
-      this.$store.dispatch({ type: 'loadCard', cardId: this.moveCardId })
-        .then()
       this.fromListId = evt.draggedContext.element.listId;
       this.toListId = evt.relatedContext.element.listId;
       this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
       this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
     },
     endMoveCard(evt) {
-      this.card.listId = this.toListId;
-      this.$store.dispatch({ type: 'saveCard', card: this.card }).then(res => {
         for (var i = 0; i < this.fromList.cards.length; i++) {
           this.fromList.cards[i].order = i;
         }
@@ -96,12 +93,8 @@ export default {
           for (var j = 0; j < this.toList.cards.length; j++) {
             this.toList.cards[j].order = j;
           }
-          console.log(this.toList);
-
           this.$store.dispatch({ type: "saveList", list: this.toList });
         }
-      })
-
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);
@@ -166,6 +159,14 @@ export default {
       set(cardItem) {
         this.$store.commit("setCard", { card: cardItem });
       }
+    },
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
     }
   },
   created() {
@@ -267,6 +268,11 @@ export default {
   background: rgba(255, 255, 255, 0.911);
   border: none;
 }
+.ghost {
+  opacity: 0.3;
+  background: #c8ebfb;
+}
+
 </style>
 
 

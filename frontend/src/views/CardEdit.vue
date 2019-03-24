@@ -59,40 +59,16 @@
     </div>
     <!-- Modal Labels Component -->
     <b-modal id="modal1" title="Labels">
-      <div class="LabelRed" @click="changeLabel('red')">
-        <div v-if="labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
-      <div class="LabelBlue" @click="changeLabel('blue')">
-        <div v-if="!labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
-      <div class="LabelGreen" @click="changeLabel('green')">
-        <div v-if="labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
-      <div class="LabeYellow" @click="changeLabel('yellow')">
-        <div v-if="labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
-      <div class="LabePurple" @click="changeLabel('purple ')">
-        <div v-if="labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
-      <div class="LabeOrange" @click="changeLabel('orange')">
-        <div v-if="labelIsChosen">
-          <i class="fa fa-check"></i>
-        </div>
-      </div>
+      <div class="LabelRed" @click="changeLabel('red')"><i class="fa fa-check"></i></div>
+      <div class="LabelBlue" @click="changeLabel('blue')"></div>
+      <div class="LabelGreen" @click="changeLabel('green')"></div>
+      <div class="LabeYellow" @click="changeLabel('yellow')"></div>
+      <div class="LabePurple" @click="changeLabel('purple ')"></div>
+      <div class="LabeOrange" @click="changeLabel('orange')"></div>
       <p class="my-4">Labels!</p>
     </b-modal>
-    </b-modal>
-    <!-- </section> -->
+  </b-modal>
+  <!-- </section> -->
 </template>
 
 <script>
@@ -104,112 +80,120 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 export default {
-    name: "CardEdit",
-    data() {
-        return {
-            comment: "",
-            openModalMembers: false,
-            labelIsChosen: false
-        };
+  name: "CardEdit",
+  data() {
+    return {
+      comment: "",
+      openModalMembers: false,
+      labelIsChosen: false
+    };
+  },
+  created() {
+    console.log("CardEdit was created");
+    var cardId = this.$route.params.cardId;
+    this.$store.dispatch({ type: "loadCard", cardId });
+  },
+  mounted() {
+    this.$refs.myModalRef.show();
+  },
+  computed: {
+    card: {
+      get() {
+        return this.$store.getters.getCurrCard;
+      },
+      set(cardItem) {
+        this.$store.commit("setCard", { card: cardItem });
+      }
     },
-    created() {
-        console.log("CardEdit was created");
-        var cardId = this.$route.params.cardId;
-        this.$store.dispatch({ type: "loadCard", cardId });
+    lists() {
+      return this.$store.getters.getLists.filter(
+        list => list._id !== this.card.listId
+      );
+    }
+  },
+  methods: {
+    changeLabel(chosenColor) {
+      const index = this.card.labels.findIndex(label => label === chosenColor);
+      console.log({ index });
+      if (index === -1) {
+        this.card.labels.push(chosenColor);
+        console.log(chosenColor, this.card.labels);
+      } else {
+        this.card.labels.splice(index, 1);
+      }
+      console.log(this.card.labels);
     },
-    mounted() {
-        this.$refs.myModalRef.show();
+    closeModal() {
+      // this.$refs.myModalRef.hide();
+      this.$router.push("/task");
     },
-    computed: {
-        card: {
-            get() {
-                return this.$store.getters.getCurrCard;
-            },
-            set(cardItem) {
-                this.$store.commit('setCard', { card: cardItem });
-            }
-        },
-        lists() {
-            return this.$store.getters.getLists.filter(list => list._id !== this.card.listId);
-        }
+    saveCard(archive) {
+      console.log("archive", archive);
+      if (archive) this.card.archived = true;
+      console.log("Saving card..", this.card);
+      this.$store
+        .dispatch({ type: "saveCardToList", card: this.card })
+        .then(card => {
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = " changed the card in list ";
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.$store.getters.getBoard._id;
+          activity.listId = card.listId;
+          activity.cardId = card._id;
+          this.$store.dispatch({ type: "saveActivity", activity });
+          // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
+          this.$router.push("/task");
+        })
+        .catch(err => {
+          console.log(err);
+          this.$router.push("/task");
+        });
     },
-    methods: {
-        changeLabel(chosenColor) {
-         const index = this.card.labels.findIndex(label => label === chosenColor);
-      console.log({index});
-      this.card.labels.forEach(label => {
-        if (label === chosenColor) { 
-          chosenColor = null;
-        }
-      });
-      if (null === chosenColor) return;
-      this.card.labels.push(chosenColor);
-      console.log(chosenColor, this.card.labels);
-        },
-        closeModal() {
-            // this.$refs.myModalRef.hide();
-            this.$router.push('/task');
-        },
-        saveCard(archive) {
-            console.log('archive', archive);
-            if (archive) this.card.archived = true;
-            console.log('Saving card..', this.card);
-            this.$store.dispatch({ type: 'saveCardToList', card: this.card })
-                .then(card => {
-                    let activity = ActivityService.getEmptyActivity()
-                    activity.text = ' changed the card in list ';
-                    activity.userId = this.$store.getters.loggedInUser._id;
-                    activity.boardId = this.$store.getters.getBoard._id;
-                    activity.listId = card.listId;
-                    activity.cardId = card._id;
-                    this.$store.dispatch({ type: "saveActivity", activity })
-                    // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
-                    this.$router.push('/task');
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.$router.push('/task');
-                });
-        },
-        
-        addComment() {
-            if (this.comment) {
-                var date = moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a');
-                var comment = this.comment + '\t' + date;
-                if (!this.card.comments) this.card.comments = [comment];
-                else this.card.comments.unshift(comment);
-                this.comment = '';
-            }
-        },
-        modalClosed() {
-            console.log('modalClosed');
-            this.$router.push('/task');
-        },
-        moveCard() {
-            // console.log(this.$store.getters.getLists);
-            this.$store.getters.getLists.map(list => console.log(list.title));
-        }
+
+    addComment() {
+      if (this.comment) {
+        var date = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+        var comment = this.comment + "\t" + date;
+        if (!this.card.comments) this.card.comments = [comment];
+        else this.card.comments.unshift(comment);
+        this.comment = "";
+      }
     },
-    
-    components: {}
+    modalClosed() {
+      console.log("modalClosed");
+      this.$router.push("/task");
+    },
+    moveCard() {
+      // console.log(this.$store.getters.getLists);
+      this.$store.getters.getLists.map(list => console.log(list.title));
+    }
+  },
+
+  components: {},
+  watch: {
+    card: function() {
+      console.log("change in card");
+      this.$store.dispatch({ type: "saveCard", card: this.card });
+    }
+  }
 };
 </script>
 
 <style lang="css" scoped>
 .flex {
-    display: flex;
+  display: flex;
 }
 
 .main-container {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* height: 100vh; */
-    /* background-color: yellow; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* height: 100vh; */
+  /* background-color: yellow; */
 }
 
 .header {
-    /* height: 5em; */
-    /* background-color: #1E2129; */
+  /* height: 5em; */
+  /* background-color: #1E2129; */
 }
 
 .container {
@@ -224,60 +208,64 @@ export default {
 }
 
 .content {
-    flex-direction: column;
-    flex-basis: 80%;
-    align-items: flex-start;
-    margin: 5px;
-    /* background-color: #46A3A3; */
+  flex-direction: column;
+  flex-basis: 80%;
+  align-items: flex-start;
+  margin: 5px;
+  /* background-color: #46A3A3; */
 }
 
 .nav {
-    flex-direction: column;
-    /* align-items: center; */
-    margin: 5px;
+  flex-direction: column;
+  /* align-items: center; */
+  margin: 5px;
 }
 
 .comments {
-    flex-direction: column;
+  flex-direction: column;
 }
 
+.LabelRed,
+.LabelBlue,
+.LabelGreen,
+.LabeYellow,
+.LabePurple,
+.LabeOrange {
+  padding: 10px;
+  margin: 3px;
+  cursor: pointer;
+  height: 37px;
+  border-radius: 10px;
+}
+.LabelRed:hover,
+.LabelBlue:hover,
+.LabelGreen:hover,
+.LabeYellow:hover,
+.LabePurple:hover,
+.LabeOrange:hover {
+  border-left: 15px solid rgba(61, 61, 61, 0.349);
+}
 .LabelRed {
-    background-color: rgb(255, 22, 22);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(231, 55, 55);
 }
 .LabelBlue {
-    background-color: rgb(22, 57, 255);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(45, 70, 214);
 }
 .LabelGreen {
-    background-color: rgb(22, 255, 80);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(33, 175, 68);
 }
 .LabeYellow {
-    background-color: rgb(239, 255, 22);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(255, 239, 22);
 }
 .LabePurple {
-    background-color: rgb(189, 22, 255);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(189, 22, 255);
 }
 .LabeOrange {
-    background-color: rgb(255, 154, 22);
-    padding: 10px;
-    margin: 2px;
-    cursor: pointer;
+  background-color: rgb(255, 154, 22);
 }
 .fa-check {
+  display: flex;
+  flex-direction: row-reverse;
   color: rgb(255, 255, 255);
 }
 </style>

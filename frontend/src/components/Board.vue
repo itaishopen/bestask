@@ -1,28 +1,28 @@
 <template>
-    <section class="board">
-        <div class="board-title">{{board.title}}</div>
-        <ul class="board-list-ul">
-            <!-- <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false"> -->
-            <li class="board-list-li" v-for="list in lists" :key="list._id">
-                <list :list="list"/>
-            </li>
-            <!-- </draggable> -->
-            <div class="create-list">
-                <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-                    new list
-                    <i class="fa fa-plus"></i>
-                </button>
+  <section class="board">
+    <div class="board-title">{{board.title}}</div>
+    <ul class="board-list-ul">
+      <!-- <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false"> -->
+      <li class="board-list-li" v-for="list in lists" :key="list._id">
+        <list :list="list"/>
+      </li>
+      <!-- </draggable> -->
+      <div class="create-list">
+        <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+          Add new list
+          <i class="fa fa-plus"></i>
+        </button>
 
-                <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input">
-                    <button @click="closeAdd">&times;</button>
-                    <input v-model="list.title" placeholder="Enter text here...">
-                    <button class="create-list-options" type="submit">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </form>
-            </div>
-        </ul>
-    </section>
+        <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input">
+          <button @click="closeAdd">&times;</button>
+          <input v-model="list.title" placeholder="Enter text here...">
+          <button class="create-list-options" type="submit">
+            <i class="fa fa-plus"></i>
+          </button>
+        </form>
+      </div>
+    </ul>
+  </section>
 </template>
 
 <script>
@@ -30,105 +30,111 @@ import CardService from "../services/CardService.js";
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import list from "./List.vue";
-import draggable from 'vuedraggable';
+import draggable from "vuedraggable";
 
 export default {
-    name: "board",
-    props: ["board"],
-    data() {
-        return {
-            isAddListClick: false
-        };
-    },
-    components: {
-        list,
-        draggable
-    },
+  name: "board",
+  props: ["board"],
+  data() {
+    return {
+      isAddListClick: false
+    };
+  },
+  components: {
+    list,
+    draggable
+  },
 
-    computed: {
-        lists: {
-            get() {
-                return this.$store.getters.getLists;
-            },
-            set(lists) {
-                this.$store.commit("setLists", { lists: lists });
-            }
-        }
-    },
-
-    methods: {
-        newList() {
-            //  todo: add list
-            console.log("new list");
-            this.list = ListService.getEmptyList();
-            this.isAddListClick = !this.isAddListClick;
-            console.log(this.list, "list in new click");
-        },
-        closeAdd() {
-            this.isAddListClick = !this.isAddListClick;
-        },
-        addList() {
-            this.list.boardId = this.board._id;
-            this.list.order = this.lists.length + 1;
-            console.log(this.list, "list in add click");
-            this.$store.dispatch({ type: "saveList", list: this.list }).then(savedList => {
-                let activity = ActivityService.getEmptyActivity()
-                activity.text = ' added a new list to ';
-                activity.userId = this.$store.getters.loggedInUser._id;
-                activity.boardId = this.board._id;
-                activity.listId = savedList._id;
-                this.$store.dispatch({ type: "saveActivity", activity })
-            });
-            this.isAddListClick = !this.isAddListClick;
-        }
-    },
-
-    watch: {
-        board: function () {
-            console.log("change in board");
-            this.$store.dispatch({ type: "saveBoard", board: this.board });
-        }
+  computed: {
+    lists: {
+      get() {
+        return this.$store.getters.getLists;
+      },
+      set(lists) {
+        this.$store.commit("setLists", { lists: lists });
+      }
     }
-}
+  },
+
+  methods: {
+    newList() {
+      //  todo: add list
+      console.log("new list");
+      this.list = ListService.getEmptyList();
+      this.isAddListClick = !this.isAddListClick;
+      console.log(this.list, "list in new click");
+    },
+    closeAdd() {
+      this.isAddListClick = !this.isAddListClick;
+    },
+    addList() {
+      this.list.boardId = this.board._id;
+      this.list.order = this.lists.length + 1;
+      console.log(this.list, "list in add click");
+      this.$store
+        .dispatch({ type: "saveList", list: this.list })
+        .then(savedList => {
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = " added a new list to ";
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.board._id;
+          activity.listId = savedList._id;
+          this.$store.dispatch({ type: "saveActivity", activity });
+        });
+      this.isAddListClick = !this.isAddListClick;
+    }
+  },
+
+  watch: {
+    board: function() {
+      console.log("change in board");
+      this.$store.dispatch({ type: "saveBoard", board: this.board });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
 .board-title {
-    display: flex;
-    padding: 15px;
-    font-family: Lato_bold;
-    font-size: 20px;
+  display: flex;
+  padding: 15px;
+  font-family: Lato_bold;
+  font-size: 20px;
 }
 .board-list-li {
-    min-height: 80vh;
-    max-height: 80vh;
-    min-width: 280px;
-    overflow: auto;
-    /* max-height: 100vh; */
-    background-color: rgb(235, 235, 235);
-    border: 1px solid black;
-    margin: 5px 10px;
+  min-height: 80vh;
+  max-height: 80vh;
+  min-width: 280px;
+  overflow: auto;
+  /* max-height: 100vh; */
+  background-color: rgb(235, 235, 235);
+  border: 1px solid rgb(206, 206, 206);
+  border-radius: 8px;
+  margin: 0px 5px;
 }
 .board-list-ul {
-    /* margin: 0 auto; */
-    width: min-content;
+  /* margin: 0 auto; */
+  width: min-content;
 
-    background-color: rgb(255, 255, 255);
-    /* border: 1px solid black; */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+  background-color: rgb(255, 255, 255);
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .create-list-title {
-    min-width: 280px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    font-size: 20px;
-    border: 1px solid rgb(82, 82, 82);
-    color: rgb(82, 82, 82);
-    border-radius: 7px;
+  min-width: 280px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.075);
+  border: none;
+  font-size: 20px;
+  color: rgb(82, 82, 82);
+  display: flex;
+  justify-content: center;
+}
+.create-list-title:hover {
+  color: rgb(22, 22, 22);
 }
 </style>
 

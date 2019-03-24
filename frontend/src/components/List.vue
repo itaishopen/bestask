@@ -190,9 +190,10 @@ export default {
     display: flex;
     justify-content: flex-start;
     padding-left: 10px;
-    margin-top: 25px;
-    font-size: 22px;
-    color: black;
+    margin: 10px 0 4px;
+    font-size: 18px;
+    color: rgb(0, 2, 34);
+   font-weight: bold;
 }
 .list-cards {
     margin: 20px;
@@ -206,13 +207,14 @@ export default {
 }
 .list-add-card {
     padding: 10px 0;
-    width: 100%;
+    width: 270px;
     height: 40px;
     background-color: rgba(255, 255, 255, 0);
     border: none;
     font-size: 20px;
     color: rgb(82, 82, 82);
     border-radius: 7px;
+    transition: 0.3s;
 }
 .list-add-card:hover {
     background-color: rgba(199, 199, 199, 0.699);

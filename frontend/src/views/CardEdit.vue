@@ -23,23 +23,38 @@
                     max-rows="10"
                 />
                 <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
-                <b-button class="m-1" v-on:click="addComment">Save</b-button>
+                <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
                 <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
             </main>
             <div class="nav flex">
                 <label class="m-1">Add to Card</label>
-                <b-button class="m-1 btn-block">Members</b-button>
-                <b-button class="m-1 btn-block">Labels</b-button>
-                <b-button class="m-1 btn-block">Checklist</b-button>
+                <b-button class="m-1 btn-block" size="sm">Members</b-button>
+                <b-button class="m-1 btn-block" size="sm">Labels</b-button>
+                <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
+
                 <label class="m-1">Actions</label>
-                <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button>
-                <b-button class="m-1 btn-block">Copy</b-button>
-                <b-button class="m-1 btn-block" v-on:click="archiveCard">Archive</b-button>
-                <b-button class="m-1 btn-block">Share</b-button>
+                <!-- <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button> -->
+                <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
+                    <b-dropdown-item
+                        v-for="list in lists"
+                        :key="list._id"
+                        :value="list._id"
+                        @click="card.listId = list._id"
+                    >{{ list.title }}</b-dropdown-item>
+                </b-dropdown>
+
+                <b-button class="m-1 btn-block" size="sm">Copy</b-button>
+                <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(true)">Archive</b-button>
+                <!-- <b-form-checkbox
+                    button
+                    v-model="card.archived"
+                    name="check-button"
+                >Archive {{ card.archived }}</b-form-checkbox>-->
+                <b-button class="m-1 btn-block" size="sm">Share</b-button>
             </div>
         </div>
         <div slot="modal-footer" class="w-100">
-            <b-button class="m-1 float-right" variant="primary" @click="saveCard">Save</b-button>
+            <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
             <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
         </div>
     </b-modal>
@@ -72,16 +87,25 @@ export default {
     },
     computed: {
         card: {
-            get() { return this.$store.getters.getCurrCard },
-            set(cardItem) { this.$store.commit('setCard', { card: cardItem }) }
+            get() {
+                return this.$store.getters.getCurrCard;
+            },
+            set(cardItem) {
+                this.$store.commit('setCard', { card: cardItem });
+            }
         },
+        lists() {
+            return this.$store.getters.getLists.filter(list => list._id !== this.card.listId);
+        }
     },
     methods: {
         closeModal() {
             // this.$refs.myModalRef.hide();
             this.$router.push('/task');
         },
-        saveCard() {
+        saveCard(archive) {
+            console.log('archive', archive);
+            if (archive) this.card.archived = true;
             console.log('Saving card..', this.card);
             this.$store.dispatch({ type: 'saveCardToList', card: this.card })
                 .then(card => {
@@ -113,13 +137,13 @@ export default {
             console.log('modalClosed');
             this.$router.push('/task');
         },
-        archiveCard() {
-            this.card.archived = true;
-            this.saveCard();
-            console.log(this.card);
-            // this.$store.dispatch({ type: "loadBoard", boardId });
-            this.$router.push('/task');
-        },
+        // archiveCard() {
+        //     this.card.archived = true;
+        //     this.saveCard();
+        //     // console.log(this.card);
+        //     // this.$store.dispatch({ type: "loadBoard", boardId });
+        //     // this.$router.push('/task');
+        // },
         moveCard() {
             // console.log(this.$store.getters.getLists);
             this.$store.getters.getLists.map(list => console.log(list.title));
@@ -153,7 +177,9 @@ export default {
     /* flex: 1; */
     /* width: 100%; */
     /* background-color: blue; */
-    justify-content: space-between;
+    padding-right: 0px;
+    padding-left: 0px;
+    /* justify-content: space-between; */
 }
 
 .content {
@@ -166,7 +192,7 @@ export default {
 
 .nav {
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     margin: 5px;
 }
 

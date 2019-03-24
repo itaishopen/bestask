@@ -1,11 +1,26 @@
 <template>
     <section class="list">
-        <input class="Input" v-model="list.title"></input>
-        <ul class="list-cards">
+        <div class="title-list">{{list.title}}</div>
+        <input class="Input" v-model="list.title"/>
+        <draggable
+            v-model="list.cards"
+            group="list"
+            @start="drag=true"
+            @end="endMoveCard"
+            :move="moveCard"
+        >
+            <transition-group>
+                <div v-for="card in list.cards" :key="card._id">
+                    <card-preview v-if="!card.archived" :card="card"></card-preview>
+                </div>
+            </transition-group>
+        </draggable>
+        <!-- <ul class="list-cards">
             <li v-for="card in list.cards" :key="card._id">
                 <card-preview v-if="!card.archived" :card="card"></card-preview>
             </li>
-        </ul>
+        </ul>-->
+        <button v-if="!isAddClick" @click="newCard">
         <button class="list-add-card" v-if="!isAddClick" @click="newCard">
             add card
             <i class="fa fa-plus"></i>
@@ -25,21 +40,68 @@
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
+import draggable from 'vuedraggable';
+
 import ListService from '../services/ListService.js';
 export default {
     name: "list",
     props: ["list"],
     data() {
         return {
-            isAddClick: false
+            isAddClick: false,
+            moveCardId: null,
+            fromListId: null,
+            toListId: null,
+            fromList: null,
+            toList: null,
+            // toListFutureIndex: -1
             // cardTitle: null,
             // currList: null
         };
     },
     components: {
-        CardPreview
+        CardPreview,
+        draggable
     },
     methods: {
+        moveCard(evt) {
+            console.log('moveCard');
+            // console.log(evt.draggedContext);
+            // console.log(evt.relatedContext);
+            this.moveCardId = evt.draggedContext.element._id;
+            this.$store.dispatch({ type: 'loadCard', cardId: this.moveCardId })
+                .then(res => {
+                    // console.log(res);
+                })
+            this.fromListId = evt.draggedContext.element.listId;
+            this.toListId = evt.relatedContext.element.listId;
+            this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
+            this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
+            // this.toListFutureIndex = evt.draggedContext.futureIndex;
+            // console.log(this.toList);
+        },
+        endMoveCard(evt) {
+            console.log('onEnd');
+            // console.log(this.card);
+            if (this.fromListId !== this.toListId) {
+                this.card.listId = this.toListId;
+                this.$store.dispatch({ type: 'saveCard', card: this.card })
+                    .then(res => {
+                        console.log(res);
+                        console.log(this.toList);
+                        this.$store.dispatch({ type: "saveList", list: this.fromList });
+                        this.$store.dispatch({ type: "saveList", list: this.toList });
+                        // console.log(this.toList);
+                        // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
+                        // console.log(this.toList);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else {
+                this.$store.dispatch({ type: "saveList", list: this.fromList });
+            }
+        },
         newCard() {
             // this.cardTitle = CardService.getEmpty();
             console.log("new card", this.card);

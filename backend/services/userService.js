@@ -4,14 +4,69 @@ const USERS_DB = 'users';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ boardId = null }) {
+    if (boardId) boardId = new ObjectId(boardId)
     return mongoService.connect()
-        .then(db => db.collection(USERS_DB).find({ boardId }).toArray())
+        .then(db => db.collection(USERS_DB)
+            .aggregate([
+                { "$match": { "boardId": { "$in": boards } } },
+                {
+                    "$lookup": {
+                        "from": "activities",
+                        "let": { "user_id": "$_id" },
+                        "pipeline": [
+                            { "$match": { "$expr": { "$eq": ["$boardId", "$$board_id"] } } },
+                            {
+                                "$lookup": {
+                                    "from": "users",
+                                    "let": { "user_Id": "$userId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$user_Id"] } } }
+                                    ],
+                                    "as": "user"
+                                }
+                            },
+                            {
+                                "$lookup": {
+                                    "from": "boards",
+                                    "let": { "board_Id": "$boardId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$board_Id"] } } }
+                                    ],
+                                    "as": "board"
+                                }
+                            },
+                            {
+                                "$lookup": {
+                                    "from": "lists",
+                                    "let": { "list_Id": "$listId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$list_Id"] } } }
+                                    ],
+                                    "as": "list"
+                                }
+                            },
+                            {
+                                "$lookup": {
+                                    "from": "cards",
+                                    "let": { "card_Id": "$cardId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$card_Id"] } } }
+                                    ],
+                                    "as": "card"
+                                }
+                            }
+                        ],
+                        "as": "activities"
+                    }
+                },
+            ]).toArray())
 }
 
 function addUser(user) {
     return mongoService.connect()
         .then(db => db.collection(USERS_DB).insertOne(user).then(res => {
-            return getUserById(res.insertedId).then(user => user)
+            user._id = res.insertedId
+            return user
         }))
 }
 
@@ -29,13 +84,65 @@ function removeUser(userId) {
 
 function updateUser(user) {
     user._id = new ObjectId(user._id);
+    user.activities = null
     return mongoService.connect()
         .then(db => db.collection(USERS_DB).updateOne({ _id: user._id }, { $set: user }))
 }
 
-function checkLogin(userCredentials) {    
+function checkLogin({ userCredentials }) {
     return mongoService.connect()
-        .then(db => db.collection(USERS_DB).findOne(userCredentials))
+        .then(db => db.collection(USERS_DB)
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            { userName: userCredentials.userName },
+                            { password: userCredentials.password }
+                        ]
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "activities",
+                        "let": { "user_id": "$_id" },
+                        "pipeline": [
+                            { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
+                            {
+                                "$lookup": {
+                                    "from": "boards",
+                                    "let": { "board_Id": "$boardId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$board_Id"] } } }
+                                    ],
+                                    "as": "board"
+                                }
+                            },
+                            {
+                                "$lookup": {
+                                    "from": "lists",
+                                    "let": { "list_Id": "$listId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$list_Id"] } } }
+                                    ],
+                                    "as": "list"
+                                }
+                            },
+                            {
+                                "$lookup": {
+                                    "from": "cards",
+                                    "let": { "card_Id": "$cardId" },
+                                    "pipeline": [
+                                        { "$match": { "$expr": { "$eq": ["$_id", "$$card_Id"] } } }
+                                    ],
+                                    "as": "card"
+                                }
+                            }
+                        ],
+                        "as": "activities"
+                    }
+                },
+            ]).toArray())
+
 }
 
 

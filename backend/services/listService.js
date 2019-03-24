@@ -63,14 +63,32 @@ function getListById(listId) {
                 {
                     $lookup:
                     {
+                        from: 'boards',
+                        localField: 'boardId',
+                        foreignField: '_id',
+                        as: 'board'
+                    }
+                },
+                {
+                    $lookup:
+                    {
                         from: 'cards',
-                        localField: '_id',
-                        foreignField: 'listId',
+                        let: { list_id: "$_id" },
+                        pipeline: [
+                            {
+                                $match:
+                                {
+                                    '$expr':
+                                        { '$eq': ["$listId", "$$list_id"] },
+                                }
+                            },
+                            { $sort: { 'order': 1 } }
+                        ],
                         as: 'cards'
                     }
                 },
                 { $sort: { order: 1 } }
-            ]))
+            ]).toArray())
 }
 
 function removeList(listId) {
@@ -83,7 +101,8 @@ function updateList(list) {
     list._id = new ObjectId(list._id);
     list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
-        .then(db => db.collection(LIST_DB).updateOne({ _id: list._id }, { $set: list }))
+        .then(db => db.collection(LIST_DB)
+            .updateOne({ _id: list._id }, { $set: list }))
 }
 
 

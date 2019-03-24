@@ -8,7 +8,7 @@ function addListRoutes(app) {
     app.get(LIST_URL, (req, res) => {
         const boardId = req.body;
         listService.query(boardId)
-            .then(resolveData)
+            .then(lists => res.json(lists))
             
     })
 
@@ -16,7 +16,7 @@ function addListRoutes(app) {
     app.get(`${LIST_URL}/:listId`, (req, res) => {
         const listId = req.params.listId;
         listService.getListById(listId)
-            .then(resolveData)
+            .then(list => res.json(list))
     })
 
     // DELETE
@@ -30,14 +30,16 @@ function addListRoutes(app) {
     app.post(LIST_URL, (req, res) => {        
         const list = req.body;
         listService.addList(list)
-            .then(resolveData)
+            .then(savedList => res.json(savedList))
     })
 
     // UPDATE
-    app.put(`${LIST_URL}/:ListId`, (req, res) => {
+    app.put(LIST_URL, (req, res) => {
         const list = req.body;
+        list.board = null;
+        list.cards = null;
         listService.updateList(list)
-            .then(resolveData)
+            .then(savedList => res.json(savedList))
     })
 
 }

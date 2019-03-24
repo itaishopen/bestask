@@ -6,8 +6,8 @@ function addUserRoutes(app) {
 
     // LIST
     app.get(USER_URL, (req, res) => {
-        const boardId = req.data        
-        userService.query({ boardId })
+        const boardId = req.body        
+        userService.query(boardId)
             .then(users => res.json(users))
     })
 
@@ -29,28 +29,29 @@ function addUserRoutes(app) {
         userService.removeUser(userId)
             .then(() => res.end(`The User ${userId} Was Deleted `))
     })
-
+    
     // UPDATE
     app.put(`${USER_URL}/:userId`, (req, res) => {
         const user = req.body;
-        userService.update(user)
+        userService.updateUser(user)
             .then(user => res.json(user))
     })
 
-    // CREATE
-    app.post('/api/singup', (req, res) => {
-        const newUser = req.body;
-        userService.addUser(newUser)
-            .then(user => res.json(user))
-    })
-
-    app.put('/api/login', (req, res) => {
+    // Check login
+    app.put(`/api/login`, (req, res) => {
         const userCredentials = req.body;
-        userService.checkLogin(userCredentials)
+        userService.checkLogin({userCredentials})
         .then(user => {
             req.session.user = user
             res.json(user)
         }) .catch(res.catch)
+    })
+
+    // CREATE
+    app.post(`/api/singup`, (req, res) => {
+        const newUser = req.body;
+        userService.addUser(newUser)
+            .then(user => res.json(user))
     })
 
 }

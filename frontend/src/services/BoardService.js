@@ -1,5 +1,5 @@
-import axios from 'axios';
- 
+import Axios from 'axios';
+var axios = Axios.create({ withCredentials: true });
 const BOARD_URL = process.env.NODE_ENV !== 'development'
 ? '/api/board'
 : '//localhost:3000/api/board' ;

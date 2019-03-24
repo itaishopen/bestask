@@ -1,6 +1,7 @@
 const boardService = require('../services/boardService')
 const listService = require('../services/listService')
 const cardService = require('../services/cardService')
+const activityService = require('../services/activityService')
 const BOARD_URL = '/api/board'
 
 
@@ -20,8 +21,9 @@ function addBoardRoutes(app) {
         Promise.all([
             boardService.getBoardById(boardId),
             listService.query({ boardId }),
+            activityService.query({ boardId }),
         ])
-            .then(([board, lists]) => res.json({board, lists}))
+            .then(([board, lists, activities]) => res.json({board, lists, activities}))
     })
 
     // DELETE
@@ -52,7 +54,8 @@ function addBoardRoutes(app) {
 
     // UPDATE
     app.put(`${BOARD_URL}/:boardId`, (req, res) => {
-        const board = req.body;        
+        const board = req.body;
+        board.activities = null        
         boardService.updateBoard(board)
             .then(board => res.json(board))
     })

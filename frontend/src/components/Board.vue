@@ -1,24 +1,26 @@
 <template>
     <section class="board">
+        <div class="board-title">{{board.title}}</div>
         <ul class="board-list-ul">
-            <!-- <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false"> -->
+            <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false">
                 <li class="board-list-li" v-for="list in lists" :key="list._id">
                     <list :list="list"/>
                 </li>
-            <!-- </draggable> -->
-
-            <button v-if="!isAddListClick" class="new-list-btn" @click="newList">
-                new list
-                <i class="fa fa-plus"></i>
-            </button>
-
-            <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
-                <button @click="closeAdd">&times;</button>
-                <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
-                <button type="submit">
+            </draggable>
+            <div class="create-list">
+                <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+                    new list
                     <i class="fa fa-plus"></i>
                 </button>
-            </form>
+
+                <form v-if="isAddListClick" @submit.prevent="addList" class="create-list-input">
+                    <button @click="closeAdd">&times;</button>
+                    <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
+                    <button class="create-list-options" type="submit">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </form>
+            </div>
         </ul>
     </section>
 </template>
@@ -26,6 +28,7 @@
 <script>
 import CardService from "../services/CardService.js";
 import ListService from "../services/ListService.js";
+import ActivityService from "../services/ActivityService.js";
 import list from "./List.vue";
 import draggable from 'vuedraggable';
 
@@ -72,23 +75,72 @@ export default {
             this.isAddListClick = !this.isAddListClick;
         }
     },
-    watch: {
-        board: function () {
-            console.log("change in board");
-            this.$store.dispatch({ type: "saveBoard", board: this.board });
-        }
+    addList() {
+      this.list.boardId = this.board._id;
+      this.list.order = this.lists.length + 1;
+      console.log(this.list, "list in add click");
+      this.$store.dispatch({ type: "saveList", list: this.list }).then(savedList => {
+        let activity = ActivityService.getEmptyActivity()
+        activity.text = ' added a new list to ';
+        activity.userId = this.$store.getters.loggedInUser._id;
+        activity.boardId = this.board._id;
+        activity.listId = savedList._id;
+        this.$store.dispatch({type: "saveActivity", activity})
+      });
+      this.isAddListClick = !this.isAddListClick;
+    }
+  },
+  watch: {
+    board: function() {
+      console.log("change in board");
+      this.$store.dispatch({ type: "saveBoard", board: this.board });
     }
 };
 </script>
 
-<style>
+<style lang="scss">
+.board {
+    .board-title {
+        font-family: "Open Sans", sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        color: #ffffff;
+        align-self: flex-start;
+        width: 275px - 14px;
+        margin: 0;
+        padding: 2px 7px;
+        outline: 0;
+        border: 0;
+        background-color: #0079bf;
+        border-radius: 3px;
+        &:focus {
+            background-color: #ffffff !important;
+            color: #4d4d4d !important;
+        }
+    }
+}
+
+.board-list-ul {
+    display: flex;
+    width: 100vw;
+    height: 80vh;
+    overflow: scroll;
+    white-space: nowrap;
+    > .current-target {
+        background-color: #055a8c !important;
+    }
+    .current-target > * {
+        visibility: hidden;
+    }
+}
+
 .board-list-li {
     width: 300px;
     background-color: rgb(235, 235, 235);
     border: 1px solid black;
     margin: 20px;
 }
-.board-list-ul {
+<<<<<<< head .board-list-ul {
     margin: 0 auto;
     width: 800px;
     background-color: rgb(255, 255, 255);
@@ -98,7 +150,7 @@ export default {
     justify-content: center;
     align-items: flex-start;
 }
-.new-list-btn {
+=======>>>>>>>master .new-list-btn {
     width: 300px;
     height: 100px;
     background-color: rgba(255, 255, 255, 0);
@@ -115,5 +167,73 @@ export default {
 }
 .form-add {
     border: 1px black solid;
+}
+.create-list {
+    transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -webkit-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -moz-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -o-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    padding: 7px 0;
+    width: 275px;
+    background-color: #026aa7;
+    border-radius: 3px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0.5% 1.5%;
+    vertical-align: top;
+    cursor: pointer;
+    &:hover {
+        background-color: #055a8c;
+    }
+    .create-list-title {
+        width: 88%;
+        padding: 5px;
+        min-height: 18px;
+        display: block;
+        margin: 0 auto;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        color: #ffffff;
+    }
+    .create-list-options {
+        width: 88%;
+        padding: 10px 4%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .create-list-input {
+        width: 88%;
+        padding: 5px;
+        min-height: 18px;
+        display: block;
+        margin: 0 auto;
+        background-color: #e2e4e6;
+        border-radius: 3px;
+        color: #4d4d4d;
+        outline: none;
+        border: 1px solid #cdd2d4;
+        box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.15);
+        &:focus {
+            background-color: #e2e4e6;
+        }
+        &::-webkit-input-placeholder {
+            color: #cdd2d4;
+        }
+    }
+}
+
+.create-list-active {
+    transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -webkit-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -moz-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -o-transition: all 0.15s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    background-color: #e2e4e6 !important;
+    padding: 10px 0 0 0 !important;
 }
 </style>

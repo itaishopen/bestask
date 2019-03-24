@@ -2,11 +2,11 @@
     <section class="board">
         <div class="board-title">{{board.title}}</div>
         <ul class="board-list-ul">
-            <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false">
-                <li class="board-list-li" v-for="list in lists" :key="list._id">
-                    <list :list="list"/>
-                </li>
-            </draggable>
+            <!-- <draggable v-model="lists" group="lists" @start="drag=true" @end="drag=false"> -->
+            <li class="board-list-li" v-for="list in lists" :key="list._id">
+                <list :list="list"/>
+            </li>
+            <!-- </draggable> -->
             <div class="create-list">
                 <button v-if="!isAddListClick" class="create-list-title" @click="newList">
                     new list

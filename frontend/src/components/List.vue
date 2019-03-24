@@ -1,7 +1,7 @@
 <template>
     <section class="list">
         <div class="title-list">{{list.title}}</div>
-        <input class="Input" v-model="list.title"/>
+        <input class="Input" v-model="list.title">
         <draggable
             v-model="list.cards"
             group="list"
@@ -20,7 +20,6 @@
                 <card-preview v-if="!card.archived" :card="card"></card-preview>
             </li>
         </ul>-->
-        <button v-if="!isAddClick" @click="newCard">
         <button class="list-add-card" v-if="!isAddClick" @click="newCard">
             add card
             <i class="fa fa-plus"></i>
@@ -122,7 +121,7 @@ export default {
                 activity.boardId = this.list.boardId;
                 activity.listId = this.list._id;
                 activity.cardId = card._id;
-                this.$store.dispatch({type: "saveActivity", activity})
+                this.$store.dispatch({ type: "saveActivity", activity })
                 var cardItem = CardService.getEmptyCard();
                 this.$store.commit("setCard", { card: cardItem });
                 var boardId = this.list.boardId;
@@ -157,90 +156,90 @@ export default {
 
 <style lang="scss">
 .input {
-	width: 88%;
-	padding: 5px;
-	min-height: 18px;
-	display: block;
-	margin: 0 auto 7px auto;
-	background-color: #E2E4E6;
-	border-radius: 3px;
-	color: #4D4D4D;
-	outline: none;
-	border: none;
-	&:focus {
-		background-color: #FFFFFF;
-	}
+    width: 88%;
+    padding: 5px;
+    min-height: 18px;
+    display: block;
+    margin: 0 auto 7px auto;
+    background-color: #e2e4e6;
+    border-radius: 3px;
+    color: #4d4d4d;
+    outline: none;
+    border: none;
+    &:focus {
+        background-color: #ffffff;
+    }
 }
 .text-area {
-	margin: 0 auto;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	background-color: #FFFFFF;
-	color: #4D4D4D;
-	border-radius: 3px;
-	border: none;
-	outline: none;
-	opacity: 1;
-	width: 88% - 2 * 4%;
-	padding: 10px 4%;
-	min-height: 50px;
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 400;
-	font-size: 12px;
-	color: #4D4D4D;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ffffff;
+    color: #4d4d4d;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+    opacity: 1;
+    width: 88% - 2 * 4%;
+    padding: 10px 4%;
+    min-height: 50px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: #4d4d4d;
 }
 .list {
-	padding-top: 10px;
-	width: 275px;
-	background-color: #E2E4E6;
-	border-radius: 3px;
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 700;
-	font-size: 15px;
-	color: #FFFFFF;
-	display: inline-block;
-	margin: 0.5% 1.5%;
-	vertical-align: top;
-	.list-cards {
-		max-height: 70vh;
-		margin: 0;
-		padding: 0;
-	}
-	.list-add-card {
-		width: 88%;
-		padding: 7px (100% - 88%) / 2;
-		margin: 0;
-		height: auto;
-		text-align: left;
-		cursor: pointer;
-		border-radius: 3px;
-		font-family: 'Open Sans', sans-serif;
-		font-weight: 400;
-		font-size: 12px;
-		color: #959DA1;
-		&:hover {
-			text-decoration: underline;
-			color: #4D4D4D;
-			background-color: #CDD2D4;
-			border-top-left-radius: 0;
-			border-top-right-radius: 0;
-		}
-	}
-	.list-new-card-options {
-		width: 88%;
-		padding: 10px (100% - 88%) / 2;
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: flex-start;
-	}
-	.current-target {
-		background-color: #C4C9CC !important;
-	}
-	.current-target > * {
-		visibility: hidden;
-	}
+    padding-top: 10px;
+    width: 275px;
+    background-color: #e2e4e6;
+    border-radius: 3px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0.5% 1.5%;
+    vertical-align: top;
+    .list-cards {
+        max-height: 70vh;
+        margin: 0;
+        padding: 0;
+    }
+    .list-add-card {
+        width: 88%;
+        padding: 7px (100% - 88%) / 2;
+        margin: 0;
+        height: auto;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 3px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        color: #959da1;
+        &:hover {
+            text-decoration: underline;
+            color: #4d4d4d;
+            background-color: #cdd2d4;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    }
+    .list-new-card-options {
+        width: 88%;
+        padding: 10px (100% - 88%) / 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .current-target {
+        background-color: #c4c9cc !important;
+    }
+    .current-target > * {
+        visibility: hidden;
+    }
 }
 // .title-list {
 //     margin-top: 25px;

@@ -75,7 +75,7 @@
         Invalid
         <i class="fa fa-check" v-if="labelIsChosen.yellow"></i>
       </div>
-      <div class="LabePurple" @click="changeLabel('purple ')">
+      <div class="LabePurple" @click="changeLabel('purple')">
         Question
         <i class="fa fa-check" v-if="labelIsChosen.purple"></i>
       </div>

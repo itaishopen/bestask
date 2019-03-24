@@ -8,6 +8,7 @@ const addBoardRoutes = require('./routes/board-route')
 const addCardRoutes = require('./routes/card-route')
 const addUserRoutes = require('./routes/user-route')
 const addListRoutes = require('./routes/list-route')
+const addActivityRoutes = require('./routes/activity-route')
 
 const app = express()
 app.use(express.static('public'))
@@ -32,6 +33,7 @@ addBoardRoutes(app)
 addCardRoutes(app)
 addUserRoutes(app)
 addListRoutes(app)
+addActivityRoutes(app)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Example app listening on port ${port}`))

@@ -83,9 +83,15 @@ export default {
         },
         saveCard() {
             console.log('Saving card..', this.card);
-            this.$store.dispatch({ type: 'saveCard', card: this.card })
-                .then(res => {
-                    console.log(res);
+            this.$store.dispatch({ type: 'saveCardToList', card: this.card })
+                .then(card => {
+                    let activity = ActivityService.getEmptyActivity()
+                    activity.text = ' changed the card in list ';
+                    activity.userId = this.$store.getters.loggedInUser._id;
+                    activity.boardId = this.$store.getters.getBoard._id;
+                    activity.listId = card.listId;
+                    activity.cardId = card._id;
+                    this.$store.dispatch({type: "saveActivity", activity})
                     // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
                     this.$router.push('/task');
                 })

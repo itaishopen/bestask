@@ -7,32 +7,21 @@ function query({ listId = null }) {
     if (listId) listId = new ObjectId(listId)
     return mongoService.connect()
         .then(db => {
-            return db.collection(CARDS_DB)
-                .aggregate([
-                    {
-                        $match: { listId }
-                    },
-                    {
-                        $lookup:
-                        {
-                            from: 'lists',
-                            localField: 'listId',
-                            foreignField: '_id',
-                            as: 'list'
-                        }
-                    },
-                    { $sort: { order: 1 } }
-                ]).toArray()
+            return db.collection(CARDS_DB).find({listId}).toArray()
         })
 }
 
 function addCard(card) {
     card.listId = new ObjectId(card.listId)
     return mongoService.connect()
-        .then(db => db.collection(CARDS_DB).insertOne(card).then(res => {
-            card._id = res.insertedId
-            return card
-        }))
+        .then(db => {
+            return db.collection(CARDS_DB)
+                .insertOne(card)
+                .then(res => {
+                    card._id = res.insertedId
+                    return card
+                })
+        })
 }
 
 function getCardById(cardId) {
@@ -42,7 +31,12 @@ function getCardById(cardId) {
 }
 
 function removeCards({ listId }) {
-    return this.query({ listId }).then(cards => Promise.all(cards.map(card => this.removeCard(card._id))))
+    return this.query({ listId })
+        .then(cards => {
+            Promise.all(
+                cards.map(card => this.removeCard(card._id))
+            ).then(() => res.end())
+        })
 }
 
 function removeCard(cardId) {
@@ -52,14 +46,13 @@ function removeCard(cardId) {
 }
 
 function updateCard(card) {
-    const cardId = card._id
     card._id = new ObjectId(card._id);
     card.listId = new ObjectId(card.listId)
     return mongoService.connect()
         .then(db => {
-            return db.collection(CARDS_DB).updateOne({ _id: card._id }, { $set: card })
+            return db.collection(CARDS_DB)
+                .updateOne({ _id: card._id }, { $set: card })
                 .then(() => {
-                    card._id = cardId
                     return card
                 })
         })

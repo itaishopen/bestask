@@ -4,20 +4,6 @@ const cardStore = {
     state: {
         cards: [],
         currCard: null,
-        emptyCard: {
-            listId: null,
-            title: '',
-            description: null,
-            members: [],
-            labels: [],
-            checklists: [],
-            dueDate: null,
-            attachments: [],
-            order: null,
-            archived: false,
-            emt: null,
-            amt: null
-        }
     },
     mutations: {
         setCards(state, payload) {
@@ -48,9 +34,6 @@ const cardStore = {
         getEditableCurrcard(state) {
             return JSON.parse(JSON.stringify(state.currCard));
         },
-        getEmptyCard(state) {
-            return JSON.parse(JSON.stringify(state.emptyCard));
-        },
     },
     actions: {
         loadCards(context) {
@@ -60,9 +43,8 @@ const cardStore = {
                 })
         },
         loadCard(context, { cardId }) {
-            // console.log(cardId);
             CardService.getCardById(cardId)
-                .then(card => {
+                .then(card => {                    
                     context.commit({ type: 'setCard', card })
                 })
         },
@@ -76,8 +58,6 @@ const cardStore = {
             const isEdit = !!card._id
             return CardService.saveCard(card)
                 .then(savedCard => {
-                    
-                    
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });
                     else context.commit({ type: 'addCard', savedCard });
                 })

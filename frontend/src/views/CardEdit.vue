@@ -114,7 +114,6 @@ export default {
     };
   },
   created() {
-    console.log("CardEdit was created");
     var cardId = this.$route.params.cardId;
     this.$store.dispatch({ type: "loadCard", cardId });
   },

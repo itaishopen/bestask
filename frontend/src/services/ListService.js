@@ -30,7 +30,7 @@ function updateLists(lists) {
     ]).then(lists => Promise.resolve(lists))
 }
 
-function saveList(list) {
+function saveList(list) {    
     if (list._id) {
         return axios.put(`${LIST_URL}/${list._id}`, list).then(resolveData);
     } else {        

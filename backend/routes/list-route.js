@@ -1,6 +1,5 @@
 const listService = require('../services/listService');
 const LIST_URL = '/api/list';
-const resolveData = res => res.data;
 function addListRoutes(app) {
     // Lists REST API:
 
@@ -30,7 +29,7 @@ function addListRoutes(app) {
     app.post(LIST_URL, (req, res) => {        
         const list = req.body;
         listService.addList(list)
-            .then(savedList => res.send(savedList))
+            .then(savedList => res.json(savedList))
     })
 
     // UPDATE
@@ -39,7 +38,7 @@ function addListRoutes(app) {
         delete list.board
         delete list.cards
         listService.updateList(list)
-            .then(savedList => res.send(savedList))
+            .then(savedList => res.json(savedList))
     })
 
 }

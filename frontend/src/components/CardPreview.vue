@@ -20,24 +20,19 @@
 
 <script>
 export default {
-  name: "CardPreview",
-  props: ["card", "index"],
-  created() {
-    this.card.order = this.index;
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {
-    displayLabel() {
-      var curectColor = this.card.labels[0];
-      this.card.labels.push(curectColor);
-      this.card.labels.shift();
-      return curectColor;
-    }
-  },
-  components: {}
+    name: "CardPreview",
+    props: ["card"],
+    created() {
+    },
+    data() {
+        return {
+        };
+    },
+    computed: {},
+    methods: {
+        
+    },
+    components: {}
 };
 </script>
 <style>

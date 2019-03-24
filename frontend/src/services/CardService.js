@@ -15,28 +15,26 @@ const CARD_URL = (process.env.NODE_ENV !== 'development')
     : '//localhost:3000/api/card';
 
 function query() {
-    return axios.get(CARD_URL)
-        .then(resolveData);
+    return axios.get(CARD_URL).then(resolveData);
 }
 
 function getCardById(cardId) {
-    return axios.get(`${CARD_URL}/${cardId}`)
-        .then(resolveData);
+    return axios.get(`${CARD_URL}/${cardId}`).then(resolveData);
 }
 
 function removeCard(cardId) {
-    return axios.delete(`${CARD_URL}/${cardId}`)
-        .then(resolveData);
+    return axios.delete(`${CARD_URL}/${cardId}`).then(resolveData);
 }
 
 function updateCards(cards) {
     return Promise.all([
         cards.map(card => this.saveCard(card))
-    ]).then(cards => Promise.resolve(cards))
+    ]).then(() => {
+        return cards})
 }
 
 function saveCard(card) {
-    if (card._id) {
+    if (card._id) {        
         return axios.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
     } else {
         return axios.post(CARD_URL, card).then(resolveData)

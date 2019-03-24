@@ -20,8 +20,8 @@
       :move="moveCard"
     >
       <transition-group>
-        <div v-for="(card ,index) in list.cards" :key="card._id">
-          <card-preview v-if="!card.archived" :card="card" :index="index"></card-preview>
+        <div v-for="card in list.cards" :key="card._id">
+          <card-preview v-if="!card.archived" :card="card"></card-preview>
         </div>
       </transition-group>
     </draggable>
@@ -47,8 +47,9 @@
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
-import draggable from "vuedraggable";
-import ListService from "../services/ListService.js";
+import draggable from 'vuedraggable';
+import ListService from '../services/ListService.js';
+import ActivityService from '../services/ActivityService.js';
 export default {
   name: "list",
   props: ["list"],
@@ -62,7 +63,7 @@ export default {
       toList: null,
       // toListFutureIndex: 0
       isChangeTitle: false,
-      hasfocus: false
+      hasfocus: false,
       // toListFutureIndex: -1
       // cardTitle: null,
       // currList: null
@@ -74,44 +75,33 @@ export default {
   },
   methods: {
     moveCard(evt) {
-      console.log("moveCard");
-      // console.log(evt.draggedContext);
-      // console.log(evt.relatedContext);
       this.moveCardId = evt.draggedContext.element._id;
-      this.$store
-        .dispatch({ type: "loadCard", cardId: this.moveCardId })
-        .then(res => {
-          // console.log(res);
-        });
+      this.$store.dispatch({ type: 'loadCard', cardId: this.moveCardId })
+        .then()
       this.fromListId = evt.draggedContext.element.listId;
       this.toListId = evt.relatedContext.element.listId;
-      this.fromList = this.$store.getters.getLists.find(
-        list => list._id === this.fromListId
-      );
-      this.toList = this.$store.getters.getLists.find(
-        list => list._id === this.toListId
-      );
-      // console.log(this.fromList);
-      // this.toListFutureIndex = evt.draggedContext.futureIndex;
-      // console.log(this.toList);
+      this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
+      this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
     },
     endMoveCard(evt) {
-      console.log("onEnd");
-      // console.log(this.card);
       this.card.listId = this.toListId;
-      // this.card.order = this.toListFutureIndex;
-      // console.log(this.fromList.cards.length);
-      // console.log(this.toList.cards.length);
-      for (var i = 0; i < this.fromList.cards.length; i++) {
-        this.fromList.cards[i].order = i;
-      }
-      this.$store.dispatch({ type: "saveList", list: this.fromList });
-      if (this.fromListId !== this.toListId) {
-        for (var i = 0; i < this.toList.cards.length; i++) {
-          this.toList.cards[i].order = i;
+      this.$store.dispatch({ type: 'saveCard', card: this.card }).then(res => {
+        for (var i = 0; i < this.fromList.cards.length; i++) {
+          this.fromList.cards[i].order = i;
         }
-        this.$store.dispatch({ type: "saveList", list: this.toList });
-      }
+        this.$store.dispatch({ type: "saveList", list: this.fromList });
+        if (this.fromListId !== this.toListId) {
+          var testCard = this.toList.cards.find(card => card.listId === this.fromListId)
+          testCard.listId = this.toListId
+          for (var j = 0; j < this.toList.cards.length; j++) {
+            this.toList.cards[j].order = j;
+          }
+          console.log(this.toList);
+
+          this.$store.dispatch({ type: "saveList", list: this.toList });
+        }
+      })
+
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);

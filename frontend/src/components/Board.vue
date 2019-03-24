@@ -59,10 +59,24 @@ export default {
   methods: {
     newList() {
       //  todo: add list
-      console.log("new list");
       this.list = ListService.getEmptyList();
       this.isAddListClick = !this.isAddListClick;
-      console.log(this.list, "list in new click");
+    },
+    closeAdd() {
+      this.isAddListClick = !this.isAddListClick;
+    },
+    addList() {
+      this.list.boardId = this.board._id;
+      this.list.order = this.lists.length;
+      this.$store.dispatch({ type: "saveNewList", list: this.list }).then(savedList => {
+        let activity = ActivityService.getEmptyActivity()
+        activity.text = ' added a new list to ';
+        activity.userId = this.$store.getters.loggedInUser._id;
+        activity.boardId = this.board._id;
+        activity.listId = savedList._id;
+        this.$store.dispatch({ type: "saveActivity", activity })
+      });
+      this.isAddListClick = !this.isAddListClick;
     },
     closeAdd() {
       this.isAddListClick = !this.isAddListClick;
@@ -82,14 +96,14 @@ export default {
           this.$store.dispatch({ type: "saveActivity", activity });
         });
       this.isAddListClick = !this.isAddListClick;
-    }
+    },
   },
 
   watch: {
-    board: function() {
-      console.log("change in board");
-      this.$store.dispatch({ type: "saveBoard", board: this.board });
-    }
+    // board: function () {
+    //     console.log("change in board", this.board);
+    //     this.$store.dispatch({ type: "saveBoard", board: this.board });
+    // }
   }
 };
 </script>

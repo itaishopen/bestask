@@ -14,7 +14,7 @@ export default {
     },
     created() {
         var boardId = '5c90e128614ea0f42b453829';
-        this.$store.dispatch({ type: 'loadBoard', boardId: boardId });
+        this.$store.dispatch({ type: 'loadBoard', boardId });
     },
     computed: {
         board() {

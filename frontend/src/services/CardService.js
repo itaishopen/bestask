@@ -32,6 +32,8 @@ function saveCard(card) {
     if (card._id) {
         return axios.put(`${CARD_URL}/${card._id}`, card)
     } else {
+        console.log(card);
+        
         return axios.post(CARD_URL, card)
     }
 }

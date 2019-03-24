@@ -58,7 +58,7 @@
       <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
     </div> 
     <!-- Modal Labels Component -->
-    <b-modal id="modal4" title="Labels" :d="markChose()">
+    <b-modal id="modal4" title="Labels">
       <div class="LabelRed" @click="changeLabel('red')">
         <i class="fa fa-check" v-if="labelIsChosen.red"></i>
       </div>

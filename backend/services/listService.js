@@ -103,6 +103,41 @@ function updateList(list) {
     return mongoService.connect()
         .then(db => db.collection(LIST_DB)
             .updateOne({ _id: list._id }, { $set: list }))
+        .then(res => 
+            db.collection(LIST_DB)
+            .aggregate([
+                {
+                    $match: { _id: res.insertedId }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'boards',
+                        localField: 'boardId',
+                        foreignField: '_id',
+                        as: 'board'
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'cards',
+                        let: { list_id: "$_id" },
+                        pipeline: [
+                            {
+                                $match:
+                                {
+                                    '$expr':
+                                        { '$eq': ["$listId", "$$list_id"] },
+                                }
+                            },
+                            { $sort: { 'order': 1 } }
+                        ],
+                        as: 'cards'
+                    }
+                },
+                { $sort: { order: 1 } }
+            ]).toArray())
 }
 
 

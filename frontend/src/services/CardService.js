@@ -7,7 +7,8 @@ export default {
     getCardById,
     removeCard,
     saveCard,
-    getEmptyCard
+    getEmptyCard,
+    updateCards
 }
 const CARD_URL = (process.env.NODE_ENV !== 'development')
     ? '/api/card'
@@ -26,6 +27,12 @@ function getCardById(cardId) {
 function removeCard(cardId) {
     return axios.delete(`${CARD_URL}/${cardId}`)
         .then(resolveData);
+}
+
+function updateCards(cards) {
+    return Promise.all([
+        cards.map(card => this.saveList(card))
+    ]).then(cards => Promise.resolve(cards))
 }
 
 function saveCard(card) {

@@ -36,8 +36,8 @@ function addListRoutes(app) {
     // UPDATE
     app.put(LIST_URL, (req, res) => {
         const list = req.body;
-        list.board = null;
-        list.cards = null;
+        delete list.board
+        delete list.cards
         listService.updateList(list)
             .then(savedList => res.json(savedList))
     })

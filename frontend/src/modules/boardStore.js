@@ -77,12 +77,13 @@ export default {
         },
         saveList(context, { list }) {
             const isEdit = !!list._id
-            return ListService.saveList(list)
+            return CardService.updateCards(list.cards)
+            .then(cards => ListService.saveList(list)
                 .then(savedList => {
                     if (isEdit) context.commit({ type: 'updateList', savedList });
                     else context.commit({ type: 'addList', savedList });
                     return savedList
-                })
+                })) 
         },
         saveCardToList(context, { card }) {
             const isEdit = !!card._id;

@@ -56,25 +56,31 @@
     <div slot="modal-footer" class="w-100">
       <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
       <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
-    </div> 
+    </div>
     <!-- Modal Labels Component -->
     <b-modal id="modal4" title="Labels">
       <div class="LabelRed" @click="changeLabel('red')">
+        Bug
         <i class="fa fa-check" v-if="labelIsChosen.red"></i>
       </div>
       <div class="LabelBlue" @click="changeLabel('blue')">
+        Duolicate
         <i class="fa fa-check" v-if="labelIsChosen.blue"></i>
       </div>
       <div class="LabelGreen" @click="changeLabel('green')">
+        Enhancement
         <i class="fa fa-check" v-if="labelIsChosen.green"></i>
       </div>
       <div class="LabeYellow" @click="changeLabel('yellow')">
+        Invalid
         <i class="fa fa-check" v-if="labelIsChosen.yellow"></i>
       </div>
       <div class="LabePurple" @click="changeLabel('purple ')">
+        Question
         <i class="fa fa-check" v-if="labelIsChosen.purple"></i>
       </div>
       <div class="LabeOrange" @click="changeLabel('orange')">
+        Wontfix
         <i class="fa fa-check" v-if="labelIsChosen.orange"></i>
       </div>
       <p class="my-4">Labels!</p>
@@ -98,7 +104,7 @@ export default {
       comment: "",
       openModalMembers: false,
       labelIsChosen: {
-        red: false,
+        red: true,
         blue: false,
         green: false,
         yellow: false,
@@ -130,17 +136,17 @@ export default {
     }
   },
   methods: {
-    markChose(){
-       this.card.labels.forEach(label => {
-      console.log(label);
+    markChose() {
+      this.card.labels.forEach(label => {
+        console.log(label);
 
-      this.labelIsChosen.forEach(color => {
-        console.log(color);
-        if (label === color) {
-          this.labelIsChosen = true;
-        }
+        this.labelIsChosen.forEach(color => {
+          console.log(color);
+          if (label === color) {
+            this.labelIsChosen = true;
+          }
+        });
       });
-    });
     },
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
@@ -266,6 +272,11 @@ export default {
   cursor: pointer;
   height: 37px;
   border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 .LabelRed:hover,
 .LabelBlue:hover,

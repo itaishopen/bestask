@@ -62,12 +62,8 @@ export default {
       toListId: null,
       fromList: null,
       toList: null,
-      // toListFutureIndex: 0
       isChangeTitle: false,
       hasfocus: false,
-      // toListFutureIndex: -1
-      // cardTitle: null,
-      // currList: null
     };
   },
   components: {
@@ -95,21 +91,6 @@ export default {
           }
           this.$store.dispatch({ type: "saveList", list: this.toList });
         }
-      // this.$store.dispatch({ type: 'saveCard', card: this.card })
-      //     .then(res => {
-      //         console.log(res);
-      //         console.log(this.toList);
-      //         this.$store.dispatch({ type: "saveList", list: this.fromList });
-      //         if (this.fromListId !== this.toListId) {
-      //             this.$store.dispatch({ type: "saveList", list: this.toList });
-      //         }
-      //         // console.log(this.toList);
-      //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
-      //         // console.log(this.toList);
-      //     })
-      //     .catch(err => {
-      //         console.log(err);
-      //     });
     },
     newCard() {
       // this.cardTitle = CardService.getEmpty();

@@ -54,7 +54,10 @@ function updateCard(card) {
     card._id = new ObjectId(card._id);
     card.listId = new ObjectId(card.listId)
     return mongoService.connect()
-        .then(db => db.collection(CARDS_DB).updateOne({ _id: card._id }, { $set: card }))
+        .then(db => {
+            return db.collection(CARDS_DB).updateOne({ _id: card._id }, { $set: card })
+            .then(result => {                
+                return card})})
 }
 
 

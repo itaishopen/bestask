@@ -37,7 +37,8 @@ function addCardRoutes(app) {
     app.put(`${CARD_URL}/:cardId`, (req, res) => {
         const card = req.body;
         cardService.updateCard(card)
-            .then(card => res.json(card))
+            .then(card => {                
+                res.send(card)})
     })
 
 }

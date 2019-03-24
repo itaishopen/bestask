@@ -10,9 +10,9 @@
 
 export default {
     name: "CardPreview",
-    props: ["card", "index"],
+    props: ["card"],
     created() {
-        this.card.order = this.index
+        
      },
     data() {
         return {

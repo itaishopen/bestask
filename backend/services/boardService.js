@@ -15,7 +15,7 @@ function query({ userId = 'guest' }) {
 function addBoard(board) {
     if (board._id) board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).insertOne(board).then(res => {
+        .then(db => db.collection(BOARDS_DB).insertOne({board}).then(res => {
             board._id = res.insertedId
             return board
         }))
@@ -36,7 +36,7 @@ function removeBoard(boardId) {
 function updateBoard(board) {
     board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board }))
+        .then(db => db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: {board} }))
 }
 
 function getEmptyBoard() {

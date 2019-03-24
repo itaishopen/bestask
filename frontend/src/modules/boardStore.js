@@ -71,6 +71,7 @@ export default {
                 })
         },
         saveList(context, { list }) {
+            console.log({list});
             const isEdit = !!list._id
             return ListService.saveList(list)
                 .then(savedList => {

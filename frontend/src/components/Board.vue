@@ -1,5 +1,6 @@
 <template>
   <section class="board">
+    <div class="title-board">{{board.title}}</div>
     <ul class="board-list-ul">
       <li class="board-list-li" v-for="list in lists" :key="list._id">
         <list :list="list"/>
@@ -12,7 +13,7 @@
 
       <form v-if="isAddListClick" @submit.prevent="addList" class="form-add">
         <button @click="closeAdd">&times;</button>
-        <textarea v-model="list.title" placeholder="Enter text here..."></textarea>
+        <input v-model="list.title" placeholder="Enter text here..."/>
         <button type="submit">
           <i class="fa fa-plus"></i>
         </button>
@@ -72,24 +73,35 @@ export default {
 </script>
 
 <style>
+.title-board{
+  display: flex;
+  padding: 15px;
+  font-family: Lato_bold;
+  font-size: 20px;
+}
 .board-list-li {
-  width: 300px;
+      min-height: 80vh;
+    max-height: 80vh;
+  min-width: 280px;
+  overflow: auto;
+/* max-height: 100vh; */
   background-color: rgb(235, 235, 235);
   border: 1px solid black;
-  margin: 20px;
+  margin: 5px 10px;
 }
 .board-list-ul {
-  margin: 0 auto;
-  width: 800px;
+  /* margin: 0 auto; */
+    width: min-content;
+   
   background-color: rgb(255, 255, 255);
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 .new-list-btn {
-  width: 300px;
+  min-width: 280px;
   height: 100px;
   background-color: rgba(255, 255, 255, 0);
   border: none;
@@ -106,4 +118,6 @@ export default {
 .form-add {
   border: 1px black solid;
 }
+
+
 </style>

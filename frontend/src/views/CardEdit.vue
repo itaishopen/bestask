@@ -61,27 +61,27 @@
     <b-modal id="modal4" title="Labels">
       <div class="LabelRed" @click="changeLabel('red')">
         Bug
-        <i class="fa fa-check" v-if="labelIsChosen.red"></i>
+        <i class="fa fa-check" v-if="checkLabel('red')"></i>
       </div>
       <div class="LabelBlue" @click="changeLabel('blue')">
         Duplicate
-        <i class="fa fa-check" v-if="labelIsChosen.blue"></i>
+        <i class="fa fa-check" v-if="checkLabel('blue')"></i>
       </div>
       <div class="LabelGreen" @click="changeLabel('green')">
         Enhancement
-        <i class="fa fa-check" v-if="labelIsChosen.green"></i>
+        <i class="fa fa-check" v-if="checkLabel('green')"></i>
       </div>
       <div class="LabeYellow" @click="changeLabel('yellow')">
         Invalid
-        <i class="fa fa-check" v-if="labelIsChosen.yellow"></i>
+        <i class="fa fa-check" v-if="checkLabel('yellow')"></i>
       </div>
       <div class="LabePurple" @click="changeLabel('purple')">
         Question
-        <i class="fa fa-check" v-if="labelIsChosen.purple"></i>
+        <i class="fa fa-check" v-if="checkLabel('purple')"></i>
       </div>
       <div class="LabeOrange" @click="changeLabel('orange')">
         Wontfix
-        <i class="fa fa-check" v-if="labelIsChosen.orange"></i>
+        <i class="fa fa-check" v-if="checkLabel('orange')"></i>
       </div>
       <p class="my-4">Labels!</p>
     </b-modal>
@@ -130,8 +130,12 @@ export default {
   },
   created() {
     var cardId = this.$route.params.cardId;
-    this.$store.dispatch({ type: "loadCard", cardId });
-  
+    this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
+      this.card = card
+    })
+
+    console.log("hi ", this.card.labels);
+    console.log("hi 2", this.card);
   },
   mounted() {
     this.$refs.myModalRef.show();
@@ -152,6 +156,9 @@ export default {
     }
   },
   methods: {
+    checkLabel(color) {
+      return this.card.labels.findIndex(label => label === color) === -1 ? false : true;
+    },
     markChose() {
       this.card.labels.forEach(label => {
         console.log(label);
@@ -223,7 +230,7 @@ export default {
 
   components: {},
   watch: {
-    card: function() {
+    card: function () {
       console.log("change in card");
       this.$store.dispatch({ type: "saveCard", card: this.card });
     }

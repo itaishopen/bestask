@@ -43,7 +43,7 @@ const cardStore = {
                 })
         },
         loadCard(context, { cardId }) {
-            CardService.getCardById(cardId)
+            return CardService.getCardById(cardId)
                 .then(card => {                                                            
                     context.commit({ type: 'setCard', card });
                     return card

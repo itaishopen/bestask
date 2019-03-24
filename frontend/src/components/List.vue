@@ -48,7 +48,6 @@
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
 import draggable from 'vuedraggable';
-
 import ListService from '../services/ListService.js';
 export default {
     name: "list",
@@ -98,19 +97,16 @@ export default {
             // this.card.order = this.toListFutureIndex;
             // console.log(this.fromList.cards.length);
             // console.log(this.toList.cards.length);
-
             for (var i = 0; i < this.fromList.cards.length; i++) {
                 this.fromList.cards[i].order = i;
             }
             this.$store.dispatch({ type: "saveList", list: this.fromList });
-
             if (this.fromListId !== this.toListId) {
                 for (var i = 0; i < this.toList.cards.length; i++) {
                     this.toList.cards[i].order = i;
                 }
                 this.$store.dispatch({ type: "saveList", list: this.toList });
             }
-
             // this.$store.dispatch({ type: 'saveCard', card: this.card })
             //     .then(res => {
             //         console.log(res);

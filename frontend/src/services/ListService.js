@@ -32,9 +32,9 @@ function updateLists(lists) {
 
 function saveList(list) {
     if (list._id) {
-        return axios.put(`${LIST_URL}/${list._id}`, list)
+        return axios.put(`${LIST_URL}/${list._id}`, list).then(resolveData);
     } else {        
-        return axios.post(LIST_URL, list)
+        return axios.post(LIST_URL, list).then(resolveData);
     }
 }
 

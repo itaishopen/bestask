@@ -30,16 +30,16 @@ function addListRoutes(app) {
     app.post(LIST_URL, (req, res) => {        
         const list = req.body;
         listService.addList(list)
-            .then(savedList => res.json(savedList))
+            .then(savedList => res.send(savedList))
     })
 
     // UPDATE
-    app.put(LIST_URL, (req, res) => {
+    app.put(`${LIST_URL}/:listId`, (req, res) => {
         const list = req.body;
-        list.board = null;
-        list.cards = null;
+        delete list.board
+        delete list.cards
         listService.updateList(list)
-            .then(savedList => res.json(savedList))
+            .then(savedList => res.send(savedList))
     })
 
 }

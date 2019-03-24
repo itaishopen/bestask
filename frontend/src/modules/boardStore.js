@@ -6,7 +6,8 @@ import ActivityService from '../services/ActivityService.js';
 export default {
     state: {
         board: {},
-        lists: []
+        lists: [],
+        activities: []
     },
     getters: {
         getBoard: state => state.board,
@@ -28,39 +29,41 @@ export default {
         },
         updateList(state, { savedList }) {
             const idx = state.lists.findIndex(list => list._id === savedList._id);
-            state.lists.split(idx, 1, savedList);
+            state.lists.splice(idx, 1, savedList);
         },
         addList(state, { savedList }) {
             state.lists.push(savedList);
         },
         deleteList(state, { list }) {
             const idx = state.lists.findIndex(currList => currList._id === list._id);
-            state.lists.split(idx, 1);
+            state.lists.splice(idx, 1);
         },
-        updateCard(state, { savedCard }) {
-            
-            let cardList = state.lists.find(list => list._id === savedCard.listId);
-            cardList.split(idx, 1, savedList);
-            const idx = state.lists.findIndex(list => list._id === cardList._id);
-            state.lists.split(idx, 1, cardList);
-        },
-        addCard(state, { savedCard }) {
-            console.log(savedCard);
-            let cardList = state.lists.find(list => list._id === savedCard.listId);
+        // updateCard(state, { savedCard }) {
+        //     const cardList = state.lists.find(list => list._id === savedCard.listId);
+        //     cardList.split(idx, 1, savedList);
+        //     const idx = state.lists.findIndex(list => list._id === cardList._id);
+        //     state.lists.split(idx, 1, cardList);
+        // },
+        addCard(state, { savedCard }) {            
+            const cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
-            state.lists.split(idx, 1, cardList);
+            state.lists.splice(idx, 1, cardList);
         },
         addActivity(state, { savedActivity }) {
             state.board.activities.unshift(savedActivity)
+        },
+        setBoardActivities(state, {activities}) {
+            state.board.activities = activities
         }
     },
     actions: {
         loadBoard(context, { boardId }) {
             return BoardService.getBoardById(boardId)
-                .then(({ board, lists }) => {
+                .then(({ board, lists, activities }) => {
                     context.commit({ type: 'setBoard', board });
                     context.commit({ type: 'setLists', lists });
+                    context.commit({ type: 'setBoardActivities', activities });
                 })
         },
         saveBoard(context, { board }) {
@@ -77,20 +80,21 @@ export default {
                     context.commit({ type: 'setLists', lists });
                 })
         },
-        saveList(context, { list }) {
-            console.log({list});
+        saveList(context, { list }) {            
             const isEdit = !!list._id
-            return ListService.saveList(list)
-                .then(savedList => {
-                    if (isEdit) context.commit({ type: 'updateList', savedList });
-                    else context.commit({ type: 'addList', savedList });
+            return CardService.updateCards(list.cards)
+            .then(cards => ListService.saveList(list)
+                .then(savedList => {                    
+                    if (isEdit) context.commit({ type: 'updateList', savedList: savedList[0] });
+                    else context.commit({ type: 'addList', savedList: savedList[0] });
                     return savedList
-                })
+                })) 
         },
         saveCardToList(context, { card }) {
             const isEdit = !!card._id;
             return CardService.saveCard(card)
                 .then(savedCard => {
+                    console.log(savedCard);
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });
                     else context.commit({ type: 'addCard', savedCard });
                     return savedCard

@@ -102,7 +102,9 @@ function updateList(list) {
     list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
         .then(db => db.collection(LIST_DB)
-            .updateOne({ _id: list._id }, { $set: list }))
+            .updateOne({ _id: list._id }, { $set: list }).then(res => {
+                return getListById(list._id)
+            }))
 }
 
 

@@ -7,7 +7,8 @@ export default {
     getCardById,
     removeCard,
     saveCard,
-    getEmptyCard
+    getEmptyCard,
+    updateCards
 }
 const CARD_URL = (process.env.NODE_ENV !== 'development')
     ? '/api/card'
@@ -28,13 +29,17 @@ function removeCard(cardId) {
         .then(resolveData);
 }
 
+function updateCards(cards) {
+    return Promise.all([
+        cards.map(card => this.saveCard(card))
+    ]).then(cards => Promise.resolve(cards))
+}
+
 function saveCard(card) {
     if (card._id) {
-        return axios.put(`${CARD_URL}/${card._id}`, card)
+        return axios.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
     } else {
-        console.log(card);
-        
-        return axios.post(CARD_URL, card)
+        return axios.post(CARD_URL, card).then(resolveData)
     }
 }
 
@@ -50,7 +55,7 @@ function getEmptyCard() {
         attachments: [],
         order: null,
         archived: false,
-        emt: null,
-        amt: null
+        et: null,
+        at: null
     }
 }

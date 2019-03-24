@@ -4,11 +4,11 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ userId = 'guest' }) {
-    console.log(userId);
+    
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB)
-            .find({members: userId }).toArray()
+                .find({ members: userId }).toArray()
         })
 }
 
@@ -24,22 +24,7 @@ function addBoard(board) {
 function getBoardById(boardId) {
     const _id = new ObjectId(boardId)
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB)
-            // .aggregate([
-            //     {
-            //         $match: { _id }
-            //     },
-            //     {
-            //         $lookup:
-            //         {
-            //             from: 'activities',
-            //             localField: '_id',
-            //             foreignField: 'boardId',
-            //             as: 'activities'
-            //         }
-            //     },
-
-            .findOne({ _id }))
+        .then(db => db.collection(BOARDS_DB).find({_id}).toArray())
 }
 
 function removeBoard(boardId) {
@@ -58,7 +43,10 @@ function getEmptyBoard() {
     return {
         title: '',
         members: [],
-        prefs: {}
+        prefs: {
+            bgPic: { src: "", boardNavOp: 0.7},
+            bgColor: { color: "#4286f4", boardNavOp: 0.5}
+        }
     }
 }
 

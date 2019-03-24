@@ -7,10 +7,15 @@
             <div class="label" :style="{background: displayLabel()}"></div>
           </li>
         </ul>
-        <div class="title-card-text">{{card.title}}</div>
+        <div class="title-card-text">{{card.title}} (order {{card.order}})</div>
       </section>
     </router-link>
   </div>
+    <!-- <div class="card-preview flex">
+        <router-link :to="'/card/edit/' + card._id">
+            <div class="title-card">{{card.title}} (order {{card.order}})</div>
+        </router-link>
+    </div> -->
 </template>
 
 <script>

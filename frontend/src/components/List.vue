@@ -3,12 +3,12 @@
     <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
     <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
       <input
+        class="input-title-list"
         ref="title"
-        v-if="isChangeTitle"
         v-model="list.title"
         placeholder="Enter title here..."
       >
-      <button type="submit">
+      <button class="btn-title-list" type="submit">
         <i class="fa fa-plus"></i>
       </button>
     </form>
@@ -31,15 +31,15 @@
             </li>
     </ul>-->
     <button class="list-add-card" v-if="!isAddClick" @click="newCard">
-      add card
+      Add card
       <i class="fa fa-plus"></i>
     </button>
-    <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card">
-      <button @click="closeAdd">&times;</button>
-      <textarea class="text-area" v-model="card.title" placeholder="Enter text here..."></textarea>
-      <button class="list-new-card-options" type="submit">
-        <i class="fa fa-plus"></i>
+    <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
+      <div><textarea class="text-area" v-model="card.title" placeholder="Enter text here..."></textarea></div>
+     <div class="container-add-card-btns"> <button class="list-new-card-options" type="submit">
+        Add card
       </button>
+      <button class="list-x-card-options" @click="closeAdd">&times;</button></div>
     </form>
   </section>
 </template>
@@ -131,30 +131,32 @@ export default {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       this.card.order = this.list.cards.length + 1;
-      this.$store.dispatch({ type: "saveCardToList", card: this.card }).then(card => {
-        let activity = ActivityService.getEmptyActivity()
-        activity.text = ' added a new card to list ';
-        activity.userId = this.$store.getters.loggedInUser._id;
-        activity.boardId = this.list.boardId;
-        activity.listId = this.list._id;
-        activity.cardId = card._id;
-        this.$store.dispatch({ type: "saveActivity", activity })
-        var cardItem = CardService.getEmptyCard();
-        this.$store.commit("setCard", { card: cardItem });
-        var boardId = this.list.boardId;
-        this.$store.dispatch({ type: "loadBoard", boardId })
-      })
+      this.$store
+        .dispatch({ type: "saveCardToList", card: this.card })
+        .then(card => {
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = " added a new card to list ";
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.list.boardId;
+          activity.listId = this.list._id;
+          activity.cardId = card._id;
+          this.$store.dispatch({ type: "saveActivity", activity });
+          var cardItem = CardService.getEmptyCard();
+          this.$store.commit("setCard", { card: cardItem });
+          var boardId = this.list.boardId;
+          this.$store.dispatch({ type: "loadBoard", boardId });
+        });
       this.isAddClick = !this.isAddClick;
+    },
+    choseTitle() {
+      console.log("isChangeTitle", this.isChangeTitle);
+      this.isChangeTitle = !this.isChangeTitle;
+    },
+    changeTitle() {
+      console.log("this.list", this.list);
+      this.$store.dispatch({ type: "saveList", list: this.list });
+      this.isChangeTitle = !this.isChangeTitle;
     }
-  },
-  choseTitle() {
-    this.isChangeTitle = !this.isChangeTitle;
-    console.log("isChangeTitle", this.isChangeTitle);
-  },
-  changeTitle() {
-    console.log("this.list", this.list);
-    this.$store.dispatch({ type: "saveList", list: this.list });
-    this.isChangeTitle = !this.isChangeTitle;
   },
   computed: {
     card: {
@@ -172,7 +174,7 @@ export default {
     // this.currList = this.list;
   },
   watch: {
-    board: function () {
+    board: function() {
       console.log("change in list");
       this.$store.dispatch({ type: "saveList", list: this.list });
     }
@@ -185,9 +187,10 @@ export default {
   display: flex;
   justify-content: flex-start;
   padding-left: 10px;
-  margin-top: 25px;
-  font-size: 22px;
-  color: black;
+  margin: 10px 0 4px;
+  font-size: 18px;
+  color: rgb(0, 2, 34);
+  font-weight: bold;
 }
 .list-cards {
   margin: 20px;
@@ -198,20 +201,71 @@ export default {
 }
 .form-add {
   background-color: rgba(255, 255, 255, 0);
+  display: flex;
 }
 .list-add-card {
   padding: 10px 0;
-  width: 100%;
+  width: 270px;
   height: 40px;
   background-color: rgba(255, 255, 255, 0);
   border: none;
   font-size: 20px;
   color: rgb(82, 82, 82);
   border-radius: 7px;
+  transition: 0.3s;
+}
+.form-add-card {
+  width: 270px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 3px;
+}
+.text-area {
+  min-width: 270px;
+  height: 80px;
+  border: none;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10px;
+}
+.container-add-card-btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 .list-add-card:hover {
-  background-color: rgba(199, 199, 199, 0.699);
+  background-color: rgba(199, 199, 199, 0);
   color: rgb(0, 0, 0);
+}
+.list-new-card-options{
+  background-color: rgb(51, 236, 66);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 0 3px;
+}
+.list-x-card-options{
+    background-color: rgba(51, 236, 66, 0);
+  border: none;
+  width: 20px;
+
+}
+.input-title-list {
+  font-size: 18px;
+  font-weight: bold;
+  height: 32px;
+  width: 100%;
+  border: none;
+  background: rgba(255, 255, 255, 0.911);
+  padding-left: 10px;
+}
+.btn-title-list {
+  background: rgba(255, 255, 255, 0.911);
+  border: none;
 }
 </style>
 

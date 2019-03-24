@@ -6,7 +6,8 @@ import ActivityService from '../services/ActivityService.js';
 export default {
     state: {
         board: {},
-        lists: []
+        lists: [],
+        activities: []
     },
     getters: {
         getBoard: state => state.board,
@@ -43,9 +44,7 @@ export default {
         //     const idx = state.lists.findIndex(list => list._id === cardList._id);
         //     state.lists.split(idx, 1, cardList);
         // },
-        addCard(state, { savedCard }) {
-            console.log(state.lists);
-            
+        addCard(state, { savedCard }) {            
             const cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
@@ -53,6 +52,9 @@ export default {
         },
         addActivity(state, { savedActivity }) {
             state.board.activities.unshift(savedActivity)
+        },
+        setBoardActivities(state, {activities}) {
+            state.board.activities = activities
         }
     },
     actions: {
@@ -61,6 +63,7 @@ export default {
                 .then(({ board, lists, activities }) => {
                     context.commit({ type: 'setBoard', board });
                     context.commit({ type: 'setLists', lists });
+                    context.commit({ type: 'setBoardActivities', activities });
                 })
         },
         saveBoard(context, { board }) {
@@ -77,9 +80,7 @@ export default {
                     context.commit({ type: 'setLists', lists });
                 })
         },
-        saveList(context, { list }) {
-            console.log(list);
-            
+        saveList(context, { list }) {            
             const isEdit = !!list._id
             return CardService.updateCards(list.cards)
             .then(cards => ListService.saveList(list)

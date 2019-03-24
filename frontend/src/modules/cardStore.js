@@ -44,8 +44,9 @@ const cardStore = {
         },
         loadCard(context, { cardId }) {
             CardService.getCardById(cardId)
-                .then(card => {                    
-                    context.commit({ type: 'setCard', card })
+                .then(card => {                                                            
+                    context.commit({ type: 'setCard', card });
+                    return card
                 })
         },
         removeCard(context, { cardId }) {

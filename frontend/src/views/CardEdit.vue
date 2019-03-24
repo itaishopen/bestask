@@ -64,7 +64,7 @@
         <i class="fa fa-check" v-if="labelIsChosen.red"></i>
       </div>
       <div class="LabelBlue" @click="changeLabel('blue')">
-        Duolicate
+        Duplicate
         <i class="fa fa-check" v-if="labelIsChosen.blue"></i>
       </div>
       <div class="LabelGreen" @click="changeLabel('green')">
@@ -75,7 +75,7 @@
         Invalid
         <i class="fa fa-check" v-if="labelIsChosen.yellow"></i>
       </div>
-      <div class="LabePurple" @click="changeLabel('purple ')">
+      <div class="LabePurple" @click="changeLabel('purple')">
         Question
         <i class="fa fa-check" v-if="labelIsChosen.purple"></i>
       </div>
@@ -104,7 +104,7 @@ export default {
       comment: "",
       openModalMembers: false,
       labelIsChosen: {
-        red: true,
+        red: false,
         blue: false,
         green: false,
         yellow: false,
@@ -115,7 +115,17 @@ export default {
   },
   created() {
     var cardId = this.$route.params.cardId;
-    this.$store.dispatch({ type: "loadCard", cardId });
+    var card = this.$store.dispatch({ type: "loadCard", cardId }).then(card => console.log(card)
+    )
+    console.log(card);
+
+    card.labels.forEach(label => {
+      console.log(label, this.labelIsChosen[lable]);
+
+      this.labelIsChosen[lable] = true;
+    });
+    console.log("hi ", this.card.labels);
+    console.log("hi 2", this.card);
   },
   mounted() {
     this.$refs.myModalRef.show();

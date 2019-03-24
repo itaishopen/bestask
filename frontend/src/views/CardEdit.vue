@@ -164,9 +164,7 @@ export default {
       this.$router.push("/task");
     },
     saveCard(archive) {
-      console.log("archive", archive);
       if (archive) this.card.archived = true;
-      console.log("Saving card..", this.card);
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -176,12 +174,11 @@ export default {
           activity.boardId = this.$store.getters.getBoard._id;
           activity.listId = card.listId;
           activity.cardId = card._id;
+          activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
           this.$store.dispatch({ type: "saveActivity", activity });
-          // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
           this.$router.push("/task");
         })
         .catch(err => {
-          console.log(err);
           this.$router.push("/task");
         });
     },

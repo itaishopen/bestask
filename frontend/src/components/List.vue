@@ -133,6 +133,7 @@ export default {
           activity.boardId = this.list.boardId;
           activity.listId = this.list._id;
           activity.cardId = card._id;
+          activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
           this.$store.dispatch({ type: "saveActivity", activity });
           var cardItem = CardService.getEmptyCard();
           this.$store.commit("setCard", { card: cardItem });

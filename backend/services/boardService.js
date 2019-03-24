@@ -4,10 +4,40 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ userId = 'guest' }) {
+    console.log(userId);
+    
+    if (userId !== 'guest') userId = new ObjectId(userId)
+    
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB)
-                .find({ members: userId }).toArray()
+                .aggregate([
+                    {
+                        $match:  { members: { $elemMatch: { userId }}}
+                    },
+                    {
+                        $unwind: "$members"
+                    },
+                    {
+                        $lookup: 
+                        {
+                            from: "users",
+                            localField: 'members.userId',
+                            foreignField: '_id',
+                            as: 'resultingArray'
+                        }
+                    },
+                    {
+                        $group: {
+                            "_id": "$_id",
+                            "prefs": { "$first": "$prefs" },
+                            "title": { "$first": "$title" },
+                            "members": { "$push": "$members" },
+                            "users": { "$push": "$resultingArray" }
+                        }
+                    }
+                ]).toArray()
+                // .find({ members: userId }).toArray()
         })
 }
 
@@ -39,6 +69,7 @@ function removeBoard(boardId) {
 function updateBoard(board) {
     let boardId = board._id
     board._id = new ObjectId(board._id);
+    board.members.forEach(userId => userId = new ObjectId(userId))
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board})

@@ -107,26 +107,7 @@ export default {
         },
         addList() {
             this.list.boardId = this.board._id;
-            this.list.order = this.lists.length;
-            this.$store
-                .dispatch({ type: "saveNewList", list: this.list })
-                .then(savedList => {
-                    let activity = ActivityService.getEmptyActivity();
-                    activity.text = " added a new list to ";
-                    activity.userId = this.$store.getters.loggedInUser._id;
-                    activity.boardId = this.board._id;
-                    activity.listId = savedList._id;
-                    this.$store.dispatch({ type: "saveActivity", activity });
-                });
-            this.isAddListClick = !this.isAddListClick;
-        },
-        closeAdd() {
-            this.isAddListClick = !this.isAddListClick;
-        },
-        addList() {
-            this.list.boardId = this.board._id;
             this.list.order = this.lists.length + 1;
-            console.log(this.list, "list in add click");
             this.$store
                 .dispatch({ type: "saveNewList", list: this.list })
                 .then(savedList => {
@@ -135,6 +116,7 @@ export default {
                     activity.userId = this.$store.getters.loggedInUser._id;
                     activity.boardId = this.board._id;
                     activity.listId = savedList._id;
+                    activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
                     this.$store.dispatch({ type: "saveActivity", activity });
                 });
             this.isAddListClick = !this.isAddListClick;

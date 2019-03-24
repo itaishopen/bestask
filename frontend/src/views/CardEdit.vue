@@ -87,27 +87,21 @@
     </b-modal>
 
     <!-- Modal Labels Component -->
-    <!-- <b-modal id="modal6" title="Members">
+    <b-modal id="modal6" title="Members">
       <form>
-        <input type="search" name="q" placeholder="Search Members">
+        <input type="search" name="search" placeholder="Search Members">
         <input type="submit">
       </form>
       <hr>
-
-      <div v-for="member in card.members" :key="member">{{member}}</div>
-
-      {{board.members}}
+      <!-- <div v-for="member in card.members" :key="member">{{member}}</div> -->
+      {{card.members}}
       <hr>
-
- <form class="add-member">
-      <div><input class="input" v-model="card.members" placeholder="Enter text here..."></div>
-     <div class="container-add-card-btns"> <button class="list-new-card-options" type="submit">
-        Add card
-      </button>
-      <button class="list-x-card-options">&times;</button></div>
-    </form>
-
-    </b-modal> -->
+      <form class="add-member" @submit.prevent="addMember()">
+        <div>
+          <input class="input"  v-model="card.members" placeholder="Enter text here...">
+        </div>
+      </form>
+    </b-modal>
   </b-modal>
   <!-- </section> -->
 </template>
@@ -125,14 +119,14 @@ export default {
   data() {
     return {
       comment: "",
-      openModalMembers: false,
+      openModalMembers: false
     };
   },
   created() {
     var cardId = this.$route.params.cardId;
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
-      this.card = card
-    })
+      this.card = card;
+    });
 
     console.log("hi ", this.card.labels);
     console.log("hi 2", this.card);
@@ -156,8 +150,15 @@ export default {
     }
   },
   methods: {
+    addMember(member) {
+      console.log("addMember", this.card.members);
+      this.card.members.push(member);
+      console.log(this.card.members);
+    },
     checkLabel(color) {
-      return this.card.labels.findIndex(label => label === color) === -1 ? false : true;
+      return this.card.labels.findIndex(label => label === color) === -1
+        ? false
+        : true;
     },
     markChose() {
       this.card.labels.forEach(label => {
@@ -230,7 +231,7 @@ export default {
 
   components: {},
   watch: {
-    card: function () {
+    card: function() {
       console.log("change in card");
       this.$store.dispatch({ type: "saveCard", card: this.card });
     }

@@ -2,9 +2,9 @@
     <div class="card-preview flex">
         <router-link :to="'/card/edit/' + card._id">
             <section class="title-card">
-                <ul class="labels">
+                <ul class="labels" v-if="card.labels">
                     <li class="label-li" v-for="label in card.labels" :key="label">
-                        <div class="label" :style="{background: displayLabel()}"></div>
+                        <div class="label" :style="{background: label}"></div>
                     </li>
                 </ul>
                 <div class="title-card-text">{{card.title}} (order {{card.order}})</div>
@@ -21,9 +21,8 @@
 <script>
 export default {
     name: "CardPreview",
-    props: ["card", "index"],
+    props: ["card"],
     created() {
-        this.card.order = this.index;
     },
     data() {
         return {
@@ -31,12 +30,7 @@ export default {
     },
     computed: {},
     methods: {
-        displayLabel() {
-            var curectColor = this.card.labels[0];
-            this.card.labels.push(curectColor);
-            this.card.labels.shift();
-            return curectColor;
-        }
+        
     },
     components: {}
 };

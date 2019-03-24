@@ -46,10 +46,12 @@ function query({ boardId = null }) {
 function addList(list) {
     list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
-        .then(db => db.collection(LIST_DB).insertOne(list).then(res => {
-            list._id = res.insertedId
-            return list
-        }))
+        .then(db => {
+            return db.collection(LIST_DB).insertOne(list)
+        })
+        .then(res => {
+            return getListById(res.insertedId)
+        })
 }
 
 function getListById(listId) {
@@ -98,13 +100,17 @@ function removeList(listId) {
 }
 
 function updateList(list) {
+    let listId = list._id
     list._id = new ObjectId(list._id);
-    list.boardId = new ObjectId(list.boardId);
+    list.boardId = new ObjectId(list.boardId);    
     return mongoService.connect()
-        .then(db => db.collection(LIST_DB)
-            .updateOne({ _id: list._id }, { $set: list }).then(res => {
-                return getListById(list._id)
-            }))
+        .then(db => {
+            return db.collection(LIST_DB)
+                .updateOne({ _id: list._id }, { $set: list })
+        })
+        .then(() => {            
+            return getListById(listId)
+        })
 }
 
 

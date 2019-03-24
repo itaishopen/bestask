@@ -4,7 +4,6 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ userId = 'guest' }) {
-    
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB)
@@ -15,16 +14,20 @@ function query({ userId = 'guest' }) {
 function addBoard(board) {
     if (board._id) board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).insertOne({board}).then(res => {
-            board._id = res.insertedId
-            return board
-        }))
+        .then(db => {
+            return db.collection(BOARDS_DB).insertOne({board})
+        })
+        .then(res => {
+            return getBoardById(res.insertedId)
+        })
 }
 
 function getBoardById(boardId) {
     const _id = new ObjectId(boardId)
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).find({_id}).toArray())
+        .then(db => {
+            return db.collection(BOARDS_DB).find({_id}).toArray()
+        })
 }
 
 function removeBoard(boardId) {
@@ -34,9 +37,15 @@ function removeBoard(boardId) {
 }
 
 function updateBoard(board) {
+    let boardId = board._id
     board._id = new ObjectId(board._id);
     return mongoService.connect()
-        .then(db => db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: {board} }))
+        .then(db => {
+            return db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board})
+        })
+        .then(() => {
+            return getBoardById(boardId)
+        })
 }
 
 function getEmptyBoard() {

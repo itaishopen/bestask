@@ -91,7 +91,6 @@ export default {
         };
     },
     created() {
-        console.log("CardEdit was created");
         var cardId = this.$route.params.cardId;
         this.$store.dispatch({ type: "loadCard", cardId });
     },
@@ -120,16 +119,13 @@ export default {
             });
             if (null === color) return
             this.card.labels.push(color);
-            console.log(color, this.card.labels);
         },
         closeModal() {
             // this.$refs.myModalRef.hide();
             this.$router.push('/task');
         },
         saveCard(archive) {
-            console.log('archive', archive);
             if (archive) this.card.archived = true;
-            console.log('Saving card..', this.card);
             this.$store.dispatch({ type: 'saveCardToList', card: this.card })
                 .then(card => {
                     let activity = ActivityService.getEmptyActivity()
@@ -143,7 +139,6 @@ export default {
                     this.$router.push('/task');
                 })
                 .catch(err => {
-                    console.log(err);
                     this.$router.push('/task');
                 });
         },
@@ -157,7 +152,6 @@ export default {
             }
         },
         modalClosed() {
-            console.log('modalClosed');
             this.$router.push('/task');
         },
         moveCard() {

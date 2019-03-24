@@ -85,7 +85,7 @@ export default {
       this.list.order = this.lists.length + 1;
       console.log(this.list, "list in add click");
       this.$store
-        .dispatch({ type: "saveList", list: this.list })
+        .dispatch({ type: "saveNewList", list: this.list })
         .then(savedList => {
           let activity = ActivityService.getEmptyActivity();
           activity.text = " added a new list to ";

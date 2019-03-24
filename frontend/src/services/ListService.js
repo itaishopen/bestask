@@ -27,7 +27,8 @@ function query({ boardId, archived = false }) {
 function updateLists(lists) {
     return Promise.all([
         lists.map(list => this.saveList(list))
-    ]).then(lists => Promise.resolve(lists))
+    ]).then(() => {
+        return lists})
 }
 
 function saveList(list) {    

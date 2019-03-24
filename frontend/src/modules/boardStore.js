@@ -79,7 +79,9 @@ export default {
         updateLists(context, { lists }) {
             return ListService.updateLists(lists)
                 .then(lists => {
-                    context.commit({ type: 'setLists', lists });
+                    console.log(lists);
+                    
+                    context.commit({ type: 'setLists', lists: lists[0] });
                 })
         },
         saveList(context, { list }) {
@@ -100,9 +102,7 @@ export default {
                 })
         },
         saveCardToList(context, { card }) {
-            const isEdit = !!card._id;
-            console.log(card);
-            
+            const isEdit = !!card._id;            
             return CardService.saveCard(card)
                 .then(savedCard => {
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });

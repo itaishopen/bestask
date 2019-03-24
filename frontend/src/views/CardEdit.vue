@@ -29,7 +29,7 @@
             <div class="nav flex">
                 <label class="m-1">Add to Card</label>
                 <b-button class="m-1 btn-block" size="sm">Members</b-button>
-                <b-button class="m-1 btn-block" size="sm">Labels</b-button>
+                <b-button v-b-modal.modal1 class="m-1 btn-block" size="sm">Labels</b-button>
                 <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
 
                 <label class="m-1">Actions</label>
@@ -57,30 +57,43 @@
             <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
             <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
         </div>
+        <!-- Modal Labels Component -->
+        <b-modal id="modal1" title="Labels">
+            <div class="LabelRed" @click="changeLabel('red')">
+                <div v-if="labelIsChosen"></div>
+            </div>
+            <div class="LabelBlue" @click="changeLabel('blue')">blue</div>
+            <div class="LabelGreen" @click="changeLabel('green')">green</div>
+            <div class="LabeYellow" @click="changeLabel('yellow')">yellow</div>
+            <div class="LabePurple" @click="changeLabel('purple ')">purple</div>
+            <div class="LabeOrange" @click="changeLabel('orange')">orange</div>
+            <p class="my-4">Labels!</p>
+        </b-modal>
     </b-modal>
     <!-- </section> -->
 </template>
 
 <script>
-
-import moment from 'moment';
-import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
+import moment from "moment";
+import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 export default {
-    name: 'CardEdit',
+    name: "CardEdit",
     data() {
         return {
-            comment: '',
+            comment: "",
+            openModalMembers: false,
+            labelIsChosen: false
         };
     },
     created() {
-        console.log('CardEdit was created');
+        console.log("CardEdit was created");
         var cardId = this.$route.params.cardId;
-        this.$store.dispatch({ type: 'loadCard', cardId });
+        this.$store.dispatch({ type: "loadCard", cardId });
     },
     mounted() {
         this.$refs.myModalRef.show();
@@ -99,6 +112,16 @@ export default {
         }
     },
     methods: {
+        changeLabel(color) {
+            this.card.labels.forEach(label => {
+                if (label === color) {
+                    color = null
+                }
+            });
+            if (null === color) return
+            this.card.labels.push(color);
+            console.log(color, this.card.labels);
+        },
         closeModal() {
             // this.$refs.myModalRef.hide();
             this.$router.push('/task');
@@ -115,7 +138,7 @@ export default {
                     activity.boardId = this.$store.getters.getBoard._id;
                     activity.listId = card.listId;
                     activity.cardId = card._id;
-                    this.$store.dispatch({type: "saveActivity", activity})
+                    this.$store.dispatch({ type: "saveActivity", activity })
                     // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
                     this.$router.push('/task');
                 })
@@ -137,20 +160,12 @@ export default {
             console.log('modalClosed');
             this.$router.push('/task');
         },
-        // archiveCard() {
-        //     this.card.archived = true;
-        //     this.saveCard();
-        //     // console.log(this.card);
-        //     // this.$store.dispatch({ type: "loadBoard", boardId });
-        //     // this.$router.push('/task');
-        // },
         moveCard() {
             // console.log(this.$store.getters.getLists);
             this.$store.getters.getLists.map(list => console.log(list.title));
         }
     },
-    components: {
-    },
+    components: {}
 };
 </script>
 
@@ -198,5 +213,42 @@ export default {
 
 .comments {
     flex-direction: column;
+}
+
+.LabelRed {
+    background-color: rgb(255, 22, 22);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+.LabelBlue {
+    background-color: rgb(22, 57, 255);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+.LabelGreen {
+    background-color: rgb(22, 255, 80);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+.LabeYellow {
+    background-color: rgb(239, 255, 22);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+.LabePurple {
+    background-color: rgb(189, 22, 255);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+.LabeOrange {
+    background-color: rgb(255, 154, 22);
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
 }
 </style>

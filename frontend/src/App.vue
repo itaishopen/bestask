@@ -25,7 +25,7 @@
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
+  padding: 0 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

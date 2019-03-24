@@ -10,29 +10,22 @@ import CardEdit from './views/CardEdit.vue';
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes: [
-        { path: '/', name: 'home', component: Home },
-        {
-            path: '/about', name: 'about',
-            // route level code-splitting
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-        },
-        { path: '/task', component: TaskApp },
-        // { path: '/card/:cardId', component: TaskApp },
-        { path: '/card/edit/:cardId', component: CardEdit },
-        {
-          path: '/login',
-          name: 'login',
-          component: Login
-        },
-        {
-          path: '/sign-up',
-          name: 'sign-up',
-          component: SignUp
-        },
-    ]
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes: [
+    { path: '/', name: 'home', component: Home },
+    {
+      path: '/about', name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    // { path: '/task', component: TaskApp },
+    { path: '/task', component: TaskApp, meta: { showModal: false } },
+    // { path: '/card/edit/:cardId', component: CardEdit },
+    { path: '/card/edit/:cardId', component: CardEdit, meta: { showModal: true } },
+    { path: '/login', name: 'login', component: Login },
+    { path: '/sign-up', name: 'sign-up', component: SignUp },
+  ]
 })

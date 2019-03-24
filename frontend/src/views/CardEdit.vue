@@ -2,7 +2,7 @@
   <!-- <section> -->
   <!-- Modal Component -->
   <b-modal
-    v-if="card"
+    v-if="card && showModal"
     id="modal1"
     ref="myModalRef"
     @hide="modalClosed"
@@ -147,7 +147,10 @@ export default {
       return this.$store.getters.getLists.filter(
         list => list._id !== this.card.listId
       );
-    }
+    },
+    showModal() {
+      return this.$route.meta.showModal;
+      }
   },
   methods: {
     addMember(member) {
@@ -235,7 +238,10 @@ export default {
       console.log("change in card");
       this.$store.dispatch({ type: "saveCard", card: this.card });
     }
-  }
+  },
+  '$route.meta'({ showModal }) {
+    this.showModal = showModal;
+    }
 };
 </script>
 

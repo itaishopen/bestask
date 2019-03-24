@@ -44,7 +44,9 @@ export default {
         //     const idx = state.lists.findIndex(list => list._id === cardList._id);
         //     state.lists.split(idx, 1, cardList);
         // },
-        addCard(state, { savedCard }) {            
+        addCard(state, { savedCard }) {
+            console.log(savedCard);
+                    
             const cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.cards.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
@@ -99,6 +101,8 @@ export default {
         },
         saveCardToList(context, { card }) {
             const isEdit = !!card._id;
+            console.log(card);
+            
             return CardService.saveCard(card)
                 .then(savedCard => {
                     if (isEdit) context.commit({ type: 'updateCard', savedCard });

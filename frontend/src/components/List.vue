@@ -130,7 +130,7 @@ export default {
     addCard() {
       this.card.listId = this.list._id;
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-      this.card.order = this.list.cards.length + 1;
+      this.card.order = this.list.cards.length;
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {

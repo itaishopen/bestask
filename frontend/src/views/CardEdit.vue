@@ -28,7 +28,7 @@
       </main>
       <div class="nav flex">
         <label class="m-1">Add to Card</label>
-        <b-button class="m-1 btn-block" size="sm">Members</b-button>
+        <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
         <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
         <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
 
@@ -85,6 +85,29 @@
       </div>
       <p class="my-4">Labels!</p>
     </b-modal>
+
+    <!-- Modal Labels Component -->
+    <b-modal id="modal6" title="Members">
+      <form>
+        <input type="search" name="q" placeholder="Search Members">
+        <input type="submit">
+      </form>
+      <hr>
+
+      <div v-for="member in card.members" :key="member">{{member}}</div>
+
+      {{board.members}}
+      <hr>
+
+ <form class="add-member">
+      <div><input class="input" v-model="card.members" placeholder="Enter text here..."></div>
+     <div class="container-add-card-btns"> <button class="list-new-card-options" type="submit">
+        Add card
+      </button>
+      <button class="list-x-card-options">&times;</button></div>
+    </form>
+
+    </b-modal>
   </b-modal>
   <!-- </section> -->
 </template>
@@ -103,29 +126,12 @@ export default {
     return {
       comment: "",
       openModalMembers: false,
-      labelIsChosen: {
-        red: false,
-        blue: false,
-        green: false,
-        yellow: false,
-        purple: false,
-        orange: false
-      }
     };
   },
   created() {
     var cardId = this.$route.params.cardId;
-    var card = this.$store.dispatch({ type: "loadCard", cardId }).then(card => console.log(card)
-    )
-    console.log(card);
-
-    card.labels.forEach(label => {
-      console.log(label, this.labelIsChosen[lable]);
-
-      this.labelIsChosen[lable] = true;
-    });
-    console.log("hi ", this.card.labels);
-    console.log("hi 2", this.card);
+    this.$store.dispatch({ type: "loadCard", cardId });
+  
   },
   mounted() {
     this.$refs.myModalRef.show();

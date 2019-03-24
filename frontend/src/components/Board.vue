@@ -15,11 +15,12 @@
         <ul class="board-list-ul">
             <draggable
                 v-model="lists"
+                v-bind="dragOptions"
                 group="lists"
                 @start="drag=true"
                 @end="endMoveList"
                 :move="moveList"
-                 class="draggable"
+                class="draggable"
             >
                 <li class="board-list-li" v-for="list in lists" :key="list._id">
                     <list :list="list"/>
@@ -84,6 +85,14 @@ export default {
             set(lists) {
                 this.$store.commit("setLists", { lists: lists });
             }
+        },
+        dragOptions() {
+            return {
+                animation: 200,
+                group: "description",
+                disabled: false,
+                ghostClass: "ghost"
+            };
         }
     },
 
@@ -278,6 +287,11 @@ export default {
 .draggable {
     display: flex;
     flex-direction: row;
+}
+
+.ghost {
+    opacity: 0.3;
+    background: #c8ebfb;
 }
 </style>
 

@@ -20,19 +20,15 @@
 
 <script>
 export default {
-    name: "CardPreview",
-    props: ["card"],
-    created() {
-    },
-    data() {
-        return {
-        };
-    },
-    computed: {},
-    methods: {
-        
-    },
-    components: {}
+  name: "CardPreview",
+  props: ["card"],
+  created() {},
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {},
+  components: {}
 };
 </script>
 <style>
@@ -58,7 +54,7 @@ export default {
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(230, 230, 230);
   border-radius: 10px;
-  margin: 3px ;
+  margin: 3px;
   display: flex;
   flex-direction: column;
   justify-content: center;

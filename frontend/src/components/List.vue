@@ -51,10 +51,10 @@
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
-import draggable from 'vuedraggable';
-import ListService from '../services/ListService.js';
-import ActivityService from '../services/ActivityService.js';
-import SocketService from '../services/SocketService.js';
+import draggable from "vuedraggable";
+import ListService from "../services/ListService.js";
+import ActivityService from "../services/ActivityService.js";
+import SocketService from "../services/SocketService.js";
 export default {
   name: "list",
   props: ["list"],
@@ -104,8 +104,8 @@ export default {
           this.toList.cards[j].order = j;
         }
         this.$store.dispatch({ type: "saveList", list: this.toList });
-        SocketService.send(this.list.boardId);
       }
+      SocketService.send(this.list.boardId);
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);
@@ -145,7 +145,9 @@ export default {
           activity.boardId = boardId;
           activity.listId = this.list._id;
           activity.cardId = card._id;
-          activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+          activity.createdAt = moment(Date.now()).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          );
           this.$store.dispatch({ type: "saveActivity", activity });
           var cardItem = CardService.getEmptyCard();
           this.$store.commit("setCard", { card: cardItem });

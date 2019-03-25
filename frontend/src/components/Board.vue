@@ -65,12 +65,18 @@ import draggable from "vuedraggable";
 
 export default {
     name: "board",
-    props: ["board"],
+    // props: ["board"],
     data() {
         return {
             isAddListClick: false,
             isChangeTitle: false,
         };
+    },
+    created() {
+        // var boardId = '5c90e128614ea0f42b453829';
+        var boardId = this.$route.params.boardId;
+        // this.$store.dispatch({ type: 'loadBoard', boardId });
+        this.$store.dispatch({ type: 'loadBoard', boardId: boardId });
     },
     components: {
         list,
@@ -78,6 +84,9 @@ export default {
     },
 
     computed: {
+        board() {
+            return this.$store.getters.getBoard;
+        },
         lists: {
             get() {
                 return this.$store.getters.getLists;

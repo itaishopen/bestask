@@ -2,7 +2,8 @@
   <!-- <section> -->
   <!-- Modal Component -->
   <b-modal
-    v-if="card && showModal"
+    v-if="card"
+    v-model="showModal"
     id="modal1"
     ref="myModalRef"
     @hide="modalClosed"
@@ -188,7 +189,7 @@ export default {
     },
     closeModal() {
       // this.$refs.myModalRef.hide();
-      this.$router.push("/task");
+      this.$router.push("/card");
     },
     saveCard(archive) {
       console.log("archive", archive);
@@ -205,11 +206,11 @@ export default {
           activity.cardId = card._id;
           this.$store.dispatch({ type: "saveActivity", activity });
           // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
-          this.$router.push("/task");
+          this.$router.push("/card");
         })
         .catch(err => {
           console.log(err);
-          this.$router.push("/task");
+          this.$router.push("/card");
         });
     },
 
@@ -224,7 +225,7 @@ export default {
     },
     modalClosed() {
       console.log("modalClosed");
-      this.$router.push("/task");
+      this.$router.push("/card");
     },
     moveCard() {
       // console.log(this.$store.getters.getLists);

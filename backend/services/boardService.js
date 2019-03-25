@@ -44,7 +44,7 @@ function addBoard(board) {
     })
     return mongoService.connect()
         .then(db => {
-            return db.collection(BOARDS_DB).insertOne({board})
+            return db.collection(BOARDS_DB).insertOne(board)
         })
         .then(res => {
             return getBoardById(res.insertedId)

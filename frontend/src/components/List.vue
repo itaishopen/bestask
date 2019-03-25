@@ -51,6 +51,7 @@ import CardService from "../services/CardService.js";
 import draggable from 'vuedraggable';
 import ListService from '../services/ListService.js';
 import ActivityService from '../services/ActivityService.js';
+import SocketService from '../services/SocketService.js';
 export default {
   name: "list",
   props: ["list"],
@@ -95,6 +96,7 @@ export default {
           }
           this.$store.dispatch({ type: "saveList", list: this.toList });
         }
+        SocketService.send(this.list.boardId);
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);
@@ -127,18 +129,19 @@ export default {
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
+          var boardId = this.list.boardId;
           let activity = ActivityService.getEmptyActivity();
           activity.text = " added a new card to list ";
           activity.userId = this.$store.getters.loggedInUser._id;
-          activity.boardId = this.list.boardId;
+          activity.boardId = boardId;
           activity.listId = this.list._id;
           activity.cardId = card._id;
           activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
           this.$store.dispatch({ type: "saveActivity", activity });
           var cardItem = CardService.getEmptyCard();
           this.$store.commit("setCard", { card: cardItem });
-          var boardId = this.list.boardId;
           this.$store.dispatch({ type: "loadBoard", boardId });
+          SocketService.send(boardId);
         });
       this.isAddClick = !this.isAddClick;
     },
@@ -150,6 +153,7 @@ export default {
       console.log("this.list", this.list);
       this.$store.dispatch({ type: "saveList", list: this.list });
       this.isChangeTitle = !this.isChangeTitle;
+      SocketService.send(this.list.boardId);
     }
   },
   computed: {
@@ -176,9 +180,10 @@ export default {
     // this.currList = this.list;
   },
   watch: {
-    board: function() {
+    list: function() {
       console.log("change in list");
       this.$store.dispatch({ type: "saveList", list: this.list });
+      SocketService.send(this.list.boardId);
     }
   }
 };

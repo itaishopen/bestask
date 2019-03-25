@@ -1,9 +1,10 @@
+import io from 'socket.io-client';
 var socket = io('');
 
 var user = this.$store.getters.loggedInUser
 
 function init(board){
-	socket.emit('roomRequested', {user, board});
+	socket.emit('boardRequested', {board, user});
 
 	socket.on('userConnected', user => {
 		console.log('user connected in front', { newUser: user });

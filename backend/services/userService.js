@@ -14,7 +14,7 @@ function query({ boardId = null }) {
                         "from": "activities",
                         "let": { "user_id": "$_id" },
                         "pipeline": [
-                            { "$match": { "$expr": { "$eq": ["$boardId", "$$board_id"] } } },
+                            { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
                             {
                                 "$lookup": {
                                     "from": "users",
@@ -73,7 +73,44 @@ function addUser(user) {
 function getUserById(userId) {
     const _id = new ObjectId(userId)
     return mongoService.connect()
-        .then(db => db.collection(USERS_DB).findOne({ _id }))
+        .then(db => db.collection(USERS_DB)
+        .aggregate([
+            { $match: { _id }},
+            {
+                "$lookup": {
+                    "from": "activities",
+                    "let": { "user_id": "$_id" },
+                    "pipeline": [
+                        { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
+                        {
+                            "$lookup": {
+                                "from": "boards",
+                                "localField": 'boardId',
+                                "foreignField": '_id',
+                                "as": "board"
+                            }
+                        },
+                        {
+                            "$lookup": {
+                                "from": "lists",
+                                "localField": 'listId',
+                                "foreignField": '_id',
+                                "as": "list"
+                            }
+                        },
+                        {
+                            "$lookup": {
+                                "from": "cards",
+                                "localField": 'cardId',
+                                "foreignField": '_id',
+                                "as": "card"
+                            }
+                        },
+                    ],
+                    "as": "activities"
+                }
+            },
+        ]).toArray())
 }
 
 function removeUser(userId) {

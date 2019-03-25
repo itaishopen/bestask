@@ -212,8 +212,8 @@ export default {
                     activity.boardId = this.$store.getters.getBoard._id;
                     activity.listId = card.listId;
                     activity.cardId = card._id;
-                    this.$store.dispatch({ type: 'saveActivity', activity });
-                    // EventBusService.$emit(SHOW_MSG, { txt: 'Card Saved!', type: 'success' });
+                    activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+                    this.$store.dispatch({ type: "saveActivity", activity });
                     // this.$router.push('/card');
                     // this.$router.push('/board/' + this.$store.getters.getBoard._id);
                     this.$router.go(-1);

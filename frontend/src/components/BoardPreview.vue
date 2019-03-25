@@ -8,8 +8,8 @@
 </template>
 
 <script>
-// import  BoardService from "../services/BoardService.js";
 import Board from './Board.vue';
+import SocketService from '../services/SocketService'
 export default {
     name: 'BoardPreview',
     props: ["board"],
@@ -17,9 +17,16 @@ export default {
         Board
     },
     created() {
-        // var boardId = '5c90e128614ea0f42b453829';
-        // this.$store.dispatch({ type: 'loadBoard', boardId });
-        // this.$store.dispatch({ type: 'loadBoard', boardId: this.board._id });
+        // var boardId = "5c90e128614ea0f42b453829";
+        // this.$store.dispatch({ type: 'loadBoard', boardId }).then(() => {
+        //     SocketService.init(board())
+        //     var user = this.$store.getters.loggedInUser;
+        //     if (user) SocketService.on('userConnected', user)
+        //     else SocketService.on('userConnected', null)
+        // })
+        // SocketService.on('board-change', function(boardId) {
+        //     this.$store.dispatch({ type: "loadBoard", boardId })
+        // })
     },
     computed: {
         // board() {

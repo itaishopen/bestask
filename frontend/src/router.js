@@ -26,7 +26,15 @@ export default new Router({
     { path: '/board', component: TaskApp, meta: { showModal: false } },
     { path: '/board/:boardId', component: Board, meta: { showModal: false } },
     { path: '/card/edit/:cardId', component: CardEdit, meta: { showModal: true } },
-    { path: '/login', name: 'login', component: Login },
-    { path: '/sign-up', name: 'sign-up', component: SignUp },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/sign-up',
+      name: 'sign-up',
+      component: SignUp
+    },
   ]
 })

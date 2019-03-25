@@ -11,7 +11,7 @@
 
 <script>
 import BoardPreview from '../components/BoardPreview.vue';
-import CardEdit from '@/views/CardEdit.vue';
+// import CardEdit from '@/views/CardEdit.vue';
 
 
 export default {
@@ -42,7 +42,6 @@ export default {
         // }
     },
     components: {
-        CardEdit,
         BoardPreview
     }
 };

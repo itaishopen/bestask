@@ -7,6 +7,7 @@
                 ref="title"
                 v-model="board.title"
                 placeholder="Enter title here..."
+                autofocus
             >
             <button class="btn-title-board" type="submit">
                 <i class="fa fa-plus"></i>
@@ -60,6 +61,7 @@
 import CardService from "../services/CardService.js";
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
+import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
 import draggable from "vuedraggable";
 
@@ -104,6 +106,14 @@ export default {
             };
         }
     },
+    dragOptions() {
+        return {
+            animation: 200,
+            group: "description",
+            disabled: false,
+            ghostClass: "ghost"
+        };
+    },
 
     methods: {
         newList() {
@@ -116,26 +126,7 @@ export default {
         },
         addList() {
             this.list.boardId = this.board._id;
-            this.list.order = this.lists.length;
-            this.$store
-                .dispatch({ type: "saveNewList", list: this.list })
-                .then(savedList => {
-                    let activity = ActivityService.getEmptyActivity();
-                    activity.text = " added a new list to ";
-                    activity.userId = this.$store.getters.loggedInUser._id;
-                    activity.boardId = this.board._id;
-                    activity.listId = savedList._id;
-                    this.$store.dispatch({ type: "saveActivity", activity });
-                });
-            this.isAddListClick = !this.isAddListClick;
-        },
-        closeAdd() {
-            this.isAddListClick = !this.isAddListClick;
-        },
-        addList() {
-            this.list.boardId = this.board._id;
             this.list.order = this.lists.length + 1;
-            console.log(this.list, "list in add click");
             this.$store
                 .dispatch({ type: "saveNewList", list: this.list })
                 .then(savedList => {
@@ -144,7 +135,11 @@ export default {
                     activity.userId = this.$store.getters.loggedInUser._id;
                     activity.boardId = this.board._id;
                     activity.listId = savedList._id;
+                    activity.createdAt = moment(Date.now()).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                    );
                     this.$store.dispatch({ type: "saveActivity", activity });
+                    SocketService.send(this.board._id);
                 });
             this.isAddListClick = !this.isAddListClick;
         },
@@ -155,17 +150,21 @@ export default {
         changeTitle() {
             console.log("this.board", this.board);
             this.$store.dispatch({ type: "saveBoard", board: this.board });
+            SocketService.send(this.board._id);
             this.isChangeTitle = !this.isChangeTitle;
         },
         moveList(evt) {
             // console.log(evt);
-
         },
         endMoveList(evt) {
             for (var i = 0; i < this.lists.length; i++) {
                 this.lists[i].order = i;
             }
-            this.$store.dispatch({ type: "updateLists", lists: this.lists });
+            this.$store
+                .dispatch({ type: "updateLists", lists: this.lists })
+                .then(() => {
+                    SocketService.send(this.board._id);
+                });
         }
     },
 
@@ -180,6 +179,8 @@ export default {
 
 <style lang="scss">
 .board-title {
+    width: 200px;
+    cursor: pointer;
     display: flex;
     padding: 15px;
     font-family: Lato_bold;

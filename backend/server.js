@@ -19,14 +19,14 @@ app.use(cors({
 app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(session({
-  secret: 'puki muki',
+  secret: 'best app ever',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
 }))
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('you are connected')
 })
 
 addBoardRoutes(app)
@@ -36,4 +36,8 @@ addListRoutes(app)
 addActivityRoutes(app)
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Example app listening on port ${port}`))
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}`))
+
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {console.log(socket.id)})

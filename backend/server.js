@@ -11,8 +11,10 @@ const addListRoutes = require('./routes/list-route')
 const addActivityRoutes = require('./routes/activity-route')
 
 const app = express()
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+const port = process.env.PORT || 3000;
+server.listen(port, () => console.log(`Example app listening on port ${port}`))
 io.on('connection', socket => {
 	console.log('coooonet');
 	socket.on('boardRequested', ({boardId, user}) => {
@@ -57,5 +59,3 @@ addUserRoutes(app)
 addListRoutes(app)
 addActivityRoutes(app)
 
-const port = process.env.PORT || 3000;
-http.listen(port, () => console.log(`Example app listening on port ${port}`))

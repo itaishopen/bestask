@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-const socket = io('http://localhost:3000');
+// const port = process.env.PORT || 3000;
+const socket = io(':3000');
 // var user = this.$store.getters.loggedInUser
 
 function init(boardId){

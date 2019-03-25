@@ -74,11 +74,16 @@ export default {
     // var boardId = '5c90e128614ea0f42b453829';
     var boardId = this.$route.params.boardId;
     // this.$store.dispatch({ type: 'loadBoard', boardId });
-    SocketService.init(boardId, user)
-    this.$store.dispatch({ type: 'loadBoard', boardId: boardId })
-    var user = this.$store.getters.loggedInUser;
-    if (user) SocketService.on('userConnected', user)
-    else SocketService.on('userConnected', null)
+    SocketService.init(boardId)
+    this.$store.dispatch({ type: 'loadBoard', boardId })
+    // var user = this.$store.getters.loggedInUser;
+    // if (user) SocketService.on('userConnected', user)
+    // else SocketService.on('userConnected', null)
+    // let thiz = this
+    SocketService.on('board-change', boardId => {
+      this.$store.dispatch({ type: 'loadBoard', boardId })
+      
+    })
     // SocketService.on('board-change', function (boardId) {
     //   this.$store.dispatch({ type: "loadBoard", boardId })
     // })
@@ -119,6 +124,10 @@ export default {
   },
 
   methods: {
+    fun(boardId) {
+        console.log('activated by socket EVENTTT')
+      this.$store.dispatch({ type: "loadBoard", boardId })
+    },
     newList() {
       //  todo: add list
       this.list = ListService.getEmptyList();

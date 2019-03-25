@@ -51,7 +51,14 @@
 
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
         <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
-        <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
+        <b-form-input
+          v-for="comment in card.comments"
+          :key="comment"
+          class="m-1"
+          size="sm"
+          :value="comment"
+          readonly
+        />
       </main>
       <div class="nav flex">
         <label class="m-1">Add to Card</label>
@@ -115,12 +122,12 @@
     <!-- Modal Members Component -->
     <b-modal id="modal6" title="Members" v-if="users">
       <div v-for="user in users" :key="user">
-          <div>
-         <div>{{user.firstName}}</div>
-         </div>
-         <hr>
+        <div>
+          <div>{{user.firstName}}</div>
+        </div>
+        <hr>
       </div>
-       <!-- <pre>  {{users}}</pre> -->
+      <!-- <pre>  {{users}}</pre> -->
     </b-modal>
 
     <!-- Modal Checklist Component -->
@@ -188,18 +195,18 @@ export default {
         list => list._id !== this.card.listId
       );
     },
-    users(){
-        console.log(this.board.users);
-        
-        var usertodisplay = [];
-        for (let i = 0; i < this.board.users.length; i++) {
-            var user = this.board.users[i][0]
-            if (user) {
-                usertodisplay.push(user) 
-            }
+    users() {
+      console.log(this.board.users);
+
+      var usertodisplay = [];
+      for (let i = 0; i < this.board.users.length; i++) {
+        var user = this.board.users[i][0];
+        if (user) {
+          usertodisplay.push(user);
         }
-        console.log('xxxx' ,usertodisplay);
-        return usertodisplay
+      }
+      console.log("xxxx", usertodisplay);
+      return usertodisplay;
     },
 
     showModal: {
@@ -210,6 +217,9 @@ export default {
         // this.$store.commit('setCard', { card: cardItem });
         this.$route.meta.showModal = value;
       }
+    },
+    share() {
+      return window.location.href;
     }
   },
   methods: {
@@ -251,7 +261,6 @@ export default {
     markChose() {
       this.card.labels.forEach(label => {
         console.log(label);
-
         this.labelIsChosen.forEach(color => {
           console.log(color);
           if (label === color) {
@@ -260,6 +269,7 @@ export default {
         });
       });
     },
+
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
       console.log({ index });
@@ -308,8 +318,9 @@ export default {
 
     addComment() {
       if (this.comment) {
-        var date = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
-        var comment = this.comment + "\t" + date;
+        // var date = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+        var date = moment(Date.now()).format("DD/MM/YY hh:mm");
+        var comment = date + " " + this.comment;
         if (!this.card.comments) this.card.comments = [comment];
         else this.card.comments.unshift(comment);
         this.comment = "";

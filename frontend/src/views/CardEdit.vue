@@ -13,12 +13,12 @@
     hide-header-close
   >
     <div class="containerLabel">
-      <div class="LabelMenu Red" v-if="checkLabel('red')">{{color}}</div>
-      <div class="LabelMenu Blue" v-if="checkLabel('blue')">{{color}}</div>
-      <div class="LabelMenu Green" v-if="checkLabel('green')">{{color}}</div>
-      <div class="LabelMenu Yellow" v-if="checkLabel('yellow')">{{color}}</div>
-      <div class="LabelMenu Purple" v-if="checkLabel('purple')">{{color}}</div>
-      <div class="LabelMenu Orange" v-if="checkLabel('orange')">{{color}}</div>
+      <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
+      <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
+      <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
+      <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
+      <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
+      <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
     </div>
 
     <div class="container flex">
@@ -37,18 +37,14 @@
           TITLE: {{checklist.title}}
           <div v-for="toDo in checklist.toDos" :key="toDo">
             <div class="flex">
-              <i v-if="!toDo.done" class="far fa-square"></i>
-              <i v-if="toDo.done" class="fa fa-check-square"></i>
-              {{toDo.name}}
+              <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
+              <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
+              <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
             </div>
-            <div class="flex">
-              <b-form-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-              <b-button
-                class="m-1 float-right"
-                variant="primary"
-                size="sm"
-                @click.stop="addToDo"
-              >Add</b-button>
+            <div class="flex" v-if="!editStatus">
+              <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
+              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
+              <button @click="closeEditor">&times;</button>
             </div>
           </div>
         </div>
@@ -114,32 +110,25 @@
         Wontfix
         <i class="fa fa-check" v-if="checkLabel('orange')"></i>
       </div>
-      <p class="my-4">Labels!</p>
     </b-modal>
 
     <!-- Modal Members Component -->
-    <b-modal id="modal6" title="Members">
-      <form>
-        <input type="search" name="search" placeholder="Search Members">
-        <input type="submit">
-      </form>
-      <hr>
-      <!-- <div v-for="member in card.members" :key="member">{{member}}</div> -->
-      {{card.members}}
-      <hr>
-      <form class="add-member" @submit.prevent="addMember()">
-        <div>
-          <input class="input" v-model="card.members" placeholder="Enter text here...">
-        </div>
-      </form>
+    <b-modal id="modal6" title="Members" v-if="users">
+      <div v-for="user in users" :key="user">
+          <div>
+         <div>{{user.firstName}}</div>
+         </div>
+         <hr>
+      </div>
+       <!-- <pre>  {{users}}</pre> -->
     </b-modal>
 
     <!-- Modal Checklist Component -->
-    <b-modal id="modal5" title="Checklist">
+    <b-modal id="modal5" title="Checklist" hide-footer>
       <form class="add-checklist" @submit.prevent="addCheklist()">
         Title
-        <input type="text" v-model="checklist.title">
-        <button type="submit">create</button>
+        <b-form-input type="text" v-model="checklist.title"/>
+        <b-button class="mt-3 float-right" type="submit">create</b-button>
       </form>
     </b-modal>
   </b-modal>
@@ -164,7 +153,8 @@ export default {
         title: "",
         toDos: []
       },
-      toDo: { name: "", done: false }
+      toDo: { name: "", done: false },
+      editStatus: false
     };
   },
   created() {
@@ -172,9 +162,6 @@ export default {
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
       this.card = card;
     });
-
-    console.log("hi ", this.card.labels);
-    console.log("hi 2", this.card);
   },
   mounted() {
     this.$refs.myModalRef.show();
@@ -188,11 +175,33 @@ export default {
         this.$store.commit("setCard", { card: cardItem });
       }
     },
+    board: {
+      get() {
+        return this.$store.getters.getBoard;
+      },
+      set(boardItem) {
+        this.$store.commit("setBoard", { board: boardItem });
+      }
+    },
     lists() {
       return this.$store.getters.getLists.filter(
         list => list._id !== this.card.listId
       );
     },
+    users(){
+        console.log(this.board.users);
+        
+        var usertodisplay = [];
+        for (let i = 0; i < this.board.users.length; i++) {
+            var user = this.board.users[i][0]
+            if (user) {
+                usertodisplay.push(user) 
+            }
+        }
+        console.log('xxxx' ,usertodisplay);
+        return usertodisplay
+    },
+
     showModal: {
       get() {
         return this.$route.meta.showModal;
@@ -204,8 +213,20 @@ export default {
     }
   },
   methods: {
+    closeEditor() {
+      this.editStatus = !this.editStatus;
+    },
+    checkDone() {
+      this.toDo.done = !this.toDo.done;
+      // this.card.checklists.forEach(checklist => {
+      //     if (checklist.title === this.checklist.title) {
+      //   checklist.toDo.done = !checklist.toDo.done;
+      //     }
+      //   });
+    },
     addCheklist() {
-      this.card.checklists.toDos.push(this.toDo);
+      this.checklist.toDos.push(this.toDo);
+      this.card.checklists.push(this.checklist);
       console.log("Checklist", this.card);
     },
     addToDo() {

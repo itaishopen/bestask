@@ -20,26 +20,16 @@ export default {
         return {};
     },
     created() {
-
+        this.$store.dispatch({ type: 'updateUser', userId: 'guest' })
     },
     computed: {
         boards() {
-            return [
-                { _id: '5c9887f76255fe3570a6a093', title: 'open code project' },
-                { _id: '5c90e128614ea0f42b453829', title: 'To Do now' }
-            ];
+            return this.$store.getters.getboards;
         }
 
     },
     methods: {
-        // getBoards() {
-        //     var boards = [
-        //         { _id: '5c9887f76255fe3570a6a093', title: 'open code project' },
-        //         { _id: '5c90e128614ea0f42b453829', title: 'To Do now' }
-        //     ]
 
-        //     return boards;
-        // }
     },
     components: {
         BoardPreview

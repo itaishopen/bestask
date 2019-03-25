@@ -33,7 +33,6 @@ export default {
         //     return this.$store.getters.getBoard;
         // }
     }
-  }
 }
 </script>
 

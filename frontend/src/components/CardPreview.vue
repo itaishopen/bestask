@@ -7,7 +7,7 @@
             <div class="label" :style="{background: label}"></div>
           </li>
         </ul>
-        <div class="title-card-text">{{card.title}} (order {{card.order}})</div>
+        <div class="title-card-text">{{card.title}}</div>
       </section>
     </router-link>
   </div>

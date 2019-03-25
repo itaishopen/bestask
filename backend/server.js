@@ -39,7 +39,7 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}`))
 
 const io = require('socket.io').listen(server);
-
+var shortId = require('shortid');
 io.on('connection', socket => {
 	console.log('coooonet');
 	socket.on('boardRequested', ({board, user}) => {

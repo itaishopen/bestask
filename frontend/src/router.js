@@ -21,7 +21,7 @@ export default new Router({
             // which is lazy-loaded when the route is visited.
             component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
-        { path: '/task', component: TaskApp },
+        { path: '/board', component: TaskApp },
         // { path: '/card/:cardId', component: TaskApp },
         { path: '/card/edit/:cardId', component: CardEdit },
         {

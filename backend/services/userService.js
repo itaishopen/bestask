@@ -1,6 +1,5 @@
 const mongoService = require('./mongoService')
 const USERS_DB = 'users';
-
 const ObjectId = require('mongodb').ObjectId;
 
 function query({ boardId = null }) {
@@ -70,47 +69,59 @@ function addUser(user) {
         }))
 }
 
-function getUserById(userId) {
-    const _id = new ObjectId(userId)
-    return mongoService.connect()
-        .then(db => db.collection(USERS_DB)
-        .aggregate([
-            { $match: { _id }},
-            {
-                "$lookup": {
-                    "from": "activities",
-                    "let": { "user_id": "$_id" },
-                    "pipeline": [
-                        { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
-                        {
-                            "$lookup": {
-                                "from": "boards",
-                                "localField": 'boardId',
-                                "foreignField": '_id',
-                                "as": "board"
-                            }
-                        },
-                        {
-                            "$lookup": {
-                                "from": "lists",
-                                "localField": 'listId',
-                                "foreignField": '_id',
-                                "as": "list"
-                            }
-                        },
-                        {
-                            "$lookup": {
-                                "from": "cards",
-                                "localField": 'cardId',
-                                "foreignField": '_id',
-                                "as": "card"
-                            }
-                        },
-                    ],
-                    "as": "activities"
-                }
-            },
-        ]).toArray())
+function getUserById({ userId = 'guest' }) {
+    if (userId !== 'guest') {
+        const _id = new ObjectId(userId)
+        return mongoService.connect()
+            .then(db => db.collection(USERS_DB)
+                .aggregate([
+                    { $match: { _id } },
+                    {
+                        "$lookup": {
+                            "from": "activities",
+                            "let": { "user_id": "$_id" },
+                            "pipeline": [
+                                { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
+                                {
+                                    "$lookup": {
+                                        "from": "boards",
+                                        "localField": 'boardId',
+                                        "foreignField": '_id',
+                                        "as": "board"
+                                    }
+                                },
+                                {
+                                    "$lookup": {
+                                        "from": "lists",
+                                        "localField": 'listId',
+                                        "foreignField": '_id',
+                                        "as": "list"
+                                    }
+                                },
+                                {
+                                    "$lookup": {
+                                        "from": "cards",
+                                        "localField": 'cardId',
+                                        "foreignField": '_id',
+                                        "as": "card"
+                                    }
+                                },
+                            ],
+                            "as": "activities"
+                        }
+                    },
+                ]).toArray())
+    } else {
+        return {
+            firstName: null,
+            lastName: null,
+            userName: 'guest'+ makeId(3),
+            password: null,
+            email: null,
+            prefs: { userPic: null, bgColor: '#ffffff', color: '#000000' }
+        }
+    }
+
 }
 
 function removeUser(userId) {
@@ -182,6 +193,15 @@ function checkLogin({ userCredentials }) {
 
 }
 
+function makeId(length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (var i = 0; i < length; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 
 module.exports = {
     query,

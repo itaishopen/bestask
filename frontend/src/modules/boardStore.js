@@ -66,6 +66,7 @@ export default {
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
                     context.commit({ type: 'setBoardActivities', activities });
+                    return board[0]
                 })
         },
         saveBoard(context, { board }) {

@@ -3,6 +3,7 @@
   <!-- Modal Component -->
   <b-modal
     v-if="card"
+    v-model="showModal"
     id="modal1"
     ref="myModalRef"
     @hide="modalClosed"
@@ -21,7 +22,6 @@
     </div>
 
     <div class="container flex">
-      <div></div>
       <main class="content flex">
         <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
         <b-form-textarea
@@ -54,9 +54,6 @@
         </div>
 
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
-
-        <!-- <b-form-input class="m-1" v-model="toDo.name" placeholder/> -->
-
         <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
         <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
       </main>
@@ -64,7 +61,7 @@
         <label class="m-1">Add to Card</label>
         <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
         <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
-        <b-button v-b-modal.modal9 class="m-1 btn-block" size="sm">Checklist</b-button>
+        <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>
         <!-- <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button> -->
@@ -120,23 +117,25 @@
       <p class="my-4">Labels!</p>
     </b-modal>
 
-    <!-- Modal Labels Component -->
-    <!-- <b-modal id="modal6" title="Members">
+    <!-- Modal Members Component -->
+    <b-modal id="modal6" title="Members">
       <form>
         <input type="search" name="search" placeholder="Search Members">
+        <input type="submit">
       </form>
       <hr>
+      <!-- <div v-for="member in card.members" :key="member">{{member}}</div> -->
       {{card.members}}
       <hr>
       <form class="add-member" @submit.prevent="addMember()">
-        <div v-for="user in users.userName" :key="user">
-            <div>{{user}}</div>
+        <div>
+          <input class="input" v-model="card.members" placeholder="Enter text here...">
         </div>
       </form>
-    </b-modal>-->
+    </b-modal>
 
-    <!-- Modal cheklist Component -->
-    <b-modal id="modal9" title="Checklist">
+    <!-- Modal Checklist Component -->
+    <b-modal id="modal5" title="Checklist">
       <form class="add-checklist" @submit.prevent="addCheklist()">
         Title
         <input type="text" v-model="checklist.title">
@@ -173,9 +172,9 @@ export default {
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
       this.card = card;
     });
-    this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
-      this.card = card;
-    });
+
+    console.log("hi ", this.card.labels);
+    console.log("hi 2", this.card);
   },
   mounted() {
     this.$refs.myModalRef.show();
@@ -193,6 +192,15 @@ export default {
       return this.$store.getters.getLists.filter(
         list => list._id !== this.card.listId
       );
+    },
+    showModal: {
+      get() {
+        return this.$route.meta.showModal;
+      },
+      set(value) {
+        // this.$store.commit('setCard', { card: cardItem });
+        this.$route.meta.showModal = value;
+      }
     }
   },
   methods: {
@@ -208,6 +216,11 @@ export default {
           this.toDo = { name: "", done: false };
         }
       });
+    },
+    addMember(member) {
+      console.log("addMember", this.card.members);
+      this.card.members.push(member);
+      console.log(this.card.members);
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
@@ -239,10 +252,14 @@ export default {
     },
     closeModal() {
       // this.$refs.myModalRef.hide();
-      this.$router.push("/task");
+      // this.$router.push('/card');
+      // this.$router.push('/board/' + this.$store.getters.getBoard._id);
+      this.$router.go(-1);
     },
     saveCard(archive) {
+      console.log("archive", archive);
       if (archive) this.card.archived = true;
+      console.log("Saving card..", this.card);
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -256,10 +273,15 @@ export default {
             "MMMM Do YYYY, h:mm:ss a"
           );
           this.$store.dispatch({ type: "saveActivity", activity });
-          this.$router.push("/task");
+          // this.$router.push('/card');
+          // this.$router.push('/board/' + this.$store.getters.getBoard._id);
+          this.$router.go(-1);
         })
         .catch(err => {
-          this.$router.push("/task");
+          console.log(err);
+          // this.$router.push('/card');
+          // this.$router.push('/board/' + this.$store.getters.getBoard._id);
+          this.$router.go(-1);
         });
     },
 
@@ -274,7 +296,9 @@ export default {
     },
     modalClosed() {
       console.log("modalClosed");
-      this.$router.push("/task");
+      // this.$router.push('/card');
+      // this.$router.push('/board/' + this.$store.getters.getBoard._id);
+      this.$router.go(-1);
     },
     moveCard() {
       // console.log(this.$store.getters.getLists);
@@ -288,6 +312,9 @@ export default {
       console.log("change in card");
       this.$store.dispatch({ type: "saveCard", card: this.card });
     }
+  },
+  "$route.meta"({ showModal }) {
+    this.showModal = showModal;
   }
 };
 </script>

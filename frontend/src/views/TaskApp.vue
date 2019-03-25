@@ -1,7 +1,10 @@
 <template>
     <section class="task-app task-wrapper">
-        <!-- <h1>Task App</h1> -->
-        <board-preview></board-preview>
+        <h1>Boards:</h1>
+        <div v-for="board in boards" :key="board._id">
+            <board-preview :board="board"></board-preview>
+            <!-- {{board.title}} -->
+        </div>
         <!-- <card-edit></card-edit> -->
     </section>
 </template>
@@ -17,9 +20,12 @@ export default {
         return {};
     },
     created() {
-
+        this.$store.dispatch({ type: 'updateUser', userId: 'guest' })
     },
     computed: {
+        boards() {
+            return this.$store.getters.getboards;
+        }
 
     },
     methods: {

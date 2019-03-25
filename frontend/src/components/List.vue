@@ -66,7 +66,6 @@ export default {
       toListId: null,
       fromList: null,
       toList: null,
-      // toListFutureIndex: 0
       isChangeTitle: false,
       hasfocus: false
       // toListFutureIndex: -1

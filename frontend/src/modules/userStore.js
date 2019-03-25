@@ -6,7 +6,8 @@ export default {
     },
     getters: {
         isUserLoggedIn: state => !!state.user._id,
-        loggedInUser: state => state.user
+        loggedInUser: state => state.user,
+        getboards: state => state.boards
     },
     mutations: {
         setUser(state, { user }) {

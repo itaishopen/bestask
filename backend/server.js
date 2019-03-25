@@ -11,6 +11,30 @@ const addListRoutes = require('./routes/list-route')
 const addActivityRoutes = require('./routes/activity-route')
 
 const app = express()
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+const port = process.env.PORT || 3000;
+server.listen(port, () => console.log(`Example app listening on port ${port}`))
+io.on('connection', socket => {
+	console.log('coooonet');
+	socket.on('boardRequested', ({boardId, user}) => {
+		console.log("fun" , boardId);
+		
+		if (socket.theBoardId) {
+			// First un-join the room
+			socket.leave(socket.theBoardId);
+		}
+		console.log('User', user, 'Requested to join room:', boardId);
+		socket.join(boardId);
+		io.to(boardId).emit('userConnected', user);
+		socket.theBoardId = boardId; 
+	});
+
+	socket.on('post-change', boardId => {
+		console.log('POsting a message', boardId, 'to:', socket.theBoardId);
+		socket.to(socket.theBoardId).emit('board-change', boardId);
+	});
+});
 app.use(express.static('public'))
 app.use(cors({
   origin: ['http://localhost:8080'],
@@ -35,27 +59,3 @@ addUserRoutes(app)
 addListRoutes(app)
 addActivityRoutes(app)
 
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}`))
-
-const io = require('socket.io').listen(server);
-var shortId = require('shortid');
-io.on('connection', socket => {
-	console.log('coooonet');
-	socket.on('boardRequested', ({board, user}) => {
-		
-		if (socket.theBoard) {
-			// First un-join the room
-			socket.leave(socket.theBoard);
-		}
-		console.log('User', user, 'Requested to join room:', board);
-		socket.join(board);
-		io.to(board).emit('userConnected', user);
-		socket.theBoard = board; 
-	});
-
-	socket.on('post-change', boardId => {
-		console.log('POsting a message', boardId, 'to:', socket.theBoard);
-		socket.to(socket.theBoard).emit('board-change', boardId);
-	});
-});

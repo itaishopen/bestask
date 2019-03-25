@@ -1,13 +1,15 @@
 <template>
-  <div class="card-preview flex">
+  <div class="card-preview">
     <router-link :to="'/card/edit/' + card._id">
       <section class="title-card">
-        <ul class="labels">
-          <li class="label-li" v-for="label in card.labels" :key="label">
-            <div class="label" :style="{background: label}"></div>
-          </li>
-        </ul>
-        <div class="title-card-text">{{card.title}} (order {{card.order}})</div>
+        <div class="containerHead">
+          <ul class="labels">
+            <li class="label-li" v-for="label in card.labels" :key="label">
+              <div class="label" :style="{background: label}"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="title-card-text">{{card.title}}</div>
       </section>
     </router-link>
   </div>
@@ -40,9 +42,9 @@ export default {
   justify-content: flex-start;
 }
 .label {
-  margin: 5px;
-  width: 30px;
-  height: 5px;
+  margin: 0 3px;
+  width: 37px;
+  height: 9px;
   border-radius: 20px;
 }
 .title-card {
@@ -57,7 +59,7 @@ export default {
   margin: 3px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   transition: 0.2s;
 }
 .title-card:hover {
@@ -70,7 +72,15 @@ export default {
   align-self: center;
 }
 .card-preview {
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
+}
+.containerHead {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 /* width */

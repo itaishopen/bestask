@@ -12,8 +12,8 @@ export default {
     getEmptyActivity
 }
 
-function query({userId = null, boardId = null}) {
-    return axios.get(ACTIVITY_URL, {userId: null, boardId: null}).then(resolveData);
+function query({ userId = null, boardId = null }) {
+    return axios.get(ACTIVITY_URL, { userId, boardId }).then(resolveData);
 }
 
 function saveActivity(activity) {    
@@ -27,6 +27,6 @@ function getEmptyActivity() {
         boardId: 1,
         listId: 1,
         cardId: 1,
-        createdAt: null,
+        createdAt: null
     }
 }

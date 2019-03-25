@@ -10,7 +10,8 @@ export default {
     query,
     saveBoard,
     getBoardById,
-    removeBoard
+    removeBoard,
+    getEmptyBoard
 }
 
 function getBoardById(boardId) {
@@ -31,4 +32,21 @@ function saveBoard(board) {
 
 function removeBoard(boardId) {
     return axios.delete(`${BOARD_URL}/${boardId}`)
+}
+
+function getEmptyBoard() {
+    return {
+        title: '',
+        prefs : {
+            bgPic : {
+                src : '', 
+                boardNavOp : 0.7
+            }, 
+            bgColor : {
+                color : '#4286f4', 
+                boardNavOp : 0.5
+            }
+        }, 
+        members : [], 
+    }
 }

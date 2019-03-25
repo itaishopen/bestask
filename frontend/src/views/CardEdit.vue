@@ -23,7 +23,7 @@
           max-rows="10"
         />
 
-        <div v-for="checklist in card.checklists" :key="checklist">
+        <!-- <div v-for="checklist in card.checklists" :key="checklist">
           TITLE: {{checklist.title}}
           <div v-for="toDo in checklist.toDos" :key="toDo">
             <div class="flex">
@@ -41,7 +41,7 @@
               >add todo</b-button>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
 
@@ -126,13 +126,14 @@
     </b-modal>-->
 
     <!-- Modal Labels Component -->
-    <b-modal id="modal9" title="Checklist">
+    <!-- <b-modal id="modal9" title="Checklist">
       <form class="add-checklist" @submit.prevent="addCheklist()">
         Title
         <input type="text" v-model="checklist.title">
         <button type="submit">create</button>
       </form>
-    </b-modal>
+    </b-modal> -->
+
   </b-modal>
   <!-- </section> -->
 </template>
@@ -186,20 +187,20 @@ export default {
     }
   },
   methods: {
-    addCheklist() {
-      this.card.checklists.toDos.push(this.toDo);
-      console.log("Checklist", this.card);
-    },
-    addToDo() {
-      console.log("Checklist", this.card);
+    // addCheklist() {
+    //   this.card.checklists.toDos.push(this.toDo);
+    //   console.log("Checklist", this.card);
+    // },
+    // addToDo() {
+    //   console.log("Checklist", this.card);
         
-      this.card.checklists.forEach(checklist => {
-        if ((checklist.title === this.checklist.title)) {
-            checklist.toDos.push(this.toDo);
-            this.toDo = { name: "", done: false }
-        }
-      });
-    },
+    //   this.card.checklists.forEach(checklist => {
+    //     if ((checklist.title === this.checklist.title)) {
+    //         checklist.toDos.push(this.toDo);
+    //         this.toDo = { name: "", done: false }
+    //     }
+    //   });
+    // },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
         ? false

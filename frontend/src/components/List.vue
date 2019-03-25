@@ -104,8 +104,8 @@ export default {
           this.toList.cards[j].order = j;
         }
         this.$store.dispatch({ type: "saveList", list: this.toList });
-      }
         SocketService.send(this.list.boardId);
+      }
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);

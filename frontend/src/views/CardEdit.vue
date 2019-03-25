@@ -12,6 +12,15 @@
         no-close-on-backdrop
         hide-header-close
     >
+        <div class="containerLabel">
+            <div class="LabelMenu Red" v-if="checkLabel('red')">{{color}}</div>
+            <div class="LabelMenu Blue" v-if="checkLabel('blue')">{{color}}</div>
+            <div class="LabelMenu Green" v-if="checkLabel('green')">{{color}}</div>
+            <div class="LabelMenu Yellow" v-if="checkLabel('yellow')">{{color}}</div>
+            <div class="LabelMenu Purple" v-if="checkLabel('purple')">{{color}}</div>
+            <div class="LabelMenu Orange" v-if="checkLabel('orange')">{{color}}</div>
+        </div>
+
         <div class="container flex">
             <main class="content flex">
                 <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
@@ -23,15 +32,48 @@
                     rows="6"
                     max-rows="10"
                 />
+
+                <div v-for="checklist in card.checklists" :key="checklist">
+                    TITLE: {{checklist.title}}
+                    <div v-for="toDo in checklist.toDos" :key="toDo">
+                        <div class="flex">
+                            <i v-if="!toDo.done" class="far fa-square"></i>
+                            <i v-if="toDo.done" class="fa fa-check-square"></i>
+                            {{toDo.name}}
+                        </div>
+                        <div class="flex">
+                            <b-form-input
+                                name="add-todo"
+                                placeholder="Add todo"
+                                size="sm"
+                                v-model="toDo.name"
+                            />
+                            <b-button
+                                class="m-1 float-right"
+                                variant="primary"
+                                size="sm"
+                                @click.stop="addToDo"
+                            >Add</b-button>
+                        </div>
+                    </div>
+                </div>
+
                 <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
                 <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
-                <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
+                <b-form-input
+                    v-for="comment in card.comments"
+                    :key="comment"
+                    class="m-1"
+                    size="sm"
+                    :value="comment"
+                    readonly
+                />
             </main>
             <div class="nav flex">
                 <label class="m-1">Add to Card</label>
                 <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
                 <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
-                <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
+                <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
                 <label class="m-1">Actions</label>
                 <!-- <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button> -->
@@ -51,7 +93,7 @@
                     v-model="card.archived"
                     name="check-button"
                 >Archive {{ card.archived }}</b-form-checkbox>-->
-                <b-button class="m-1 btn-block" size="sm">Share</b-button>
+                <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
             </div>
         </div>
         <div slot="modal-footer" class="w-100">
@@ -60,34 +102,34 @@
         </div>
         <!-- Modal Labels Component -->
         <b-modal id="modal4" title="Labels">
-            <div class="LabelRed" @click="changeLabel('red')">
+            <div class="Label Red" @click="changeLabel('red')">
                 Bug
                 <i class="fa fa-check" v-if="checkLabel('red')"></i>
             </div>
-            <div class="LabelBlue" @click="changeLabel('blue')">
+            <div class="Label Blue" @click="changeLabel('blue')">
                 Duplicate
                 <i class="fa fa-check" v-if="checkLabel('blue')"></i>
             </div>
-            <div class="LabelGreen" @click="changeLabel('green')">
+            <div class="Label Green" @click="changeLabel('green')">
                 Enhancement
                 <i class="fa fa-check" v-if="checkLabel('green')"></i>
             </div>
-            <div class="LabeYellow" @click="changeLabel('yellow')">
+            <div class="Label Yellow" @click="changeLabel('yellow')">
                 Invalid
                 <i class="fa fa-check" v-if="checkLabel('yellow')"></i>
             </div>
-            <div class="LabePurple" @click="changeLabel('purple')">
+            <div class="Label Purple" @click="changeLabel('purple')">
                 Question
                 <i class="fa fa-check" v-if="checkLabel('purple')"></i>
             </div>
-            <div class="LabeOrange" @click="changeLabel('orange')">
+            <div class="Label Orange" @click="changeLabel('orange')">
                 Wontfix
                 <i class="fa fa-check" v-if="checkLabel('orange')"></i>
             </div>
             <p class="my-4">Labels!</p>
         </b-modal>
 
-        <!-- Modal Labels Component -->
+        <!-- Modal Members Component -->
         <b-modal id="modal6" title="Members">
             <form>
                 <input type="search" name="search" placeholder="Search Members">
@@ -103,34 +145,51 @@
                 </div>
             </form>
         </b-modal>
+
+        <!-- Modal Checklist Component -->
+        <b-modal id="modal5" title="Checklist">
+            <form class="add-checklist" @submit.prevent="addCheklist()">
+                Title
+                <input type="text" v-model="checklist.title">
+                <button type="submit">create</button>
+            </form>
+        </b-modal>
+        <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+            <b-form-input class="m-1" v-model="share" readonly/>
+        </b-modal>
     </b-modal>
     <!-- </section> -->
 </template>
 
 <script>
-import moment from 'moment';
-import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
+import moment from "moment";
+import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 export default {
-    name: 'CardEdit',
+    name: "CardEdit",
     data() {
         return {
-            comment: '',
-            openModalMembers: false
+            comment: "",
+            openModalMembers: false,
+            checklist: {
+                title: "",
+                toDos: []
+            },
+            toDo: { name: "", done: false }
         };
     },
     created() {
         var cardId = this.$route.params.cardId;
-        this.$store.dispatch({ type: 'loadCard', cardId }).then(card => {
+        this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
             this.card = card;
         });
 
-        console.log('hi ', this.card.labels);
-        console.log('hi 2', this.card);
+        console.log("hi ", this.card.labels);
+        console.log("hi 2", this.card);
     },
     mounted() {
         this.$refs.myModalRef.show();
@@ -141,7 +200,7 @@ export default {
                 return this.$store.getters.getCurrCard;
             },
             set(cardItem) {
-                this.$store.commit('setCard', { card: cardItem });
+                this.$store.commit("setCard", { card: cardItem });
             }
         },
         lists() {
@@ -157,11 +216,27 @@ export default {
                 // this.$store.commit('setCard', { card: cardItem });
                 this.$route.meta.showModal = value;
             }
-        }
+        },
+        share() {
+            return window.location.href;
+        },
     },
     methods: {
+        addCheklist() {
+            this.card.checklists.toDos.push(this.toDo);
+            console.log("Checklist", this.card);
+        },
+        addToDo() {
+            console.log("Checklist", this.card);
+            this.card.checklists.forEach(checklist => {
+                if (checklist.title === this.checklist.title) {
+                    checklist.toDos.push(this.toDo);
+                    this.toDo = { name: "", done: false };
+                }
+            });
+        },
         addMember(member) {
-            console.log('addMember', this.card.members);
+            console.log("addMember", this.card.members);
             this.card.members.push(member);
             console.log(this.card.members);
         },
@@ -200,19 +275,21 @@ export default {
             this.$router.go(-1);
         },
         saveCard(archive) {
-            console.log('archive', archive);
+            console.log("archive", archive);
             if (archive) this.card.archived = true;
-            console.log('Saving card..', this.card);
+            console.log("Saving card..", this.card);
             this.$store
-                .dispatch({ type: 'saveCardToList', card: this.card })
+                .dispatch({ type: "saveCardToList", card: this.card })
                 .then(card => {
                     let activity = ActivityService.getEmptyActivity();
-                    activity.text = ' changed the card in list ';
+                    activity.text = " changed the card in list ";
                     activity.userId = this.$store.getters.loggedInUser._id;
                     activity.boardId = this.$store.getters.getBoard._id;
                     activity.listId = card.listId;
                     activity.cardId = card._id;
-                    activity.createdAt = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+                    activity.createdAt = moment(Date.now()).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                    );
                     this.$store.dispatch({ type: "saveActivity", activity });
                     // this.$router.push('/card');
                     // this.$router.push('/board/' + this.$store.getters.getBoard._id);
@@ -228,15 +305,16 @@ export default {
 
         addComment() {
             if (this.comment) {
-                var date = moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a');
-                var comment = this.comment + '\t' + date;
+                // var date = moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a");
+                var date = moment(Date.now()).format('DD/MM/YY hh:mm');
+                var comment = date + ' ' + this.comment;
                 if (!this.card.comments) this.card.comments = [comment];
                 else this.card.comments.unshift(comment);
-                this.comment = '';
+                this.comment = "";
             }
         },
         modalClosed() {
-            console.log('modalClosed');
+            console.log("modalClosed");
             // this.$router.push('/card');
             // this.$router.push('/board/' + this.$store.getters.getBoard._id);
             this.$router.go(-1);
@@ -250,11 +328,11 @@ export default {
     components: {},
     watch: {
         card: function () {
-            console.log('change in card');
-            this.$store.dispatch({ type: 'saveCard', card: this.card });
+            console.log("change in card");
+            this.$store.dispatch({ type: "saveCard", card: this.card });
         }
     },
-    '$route.meta'({ showModal }) {
+    "$route.meta"({ showModal }) {
         this.showModal = showModal;
     }
 };
@@ -306,12 +384,7 @@ export default {
     flex-direction: column;
 }
 
-.LabelRed,
-.LabelBlue,
-.LabelGreen,
-.LabeYellow,
-.LabePurple,
-.LabeOrange {
+.Label {
     padding: 10px;
     margin: 3px;
     cursor: pointer;
@@ -323,30 +396,34 @@ export default {
     display: flex;
     justify-content: space-between;
 }
-.LabelRed:hover,
-.LabelBlue:hover,
-.LabelGreen:hover,
-.LabeYellow:hover,
-.LabePurple:hover,
-.LabeOrange:hover {
-    border-left: 15px solid rgba(61, 61, 61, 0.349);
+.Label:hover {
+    border-left: 15px solid rgba(78, 78, 78, 0.13);
 }
-.LabelRed {
+.containerLabel {
+    display: flex;
+    flex-direction: row;
+}
+.LabelMenu {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.Red {
     background-color: rgb(231, 55, 55);
 }
-.LabelBlue {
+.Blue {
     background-color: rgb(45, 70, 214);
 }
-.LabelGreen {
+.Green {
     background-color: rgb(33, 175, 68);
 }
-.LabeYellow {
+.Yellow {
     background-color: rgb(255, 239, 22);
 }
-.LabePurple {
+.Purple {
     background-color: rgb(189, 22, 255);
 }
-.LabeOrange {
+.Orange {
     background-color: rgb(255, 154, 22);
 }
 .fa-check {

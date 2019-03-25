@@ -18,6 +18,8 @@ function addBoardRoutes(app) {
     // SINGLE - GET Full details including lists and users
     app.get(`${BOARD_URL}/:boardId`, (req, res) => {
         const boardId = req.params.boardId;
+        console.log(boardId);
+        
         Promise.all([
             boardService.getBoardById(boardId),
             listService.query({ boardId }),

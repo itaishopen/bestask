@@ -28,6 +28,8 @@ io.on('connection', socket => {
 		socket.join(boardId);
 		io.to(boardId).emit('userConnected', user);
 		socket.theBoardId = boardId; 
+		console.log(socket.theBoardId);
+		
 	});
 
 	socket.on('post-change', boardId => {

@@ -81,7 +81,7 @@
                     v-model="card.archived"
                     name="check-button"
         >Archive {{ card.archived }}</b-form-checkbox>-->
-        <b-button class="m-1 btn-block" size="sm">Share</b-button>
+        <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
       </div>
     </div>
     <div slot="modal-footer" class="w-100">
@@ -142,6 +142,9 @@
         <button type="submit">create</button>
       </form>
     </b-modal>
+    <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+        <b-form-input class="m-1" v-model="share" readonly/>
+    </b-modal>
   </b-modal>
   <!-- </section> -->
 </template>
@@ -201,6 +204,9 @@ export default {
         // this.$store.commit('setCard', { card: cardItem });
         this.$route.meta.showModal = value;
       }
+    },
+    share() {
+      return window.location.href;
     }
   },
   methods: {

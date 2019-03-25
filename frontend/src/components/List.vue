@@ -66,12 +66,15 @@ export default {
       toListId: null,
       fromList: null,
       toList: null,
-      // toListFutureIndex: 0
       isChangeTitle: false,
+<<<<<<< HEAD
+      hasfocus: false,
+=======
       hasfocus: false
       // toListFutureIndex: -1
       // cardTitle: null,
       // currList: null
+>>>>>>> master
     };
   },
   components: {
@@ -103,6 +106,8 @@ export default {
         for (var j = 0; j < this.toList.cards.length; j++) {
           this.toList.cards[j].order = j;
         }
+<<<<<<< HEAD
+=======
         this.$store.dispatch({ type: "saveList", list: this.toList });
         SocketService.send(this.list.boardId);
       }
@@ -121,6 +126,7 @@ export default {
       //     .catch(err => {
       //         console.log(err);
       //     });
+>>>>>>> master
     },
     newCard() {
       // this.cardTitle = CardService.getEmpty();

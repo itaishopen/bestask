@@ -7,6 +7,7 @@
         ref="title"
         v-model="list.title"
         placeholder="Enter title here..."
+        autofocus
       >
       <button class="btn-title-list" type="submit">
         <i class="fa fa-plus"></i>
@@ -36,11 +37,13 @@
       <i class="fa fa-plus"></i>
     </button>
     <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
-      <div><textarea class="text-area" v-model="card.title" placeholder="Enter text here..."></textarea></div>
-     <div class="container-add-card-btns"> <button class="list-new-card-options" type="submit">
-        Add card
-      </button>
-      <button class="list-x-card-options" @click="closeAdd">&times;</button></div>
+      <div>
+        <textarea class="text-area" v-model="card.title" placeholder="Enter text here..." autofocus></textarea>
+      </div>
+      <div class="container-add-card-btns">
+        <button class="list-new-card-options" type="submit">Add card</button>
+        <button class="list-x-card-options" @click="closeAdd">&times;</button>
+      </div>
     </form>
   </section>
 </template>
@@ -48,9 +51,9 @@
 <script>
 import CardPreview from "@/components/CardPreview.vue";
 import CardService from "../services/CardService.js";
-import draggable from 'vuedraggable';
-import ListService from '../services/ListService.js';
-import ActivityService from '../services/ActivityService.js';
+import draggable from "vuedraggable";
+import ListService from "../services/ListService.js";
+import ActivityService from "../services/ActivityService.js";
 export default {
   name: "list",
   props: ["list"],
@@ -64,7 +67,7 @@ export default {
       toList: null,
       // toListFutureIndex: 0
       isChangeTitle: false,
-      hasfocus: false,
+      hasfocus: false
       // toListFutureIndex: -1
       // cardTitle: null,
       // currList: null
@@ -79,22 +82,28 @@ export default {
       this.moveCardId = evt.draggedContext.element._id;
       this.fromListId = evt.draggedContext.element.listId;
       this.toListId = evt.relatedContext.element.listId;
-      this.fromList = this.$store.getters.getLists.find(list => list._id === this.fromListId);
-      this.toList = this.$store.getters.getLists.find(list => list._id === this.toListId);
+      this.fromList = this.$store.getters.getLists.find(
+        list => list._id === this.fromListId
+      );
+      this.toList = this.$store.getters.getLists.find(
+        list => list._id === this.toListId
+      );
     },
     endMoveCard(evt) {
-        for (var i = 0; i < this.fromList.cards.length; i++) {
-          this.fromList.cards[i].order = i;
+      for (var i = 0; i < this.fromList.cards.length; i++) {
+        this.fromList.cards[i].order = i;
+      }
+      this.$store.dispatch({ type: "saveList", list: this.fromList });
+      if (this.fromListId !== this.toListId) {
+        var testCard = this.toList.cards.find(
+          card => card.listId === this.fromListId
+        );
+        testCard.listId = this.toListId;
+        for (var j = 0; j < this.toList.cards.length; j++) {
+          this.toList.cards[j].order = j;
         }
-        this.$store.dispatch({ type: "saveList", list: this.fromList });
-        if (this.fromListId !== this.toListId) {
-          var testCard = this.toList.cards.find(card => card.listId === this.fromListId)
-          testCard.listId = this.toListId
-          for (var j = 0; j < this.toList.cards.length; j++) {
-            this.toList.cards[j].order = j;
-          }
-          this.$store.dispatch({ type: "saveList", list: this.toList });
-        }
+        this.$store.dispatch({ type: "saveList", list: this.toList });
+      }
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res);
@@ -185,6 +194,7 @@ export default {
 
 <style lang="scss">
 .title-list {
+  cursor: pointer;
   display: flex;
   justify-content: flex-start;
   padding-left: 10px;
@@ -232,7 +242,7 @@ export default {
   padding: 5px;
   margin-top: 10px;
 }
-.container-add-card-btns{
+.container-add-card-btns {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -241,7 +251,7 @@ export default {
   background-color: rgba(199, 199, 199, 0);
   color: rgb(0, 0, 0);
 }
-.list-new-card-options{
+.list-new-card-options {
   background-color: rgb(51, 236, 66);
   color: rgb(255, 255, 255);
   border: none;
@@ -249,11 +259,10 @@ export default {
   padding: 8px;
   margin: 0 3px;
 }
-.list-x-card-options{
-    background-color: rgba(51, 236, 66, 0);
+.list-x-card-options {
+  background-color: rgba(51, 236, 66, 0);
   border: none;
   width: 20px;
-
 }
 .input-title-list {
   font-size: 18px;
@@ -272,7 +281,6 @@ export default {
   opacity: 0.3;
   background: #c8ebfb;
 }
-
 </style>
 
 

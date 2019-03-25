@@ -7,6 +7,7 @@
                 ref="title"
                 v-model="board.title"
                 placeholder="Enter title here..."
+                autofocus
             >
             <button class="btn-title-board" type="submit">
                 <i class="fa fa-plus"></i>
@@ -42,7 +43,8 @@
                             class="input-new-list"
                             v-model="list.title"
                             placeholder="Enter text here..."
-                        >
+                            autofocus
+                        />
                     </div>
                     <div class="container-add-list-btns">
                         <button class="create-list-options list-new-list-options" type="submit">
@@ -171,6 +173,8 @@ export default {
 
 <style lang="scss">
 .board-title {
+    width: 200px;
+    cursor: pointer;
     display: flex;
     padding: 15px;
     font-family: Lato_bold;

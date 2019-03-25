@@ -22,7 +22,31 @@
           rows="6"
           max-rows="10"
         />
+
+        <div v-for="checklist in card.checklists" :key="checklist">
+          TITLE: {{checklist.title}}
+          <div v-for="toDo in checklist.toDos" :key="toDo">
+            <div class="flex">
+              <i v-if="!toDo.done" class="far fa-square"></i>
+              <i v-if="toDo.done" class="fa fa-check-square"></i>
+              {{toDo.name}}
+            </div>
+            <div class="flex">
+              <b-form-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
+              <b-button
+                class="m-1 float-right"
+                variant="primary"
+                size="sm"
+                @click.stop="addToDo"
+              >add todo</b-button>
+            </div>
+          </div>
+        </div>
+
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
+
+        <!-- <b-form-input class="m-1" v-model="toDo.name" placeholder/> -->
+
         <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
         <div v-for="comment in card.comments" :key="comment">{{comment}}</div>
       </main>
@@ -30,7 +54,7 @@
         <label class="m-1">Add to Card</label>
         <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
         <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
-        <b-button class="m-1 btn-block" size="sm">Checklist</b-button>
+        <b-button v-b-modal.modal9 class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>
         <!-- <b-button class="m-1 btn-block" v-on:click="moveCard">Move</b-button> -->
@@ -87,19 +111,26 @@
     </b-modal>
 
     <!-- Modal Labels Component -->
-    <b-modal id="modal6" title="Members">
+    <!-- <b-modal id="modal6" title="Members">
       <form>
         <input type="search" name="search" placeholder="Search Members">
-        <input type="submit">
       </form>
       <hr>
-      <!-- <div v-for="member in card.members" :key="member">{{member}}</div> -->
       {{card.members}}
       <hr>
       <form class="add-member" @submit.prevent="addMember()">
-        <div>
-          <input class="input"  v-model="card.members" placeholder="Enter text here...">
+        <div v-for="user in users.userName" :key="user">
+            <div>{{user}}</div>
         </div>
+      </form>
+    </b-modal>-->
+
+    <!-- Modal Labels Component -->
+    <b-modal id="modal9" title="Checklist">
+      <form class="add-checklist" @submit.prevent="addCheklist()">
+        Title
+        <input type="text" v-model="checklist.title">
+        <button type="submit">create</button>
       </form>
     </b-modal>
   </b-modal>
@@ -119,7 +150,12 @@ export default {
   data() {
     return {
       comment: "",
-      openModalMembers: false
+      openModalMembers: false,
+      checklist: {
+        title: "",
+        toDos: []
+      },
+      toDo: { name: "", done: false }
     };
   },
   created() {
@@ -127,9 +163,9 @@ export default {
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
       this.card = card;
     });
-
-    console.log("hi ", this.card.labels);
-    console.log("hi 2", this.card);
+    this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
+      this.card = card;
+    });
   },
   mounted() {
     this.$refs.myModalRef.show();
@@ -150,10 +186,19 @@ export default {
     }
   },
   methods: {
-    addMember(member) {
-      console.log("addMember", this.card.members);
-      this.card.members.push(member);
-      console.log(this.card.members);
+    addCheklist() {
+      this.card.checklists.toDos.push(this.toDo);
+      console.log("Checklist", this.card);
+    },
+    addToDo() {
+      console.log("Checklist", this.card);
+        
+      this.card.checklists.forEach(checklist => {
+        if ((checklist.title === this.checklist.title)) {
+            checklist.toDos.push(this.toDo);
+            this.toDo = { name: "", done: false }
+        }
+      });
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1

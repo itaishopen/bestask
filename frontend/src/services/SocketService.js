@@ -2,19 +2,20 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3000');
 // var user = this.$store.getters.loggedInUser
 
-function init(boardId, user){
-	socket.emit('connect')
-	console.log(boardId, user);
+function init(boardId){
+	// socket.emit('connect')
+	console.log(boardId);
 	
-	socket.emit('boardRequested', {boardId, user});
+	this.emit('boardRequested', {boardId});
 
-	socket.on('userConnected', fun => {
-		console.log('user connected in front', fun);
-	});
+	// this.on('userConnected', fun => {
+	// 	console.log('user connected in front', fun);
+	// });
 
-	socket.on('board-change', boardId => {		
-		this.$store.dispatch({ type: "loadBoard", boardId })
-	});
+	// socket.on('board-change', boardId => {		
+	// 	console.log('WE GOT A BOARD CHANGE')
+	// 	this.$store.dispatch({ type: "loadBoard", boardId })
+	// });
 }
 
 function send(boardId){

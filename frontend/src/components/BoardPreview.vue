@@ -20,9 +20,7 @@ export default {
         
     },
     computed: {
-        // board() {
-        //     return this.$store.getters.getBoard;
-        // }
+        
     }
 }
 </script>

@@ -88,22 +88,35 @@ export default {
       this.toList = this.$store.getters.getLists.find(
         list => list._id === this.toListId
       );
+      // if (this.toList.cards.length === 0) {
+      //   this.toList.cards = 
+      // }
+      console.log(evt.relatedContext);
+      
     },
     endMoveCard(evt) {
-      for (var i = 0; i < this.fromList.cards.length; i++) {
-        this.fromList.cards[i].order = i;
-      }
-      this.$store.dispatch({ type: "saveList", list: this.fromList });
-      if (this.fromListId !== this.toListId) {
+      if (this.fromListId === this.toListId){
+        for (var i = 0; i < this.fromList.cards.length; i++) {
+          this.fromList.cards[i].order = i;
+        }
+        this.$store.dispatch({ type: "saveList", list: this.fromList }).then(() => {
+          SocketService.send(this.list.boardId);
+        })
+      } else {
         var testCard = this.toList.cards.find(
           card => card.listId === this.fromListId
         );
+        for (var i = 0; i < this.fromList.cards.length; i++) {
+          this.fromList.cards[i].order = i;
+        }
+        this.$store.dispatch({ type: "saveList", list: this.fromList });
         testCard.listId = this.toListId;
         for (var j = 0; j < this.toList.cards.length; j++) {
           this.toList.cards[j].order = j;
         }
-        this.$store.dispatch({ type: "saveList", list: this.toList });
-        SocketService.send(this.list.boardId);
+        this.$store.dispatch({ type: "saveList", list: this.toList }).then(() => {
+          SocketService.send(this.list.boardId);
+        })
       }
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {

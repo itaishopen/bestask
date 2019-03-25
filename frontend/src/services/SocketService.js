@@ -12,10 +12,8 @@ function init(boardId, user){
 		console.log('user connected in front', fun);
 	});
 
-	socket.on('board-change', boardId => {
-		console.log(boardId);
-		
-		// this.$store.dispatch({ type: "loadBoard", boardId })
+	socket.on('board-change', boardId => {		
+		this.$store.dispatch({ type: "loadBoard", boardId })
 	});
 }
 

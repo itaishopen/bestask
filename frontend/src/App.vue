@@ -7,7 +7,7 @@
       <div>
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link> |
-        <router-link to="/task">Bestask</router-link> |
+        <router-link to="/board">Bestask</router-link> |
         <router-link to="/login/">login</router-link> |
         <router-link to="/sign-up/">creat new acount</router-link>
       </div>

@@ -8,13 +8,16 @@ const USER_URL = process.env.NODE_ENV !== 'development'
     : '//localhost:3000/api/user';
 const resolveData = res => res.data
 
-function login(userCredentials){    
+function getUserAndBoard(userId) {
+    return axios.get(`${BASE_URL}/user/${userId}`).then(resolveData)
+}
+function login(userCredentials) {
     return axios.put(`${BASE_URL}/login`, userCredentials)
         .then(resolveData)
 }
 
-function signup(user){
-    return axios.put(`${BASE_URL}/signup`,user)
+function signup(user) {
+    return axios.put(`${BASE_URL}/signup`, user)
         .then(resolveData)
 }
 
@@ -25,12 +28,13 @@ function getEmptyUser() {
         userName: '',
         password: '',
         email: '',
-        prefs: {userPic: null, bgColor: '#ffffff', color: '#000000'}
+        prefs: { userPic: null, bgColor: '#ffffff', color: '#000000' }
     }
 }
 
 export default {
     login,
     signup,
-    getEmptyUser
+    getEmptyUser,
+    getUserAndBoard
 }

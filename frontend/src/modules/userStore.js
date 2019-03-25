@@ -1,7 +1,8 @@
 import UserService from '../services/UserService.js';
 export default {
     state: {
-        user: {}
+        user: {},
+        boards: []
     },
     getters: {
         isUserLoggedIn: state => !!state.user._id,
@@ -10,9 +11,19 @@ export default {
     mutations: {
         setUser(state, { user }) {
             state.user = user
+        },
+        setBoards(state, { boards }){
+            state.boards = boards
         }
     },
     actions: {
+        updateUser(context, { userId }) {
+            return UserService.getUserAndBoard(userId)
+                .then(({user, boards}) => {
+                    context.commit({ type: 'setUser', user })
+                    context.commit({ type: 'setBoards', boards })
+                })
+        },
         login(context, { user }) {
             return UserService.login(user)
                 .then(user => {

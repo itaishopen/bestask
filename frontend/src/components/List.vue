@@ -189,11 +189,11 @@ export default {
     // this.currList = this.list;
   },
   watch: {
-    list: function() {
-      console.log("change in list");
-      this.$store.dispatch({ type: "saveList", list: this.list });
-      SocketService.send(this.list.boardId);
-    }
+    // list: function() {
+    //   console.log("change in list");
+    //   this.$store.dispatch({ type: "saveList", list: this.list });
+    //   SocketService.send(this.list.boardId);
+    // }
   }
 };
 </script>

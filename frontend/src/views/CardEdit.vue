@@ -143,7 +143,9 @@
           </div>
         </div>
       </div>
-      <pre>{{cards}}</pre>
+      <hr>
+      <pre>card {{card}}</pre>
+      <hr>
     </b-modal>
 
     <!-- Modal Checklist Component -->
@@ -213,16 +215,13 @@ export default {
       );
     },
     users() {
-      console.log(this.board.users);
-
       var usertodisplay = [];
       for (let i = 0; i < this.board.users.length; i++) {
-        var user = this.board.users[i][0];
+        var user = this.board.users[i];
         if (user) {
           usertodisplay.push(user);
         }
       }
-      console.log("xxxx", usertodisplay);
       return usertodisplay;
     },
 
@@ -241,7 +240,6 @@ export default {
   },
   methods: {
     memberToCard(userId) {
-      console.log(userId);
       const index = this.card.members.findIndex(member => member === userId);
       if (index === -1) {
         this.card.members.push(userId);
@@ -277,10 +275,8 @@ export default {
     addCheklist() {
       this.checklist.toDos.push(this.toDo);
       this.card.checklists.push(this.checklist);
-      console.log("Checklist", this.card);
     },
     addToDo() {
-      console.log("Checklist", this.card);
       this.card.checklists.forEach(checklist => {
         if (checklist.title === this.checklist.title) {
           checklist.toDos.push(this.toDo);
@@ -289,9 +285,7 @@ export default {
       });
     },
     addMember(member) {
-      console.log("addMember", this.card.members);
       this.card.members.push(member);
-      console.log(this.card.members);
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
@@ -300,9 +294,7 @@ export default {
     },
     markChose() {
       this.card.labels.forEach(label => {
-        console.log(label);
         this.labelIsChosen.forEach(color => {
-          console.log(color);
           if (label === color) {
             this.labelIsChosen = true;
           }
@@ -312,14 +304,11 @@ export default {
 
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
-      console.log({ index });
       if (index === -1) {
         this.card.labels.push(chosenColor);
-        console.log(chosenColor, this.card.labels);
       } else {
         this.card.labels.splice(index, 1);
       }
-      console.log(this.card.labels);
     },
     closeModal() {
       // this.$refs.myModalRef.hide();
@@ -381,7 +370,6 @@ export default {
   components: {},
   watch: {
     card: function() {
-      console.log("change in card");
       this.$store.dispatch({ type: "saveCard", card: this.card });
     }
   },
@@ -391,7 +379,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .flex {
   display: flex;
 }

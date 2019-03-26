@@ -131,23 +131,23 @@ function getListById(listId) {
                             //         preserveNullAndEmptyArrays: true
                             //     }
                             // },
-                            // {
-                            //     $lookup:
-                            //     {
-                            //         from: "users",
-                            //         let: { members: "$members" },
-                            //         pipeline: [
-                            //             {
-                            //                 $match:
-                            //                 {
-                            //                     $expr:
-                            //                         {'$in': ["$_id", "$$members"] },
-                            //                 },
-                            //             }
-                            //         ],
-                            //         as: 'users'
-                            //     }
-                            // },
+                            {
+                                $lookup:
+                                {
+                                    from: "users",
+                                    let: { members: "$members" },
+                                    pipeline: [
+                                        {
+                                            $match:
+                                            {
+                                                $expr:
+                                                    {'$in': ["$_id", "$$members"] },
+                                            },
+                                        }
+                                    ],
+                                    as: 'users'
+                                }
+                            },
                             // {
                             //     $group: {
                             //         "_id": "$_id",

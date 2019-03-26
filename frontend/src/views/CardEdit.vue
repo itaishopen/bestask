@@ -22,10 +22,13 @@
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in users" :key="user">
+        <div v-for="user in users.slice(0, 2)" :key="user">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
+        </div>
+        <div class="logo-user-name" v-if="checkSumMember()">
+          <i class="fas fa-plus"></i>
         </div>
       </div>
     </section>
@@ -41,7 +44,7 @@
           max-rows="10"
         />
 
-        <div v-for="checklist in card.checklists" :key="checklist">
+        <!-- <div v-for="checklist in card.checklists" :key="checklist">
           TITLE: {{checklist.title}}
           <div v-for="toDo in checklist.toDos" :key="toDo">
             <div class="flex">
@@ -55,7 +58,7 @@
               <button @click="closeEditor">&times;</button>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
         <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
@@ -143,13 +146,13 @@
     </b-modal>
 
     <!-- Modal Checklist Component -->
-    <b-modal id="modal5" title="Checklist" hide-footer>
+    <!-- <b-modal id="modal5" title="Checklist" hide-footer>
       <form class="add-checklist" @submit="addCheklist()">
         Title
         <b-form-input type="text" v-model="checklist.title"/>
         <b-button class="mt-3 float-right" type="submit">create</b-button>
       </form>
-    </b-modal>
+    </b-modal> -->
   </b-modal>
   <!-- </section> -->
 </template>
@@ -168,7 +171,7 @@ export default {
     return {
       comment: "",
       openModalMembers: false,
-      memberIsChose: false,
+      SumMember: false,
       checklist: {
         title: "",
         toDos: []
@@ -249,6 +252,15 @@ export default {
       return this.card.members.findIndex(member => member === userId) === -1
         ? false
         : true;
+    },
+    checkSumMember() {
+      var sum = 0;
+      this.card.members.forEach(member => {
+        sum++;
+      });
+      if (sum > 2) {
+        return true;
+      }
     },
     closeEditor() {
       this.editStatus = !this.editStatus;
@@ -445,9 +457,10 @@ export default {
 }
 .LabelMenu {
   cursor: pointer;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  border-radius: 20%;
+  margin: 2px
 }
 .Red {
   background-color: rgb(231, 55, 55);
@@ -501,8 +514,8 @@ export default {
   align-items: center;
 }
 .logo-user-name {
-    font-size: 15px;
-font-weight: bold;
+  font-size: 15px;
+  font-weight: bold;
   width: 35px;
   height: 35px;
   line-height: 35px;
@@ -511,7 +524,7 @@ font-weight: bold;
   background-color: rgb(255, 255, 255);
   justify-content: flex-start;
 }
-.name-member { 
-     margin-left: 8px;
+.name-member {
+  margin-left: 8px;
 }
 </style>

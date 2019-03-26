@@ -23,7 +23,14 @@
             <div class="et far fa-clock" v-if="card.et && !card.at">Et: {{card.et}}</div>
             <div class="at far fa-clock" v-if="card.at">At: {{card.at}}</div>
           </div>
-          <div class="info-bar-left"></div>
+          <div class="info-bar-right"></div>
+          <section class="container-member">
+            <div v-for="user in users" :key="user">
+              <div class="container-name-member" v-if="checkMember(user._id)">
+                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </router-link>
@@ -39,12 +46,37 @@
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() { },
+  created() {},
   data() {
     return {};
   },
-  computed: {},
-  methods: {},
+  computed: {
+    board: {
+      get() {
+        return this.$store.getters.getBoard;
+      },
+      set(boardItem) {
+        this.$store.commit("setBoard", { board: boardItem });
+      }
+    },
+    users() {
+      var usertodisplay = [];
+      for (let i = 0; i < this.board.users.length; i++) {
+        var user = this.board.users[i][0];
+        if (user) {
+          usertodisplay.push(user);
+        }
+      }
+      return usertodisplay;
+    }
+  },
+  methods: {
+      checkMember(userId) {
+      return this.card.members.findIndex(member => member === userId) === -1
+        ? false
+        : true;
+    }
+  },
   components: {}
 };
 </script>
@@ -141,5 +173,27 @@ export default {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(172, 172, 172);
+}
+.container-member {  
+   display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container-name-member {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.logo-user-name {
+  font-size: 10px;
+  font-weight: bold;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 50%;
+  color: black;
+  border: 1px solid rgb(133, 133, 133);
+  background-color: rgb(243, 243, 243);
+  justify-content: flex-start;
 }
 </style>

@@ -22,7 +22,7 @@
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in this.board.users.slice(0, 2)" :key="user">
+        <div v-for="user in this.card.users.slice(0, 3)" :key="user">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
@@ -143,9 +143,6 @@
           </div>
         </div>
       </div>
-      <hr>
-      <pre>card {{card}}</pre>
-      <hr>
     </b-modal>
 
     <!-- Modal Checklist Component -->
@@ -244,10 +241,7 @@ export default {
     },
     checkSumMember() {
       var sum = 0;
-      this.card.members.forEach(member => {
-        sum++;
-      });
-      if (sum > 2) {
+      if (this.card.users.length > 3) {
         return true;
       }
     },

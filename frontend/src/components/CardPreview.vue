@@ -29,11 +29,12 @@
           </div>
           <div class="info-bar-right">
             <section class="container-member">
-              <div v-for="user in users" :key="user">
-                <div class="container-name-member" v-if="checkMember(user._id)">
+              <div v-for="user in this.card.users.slice(0, 3)" :key="user">
+                <div class="container-name-member">
                   <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
                 </div>
               </div>
+              <div class="logo-user-name" v-if="checkSumMember()"></div>
             </section>
           </div>
         </div>
@@ -80,6 +81,12 @@ export default {
       return this.card.members.findIndex(member => member === userId) === -1
         ? false
         : true;
+    },
+     checkSumMember() {
+      var sum = 0;
+      if (this.card.users.length > 3) {
+        return true;
+      }
     }
   },
   components: {}

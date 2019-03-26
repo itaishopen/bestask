@@ -3,15 +3,15 @@ var axios = Axios.create({ withCredentials: true });
 
 async function get(...args) {
     const res = await axios.get(...args)
-    return res.data
+    return await res.data
 }
 async function post(...args) {
     const res = await axios.post(...args)
-    return res.data
+    return await res.data
 }
 async function put(...args) {
     const res = await axios.put(...args)
-    return res.data
+    return await res.data
 }
 async function remove(...args) {
     return await axios.delete(...args)

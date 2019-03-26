@@ -1,32 +1,32 @@
 <template>
-  <section class='list'>
-    <div class='title-list' v-if='!isChangeTitle' @click.prevent='choseTitle'>{{list.title}}</div>
-    <form v-if='isChangeTitle' @submit.prevent='changeTitle' class='form-add'>
+  <section class="list">
+    <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
+    <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
       <input
-        class='input-title-list'
-        ref='title'
-        v-model='list.title'
-        placeholder='Enter title here...'
+        class="input-title-list"
+        ref="title"
+        v-model="list.title"
+        placeholder="Enter title here..."
         autofocus
       >
-      <button class='btn-title-list' type='submit'>
-        <i class='fa fa-plus'></i>
+      <button class="btn-title-list" type="submit">
+        <i class="fa fa-plus"></i>
       </button>
     </form>
     <draggable
-      v-model='list.cards'
-      v-bind='dragOptions'
-      group='list'
-      @start='drag=true'
-      @end='endMoveCard'
-      :move='moveCard'
-      class="drag-list"
+      v-model="list.cards"
+      v-bind="dragOptions"
+      draggable=".drag-me"
+      group="list"
+      @start="drag=true"
+      @end="endMoveCard"
+      :move="moveCard"
     >
-      <transition-group class="drag-group" type='transition'>
-          <div v-for='card in list.cards' :key='card._id'>
-            <card-preview v-if='!card.archived' :card='card'></card-preview>
-          </div>
-          
+      <transition-group class="drag-group" type="transition">
+        <div v-for="card in list.cards" :key="card._id">
+          <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
+          <div v-if="card._id === 'fun'" class="fun-drag"></div>
+        </div>
       </transition-group>
     </draggable>
     <!-- <ul class='list-cards'>
@@ -38,13 +38,13 @@
       Add card
       <i class='fa fa-plus'></i>
     </button>
-    <form v-if='isAddClick' @submit.prevent='addCard' class='list-add-card form-add-card'>
+    <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
       <div>
-        <textarea class='text-area' v-model='card.title' placeholder='Enter text here...' autofocus></textarea>
+        <textarea class="text-area" v-model="card.title" placeholder="Enter text here..." autofocus></textarea>
       </div>
-      <div class='container-add-card-btns'>
-        <button class='list-new-card-options' type='submit'>Add card</button>
-        <button class='list-x-card-options' @click='closeAdd'>&times;</button>
+      <div class="container-add-card-btns">
+        <button class="list-new-card-options" type="submit">Add card</button>
+        <button class="list-x-card-options" @click="closeAdd">&times;</button>
       </div>
     </form>
   </section>
@@ -54,6 +54,7 @@
 import CardPreview from '@/components/CardPreview.vue'
 import CardService from '../services/CardService.js'
 import draggable from 'vuedraggable'
+// import nestedDraggable from "./infra/nested";
 import ListService from '../services/ListService.js'
 import ActivityService from '../services/ActivityService.js'
 import SocketService from '../services/SocketService.js'
@@ -83,7 +84,7 @@ export default {
   methods: {
     moveCard(evt) {
       console.log(evt.relatedContext);
-      
+
       this.moveCardId = evt.draggedContext.element._id
       this.fromListId = evt.draggedContext.element.listId
       this.toListId = evt.relatedContext.element.listId
@@ -96,7 +97,7 @@ export default {
       // if (this.toList.cards.length === 0) {
       //   this.toList.cards =
       // }
-      
+
     },
     endMoveCard(evt) {
       if (this.fromListId === this.toListId) {
@@ -310,7 +311,7 @@ export default {
   opacity: 0.3;
   background: #c8ebfb;
 }
-.drag-list {
+.fun-drag {
   min-height: 50px;
 }
 .drag-group {

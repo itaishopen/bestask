@@ -98,7 +98,7 @@ function getListById(listId) {
                             {
                                 $match:
                                 {
-                                    '$expr':
+                                    '$expr': 
                                         { '$eq': ["$listId", "$$list_id"] },
                                 },
                             },
@@ -120,7 +120,6 @@ function getListById(listId) {
                                 }
                             },
                             { $sort: { 'order': 1 } }
-
                         ],
                         as: 'cards'
                     }

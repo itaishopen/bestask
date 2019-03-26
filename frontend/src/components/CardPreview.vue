@@ -1,5 +1,5 @@
 <template>
-  <div class="card-preview card">
+  <div class="card-preview" v-if="card._id !== 'fun'">
     <router-link :to="'/card/edit/' + card._id">
       <section class="title-card">
         <div class="containerHead">
@@ -29,7 +29,7 @@
           </div>
           <div class="info-bar-right">
             <section class="container-member">
-              <div v-for="user in board.users" :key="user">
+              <div v-for="user in board.users" :key="user._id">
                 <div class="container-name-member" v-if="checkMember(user._id)">
                   <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
                 </div>

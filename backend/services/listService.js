@@ -9,7 +9,7 @@ function query({ boardId = null }) {
         return db.collection(LIST_DB)
             .aggregate([
                 {
-                    $match: { boardId }
+                    $match: { _id }
                 },
                 {
                     $lookup:
@@ -34,47 +34,24 @@ function query({ boardId = null }) {
                                 },
                             },
                             {
-                                $unwind: {
-                                    path: "$members",
-                                    preserveNullAndEmptyArrays: true
-                                }
-                            },
-                            {
                                 $lookup:
                                 {
                                     from: "users",
-                                    let: { user_Id: "$members.userId" },
+                                    let: { members: "$members" },
                                     pipeline: [
                                         {
                                             $match:
                                             {
                                                 $expr:
-                                                    { '$eq': ["$_id", "$$user_Id"] },
+                                                    { '$in': ["$_id", "$$members"] },
                                             },
                                         }
                                     ],
-                                    as: 'resultingArray'
-                                }
-                            },
-                            {
-                                $group: {
-                                    "_id": "$_id",
-                                    "title": { "$first": "$title" },
-                                    "description": { "$first": "$description" },
-                                    "listId": { "$first": "$listId" },
-                                    "dueDate": { "$first": "$dueDate" },
-                                    "labels": { "$first": "$labels" },
-                                    "attachments": { "$first": "$attachments" },
-                                    "checklists": { "$first": "$checklists" },
-                                    "order": { "$first": "$order" },
-                                    "archived": { "$first": "$archived" },
-                                    "et": { "$first": "$et" },
-                                    "at": { "$first": "$at" },
-                                    "members": { "$push": "$members" },
-                                    "users": { "$push": "$resultingArray" }
+                                    as: 'users'
                                 }
                             },
                             { $sort: { 'order': 1 } }
+
                         ],
                         as: 'cards'
                     }
@@ -118,19 +95,13 @@ function getListById(listId) {
                         from: 'cards',
                         let: { list_id: "$_id" },
                         pipeline: [
-                            { 
+                            {
                                 $match:
                                 {
                                     '$expr':
                                         { '$eq': ["$listId", "$$list_id"] },
                                 },
                             },
-                            // {
-                            //     $unwind: {
-                            //         path: "$members",
-                            //         preserveNullAndEmptyArrays: true
-                            //     }
-                            // },
                             {
                                 $lookup:
                                 {
@@ -141,31 +112,13 @@ function getListById(listId) {
                                             $match:
                                             {
                                                 $expr:
-                                                    {'$in': ["$_id", "$$members"] },
+                                                    { '$in': ["$_id", "$$members"] },
                                             },
                                         }
                                     ],
                                     as: 'users'
                                 }
                             },
-                            // {
-                            //     $group: {
-                            //         "_id": "$_id",
-                            //         "title": { "$first": "$title" },
-                            //         "description": { "$first": "$description" },
-                            //         "listId": { "$first": "$listId" },
-                            //         "dueDate": { "$first": "$dueDate" },
-                            //         "labels": { "$first": "$labels" },
-                            //         "attachments": { "$first": "$attachments" },
-                            //         "checklists": { "$first": "$checklists" },
-                            //         "order": { "$first": "$order" },
-                            //         "archived": { "$first": "$archived" },
-                            //         "et": { "$first": "$et" },
-                            //         "at": { "$first": "$at" },
-                            //         "members": { "$push": "$members" },
-                            //         "users": { "$first": "$users" }
-                            //     }
-                            // },
                             { $sort: { 'order': 1 } }
 
                         ],

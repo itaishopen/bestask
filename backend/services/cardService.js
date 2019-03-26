@@ -7,7 +7,29 @@ function query({ listId = null }) {
     if (listId) listId = new ObjectId(listId)
     return mongoService.connect()
         .then(db => {
-            return db.collection(CARDS_DB).find({listId}).toArray()
+            return db.collection(CARDS_DB)
+                .aggregate([
+                    {
+                        $match: { _id }
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: "users",
+                            let: { members: "$members" },
+                            pipeline: [
+                                {
+                                    $match:
+                                    {
+                                        $expr:
+                                            { '$in': ["$_id", "$$members"] },
+                                    },
+                                }
+                            ],
+                            as: 'users'
+                        }
+                    },
+                ]).toArray()
         })
 }
 
@@ -18,19 +40,39 @@ function addCard(card) {
     })
     return mongoService.connect()
         .then(db => {
-            return db.collection(CARDS_DB)
-                .insertOne(card)
-                .then(res => {
-                    card._id = res.insertedId
-                    return card
-                })
+            return db.collection(CARDS_DB).insertOne(card)
+        })
+        .then(res => {
+            return getCardById(res.insertedId)
         })
 }
 
 function getCardById(cardId) {
     const _id = new ObjectId(cardId)
     return mongoService.connect()
-        .then(db => db.collection(CARDS_DB).findOne({ _id }))
+        .then(db => db.collection(CARDS_DB)
+            .aggregate([
+                {
+                    $match: { _id }
+                },
+                {
+                    $lookup:
+                    {
+                        from: "users",
+                        let: { members: "$members" },
+                        pipeline: [
+                            {
+                                $match:
+                                {
+                                    $expr:
+                                        { '$in': ["$_id", "$$members"] },
+                                },
+                            }
+                        ],
+                        as: 'users'
+                    }
+                },
+            ]).toArray())
 }
 
 function removeCards({ listId }) {
@@ -58,9 +100,9 @@ function updateCard(card) {
         .then(db => {
             return db.collection(CARDS_DB)
                 .updateOne({ _id: card._id }, { $set: card })
-                .then(() => {
-                    return card
-                })
+        })
+        .then(() => {
+            return getCardById(cardId)
         })
 }
 

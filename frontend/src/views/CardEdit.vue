@@ -44,21 +44,7 @@
           max-rows="10"
         />
 
-        <!-- <div v-for="checklist in card.checklists" :key="checklist">
-          TITLE: {{checklist.title}}
-          <div v-for="toDo in checklist.toDos" :key="toDo">
-            <div class="flex">
-              <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
-              <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
-              <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
-            </div>
-            <div class="flex" v-if="!editStatus">
-              <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
-              <button @click="closeEditor">&times;</button>
-            </div>
-          </div>
-        </div> -->
+
 
         <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
         <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
@@ -145,14 +131,6 @@
       </div>
     </b-modal>
 
-    <!-- Modal Checklist Component -->
-    <!-- <b-modal id="modal5" title="Checklist" hide-footer>
-      <form class="add-checklist" @submit="addCheklist()">
-        Title
-        <b-form-input type="text" v-model="checklist.title"/>
-        <b-button class="mt-3 float-right" type="submit">create</b-button>
-      </form>
-    </b-modal> -->
   </b-modal>
   <!-- </section> -->
 </template>

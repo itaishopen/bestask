@@ -31,6 +31,47 @@ function query({ boardId = null }) {
                                 {
                                     '$expr':
                                         { '$eq': ["$listId", "$$list_id"] },
+                                },
+                            },
+                            {
+                                $unwind: {
+                                    path: "$members",
+                                    preserveNullAndEmptyArrays: true
+                                }
+                            },
+                            {
+                                $lookup:
+                                {
+                                    from: "users",
+                                    let: { user_Id: "$members.userId" },
+                                    pipeline: [
+                                        {
+                                            $match:
+                                            {
+                                                $expr:
+                                                    { '$eq': ["$_id", "$$user_Id"] },
+                                            },
+                                        }
+                                    ],
+                                    as: 'resultingArray'
+                                }
+                            },
+                            {
+                                $group: {
+                                    "_id": "$_id",
+                                    "title": { "$first": "$title" },
+                                    "description": { "$first": "$description" },
+                                    "listId": { "$first": "$listId" },
+                                    "dueDate": { "$first": "$dueDate" },
+                                    "labels": { "$first": "$labels" },
+                                    "attachments": { "$first": "$attachments" },
+                                    "checklists": { "$first": "$checklists" },
+                                    "order": { "$first": "$order" },
+                                    "archived": { "$first": "$archived" },
+                                    "et": { "$first": "$et" },
+                                    "at": { "$first": "$at" },
+                                    "members": { "$push": "$members" },
+                                    "users": { "$push": "$resultingArray" }
                                 }
                             },
                             { $sort: { 'order': 1 } }
@@ -82,6 +123,47 @@ function getListById(listId) {
                                 {
                                     '$expr':
                                         { '$eq': ["$listId", "$$list_id"] },
+                                },
+                            },
+                            {
+                                $unwind: {
+                                    path: "$members",
+                                    preserveNullAndEmptyArrays: true
+                                }
+                            },
+                            {
+                                $lookup:
+                                {
+                                    from: "users",
+                                    let: { user_Id: "$members.userId" },
+                                    pipeline: [
+                                        {
+                                            $match:
+                                            {
+                                                $expr:
+                                                    { '$eq': ["$_id", "$$user_Id"] },
+                                            },
+                                        }
+                                    ],
+                                    as: 'resultingArray'
+                                }
+                            },
+                            {
+                                $group: {
+                                    "_id": "$_id",
+                                    "title": { "$first": "$title" },
+                                    "description": { "$first": "$description" },
+                                    "listId": { "$first": "$listId" },
+                                    "dueDate": { "$first": "$dueDate" },
+                                    "labels": { "$first": "$labels" },
+                                    "attachments": { "$first": "$attachments" },
+                                    "checklists": { "$first": "$checklists" },
+                                    "order": { "$first": "$order" },
+                                    "archived": { "$first": "$archived" },
+                                    "et": { "$first": "$et" },
+                                    "at": { "$first": "$at" },
+                                    "members": { "$push": "$members" },
+                                    "users": { "$push": "$resultingArray" }
                                 }
                             },
                             { $sort: { 'order': 1 } }
@@ -102,13 +184,13 @@ function removeList(listId) {
 function updateList(list) {
     let listId = list._id
     list._id = new ObjectId(list._id);
-    list.boardId = new ObjectId(list.boardId);    
+    list.boardId = new ObjectId(list.boardId);
     return mongoService.connect()
         .then(db => {
             return db.collection(LIST_DB)
                 .updateOne({ _id: list._id }, { $set: list })
         })
-        .then(() => {            
+        .then(() => {
             return getListById(listId)
         })
 }

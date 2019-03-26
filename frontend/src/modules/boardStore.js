@@ -44,9 +44,7 @@ export default {
         //     const idx = state.lists.findIndex(list => list._id === cardList._id);
         //     state.lists.split(idx, 1, cardList);
         // },
-        addCard(state, { savedCard }) {
-            console.log(savedCard);
-                    
+        addCard(state, { savedCard }) {                    
             const cardList = state.lists.find(list => list._id === savedCard.listId);
             cardList.cards.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);

@@ -10,7 +10,7 @@ function query({ listId = null }) {
             return db.collection(CARDS_DB)
                 .aggregate([
                     {
-                        $match: { _id }
+                        $match: { listId }
                     },
                     {
                         $lookup:

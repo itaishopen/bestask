@@ -143,6 +143,7 @@
           </div>
         </div>
       </div>
+      <pre>{{card}}</pre>
     </b-modal>
 
     <!-- Modal Checklist Component -->

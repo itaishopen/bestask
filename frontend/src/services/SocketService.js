@@ -4,10 +4,8 @@ const socket = io(':3000');
 // var user = this.$store.getters.loggedInUser
 
 function init(boardId){
-	// socket.emit('connect')
-	console.log(boardId);
 	
-	this.emit('boardRequested', {boardId});
+	socket.emit('boardRequested', {boardId});
 
 	// this.on('userConnected', fun => {
 	// 	console.log('user connected in front', fun);
@@ -19,9 +17,7 @@ function init(boardId){
 	// });
 }
 
-function send(boardId){
-	console.log('send' ,boardId);
-	
+function send(boardId){	
 	socket.emit('post-change', boardId)
 }
 function emit(eventName, data){

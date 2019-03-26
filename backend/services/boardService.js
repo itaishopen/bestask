@@ -3,41 +3,39 @@ const BOARDS_DB = 'boards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ userId = 'guest' }) {    
+function query({ userId = 'guest' }) {
     if (userId !== 'guest') userId = new ObjectId(userId)
     return mongoService.connect()
         .then(db => {
             return db.collection(BOARDS_DB)
                 .aggregate([
                     {
-                        $match:  { members: { $elemMatch: { userId }}}
+                        $match: {
+                            $expr: { $in: [userId, "$members"] },
+                        },
                     },
                     {
-                        $unwind: "$members"
-                    },
-                    {
-                        $lookup: 
+                        $lookup:
                         {
                             from: "users",
-                            localField: 'members.userId',
-                            foreignField: '_id',
-                            as: 'resultingArray'
+                            let: { members: "$members" },
+                            pipeline: [
+                                {
+                                    $match:
+                                    {
+                                        $expr:
+                                            { '$in': ["$_id", "$$members"] },
+                                    },
+                                }
+                            ],
+                            as: 'users'
                         }
                     },
-                    {
-                        $group: {
-                            "_id": "$_id",
-                            "prefs": { "$first": "$prefs" },
-                            "title": { "$first": "$title" },
-                            "members": { "$push": "$members" },
-                            "users": { "$push": "$resultingArray" }
-                        }
-                    }
                 ]).toArray()
         })
 }
 
-function addBoard(board) {    
+function addBoard(board) {
     if (board._id) board._id = new ObjectId(board._id);
     board.members.forEach(user => {
         if (user.userId !== 'guest') user.userId = new ObjectId(user.userId);
@@ -55,32 +53,29 @@ function getBoardById(boardId) {
     const _id = new ObjectId(boardId)
     return mongoService.connect()
         .then(db => {
-            return db.collection(BOARDS_DB).aggregate([
-                {
-                    $match:  { _id }
-                },
-                {
-                    $unwind: "$members"
-                },
-                {
-                    $lookup: 
+            return db.collection(BOARDS_DB)
+                .aggregate([
                     {
-                        from: "users",
-                        localField: 'members.userId',
-                        foreignField: '_id',
-                        as: 'resultingArray'
-                    }
-                },
-                {
-                    $group: {
-                        "_id": "$_id",
-                        "prefs": { "$first": "$prefs" },
-                        "title": { "$first": "$title" },
-                        "members": { "$push": "$members" },
-                        "users": { "$push": "$resultingArray" }
-                    }
-                }
-            ]).toArray()
+                        $match: { _id }
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: "users",
+                            let: { members: "$members" },
+                            pipeline: [
+                                {
+                                    $match:
+                                    {
+                                        $expr:
+                                            { '$in': ["$_id", "$$members"] },
+                                    },
+                                }
+                            ],
+                            as: 'users'
+                        }
+                    },
+                ]).toArray()
         })
 }
 
@@ -98,7 +93,7 @@ function updateBoard(board) {
     })
     return mongoService.connect()
         .then(db => {
-            return db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board})
+            return db.collection(BOARDS_DB).updateOne({ _id: board._id }, { $set: board })
         })
         .then(() => {
             return getBoardById(boardId)
@@ -110,8 +105,8 @@ function getEmptyBoard() {
         title: '',
         members: [],
         prefs: {
-            bgPic: { src: "", boardNavOp: 0.7},
-            bgColor: { color: "#4286f4", boardNavOp: 0.5}
+            bgPic: { src: "", boardNavOp: 0.7 },
+            bgColor: { color: "#4286f4", boardNavOp: 0.5 }
         }
     }
 }

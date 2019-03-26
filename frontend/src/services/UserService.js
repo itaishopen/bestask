@@ -1,4 +1,4 @@
-import HttpService from './services/HttpService';
+import HttpService from './HttpService';
 
 const BASE_URL = HttpService.getUrl()
 const USER_URL = HttpService.getUrl('user')

@@ -1,4 +1,4 @@
-import HttpService from './services/HttpService';
+import HttpService from './HttpService';
 
 const CARD_URL = HttpService.getUrl('card')
 

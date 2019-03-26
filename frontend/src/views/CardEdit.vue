@@ -135,7 +135,9 @@
       <div v-for="user in this.board.users" :key="user">
         <div class="container-member" @click="memberToCard(user._id)">
           <div class="container-name-member">
-            <div class="logo-user-name">{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
+            <div
+              class="logo-user-name"
+            >{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
             <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
           </div>
           <div>
@@ -352,12 +354,12 @@ export default {
   },
 
   components: {},
-  // watch: {
-  //   card: function() {
-  //     console.log("change in card");
-  //     this.$store.dispatch({ type: "saveCard", card: this.card });
-  //   }
-  // },
+  watch: {
+    card: function() {
+      console.log("change in card");
+      this.$store.dispatch({ type: "saveCard", card: this.card });
+    }
+  },
   "$route.meta"({ showModal }) {
     this.showModal = showModal;
   }
@@ -473,8 +475,13 @@ export default {
   align-items: center;
   cursor: pointer;
 }
+.container-member-nav {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 25px);
+  grid-template-rows: repeat(1, [row] auto);
+}
 .container-member {
-  justify-content: space-between;
+    justify-content: space-between;
   border: 1px solid rgb(216, 216, 216);
   background-color: rgb(245, 245, 245);
   border-radius: 12px;
@@ -490,12 +497,12 @@ export default {
 .logo-user-name {
   font-size: 15px;
   font-weight: bold;
-  width: 35px;
+  min-width: 35px;
   height: 35px;
   line-height: 35px;
   border-radius: 50%;
   border: 1px solid black;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(174, 216, 226);
   justify-content: flex-start;
 }
 .name-member {

@@ -210,14 +210,13 @@ a:hover {
   background: rgb(172, 172, 172);
 }
 .container-member {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  grid-column: col 1 / span 3;
+  grid-row: row 1;
 }
 .container-name-member {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, [col] 25px);
+  grid-template-rows: repeat(1, [row] auto);
 }
 .logo-user-name {
   font-size: 10px;

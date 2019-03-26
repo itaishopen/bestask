@@ -1,9 +1,7 @@
 import Axios from 'axios';
 var axios = Axios.create({ withCredentials: true });
 
-
-
-function get(url,...args) {
+function get(...args) {
     return axios.get(...args)
 }
 function post(...args) {

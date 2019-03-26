@@ -9,7 +9,7 @@ function query({ boardId = null }) {
         return db.collection(LIST_DB)
             .aggregate([
                 {
-                    $match: { _id }
+                    $match: { boardId }
                 },
                 {
                     $lookup:

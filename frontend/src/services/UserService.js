@@ -1,24 +1,22 @@
-import Axios from 'axios';
-var axios = Axios.create({ withCredentials: true });
-const BASE_URL = process.env.NODE_ENV !== 'development'
-    ? '/api'
-    : '//localhost:3000/api';
-const USER_URL = process.env.NODE_ENV !== 'development'
-    ? '/api/user'
-    : '//localhost:3000/api/user';
+import HttpService from './HttpService';
+
+const BASE_URL = (process.env.NODE_ENV !== 'development')
+? `/api`
+: `//localhost:3000/api`
+const USER_URL = HttpService.getUrl('user')
+
 const resolveData = res => res.data
 
 function getUserAndBoard(userId) {
-    return axios.get(`${BASE_URL}/user/${userId}`).then(resolveData)
+    return HttpService.get(`${USER_URL}/${userId}`).then(resolveData)
 }
 function login(userCredentials) {
-    return axios.put(`${BASE_URL}/login`, userCredentials)
+    return HttpService.put(`${BASE_URL}/login`, userCredentials)
         .then(resolveData)
 }
 
 function signup(user) {
-    return axios.put(`${BASE_URL}/signup`, user)
-        .then(resolveData)
+    return HttpService.put(`${BASE_URL}/signup`, user).then(resolveData)
 }
 
 function getEmptyUser() {

@@ -1,5 +1,7 @@
-import Axios from 'axios';
-var axios = Axios.create({ withCredentials: true });
+import HttpService from './HttpService';
+
+const CARD_URL = HttpService.getUrl('card')
+
 const resolveData = res => res.data
 
 export default {
@@ -10,34 +12,28 @@ export default {
     getEmptyCard,
     updateCards
 }
-const CARD_URL = (process.env.NODE_ENV !== 'development')
-    ? '/api/card'
-    : '//localhost:3000/api/card';
 
 function query() {
-    return axios.get(CARD_URL).then(resolveData);
+    return HttpService.get(CARD_URL).then(resolveData);
 }
 
 function getCardById(cardId) {
-    return axios.get(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.get(`${CARD_URL}/${cardId}`).then(resolveData);
 }
 
 function removeCard(cardId) {
-    return axios.delete(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.delete(`${CARD_URL}/${cardId}`).then(resolveData);
 }
 
 function updateCards(cards) {
-    return Promise.all([
-        cards.map(card => this.saveCard(card))
-    ]).then(() => {
-        return cards})
+    return Promise.all([cards.map(card => this.saveCard(card))])
 }
 
 function saveCard(card) {
     if (card._id) {        
-        return axios.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
+        return HttpService.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
     } else {
-        return axios.post(CARD_URL, card).then(resolveData)
+        return HttpService.post(CARD_URL, card).then(resolveData)
     }
 }
 

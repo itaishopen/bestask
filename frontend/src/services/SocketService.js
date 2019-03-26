@@ -1,12 +1,13 @@
 import io from 'socket.io-client';
-const socket = io('http://localhost:3000');
+const SOCKET_URL = (process.env.NODE_ENV !== 'development')
+    ? ''
+    : '//localhost:3000';
+const socket = io(SOCKET_URL);
 // var user = this.$store.getters.loggedInUser
 
 function init(boardId){
-	// socket.emit('connect')
-	console.log(boardId);
 	
-	this.emit('boardRequested', {boardId});
+	socket.emit('boardRequested', {boardId});
 
 	// this.on('userConnected', fun => {
 	// 	console.log('user connected in front', fun);
@@ -18,9 +19,7 @@ function init(boardId){
 	// });
 }
 
-function send(boardId){
-	console.log('send' ,boardId);
-	
+function send(boardId){	
 	socket.emit('post-change', boardId)
 }
 function emit(eventName, data){

@@ -10,6 +10,21 @@
           </ul>
         </div>
         <div class="title-card-text">{{card.title}}</div>
+        <div class="info-bar">
+          <div class="info-bar-left">
+            <div class="info-bar-marks" v-if="card.description">
+              <i class="fas fa-bars"></i>
+            </div>
+            <div class="info-bar-marks" v-if="card.checklists.length !== 0">
+              <i class="fas fa-list"></i>
+            </div>
+          </div>
+          <div class="info-bar-center">
+            <div class="et far fa-clock" v-if="card.et && !card.at">Et: {{card.et}}</div>
+            <div class="at far fa-clock" v-if="card.at">At: {{card.at}}</div>
+          </div>
+          <div class="info-bar-left"></div>
+        </div>
       </section>
     </router-link>
   </div>
@@ -24,7 +39,7 @@
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() {},
+  created() { },
   data() {
     return {};
   },
@@ -69,6 +84,7 @@ export default {
   color: black;
   font-size: 18px;
   display: flex;
+  justify-self: center;
   align-self: center;
 }
 .card-preview {
@@ -77,10 +93,32 @@ export default {
   cursor: pointer;
 }
 .containerHead {
-  margin-bottom: 15px;
+  height: 25px;
+  top: 10px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+.info-bar {
+  width: 100%;
+  display: flex;
+  bottom: 5px;
+}
+
+.info-bar-left {
+  justify-content: flex-start;
+}
+
+.info-bar-right {
+  justify-content: flex-end;
+}
+
+.info-bar-center {
+  justify-self: center;
+}
+
+.info-bar-marks {
+  margin: 5px;
 }
 
 /* width */

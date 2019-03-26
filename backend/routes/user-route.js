@@ -14,8 +14,10 @@ function addUserRoutes(app) {
     // SINGLE - GET Full details including boards
     app.get(`${USER_URL}/:userId`, (req, res) => {
         const userId = req.params.userId;
+        console.log(userId);
+        
         Promise.all([
-            userService.getUserById(userId),
+            userService.getUserById({userId}),
             boardService.query({userId})
         ])
         .then(([user,boards]) => {

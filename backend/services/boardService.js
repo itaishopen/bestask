@@ -3,7 +3,9 @@ const BOARDS_DB = 'boards';
 
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ userId = 'guest' }) {
+function query({userId = 'guest'}) {
+    console.log(userId);
+
     if (userId !== 'guest') userId = new ObjectId(userId)
     return mongoService.connect()
         .then(db => {
@@ -11,8 +13,9 @@ function query({ userId = 'guest' }) {
                 .aggregate([
                     {
                         $match: {
-                            $expr: { $in: [userId, "$members"] },
-                        },
+                            $expr:
+                                { $in: [userId, "$members"] },
+                        }
                     },
                     {
                         $lookup:

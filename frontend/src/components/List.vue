@@ -14,29 +14,30 @@
       </button>
     </form>
     <draggable
-      v-model="list.cards"
+      class="list-group-top"
+      v-model="listArray[0].cards"
       v-bind="dragOptions"
-      draggable=".drag-me"
-      group="list"
-      @start="drag=true"
-      @end="endMoveCard"
-      :move="moveCard"
+      group="lists"
+      :key="list._id"
+      :animated="100"
     >
-      <transition-group class="drag-group" type="transition">
-        <div v-for="card in list.cards" :key="card._id">
+      <draggable
+        class="listgroup"
+        :class="list._id"
+        v-model="list.cards"
+        v-bind="dragOptions"
+        group="cards"
+        @start="drag=true"
+        @end="funToMove"
+      >
+        <div v-for="card in list.cards" :key="card._id" class="card" :class="card._id">
           <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
-          <div v-if="card._id === 'fun'" class="fun-drag"></div>
         </div>
-      </transition-group>
+      </draggable>
     </draggable>
-    <!-- <ul class='list-cards'>
-            <li v-for='card in list.cards' :key='card._id'>
-                <card-preview v-if='!card.archived' :card='card'></card-preview>
-            </li>
-    </ul>-->
-    <button class='list-add-card' v-if='!isAddClick' @click='newCard'>
+    <button class="list-add-card" v-if="!isAddClick" @click="newCard">
       Add card
-      <i class='fa fa-plus'></i>
+      <i class="fa fa-plus"></i>
     </button>
     <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
       <div>
@@ -49,12 +50,10 @@
     </form>
   </section>
 </template>
-
 <script>
 import CardPreview from '@/components/CardPreview.vue'
 import CardService from '../services/CardService.js'
 import draggable from 'vuedraggable'
-// import nestedDraggable from "./infra/nested";
 import ListService from '../services/ListService.js'
 import ActivityService from '../services/ActivityService.js'
 import SocketService from '../services/SocketService.js'
@@ -64,6 +63,7 @@ export default {
   props: ['list'],
   data() {
     return {
+      listArray: [this.list],
       isAddClick: false,
       moveCardId: null,
       fromListId: null,
@@ -82,52 +82,62 @@ export default {
     draggable
   },
   methods: {
-    moveCard(evt) {
-      console.log(evt.relatedContext);
+    // moveCard(evt) {
+    //   console.log(evt);
 
-      this.moveCardId = evt.draggedContext.element._id
-      this.fromListId = evt.draggedContext.element.listId
-      this.toListId = evt.relatedContext.element.listId
-      this.fromList = this.$store.getters.getLists.find(
-        list => list._id === this.fromListId
-      )
-      this.toList = this.$store.getters.getLists.find(
-        list => list._id === this.toListId
-      )
-      // if (this.toList.cards.length === 0) {
-      //   this.toList.cards =
-      // }
+    //   this.moveCardId = evt.draggedContext.element._id
+    //   this.fromListId = evt.draggedContext.element.listId
+    //   if (evt.relatedContext.element) {
+    //     this.toListId = evt.relatedContext.element.listId;
+    //   } else {
+    //     this.toListId = evt.relatedContext.list._id
+    //   }
+    //   this.fromList = this.$store.getters.getLists.find(
+    //     list => list._id === this.fromListId
+    //   )
+    //   this.toList = this.$store.getters.getLists.find(
+    //     list => list._id === this.toListId
+    //   )
+    //   if (this.toList.cards) {
+    //     this.toList.cards = []
+    //   }
+    //   // if (this.toList.cards.length === 0) {
+    //   //   this.toList.cards =
+    //   // }
 
-    },
-    endMoveCard(evt) {
-      if (this.fromListId === this.toListId) {
-        for (var i = 0; i < this.fromList.cards.length; i++) {
-          this.fromList.cards[i].order = i
-        }
-        this.$store
-          .dispatch({ type: 'saveList', list: this.fromList })
-          .then(() => {
-            SocketService.send(this.list.boardId)
-          })
-      } else {
-        var testCard = this.toList.cards.find(
-          card => card.listId === this.fromListId
-        )
-        for (var i = 0; i < this.fromList.cards.length; i++) {
-          this.fromList.cards[i].order = i
-        }
-        this.$store.dispatch({ type: 'saveList', list: this.fromList })
-        testCard.listId = this.toListId
-        for (var j = 0; j < this.toList.cards.length; j++) {
-          this.toList.cards[j].order = j
-        }
-        this.$store
-          .dispatch({ type: 'saveList', list: this.toList })
-          .then(() => {
-            SocketService.send(this.list.boardId)
-          })
-      }
-      SocketService.send(this.list.boardId)
+    // },
+    // endMoveCard(evt) {
+    //   console.log('from', this.fromList);
+    //   console.log('to', this.toList);
+
+    //   if (this.fromListId === this.toListId) {
+    //     for (var i = 0; i < this.fromList.cards.length; i++) {
+    //       this.fromList.cards[i].order = i
+    //     }
+    //     this.$store
+    //       .dispatch({ type: 'saveList', list: this.fromList })
+    //       .then(() => {
+    //         SocketService.send(this.list.boardId)
+    //       })
+    //   } else {
+    //     var testCard = this.toList.cards.find(
+    //       card => card.listId === this.fromListId
+    //     )
+    //     for (var i = 0; i < this.fromList.cards.length; i++) {
+    //       this.fromList.cards[i].order = i
+    //     }
+    //     this.$store.dispatch({ type: 'saveList', list: this.fromList })
+    //     testCard.listId = this.toListId
+    //     for (var j = 0; j < this.toList.cards.length; j++) {
+    //       this.toList.cards[j].order = j
+    //     }
+    //     this.$store
+    //       .dispatch({ type: 'saveList', list: this.toList })
+    //       .then(() => {
+    //         SocketService.send(this.list.boardId)
+    //       })
+    //   }
+    //   SocketService.send(this.list.boardId)
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
       //         console.log(res)
@@ -143,6 +153,51 @@ export default {
       //     .catch(err => {
       //         console.log(err)
       //     })
+    // },
+    funToMove(env) {
+      var fromListId = env.from.className.split(' ')[1]
+      var toListId = env.to.className.split(' ')[1]
+      var cardId = env.item.className.split(' ')[1]
+      var newIdx = env.newIndex
+      var oldIdx = env.oldIndex
+      var fromList = this.$store.getters.getLists.find(
+        list => list._id === fromListId
+      )
+
+      if (fromListId !== toListId) {
+        var toList = this.$store.getters.getLists.find(
+          list => list._id === toListId
+        )
+        var card = toList.cards.find(
+          card => card._id === cardId
+        )
+        for (var i = 0; i < toList.cards.length; i++) {
+          toList.cards[i].order = i
+        }
+        for (var j = 0; j < fromList.cards.length; j++) {
+          fromList.cards[j].order = j
+        }
+        card.listId = toListId;
+        this.$store.dispatch({ type: 'saveList', list: toList }).then(() => {
+          this.$store.dispatch({ type: 'saveList', list: fromList }).then(() => {
+            SocketService.send(this.list.boardId)
+          })
+        })
+      } else {
+        for (var k = 0; k < fromList.cards.length; k++) {
+          fromList.cards[k].order = k
+        }
+        var card = fromList.cards.find(
+          card => card._id === cardId
+        )
+        card.listId = toListId;
+        this.$store.dispatch({ type: 'saveList', list: fromList }).then(() => {
+          SocketService.send(this.list.boardId)
+        })
+      }
+
+
+
     },
     newCard() {
       // this.cardTitle = CardService.getEmpty()
@@ -205,18 +260,27 @@ export default {
         disabled: false,
         ghostClass: 'ghost'
       }
+    },
+    checkList() {
+      if (!this.list.cards) {
+        this.list.cards = [{ _id: 'fun' }]
+      }
+      return this.list.cards
     }
   },
+
   created() {
     var cardItem = CardService.getEmptyCard()
     this.$store.commit('setCard', { card: cardItem })
     // this.currList = this.list
   },
   watch: {
-    // list: function() {
-    //   console.log('change in list')
-    //   this.$store.dispatch({ type: 'saveList', list: this.list })
-    //   SocketService.send(this.list.boardId)
+    // list: function (val) {
+    //   console.log(val)
+    //   // this.checkList()
+    // },
+    // board: function (val) {
+    //   console.log(val)
     // }
   }
 }
@@ -314,7 +378,7 @@ export default {
 .fun-drag {
   min-height: 50px;
 }
-.drag-group {
+.list-group {
   min-height: 50px;
 }
 </style>

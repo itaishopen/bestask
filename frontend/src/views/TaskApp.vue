@@ -1,5 +1,5 @@
 <template>
-    <section class="task-app task-wrapper">
+    <section class="task-app task-wrapper" v-if="boards">
         <h1>Boards:</h1>
         <div v-for="board in boards" :key="board._id">
             <board-preview :board="board"></board-preview>

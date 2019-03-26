@@ -1,8 +1,6 @@
 import HttpService from './HttpService';
 
 const BOARD_URL = HttpService.getUrl('board')
-console.log(BOARD_URL);
-
 
 const resolveData = res => res.data
 
@@ -15,18 +13,18 @@ export default {
 }
 
 function getBoardById(boardId) {
-    return HttpService.get(`${BOARD_URL}/${boardId}`)
+    return HttpService.get(`${BOARD_URL}/${boardId}`).then(resolveData)
 }
 
 function query({userId}) {
-    return HttpService.get(BOARD_URL, userId)
+    return HttpService.get(BOARD_URL, userId).then(resolveData)
 }
 
 function saveBoard(board) {        
     if (board._id) {
-        return HttpService.put(`${BOARD_URL}/${board._id}`, board)
+        return HttpService.put(`${BOARD_URL}/${board._id}`, board).then(resolveData)
     } else {
-        return HttpService.post(BOARD_URL, board)
+        return HttpService.post(BOARD_URL, board).then(resolveData)
     }
 }
 

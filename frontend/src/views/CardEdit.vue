@@ -22,7 +22,7 @@
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in board.users.slice(0, 2)" :key="user">
+        <div v-for="user in board.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
@@ -132,7 +132,7 @@
 
     <!-- Modal Members Component -->
     <b-modal id="modal6" title="Members" v-if="board.users">
-      <div v-for="user in board.users" :key="user">
+      <div v-for="user in board.users" :key="user._id">
         <div class="container-member" @click="memberToCard(user._id)">
           <div class="container-name-member">
             <div

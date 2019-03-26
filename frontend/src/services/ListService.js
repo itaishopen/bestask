@@ -2,7 +2,7 @@ import HttpService from './HttpService';
 
 const LIST_URL = HttpService.getUrl('list')
 
-// const resolveData = res => res.data
+const resolveData = res => res.data
 
 export default {
     query,
@@ -13,34 +13,23 @@ export default {
     updateLists
 }
 
-async function getListById(listId) {
-    return await HttpService.get(`${LIST_URL}/${listId}`)
+function getListById(listId) {
+    return HttpService.get(`${LIST_URL}/${listId}`).then(resolveData)
 }
 
-async function query({ boardId, archived = false }) {
-    return await HttpService.get(LIST_URL, { boardId, archived }).then(savedLists => savedLists)
+function query({ boardId, archived = false }) {
+    return HttpService.get(LIST_URL, { boardId, archived }).then(resolveData)
 }
 
-async function updateLists(lists) {
-    return await Promise.all([lists.map(list => this.saveList(list))])
+function updateLists(lists) {
+    return Promise.all([lists.map(list => this.saveList(list))]).then(() => lists)
 }
 
-async function saveList(list) {
+function saveList(list) {
     if (list._id) {
-        return await HttpService.put(`${LIST_URL}/${list._id}`, list)
-            .then(savedList => {                
-                if (savedList[0].cards.length === 0) {
-                    savedList[0].cards.push({_id: 'fun'})
-                }
-                return savedList
-            })
+        return HttpService.put(`${LIST_URL}/${list._id}`, list).then(resolveData)
     } else {
-        return await HttpService.post(LIST_URL, list).then(savedList => {
-            if (savedList[0].cards.length === 0) {
-                savedList[0].cards.push({_id: 'fun'})
-            }
-            return savedList
-        })
+        return HttpService.post(LIST_URL, list).then(resolveData)
     }
 }
 

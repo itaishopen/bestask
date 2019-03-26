@@ -57,57 +57,65 @@ export default {
         }
     },
     actions: {
-        async loadBoard(context, { boardId }) {
-            const { board, lists, activities } = await BoardService.getBoardById(boardId)
-            console.log(lists);
-            
-            context.commit({ type: 'setBoard', board: board[0] });
-            context.commit({ type: 'setLists', lists });
-            context.commit({ type: 'setBoardActivities', activities });
-            return board[0]
+        loadBoard(context, { boardId }) {
+            return BoardService.getBoardById(boardId)
+                .then(({ board, lists, activities }) => {
+                    console.log(board, lists, activities);
+                    
+                    context.commit({ type: 'setBoard', board: board[0] });
+                    context.commit({ type: 'setLists', lists });
+                    context.commit({ type: 'setBoardActivities', activities });
+                    return board[0]
+                })
         },
-        async saveBoard(context, { board }) {
-            const savedBoard = await BoardService.saveBoard(board)
-            context.commit({ type: 'setBoard', savedBoard: savedBoard[0] });
+        saveBoard(context, { board }) {
+            return BoardService.saveBoard(board).then(savedBoard => {
+                context.commit({ type: 'setBoard', savedBoard: savedBoard[0] })
+            })
         },
-        async updateLists(context, { lists }) {
-            const savedLists = await ListService.updateLists(lists)
-            console.log(savedLists[0]);
-            context.commit({ type: 'setLists', lists: savedLists[0] });
+        updateLists(context, { lists }) {
+            return ListService.updateLists(lists).then(savedLists => {
+                console.log(savedLists);
+                context.commit({ type: 'setLists', lists: savedLists });
+            })
         },
         saveList(context, { list }) {
             const isEdit = !!list._id
             return CardService.updateCards(list.cards)
                 .then(cards => ListService.saveList(list)
                     .then(savedList => {
+                        console.log(savedList, cards);
+                        
                         if (isEdit) context.commit({ type: 'updateList', savedList: savedList[0] });
                         else context.commit({ type: 'addList', savedList: savedList[0] });
                         return savedList[0]
                     }))
         },
-        async saveNewList(context, { list }) {
-            const savedList = await ListService.saveList(list)
-            context.commit({ type: 'addList', savedList: savedList[0] });
-            return savedList[0]
+        saveNewList(context, { list }) {
+            return ListService.saveList(list).then(savedList => {
+                context.commit({ type: 'addList', savedList: savedList[0] });
+                return savedList[0]
+            })
         },
-        async saveCardToList(context, { card }) {
+        saveCardToList(context, { card }) {
             const isEdit = !!card._id;
-            const savedCard = await CardService.saveCard(card)
-            if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
-            else context.commit({ type: 'addCard', savedCard: savedCard[0] });
-            return savedCard[0]
+            return CardService.saveCard(card).then(savedCard => {
+                if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
+                else context.commit({ type: 'addCard', savedCard: savedCard[0] });
+                return savedCard[0]
+            })
         },
         loadCard(context, { cardId }) {
             return CardService.getCardById(cardId)
-                .then(card => {                    
+                .then(card => {
                     context.commit({ type: 'setCard', card: card[0] });
                     return card[0]
                 })
         },
-        async saveActivity(context, { activity }) {
-            const savedActivity = await ActivityService.saveActivity(activity)
-            console.log(savedActivity);
-            context.commit({ type: 'addActivity', savedActivity: savedActivity[0]})
+        saveActivity(context, { activity }) {
+            return ActivityService.saveActivity(activity).then(savedActivity => {
+                context.commit({ type: 'addActivity', savedActivity: savedActivity[0] })
+            })
         }
     }
 }

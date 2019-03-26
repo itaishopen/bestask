@@ -21,6 +21,8 @@ export default {
         updateUser(context, { userId }) {
             return UserService.getUserAndBoard(userId)
                 .then(({user, boards}) => {
+                    console.log(boards , user);
+                    
                     context.commit({ type: 'setUser', user })
                     context.commit({ type: 'setBoards', boards })
                 })

@@ -1,20 +1,17 @@
 import Axios from 'axios';
 var axios = Axios.create({ withCredentials: true });
 
-async function get(...args) {
-    const res = await axios.get(...args)
-    return await res.data
+function get(...args) {
+    return axios.get(...args)
 }
-async function post(...args) {
-    const res = await axios.post(...args)
-    return await res.data
+function post(...args) {
+    return axios.post(...args)
 }
-async function put(...args) {
-    const res = await axios.put(...args)
-    return await res.data
+function put(...args) {
+    return axios.put(...args)
 }
-async function remove(...args) {
-    return await axios.delete(...args)
+function remove(...args) {
+    return axios.delete(...args)
 }
 
 function getUrl(entityName) {

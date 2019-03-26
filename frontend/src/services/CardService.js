@@ -14,11 +14,11 @@ export default {
 }
 
 function query() {
-    return HttpService.get(CARD_URL)
+    return HttpService.get(CARD_URL).then(resolveData)
 }
 
 function getCardById(cardId) {
-    return HttpService.get(`${CARD_URL}/${cardId}`)
+    return HttpService.get(`${CARD_URL}/${cardId}`).then(resolveData)
 }
 
 function removeCard(cardId) {
@@ -26,14 +26,14 @@ function removeCard(cardId) {
 }
 
 function updateCards(cards) {
-    return Promise.all([cards.map(card => this.saveCard(card))])
+    return Promise.all([cards.map(card => this.saveCard(card))]).then(() => cards)
 }
 
 function saveCard(card) {
     if (card._id) {        
-        return HttpService.put(`${CARD_URL}/${card._id}`, card)
+        return HttpService.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
     } else {
-        return HttpService.post(CARD_URL, card)
+        return HttpService.post(CARD_URL, card).then(resolveData)
     }
 }
 

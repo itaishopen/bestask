@@ -15,7 +15,11 @@
             <div class="info-bar-marks" title="cardDescr()" v-if="card.description">
               <i class="fas fa-bars"></i>
             </div>
-            <div class="info-bar-marks" title="You have card.checklists.length checklists" v-if="card.checklists.length !== 0">
+            <div
+              class="info-bar-marks"
+              title="You have card.checklists.length checklists"
+              v-if="card.checklists.length !== 0"
+            >
               <i class="fas fa-list"></i>
             </div>
           </div>
@@ -23,14 +27,15 @@
             <div class="et far fa-clock" v-if="card.et && !card.at">Et: {{card.et}}</div>
             <div class="at far fa-clock" v-if="card.at">At: {{card.at}}</div>
           </div>
-          <div class="info-bar-right"></div>
-          <section class="container-member">
-            <div v-for="user in users" :key="user">
-              <div class="container-name-member" v-if="checkMember(user._id)">
-                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+          <div class="info-bar-right">
+            <section class="container-member">
+              <div v-for="user in users" :key="user">
+                <div class="container-name-member" v-if="checkMember(user._id)">
+                  <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </section>
     </router-link>
@@ -71,7 +76,7 @@ export default {
     }
   },
   methods: {
-      checkMember(userId) {
+    checkMember(userId) {
       return this.card.members.findIndex(member => member === userId) === -1
         ? false
         : true;
@@ -152,19 +157,23 @@ a:hover {
 
 .info-bar-left {
   display: flex;
-  width: 50px;
+  min-width: 75px;
   justify-content: flex-start;
 }
 
 .info-bar-right {
-  justify-content: flex-end;
+  display: flex;
+  flex-direction: row-reverse;
+  min-width: 75px;
+  align-items: center;
+  justify-items: flex-end;
 }
 
 .info-bar-center {
+  min-width: 110px;
   display: flex;
   align-items: center;
   justify-items: center;
-  margin-left: 34px;
 }
 
 .info-bar-marks {
@@ -192,8 +201,8 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(172, 172, 172);
 }
-.container-member {  
-   display: flex;
+.container-member {
+  display: flex;
   flex-direction: row;
   align-items: center;
 }

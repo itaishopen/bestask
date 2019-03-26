@@ -143,7 +143,7 @@
           </div>
         </div>
       </div>
-      <pre>{{card}}</pre>
+      <pre>{{cards}}</pre>
     </b-modal>
 
     <!-- Modal Checklist Component -->
@@ -461,7 +461,7 @@ export default {
   width: 23px;
   height: 23px;
   border-radius: 20%;
-  margin: 2px
+  margin: 2px;
 }
 .Red {
   background-color: rgb(231, 55, 55);

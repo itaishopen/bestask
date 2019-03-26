@@ -1,15 +1,15 @@
 <template>
   <section class="navigation-bar">
-      <div class="logo">
-        <img src="../../img/bestask-logo-black.png" class="logo-nav" alt>
-      </div>
-      <div class="navigation">
-        <router-link to="/">Home</router-link>|
-        <router-link to="/about">About</router-link>|
-        <router-link to="/board">Bestask</router-link>|
-        <router-link to="/login/">login</router-link>|
-        <router-link to="/sign-up/">creat new acount</router-link>
-      </div>
+    <div class="logo">
+      <img src="../../img/bestask-logo-black.png" class="logo-nav" alt>
+    </div>
+    <div class="navigation">
+      <router-link to="/">Home</router-link>|
+      <router-link to="/about">About</router-link>|
+      <router-link to="/board">Bestask</router-link>|
+      <router-link to="/login/">login</router-link>|
+      <router-link to="/sign-up/">creat new acount</router-link>
+    </div>
   </section>
 </template>
 
@@ -22,8 +22,7 @@ export default {
   created() {},
   computed: {},
   methods: {},
-  components: {
-  }
+  components: {}
 };
 </script>
 
@@ -48,9 +47,9 @@ export default {
     }
   }
 }
-.navigation{
-    margin-left: 40vw;
-    display: flex;
-    align-items: center;
+.navigation {
+  margin-left: 40vw;
+  display: flex;
+  align-items: center;
 }
 </style>

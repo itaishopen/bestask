@@ -12,10 +12,10 @@
         <div class="title-card-text">{{card.title}}</div>
         <div class="info-bar">
           <div class="info-bar-left">
-            <div class="info-bar-marks" v-if="card.description">
+            <div class="info-bar-marks" title="cardDescr()" v-if="card.description">
               <i class="fas fa-bars"></i>
             </div>
-            <div class="info-bar-marks" v-if="card.checklists.length !== 0">
+            <div class="info-bar-marks" title="You have card.checklists.length checklists" v-if="card.checklists.length !== 0">
               <i class="fas fa-list"></i>
             </div>
           </div>
@@ -81,6 +81,19 @@ export default {
 };
 </script>
 <style>
+a {
+  text-decoration: none;
+  outline: none;
+  text-decoration-line: none;
+  text-decoration-style: none;
+}
+
+a:hover {
+  text-decoration: none;
+  outline: none;
+  text-decoration-line: none;
+  text-decoration-style: none;
+}
 .label-li {
   height: 10px;
 }
@@ -138,6 +151,8 @@ export default {
 }
 
 .info-bar-left {
+  display: flex;
+  width: 50px;
   justify-content: flex-start;
 }
 
@@ -146,7 +161,10 @@ export default {
 }
 
 .info-bar-center {
-  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-left: 34px;
 }
 
 .info-bar-marks {

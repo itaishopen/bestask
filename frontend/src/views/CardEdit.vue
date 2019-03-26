@@ -95,7 +95,7 @@
                     v-model="card.archived"
                     name="check-button"
         >Archive {{ card.archived }}</b-form-checkbox>-->
-        <b-button class="m-1 btn-block" size="sm">Share</b-button>
+        <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
       </div>
     </div>
     <div slot="modal-footer" class="w-100">
@@ -156,7 +156,11 @@
         <b-button class="mt-3 float-right" type="submit">create</b-button>
       </form>
     </b-modal>
-  </b-modal>
+    <!-- Share Modal  -->
+    <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+        <b-form-input class="m-1" v-model="share" readonly/>
+    </b-modal>
+    </b-modal>
   <!-- </section> -->
 </template>
 

@@ -13,6 +13,9 @@ function query({ listId = null }) {
 
 function addCard(card) {
     card.listId = new ObjectId(card.listId)
+    card.members = card.members.map(user => {
+        if (user !== 'guest') return new ObjectId(user);
+    })
     return mongoService.connect()
         .then(db => {
             return db.collection(CARDS_DB)
@@ -48,6 +51,9 @@ function removeCard(cardId) {
 function updateCard(card) {
     card._id = new ObjectId(card._id);
     card.listId = new ObjectId(card.listId)
+    card.members = card.members.map(user => {
+        if (user !== 'guest') return new ObjectId(user);
+    })
     return mongoService.connect()
         .then(db => {
             return db.collection(CARDS_DB)

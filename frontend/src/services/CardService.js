@@ -2,6 +2,8 @@ import HttpService from './HttpService';
 
 const CARD_URL = HttpService.getUrl('card')
 
+const resolveData = res => res.data
+
 export default {
     query,
     getCardById,

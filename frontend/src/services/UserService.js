@@ -1,6 +1,8 @@
 import HttpService from './HttpService';
 
-const BASE_URL = HttpService.getUrl()
+const BASE_URL = (process.env.NODE_ENV !== 'development')
+? `/api`
+: `//localhost:3000/api`
 const USER_URL = HttpService.getUrl('user')
 
 const resolveData = res => res.data
@@ -9,12 +11,12 @@ function getUserAndBoard(userId) {
     return HttpService.get(`${USER_URL}/${userId}`).then(resolveData)
 }
 function login(userCredentials) {
-    return HttpService.put(`${BASE_URL}login`, userCredentials)
+    return HttpService.put(`${BASE_URL}/login`, userCredentials)
         .then(resolveData)
 }
 
 function signup(user) {
-    return HttpService.put(`${BASE_URL}signup`, user).then(resolveData)
+    return HttpService.put(`${BASE_URL}/signup`, user).then(resolveData)
 }
 
 function getEmptyUser() {

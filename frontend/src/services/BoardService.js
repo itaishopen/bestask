@@ -1,6 +1,8 @@
 import HttpService from './HttpService';
 
 const BOARD_URL = HttpService.getUrl('board')
+console.log(BOARD_URL);
+
 
 const resolveData = res => res.data
 

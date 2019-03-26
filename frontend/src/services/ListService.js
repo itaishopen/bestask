@@ -2,7 +2,7 @@ import HttpService from './HttpService';
 
 const LIST_URL = HttpService.getUrl('list')
 
-const resolveData = res => res.data
+// const resolveData = res => res.data
 
 export default {
     query,
@@ -14,22 +14,23 @@ export default {
 }
 
 function getListById(listId) {
-    return HttpService.get(`${LIST_URL}/${listId}`).then(resolveData)
+    return HttpService.get(`${LIST_URL}/${listId}`)
 }
 
 function query({ boardId, archived = false }) {
-    return HttpService.get(LIST_URL, { boardId, archived }).then(resolveData);
+    return HttpService.get(LIST_URL, { boardId, archived })
 }
 
 function updateLists(lists) {
-    return Promise.all([lists.map(list => this.saveList(list))])
+    return Promise.all([lists.map(list => this.saveList(list))]).then(list => console.log(list)
+    )
 }
 
 function saveList(list) {    
     if (list._id) {
-        return HttpService.put(`${LIST_URL}/${list._id}`, list).then(resolveData);
+        return HttpService.put(`${LIST_URL}/${list._id}`, list)
     } else {        
-        return HttpService.post(LIST_URL, list).then(resolveData);
+        return HttpService.post(LIST_URL, list)
     }
 }
 

@@ -15,15 +15,15 @@
 
 <script>
 export default {
-  name: "NavigationBar",
+  name: 'NavigationBar',
   data() {
-    return {};
+    return {}
   },
-  created() {},
+  created() { },
   computed: {},
   methods: {},
   components: {}
-};
+}
 </script>
 
 <style lang="scss">

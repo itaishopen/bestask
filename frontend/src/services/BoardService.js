@@ -15,18 +15,18 @@ export default {
 }
 
 function getBoardById(boardId) {
-    return HttpService.get(`${BOARD_URL}/${boardId}`).then(resolveData)
+    return HttpService.get(`${BOARD_URL}/${boardId}`)
 }
 
 function query({userId}) {
-    return HttpService.get(BOARD_URL, userId).then(resolveData);
+    return HttpService.get(BOARD_URL, userId)
 }
 
 function saveBoard(board) {        
     if (board._id) {
-        return HttpService.put(`${BOARD_URL}/${board._id}`, board).then(resolveData)
+        return HttpService.put(`${BOARD_URL}/${board._id}`, board)
     } else {
-        return HttpService.post(BOARD_URL, board).then(resolveData)
+        return HttpService.post(BOARD_URL, board)
     }
 }
 

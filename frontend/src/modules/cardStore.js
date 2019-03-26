@@ -9,9 +9,9 @@ const cardStore = {
         setCards(state, payload) {
             state.cards = payload.cards;
         },
-        setCard(state, { card }) {
-            state.currCard = card;
-        },
+        // setCard(state, { card }) {
+        //     state.currCard = card;
+        // },
         removeCard(state, { cardId }) {
             const idx = state.cards.findIndex(card => card._id === cardId);
             state.cards.splice(idx, 1);
@@ -25,9 +25,9 @@ const cardStore = {
         },
     },
     getters: {
-        getCurrCard(state) {
-            return state.currCard;
-        },
+        // getCurrCard(state) {
+        //     return state.currCard;
+        // },
         getCards(state) {
             return state.cards;
         },

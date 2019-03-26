@@ -14,15 +14,15 @@ export default {
 }
 
 function query() {
-    return HttpService.get(CARD_URL).then(resolveData);
+    return HttpService.get(CARD_URL)
 }
 
 function getCardById(cardId) {
-    return HttpService.get(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.get(`${CARD_URL}/${cardId}`)
 }
 
 function removeCard(cardId) {
-    return HttpService.delete(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.delete(`${CARD_URL}/${cardId}`)
 }
 
 function updateCards(cards) {
@@ -31,9 +31,9 @@ function updateCards(cards) {
 
 function saveCard(card) {
     if (card._id) {        
-        return HttpService.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
+        return HttpService.put(`${CARD_URL}/${card._id}`, card)
     } else {
-        return HttpService.post(CARD_URL, card).then(resolveData)
+        return HttpService.post(CARD_URL, card)
     }
 }
 

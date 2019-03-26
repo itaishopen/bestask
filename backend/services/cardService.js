@@ -91,6 +91,7 @@ function removeCard(cardId) {
 }
 
 function updateCard(card) {
+    const cardId = card._id
     card._id = new ObjectId(card._id);
     card.listId = new ObjectId(card.listId)
     card.members = card.members.map(user => {

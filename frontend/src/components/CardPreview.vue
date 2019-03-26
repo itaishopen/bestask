@@ -173,7 +173,7 @@ a:hover {
   min-width: 110px;
   display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 }
 
 .info-bar-marks {

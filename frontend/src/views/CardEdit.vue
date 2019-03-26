@@ -143,7 +143,9 @@
           </div>
         </div>
       </div>
-      <pre>{{card}}</pre>
+      <hr>
+      <pre>card {{card}}</pre>
+      <hr>
     </b-modal>
 
     <!-- Modal Checklist Component -->
@@ -228,7 +230,6 @@ export default {
   },
   methods: {
     memberToCard(userId) {
-      console.log(userId);
       const index = this.card.members.findIndex(member => member === userId);
       if (index === -1) {
         this.card.members.push(userId);
@@ -264,10 +265,8 @@ export default {
     addCheklist() {
       this.checklist.toDos.push(this.toDo);
       this.card.checklists.push(this.checklist);
-      console.log("Checklist", this.card);
     },
     addToDo() {
-      console.log("Checklist", this.card);
       this.card.checklists.forEach(checklist => {
         if (checklist.title === this.checklist.title) {
           checklist.toDos.push(this.toDo);
@@ -276,9 +275,7 @@ export default {
       });
     },
     addMember(member) {
-      console.log("addMember", this.card.members);
       this.card.members.push(member);
-      console.log(this.card.members);
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
@@ -373,7 +370,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .flex {
   display: flex;
 }
@@ -443,7 +440,7 @@ export default {
   width: 23px;
   height: 23px;
   border-radius: 20%;
-  margin: 2px
+  margin: 2px;
 }
 .Red {
   background-color: rgb(231, 55, 55);

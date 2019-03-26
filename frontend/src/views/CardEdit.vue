@@ -12,15 +12,23 @@
     no-close-on-backdrop
     hide-header-close
   >
-    <div class="containerLabel">
-      <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
-      <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
-      <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
-      <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
-      <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
-      <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
-    </div>
-
+    <section class="nav-modal">
+      <div class="containerLabel" v-b-modal.modal4>
+        <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
+        <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
+        <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
+        <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
+        <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
+        <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
+      </div>
+      <div v-b-modal.modal6 class="container-member-nav">
+        <div v-for="user in users" :key="user">
+          <div class="container-name-member" v-if="checkMember(user._id)">
+            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
     <div class="container flex">
       <main class="content flex">
         <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
@@ -95,44 +103,48 @@
     <b-modal id="modal4" title="Labels">
       <div class="Label Red" @click="changeLabel('red')">
         Bug
-        <i class="fa fa-check" v-if="checkLabel('red')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
       </div>
       <div class="Label Blue" @click="changeLabel('blue')">
         Duplicate
-        <i class="fa fa-check" v-if="checkLabel('blue')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
       </div>
       <div class="Label Green" @click="changeLabel('green')">
         Enhancement
-        <i class="fa fa-check" v-if="checkLabel('green')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
       </div>
       <div class="Label Yellow" @click="changeLabel('yellow')">
         Invalid
-        <i class="fa fa-check" v-if="checkLabel('yellow')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
       </div>
       <div class="Label Purple" @click="changeLabel('purple')">
         Question
-        <i class="fa fa-check" v-if="checkLabel('purple')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
       </div>
       <div class="Label Orange" @click="changeLabel('orange')">
         Wontfix
-        <i class="fa fa-check" v-if="checkLabel('orange')"></i>
+        <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
       </div>
     </b-modal>
 
     <!-- Modal Members Component -->
     <b-modal id="modal6" title="Members" v-if="users">
       <div v-for="user in users" :key="user">
-        <div>
-          <div>{{user.firstName}}</div>
+        <div class="container-member" @click="memberToCard(user._id)">
+          <div class="container-name-member">
+            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
+          </div>
+          <div>
+            <i class="fa fa-check" v-if="checkMember(user._id)"></i>
+          </div>
         </div>
-        <hr>
       </div>
-      <!-- <pre>  {{users}}</pre> -->
     </b-modal>
 
     <!-- Modal Checklist Component -->
     <b-modal id="modal5" title="Checklist" hide-footer>
-      <form class="add-checklist" @submit.prevent="addCheklist()">
+      <form class="add-checklist" @submit="addCheklist()">
         Title
         <b-form-input type="text" v-model="checklist.title"/>
         <b-button class="mt-3 float-right" type="submit">create</b-button>
@@ -156,6 +168,7 @@ export default {
     return {
       comment: "",
       openModalMembers: false,
+      memberIsChose: false,
       checklist: {
         title: "",
         toDos: []
@@ -223,6 +236,20 @@ export default {
     }
   },
   methods: {
+    memberToCard(userId) {
+      console.log(userId);
+      const index = this.card.members.findIndex(member => member === userId);
+      if (index === -1) {
+        this.card.members.push(userId);
+      } else {
+        this.card.members.splice(index, 1);
+      }
+    },
+    checkMember(userId) {
+      return this.card.members.findIndex(member => member === userId) === -1
+        ? false
+        : true;
+    },
     closeEditor() {
       this.editStatus = !this.editStatus;
     },
@@ -417,6 +444,7 @@ export default {
   flex-direction: row;
 }
 .LabelMenu {
+  cursor: pointer;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -439,9 +467,51 @@ export default {
 .Orange {
   background-color: rgb(255, 154, 22);
 }
-.fa-check {
+.Vwhite {
   display: flex;
   flex-direction: row-reverse;
   color: rgb(255, 255, 255);
+}
+
+.nav-modal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.container-member,
+.container-member-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.container-member {
+  justify-content: space-between;
+  border: 1px solid rgb(216, 216, 216);
+  background-color: rgb(245, 245, 245);
+  border-radius: 12px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.container-name-member {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.logo-user-name {
+    font-size: 15px;
+font-weight: bold;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: rgb(255, 255, 255);
+  justify-content: flex-start;
+}
+.name-member { 
+     margin-left: 8px;
 }
 </style>

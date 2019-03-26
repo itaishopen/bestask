@@ -46,6 +46,8 @@ export default {
         // },
         addCard(state, { savedCard }) {                    
             const cardList = state.lists.find(list => list._id === savedCard.listId);
+            console.log(cardList, savedCard, state.lists);
+            
             cardList.cards.push(savedCard);
             const idx = state.lists.findIndex(list => list._id === cardList._id);
             state.lists.splice(idx, 1, cardList);
@@ -94,6 +96,8 @@ export default {
         saveNewList(context, { list }) {
             return ListService.saveList(list)
                 .then(savedList => {
+                    console.log(savedList);
+                    
                     context.commit({ type: 'addList', savedList: savedList[0] });
                     return savedList[0]
                 })
@@ -102,14 +106,17 @@ export default {
             const isEdit = !!card._id;            
             return CardService.saveCard(card)
                 .then(savedCard => {
-                    if (isEdit) context.commit({ type: 'updateCard', savedCard });
-                    else context.commit({ type: 'addCard', savedCard });
+                    console.log(savedCard);
+                    if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
+                    else context.commit({ type: 'addCard', savedCard: savedCard[0] });
                     return savedCard
                 })
         },
         saveActivity(context, { activity }) {
             return ActivityService.saveActivity(activity)
                 .then(savedActivity => {
+                    console.log(savedActivity);
+                    
                     context.commit({ type: 'addActivity', savedActivity })
                 })
         }

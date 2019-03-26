@@ -150,6 +150,7 @@ a:hover {
   justify-content: flex-start;
 }
 .info-bar {
+  color: #525252;
   width: 100%;
   display: flex;
   bottom: 5px;

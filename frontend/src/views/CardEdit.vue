@@ -22,7 +22,7 @@
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in users.slice(0, 2)" :key="user">
+        <div v-for="user in this.board.users.slice(0, 2)" :key="user">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
@@ -131,11 +131,11 @@
     </b-modal>
 
     <!-- Modal Members Component -->
-    <b-modal id="modal6" title="Members" v-if="users">
-      <div v-for="user in users" :key="user">
+    <b-modal id="modal6" title="Members" v-if="this.board.users">
+      <div v-for="user in this.board.users" :key="user">
         <div class="container-member" @click="memberToCard(user._id)">
           <div class="container-name-member">
-            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            <div class="logo-user-name">{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
             <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
           </div>
           <div>
@@ -212,19 +212,6 @@ export default {
         list => list._id !== this.card.listId
       );
     },
-    users() {
-      console.log(this.board.users);
-
-      var usertodisplay = [];
-      for (let i = 0; i < this.board.users.length; i++) {
-        var user = this.board.users[i][0];
-        if (user) {
-          usertodisplay.push(user);
-        }
-      }
-      console.log("xxxx", usertodisplay);
-      return usertodisplay;
-    },
 
     showModal: {
       get() {
@@ -300,9 +287,7 @@ export default {
     },
     markChose() {
       this.card.labels.forEach(label => {
-        console.log(label);
         this.labelIsChosen.forEach(color => {
-          console.log(color);
           if (label === color) {
             this.labelIsChosen = true;
           }
@@ -312,14 +297,11 @@ export default {
 
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
-      console.log({ index });
       if (index === -1) {
         this.card.labels.push(chosenColor);
-        console.log(chosenColor, this.card.labels);
       } else {
         this.card.labels.splice(index, 1);
       }
-      console.log(this.card.labels);
     },
     closeModal() {
       // this.$refs.myModalRef.hide();
@@ -379,12 +361,12 @@ export default {
   },
 
   components: {},
-  watch: {
-    card: function() {
-      console.log("change in card");
-      this.$store.dispatch({ type: "saveCard", card: this.card });
-    }
-  },
+  // watch: {
+  //   card: function() {
+  //     console.log("change in card");
+  //     this.$store.dispatch({ type: "saveCard", card: this.card });
+  //   }
+  // },
   "$route.meta"({ showModal }) {
     this.showModal = showModal;
   }

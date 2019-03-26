@@ -55,6 +55,7 @@ import draggable from "vuedraggable";
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
+import moment from "moment";
 export default {
   name: "list",
   props: ["list"],
@@ -91,7 +92,6 @@ export default {
       // if (this.toList.cards.length === 0) {
       //   this.toList.cards = 
       // }
-      console.log(evt.relatedContext);
       
     },
     endMoveCard(evt) {

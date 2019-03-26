@@ -44,9 +44,9 @@ const cardStore = {
         },
         loadCard(context, { cardId }) {
             return CardService.getCardById(cardId)
-                .then(card => {
-                    context.commit({ type: 'setCard', card });
-                    return card
+                .then(card => {                    
+                    context.commit({ type: 'setCard', card: card[0] });
+                    return card[0]
                 })
         },
         removeCard(context, { cardId }) {
@@ -59,8 +59,8 @@ const cardStore = {
             const isEdit = !!card._id
             return CardService.saveCard(card)
                 .then(savedCard => {
-                    if (isEdit) context.commit({ type: 'updateCard', savedCard });
-                    else context.commit({ type: 'addCard', savedCard });
+                    if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
+                    else context.commit({ type: 'addCard', savedCard: savedCard[0] });
                 })
         },
     }

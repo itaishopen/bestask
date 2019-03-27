@@ -1,6 +1,4 @@
-<template>
-  <!-- <section> -->
-  <!-- Modal Component -->
+<template>  
   <b-modal
     v-if="card"
     v-model="showModal"
@@ -224,8 +222,7 @@ export default {
         return this.$route.meta.showModal;
       },
       set(value) {
-        // this.$store.commit('setCard', { card: cardItem })
-        this.$route.meta.showModal = value;
+        this.$route.meta.showModal = value
       }
     },
     share() {
@@ -258,12 +255,7 @@ export default {
       this.editStatus = !this.editStatus;
     },
     checkDone() {
-      this.toDo.done = !this.toDo.done;
-      // this.card.checklists.forEach(checklist => {
-      //     if (checklist.title === this.checklist.title) {
-      //   checklist.toDo.done = !checklist.toDo.done
-      //     }
-      //   })
+      this.toDo.done = !this.toDo.done
     },
     addCheklist() {
       this.checklist.toDos.push(this.toDo);
@@ -282,8 +274,6 @@ export default {
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
-        ? false
-        : true;
     },
     markChose() {
       this.card.labels.forEach(label => {
@@ -304,15 +294,11 @@ export default {
       }
     },
     closeModal() {
-      // this.$refs.myModalRef.hide()
-      // this.$router.push('/card')
-      // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     saveCard(archive) {
-      console.log("archive", archive);
-      if (archive) this.card.archived = true;
-      console.log("Saving card..", this.card);
+      if (archive) this.card.archived = true
+      console.log('Saving card..', this.card)
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -323,40 +309,31 @@ export default {
           activity.listId = card.listId;
           activity.cardId = card._id;
           activity.createdAt = moment(Date.now()).format(
-            "MMMM Do YYYY, h:mm:ss a"
-          );
-          this.$store.dispatch({ type: "saveActivity", activity });
-          // this.$router.push('/card')
-          // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-          this.$router.go(-1);
+            'MMMM Do YYYY, h:mm:ss a'
+          )
+          this.$store.dispatch({ type: 'saveActivity', activity })
+          this.$router.go(-1)
         })
         .catch(err => {
-          console.log(err);
-          // this.$router.push('/card')
-          // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-          this.$router.go(-1);
-        });
+          console.log(err)
+          this.$router.go(-1)
+        })
     },
 
     addComment() {
       if (this.comment) {
-        // var date = moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
-        var date = moment(Date.now()).format("DD/MM/YY hh:mm");
-        var comment = date + " " + this.comment;
-        if (!this.card.comments) this.card.comments = [comment];
-        else this.card.comments.unshift(comment);
-        this.comment = "";
+        var date = moment(Date.now()).format('DD/MM/YY hh:mm')
+        var comment = date + ' ' + this.comment
+        if (!this.card.comments) this.card.comments = [comment]
+        else this.card.comments.unshift(comment)
+        this.comment = ''
       }
     },
     modalClosed() {
-      console.log("modalClosed");
-      // this.$router.push('/card')
-      // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     moveCard() {
-      // console.log(this.$store.getters.getLists)
-      this.$store.getters.getLists.map(list => console.log(list.title));
+      this.$store.getters.getLists.map(list => console.log(list.title))
     }
   },
 

@@ -91,7 +91,7 @@ export default {
   components: {}
 };
 </script>
-<style>
+<style lang='scss' scoped>
 a {
   text-decoration: none;
   outline: none;

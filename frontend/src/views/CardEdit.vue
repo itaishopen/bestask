@@ -66,45 +66,46 @@
               >
                 <option slot="first" :value="null">AT</option>
               </b-form-select>
-              <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
-                <div class="title-Todos">TITLE: {{checklist.title}}</div>
-                <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
-                  <div class="edit-Todo">
-                    <i
-                      v-if="!toDo.done"
-                      @click="checkDone(checklist.id , toDo.id)"
-                      class="far fa-square"
-                    ></i>
-                    <i
-                      v-if="toDo.done"
-                      @click="checkDone(checklist.id , toDo.id)"
-                      class="fa fa-check-square"
-                    ></i>
-                    <div
-                      v-show="!toDo.editStatus"
-                      @click.prevent="openEditor(checklist.id , toDo.id)"
-                    >{{toDo.name}}</div>
-                  </div>
-                  <div class="flex editTodo" v-show="toDo.editStatus">
-                    <b-input
-                      name="add-todo"
-                      placeholder="Add todo"
-                      size="sm"
-                      v-model="titleToDo"
-                      autofocus
-                    />
-                    <button
-                      class="new-todo-options"
-                      @click.prevent="addToDo(checklist.id , toDo.id)"
-                    >Add</button>
-                    <button
-                      class="x-todo-options"
-                      @click.prevent="closeEditor(checklist.id , toDo.id)"
-                    >
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                  
+            </div>
+            <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
+              <div class="title-Todos">TITLE: {{checklist.title}}</div>
+              <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
+                <div class="edit-Todo">
+                  <i
+                    v-if="!toDo.done"
+                    @click="checkDone(checklist.id , toDo.id)"
+                    class="far fa-square"
+                  ></i>
+                  <i
+                    v-if="toDo.done"
+                    @click="checkDone(checklist.id , toDo.id)"
+                    class="fa fa-check-square"
+                  ></i>
+                  <div
+                    v-show="!toDo.editStatus"
+                    @click.prevent="openEditor(checklist.id , toDo.id)"
+                  >{{toDo.name}}</div>
+                </div>
+                <div class="flex editTodo" v-show="toDo.editStatus">
+                  <b-input
+                    name="add-todo"
+                    placeholder="Add todo"
+                    size="sm"
+                    v-model="titleToDo"
+                    autofocus
+                  />
+                  <button
+                    class="new-todo-options"
+                    @click.prevent="addToDo(checklist.id , toDo.id)"
+                  >Add</button>
+                  <button
+                    class="x-todo-options"
+                    @click.prevent="closeEditor(checklist.id , toDo.id)"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="time flex">
               <label class="mt-3" for="date">Date:</label>
@@ -252,18 +253,18 @@
           </div>
         </b-modal>
 
-          <!-- Modal Checklist Component -->
-          <b-modal id="modal5" title="Checklist" hide-footer>
-            <form class="add-checklist" @submit.prevent="addCheklist()">
-              Add Title
-              <b-form-input type="text" v-model="titleCheckList" autofocus/>
-              <b-button class="mt-3 float-right" type="submit">create</b-button>
-            </form>
-          </b-modal>
-          <!-- Share Modal  -->
-          <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-            <b-form-input class="m-1" v-model="share" readonly/>
-          </b-modal>
+        <!-- Modal Checklist Component -->
+        <b-modal id="modal5" title="Checklist" hide-footer>
+          <form class="add-checklist" @submit.prevent="addCheklist()">
+            Add Title
+            <b-form-input type="text" v-model="titleCheckList" autofocus/>
+            <b-button class="mt-3 float-right" type="submit">create</b-button>
+          </form>
+        </b-modal>
+        <!-- Share Modal  -->
+        <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+          <b-form-input class="m-1" v-model="share" readonly/>
+        </b-modal>
       </b-modal>
       <!-- </section> -->
     </div>
@@ -342,7 +343,7 @@ export default {
       return window.location.href;
     },
     isArchived() {
-      return this.card.archived ? 'Restore' : 'Archive';
+      return this.card.archived ? "Restore" : "Archive";
     }
   },
   methods: {
@@ -472,8 +473,8 @@ export default {
     },
     saveCard(isArchive) {
       this.card.archived = isArchive;
-      console.log('Saving card..', this.card)
-      this.modalOpen = false
+      console.log("Saving card..", this.card);
+      this.modalOpen = false;
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -696,8 +697,8 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
 }
-.new-todo{
- margin: 8px 0;
+.new-todo {
+  margin: 8px 0;
 }
 
 .x-todo-options {

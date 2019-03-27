@@ -39,13 +39,6 @@
           </div>
         </draggable>
       </draggable>
-    </main>
-
-    <footer class="footer">
-      <button class="list-add-card" v-if="!isAddClick" @click="newCard">
-        Add card
-        <i class="fa fa-plus"></i>
-      </button>
       <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
         <div>
           <textarea
@@ -60,6 +53,13 @@
           <button class="list-x-card-options" @click="closeAdd">&times;</button>
         </div>
       </form>
+    </main>
+
+    <footer class="footer">
+      <button class="list-add-card" v-if="!isAddClick" @click="newCard">
+        Add card
+        <i class="fa fa-plus"></i>
+      </button>
     </footer>
   </section>
 </template>
@@ -131,6 +131,7 @@ export default {
       console.log("new card", this.card);
       console.log((this.card.order = this.list.cards.length + 1));
       this.isAddClick = !this.isAddClick;
+      this.list.scrollBy(0, 100);
     },
     closeAdd() {
       this.isAddClick = !this.isAddClick;
@@ -241,24 +242,7 @@ export default {
   .main {
     max-height: 68vh;
     overflow-y: scroll;
-  }
-  .footer {
-    .list-add-card {
-      padding: 10px 0;
-      width: 270px;
-      height: 40px;
-      background-color: rgba(255, 255, 255, 0);
-      border: none;
-      font-size: 20px;
-      color: rgb(82, 82, 82);
-      border-radius: 7px;
-      transition: 0.3s;
-      &:hover {
-        background-color: rgba(199, 199, 199, 0);
-        color: rgb(0, 0, 0);
-      }
-    }
-    .form-add-card {
+      .form-add-card {
       width: 270px;
       height: 110px;
       display: flex;
@@ -282,11 +266,27 @@ export default {
       border-radius: 5px;
       padding: 8px;
       margin: 0 3px;
-
-      .list-x-card-options {
-        background-color: rgba(51, 236, 66, 0);
-        border: none;
-        width: 20px;
+    }
+    .list-x-card-options {
+      background-color: rgba(51, 236, 66, 0);
+      border: none;
+      width: 20px;
+    }
+  }
+  .footer {
+    .list-add-card {
+      padding: 10px 0;
+      width: 270px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0);
+      border: none;
+      font-size: 20px;
+      color: rgb(82, 82, 82);
+      border-radius: 7px;
+      transition: 0.3s;
+      &:hover {
+        background-color: rgba(199, 199, 199, 0);
+        color: rgb(0, 0, 0);
       }
     }
   }

@@ -45,7 +45,7 @@
                 placeholder="Description"
                 rows="6"
                 max-rows="10"
-              /> -->
+              />-->
               <b-form-select
                 size="sm"
                 class="m-1"
@@ -67,7 +67,29 @@
                 <option slot="first" :value="null">AT</option>
               </b-form-select>
             </div>
-            <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
+
+            
+
+            <div class="time flex">
+              <label class="mt-3" for="date">Date:</label>
+              <input
+                type="date"
+                class="custom-select custom-select-sm m-1"
+                name="bday"
+                size="sm"
+                v-model="card.dueDate"
+              >
+            </div>
+            <b-form-textarea
+              class="m-1"
+              id="textarea"
+              v-model="card.description"
+              placeholder="Description"
+              rows="6"
+              max-rows="10"
+            />
+
+           <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
               <div class="title-Todos">TITLE: {{checklist.title}}</div>
               <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
                 <div class="edit-Todo">
@@ -107,62 +129,6 @@
                 </div>
               </div>
             </div>
-            <div class="time flex">
-              <label class="mt-3" for="date">Date:</label>
-              <input
-                type="date"
-                class="custom-select custom-select-sm m-1"
-                name="bday"
-                size="sm"
-                v-model="card.dueDate"
-              >
-            </div>
-            <b-form-textarea
-              class="m-1"
-              id="textarea"
-              v-model="card.description"
-              placeholder="Description"
-              rows="6"
-              max-rows="10"
-            />
-
-            <!-- <div v-for="checklist in card.checklists" :key="checklist.id">
-              TITLE: {{checklist.title}}
-              ID: {{checklist.id}}
-              <div v-for="toDo in checklist.toDos" :key="toDo.id">
-                <div v-if="editStatus" class="flex">
-                  <i
-                    v-if="!toDo.done"
-                    @click="checkDone(checklist.id , toDo.id)"
-                    class="far fa-square"
-                  ></i>
-                  <i
-                    v-if="toDo.done"
-                    @click="checkDone(checklist.id , toDo.id)"
-                    class="fa fa-check-square"
-                  ></i>
-                  <div @click.prevent="closeEditor">{{toDo.name}}</div>
-                </div>
-                <div class="flex" v-if="!editStatus">
-                  <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-                  <b-button
-                    class="m-1 float-right"
-                    variant="primary"
-                    size="sm"
-                    @click="addToDo(todo.id)"
-                  >Add</b-button>
-                  <button @click="closeEditor">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-                <button
-                  class="new-todo-options new-todo"
-                  v-if="!editorOpen"
-                  size="sm"
-                  @click="addToDo(checklist.id)"
-                >Add item</button>
-              </div>
-            </div> -->
 
             <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
             <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>

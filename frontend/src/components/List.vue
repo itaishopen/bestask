@@ -65,16 +65,8 @@ export default {
     return {
       listArray: [this.list],
       isAddClick: false,
-      moveCardId: null,
-      fromListId: null,
-      toListId: null,
-      fromList: null,
-      toList: null,
       isChangeTitle: false,
       hasfocus: false
-      // toListFutureIndex: -1
-      // cardTitle: null,
-      // currList: null
     }
   },
   components: {
@@ -82,78 +74,6 @@ export default {
     draggable
   },
   methods: {
-    // moveCard(evt) {
-    //   console.log(evt);
-
-    //   this.moveCardId = evt.draggedContext.element._id
-    //   this.fromListId = evt.draggedContext.element.listId
-    //   if (evt.relatedContext.element) {
-    //     this.toListId = evt.relatedContext.element.listId;
-    //   } else {
-    //     this.toListId = evt.relatedContext.list._id
-    //   }
-    //   this.fromList = this.$store.getters.getLists.find(
-    //     list => list._id === this.fromListId
-    //   )
-    //   this.toList = this.$store.getters.getLists.find(
-    //     list => list._id === this.toListId
-    //   )
-    //   if (this.toList.cards) {
-    //     this.toList.cards = []
-    //   }
-    //   // if (this.toList.cards.length === 0) {
-    //   //   this.toList.cards =
-    //   // }
-
-    // },
-    // endMoveCard(evt) {
-    //   console.log('from', this.fromList);
-    //   console.log('to', this.toList);
-
-    //   if (this.fromListId === this.toListId) {
-    //     for (var i = 0; i < this.fromList.cards.length; i++) {
-    //       this.fromList.cards[i].order = i
-    //     }
-    //     this.$store
-    //       .dispatch({ type: 'saveList', list: this.fromList })
-    //       .then(() => {
-    //         SocketService.send(this.list.boardId)
-    //       })
-    //   } else {
-    //     var testCard = this.toList.cards.find(
-    //       card => card.listId === this.fromListId
-    //     )
-    //     for (var i = 0; i < this.fromList.cards.length; i++) {
-    //       this.fromList.cards[i].order = i
-    //     }
-    //     this.$store.dispatch({ type: 'saveList', list: this.fromList })
-    //     testCard.listId = this.toListId
-    //     for (var j = 0; j < this.toList.cards.length; j++) {
-    //       this.toList.cards[j].order = j
-    //     }
-    //     this.$store
-    //       .dispatch({ type: 'saveList', list: this.toList })
-    //       .then(() => {
-    //         SocketService.send(this.list.boardId)
-    //       })
-    //   }
-    //   SocketService.send(this.list.boardId)
-      // this.$store.dispatch({ type: 'saveCard', card: this.card })
-      //     .then(res => {
-      //         console.log(res)
-      //         console.log(this.toList)
-      //         this.$store.dispatch({ type: 'saveList', list: this.fromList })
-      //         if (this.fromListId !== this.toListId) {
-      //             this.$store.dispatch({ type: 'saveList', list: this.toList })
-      //         }
-      //         // console.log(this.toList)
-      //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card)
-      //         // console.log(this.toList)
-      //     })
-      //     .catch(err => {
-      //         console.log(err)
-      //     })
-    // },
     funToMove(env) {
       var fromListId = env.from.className.split(' ')[1]
       var toListId = env.to.className.split(' ')[1]
@@ -195,12 +115,8 @@ export default {
           SocketService.send(this.list.boardId)
         })
       }
-
-
-
     },
     newCard() {
-      // this.cardTitle = CardService.getEmpty()
       console.log('new card', this.card)
       console.log((this.card.order = this.list.cards.length + 1))
       this.isAddClick = !this.isAddClick
@@ -210,7 +126,6 @@ export default {
     },
     addCard() {
       this.card.listId = this.list._id
-      // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
       this.card.order = this.list.cards.length
       this.$store
         .dispatch({ type: 'saveCardToList', card: this.card })
@@ -272,21 +187,13 @@ export default {
   created() {
     var cardItem = CardService.getEmptyCard()
     this.$store.commit('setCard', { card: cardItem })
-    // this.currList = this.list
   },
   watch: {
-    // list: function (val) {
-    //   console.log(val)
-    //   // this.checkList()
-    // },
-    // board: function (val) {
-    //   console.log(val)
-    // }
   }
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .title-list {
   cursor: pointer;
   display: flex;
@@ -382,93 +289,3 @@ export default {
   min-height: 50px;
 }
 </style>
-
-
-// .input {
-//     width: 88%;
-//     padding: 5px;
-//     min-height: 18px;
-//     display: block;
-//     margin: 0 auto 7px auto;
-//     background-color: #e2e4e6;
-//     border-radius: 3px;
-//     color: #4d4d4d;
-//     outline: none;
-//     border: none;
-//     &:focus {
-//         background-color: #ffffff;
-//     }
-// }
-// .text-area {
-//     margin: 0 auto;
-//     display: flex;
-//     justify-content: flex-start;
-//     align-items: center;
-//     background-color: #ffffff;
-//     color: #4d4d4d;
-//     border-radius: 3px;
-//     border: none;
-//     outline: none;
-//     opacity: 1;
-//     width: 88% - 2 * 4%;
-//     padding: 10px 4%;
-//     min-height: 50px;
-//     font-family: 'Open Sans', sans-serif;
-//     font-weight: 400;
-//     font-size: 12px;
-//     color: #4d4d4d;
-// }
-// .list {
-//     padding-top: 10px;
-//     width: 275px;
-//     background-color: #e2e4e6;
-//     border-radius: 3px;
-//     font-family: 'Open Sans', sans-serif;
-//     font-weight: 700;
-//     font-size: 15px;
-//     color: #ffffff;
-//     display: inline-block;
-//     margin: 0.5% 1.5%;
-//     vertical-align: top;
-//     .list-cards {
-//         max-height: 70vh;
-//         margin: 0;
-//         padding: 0;
-//     }
-//     .list-add-card {
-//         width: 88%;
-//         padding: 7px (100% - 88%) / 2;
-//         margin: 0;
-//         height: auto;
-//         text-align: left;
-//         cursor: pointer;
-//         border-radius: 3px;
-//         font-family: 'Open Sans', sans-serif;
-//         font-weight: 400;
-//         font-size: 12px;
-//         color: #959da1;
-//         &:hover {
-//             text-decoration: underline;
-//             color: #4d4d4d;
-//             background-color: #cdd2d4;
-//             border-top-left-radius: 0;
-//             border-top-right-radius: 0;
-//         }
-//     }
-//     .list-new-card-options {
-//         width: 88%;
-//         padding: 10px (100% - 88%) / 2;
-//         display: flex;
-//         flex-wrap: wrap;
-//         align-items: center;
-//         justify-content: flex-start;
-//     }
-//     .current-target {
-//         background-color: #c4c9cc !important;
-//     }
-//     .current-target > * {
-//         visibility: hidden;
-//     }
-// }
-//
-// </style>

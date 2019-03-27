@@ -50,25 +50,30 @@
         </form>
       </div>
     </ul>
+    <card-edit v-if="showModal" ref="card">
+      <router-view name="Card Edit" />
+    </card-edit>
   </section>
 </template>
 
 <script>
 import CardService from "../services/CardService.js";
+import CardEdit from '../views/CardEdit.vue'
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
 import draggable from "vuedraggable";
-import nestedDraggable from "vuedraggable";
 import moment from "moment";
 
 export default {
   name: "board",
+
   data() {
     return {
       isAddListClick: false,
-      isChangeTitle: false
+      isChangeTitle: false,
+      showModal: this.$route.meta.showModal
     };
   },
   created() {
@@ -78,14 +83,16 @@ export default {
     // var user = this.$store.getters.loggedInUser;
     // if (user) SocketService.on('userConnected', user)
     // else SocketService.on('userConnected', null)
-    SocketService.on("board-change", boardId => {
-      this.$store.dispatch({ type: "loadBoard", boardId });
-    });
+    // SocketService.on("board-change", incomeBoardId => {
+    //   console.log(incomeBoardId);
+
+    //   this.$store.dispatch({ type: "loadBoard", incomeBoardId });
+    // });
   },
   components: {
     list,
     draggable,
-    nestedDraggable
+    CardEdit
   },
 
   computed: {
@@ -120,7 +127,6 @@ export default {
 
   methods: {
     fun(boardId) {
-      console.log("activated by socket EVENTTT");
       this.$store.dispatch({ type: "loadBoard", boardId });
     },
     newList() {
@@ -156,8 +162,8 @@ export default {
     },
     changeTitle() {
       console.log("this.board", this.board);
-      this.$store.dispatch({ type: "saveBoard", board: this.board });
-      SocketService.send(this.board._id);
+      this.$store.dispatch({ type: "saveBoard", board: this.board }).then(() => SocketService.send(this.board._id));
+
       this.isChangeTitle = !this.isChangeTitle;
     },
     moveList(evt) {
@@ -175,8 +181,10 @@ export default {
     }
   },
 
-  watch: {
-    
+   watch: {
+    "$route.meta"({ showModal }) {
+      this.showModal = showModal;
+    }
   }
 };
 </script>

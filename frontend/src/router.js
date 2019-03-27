@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/SignUp.vue'
 import TaskApp from './views/TaskApp.vue'
-import CardEdit from './views/CardEdit.vue'
+import EditCard from './views/CardEdit.vue'
 import Board from './components/Board.vue'
 
 
@@ -22,10 +22,28 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
-    // { path: '/task', component: TaskApp },
-    { path: '/board', component: TaskApp, meta: { showModal: false } },
-    { path: '/board/:boardId', component: Board, meta: { showModal: false } },
-    { path: '/card/edit/:cardId', component: CardEdit, meta: { showModal: true } },
+    { 
+      path: '/board', 
+      name: "Boards" ,
+      component: TaskApp 
+    },
+    { 
+      path: '/board/:boardId', 
+      name: "Board" , 
+      component: Board , 
+      meta: { showModal: false } ,
+      children: [
+        { 
+          path: '/card/edit/:cardId', 
+          name: "Card Edit" , 
+          component: {
+            page: Board, 
+            card: EditCard
+          } , 
+          meta: { showModal: true } 
+        }
+      ]
+    },
     {
       path: '/login',
       name: 'login',

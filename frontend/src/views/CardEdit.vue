@@ -1,164 +1,171 @@
-<template>  
-  <b-modal
-    v-if="card"
-    v-model="showModal"
-    id="modal1"
-    ref="myModalRef"
-    @hide="modalClosed"
-    title="Edit Card"
-    no-close-on-esc
-    no-close-on-backdrop
-    hide-header-close
-  >
-    <section class="nav-modal">
-      <div class="containerLabel" v-b-modal.modal4>
-        <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
-        <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
-        <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
-        <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
-        <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
-        <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
-      </div>
-      <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in card.users.slice(0, 2)" :key="user._id">
-          <div class="container-name-member" v-if="checkMember(user._id)">
-            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
-          </div>
-        </div>
-        <div class="logo-user-name" v-if="checkSumMember()">
-          <i class="fas fa-plus"></i>
-        </div>
-      </div>
-    </section>
-    <div class="container flex">
-      <main class="content flex">
-        <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
-        <b-form-textarea
-          class="m-1"
-          id="textarea"
-          v-model="card.description"
-          placeholder="Description"
-          rows="6"
-          max-rows="10"
-        />
+<template>
 
-        <div v-for="checklist in card.checklists" :key="checklist._id">
-          TITLE: {{checklist.title}}
-          <div v-for="toDo in checklist.toDos" :key="toDo._id">
-            <div class="flex">
-              <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
-              <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
-              <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
-            </div>
-            <div class="flex" v-if="!editStatus">
-              <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
-              <button @click="closeEditor">&times;</button>
+<div id="modal-container" class="one" :class="modalOpen ? '': 'out'">
+  <div class="modal-background">
+  <div class="card-edit">
+    <b-modal
+      v-if="card"
+      v-model="showModal"
+      id="modal1"
+      ref="myModalRef"
+      @hide="modalClosed"
+      title="Edit Card"
+      no-close-on-esc
+      no-close-on-backdrop
+      hide-header-close
+    >
+      <section class="nav-modal">
+        <div class="containerLabel" v-b-modal.modal4>
+          <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
+          <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
+          <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
+          <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
+          <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
+          <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
+        </div>
+        <div v-b-modal.modal6 class="container-member-nav">
+          <div v-for="user in card.users.slice(0, 2)" :key="user._id">
+            <div class="container-name-member" v-if="checkMember(user._id)">
+              <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
             </div>
           </div>
+          <div class="logo-user-name" v-if="checkSumMember()">
+            <i class="fas fa-plus"></i>
+          </div>
         </div>
+      </section>
+      <div class="container flex">
+        <main class="content flex">
+          <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
+          <b-form-textarea
+            class="m-1"
+            id="textarea"
+            v-model="card.description"
+            placeholder="Description"
+            rows="6"
+            max-rows="10"
+          />
 
-        <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
-        <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
-        <b-form-input
-          v-for="comment in card.comments"
-          :key="comment"
-          class="m-1"
-          size="sm"
-          :value="comment"
-          readonly
-        />
-      </main>
-      <div class="nav flex">
-        <label class="m-1">Add to Card</label>
-        <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
-        <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
-        <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
+          <div v-for="checklist in card.checklists" :key="checklist._id">
+            TITLE: {{checklist.title}}
+            <div v-for="toDo in checklist.toDos" :key="toDo._id">
+              <div class="flex">
+                <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
+                <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
+                <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
+              </div>
+              <div class="flex" v-if="!editStatus">
+                <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
+                <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
+                <button @click="closeEditor">&times;</button>
+              </div>
+            </div>
+          </div>
 
-        <label class="m-1">Actions</label>
-        <!-- <b-button class='m-1 btn-block' v-on:click='moveCard'>Move</b-button> -->
-        <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
-          <b-dropdown-item
-            v-for="list in lists"
-            :key="list._id"
-            :value="list._id"
-            @click="card.listId = list._id"
-          >{{ list.title }}</b-dropdown-item>
-        </b-dropdown>
+          <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
+          <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
+          <b-form-input
+            v-for="comment in card.comments"
+            :key="comment"
+            class="m-1"
+            size="sm"
+            :value="comment"
+            readonly
+          />
+        </main>
+        <div class="nav flex">
+          <label class="m-1">Add to Card</label>
+          <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
+          <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
+          <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
-        <b-button class="m-1 btn-block" size="sm">Copy</b-button>
-        <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(true)">Archive</b-button>
-        <!-- <b-form-checkbox
+          <label class="m-1">Actions</label>
+          <!-- <b-button class='m-1 btn-block' v-on:click='moveCard'>Move</b-button> -->
+          <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
+            <b-dropdown-item
+              v-for="list in lists"
+              :key="list._id"
+              :value="list._id"
+              @click="card.listId = list._id"
+            >{{ list.title }}</b-dropdown-item>
+          </b-dropdown>
+
+          <b-button class="m-1 btn-block" size="sm">Copy</b-button>
+          <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(true)">Archive</b-button>
+          <!-- <b-form-checkbox
                     button
                     v-model='card.archived'
                     name='check-button'
-        >Archive {{ card.archived }}</b-form-checkbox>-->
-        <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
-      </div>
-    </div>
-    <div slot="modal-footer" class="w-100">
-      <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
-      <b-button class="m-1 float-right" @click="closeModal">Close</b-button>
-    </div>
-    <!-- Modal Labels Component -->
-    <b-modal id="modal4" title="Labels">
-      <div class="Label Red" @click="changeLabel('red')">
-        Bug
-        <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
-      </div>
-      <div class="Label Blue" @click="changeLabel('blue')">
-        Duplicate
-        <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
-      </div>
-      <div class="Label Green" @click="changeLabel('green')">
-        Enhancement
-        <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
-      </div>
-      <div class="Label Yellow" @click="changeLabel('yellow')">
-        Invalid
-        <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
-      </div>
-      <div class="Label Purple" @click="changeLabel('purple')">
-        Question
-        <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
-      </div>
-      <div class="Label Orange" @click="changeLabel('orange')">
-        Wontfix
-        <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
-      </div>
-    </b-modal>
-
-    <!-- Modal Members Component -->
-    <b-modal id="modal6" title="Members" v-if="board.users">
-      <div v-for="user in board.users" :key="user._id">
-        <div class="container-member" @click="memberToCard(user._id)">
-          <div class="container-name-member">
-            <div
-              class="logo-user-name"
-            >{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
-            <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
-          </div>
-          <div>
-            <i class="fa fa-check" v-if="checkMember(user._id)"></i>
-          </div>
+          >Archive {{ card.archived }}</b-form-checkbox>-->
+          <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
         </div>
       </div>
-    </b-modal>
+      <div slot="modal-footer" class="w-100">
+        <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
+        <b-button class="m-1 float-right" @click="modalClosed">Close</b-button>
+      </div>
+      <!-- Modal Labels Component -->
+      <b-modal id="modal4" title="Labels">
+        <div class="Label Red" @click="changeLabel('red')">
+          Bug
+          <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
+        </div>
+        <div class="Label Blue" @click="changeLabel('blue')">
+          Duplicate
+          <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
+        </div>
+        <div class="Label Green" @click="changeLabel('green')">
+          Enhancement
+          <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
+        </div>
+        <div class="Label Yellow" @click="changeLabel('yellow')">
+          Invalid
+          <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
+        </div>
+        <div class="Label Purple" @click="changeLabel('purple')">
+          Question
+          <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
+        </div>
+        <div class="Label Orange" @click="changeLabel('orange')">
+          Wontfix
+          <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
+        </div>
+      </b-modal>
 
-    <!-- Modal Checklist Component -->
-    <b-modal id="modal5" title="Checklist" hide-footer>
-      <form class="add-checklist" @submit="addCheklist()">
-        Title
-        <b-form-input type="text" v-model="checklist.title"/>
-        <b-button class="mt-3 float-right" type="submit">create</b-button>
-      </form>
+      <!-- Modal Members Component -->
+      <b-modal id="modal6" title="Members" v-if="board.users">
+        <div v-for="user in board.users" :key="user._id">
+          <div class="container-member" @click="memberToCard(user._id)">
+            <div class="container-name-member">
+              <div
+                class="logo-user-name"
+              >{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
+              <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
+            </div>
+            <div>
+              <i class="fa fa-check" v-if="checkMember(user._id)"></i>
+            </div>
+          </div>
+        </div>
+      </b-modal>
+
+      <!-- Modal Checklist Component -->
+      <b-modal id="modal5" title="Checklist" hide-footer>
+        <form class="add-checklist" @submit="addCheklist()">
+          Title
+          <b-form-input type="text" v-model="checklist.title"/>
+          <b-button class="mt-3 float-right" type="submit">create</b-button>
+        </form>
+      </b-modal>
+      <!-- Share Modal  -->
+      <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+        <b-form-input class="m-1" v-model="share" readonly/>
+      </b-modal>
     </b-modal>
-    <!-- Share Modal  -->
-    <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-      <b-form-input class="m-1" v-model="share" readonly/>
-    </b-modal>
-  </b-modal>
-  <!-- </section> -->
+    <!-- </section> -->
+  </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -168,9 +175,12 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import ActivityService from '../services/ActivityService'
+import SocketService from '../services/SocketService'
+import { TweenMax, Power4 } from "gsap";
 
 export default {
-  name: "CardEdit",
+  name: "card",
   data() {
     return {
       comment: "",
@@ -181,13 +191,15 @@ export default {
         toDos: []
       },
       toDo: { name: "", done: false },
-      editStatus: false
+      editStatus: false,
+      modalOpen: false
     };
   },
   created() {
     var cardId = this.$route.params.cardId;
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
       this.card = card;
+      this.modalOpen = true
       console.log(this.card, "created");
     });
   },
@@ -293,12 +305,10 @@ export default {
         this.card.labels.splice(index, 1);
       }
     },
-    closeModal() {
-      this.$router.go(-1)
-    },
     saveCard(archive) {
       if (archive) this.card.archived = true
       console.log('Saving card..', this.card)
+      this.modalOpen = false
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -312,6 +322,7 @@ export default {
             'MMMM Do YYYY, h:mm:ss a'
           )
           this.$store.dispatch({ type: 'saveActivity', activity })
+          SocketService.send(this.board._id);
           this.$router.go(-1)
         })
         .catch(err => {
@@ -330,6 +341,7 @@ export default {
       }
     },
     modalClosed() {
+      this.modalOpen = false
       this.$router.go(-1)
     },
     moveCard() {
@@ -338,15 +350,6 @@ export default {
   },
 
   components: {},
-  // watch: {
-  //   card: function() {
-  //     console.log('change in card')
-  //     this.$store.dispatch({ type: 'saveCard', card: this.card })
-  //   }
-  // },
-  "$route.meta"({ showModal }) {
-    this.showModal = showModal;
-  }
 };
 </script>
 
@@ -492,4 +495,77 @@ export default {
 .name-member {
   margin-left: 8px;
 }
+
+#modal-container {
+  position:fixed;
+  display:table;
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  transform:scale(0);
+  z-index:1;
+  &.one {
+    transform:scaleY(.01) scaleX(0);
+    animation:unfoldIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+    .modal-background {
+      .modal {
+        transform:scale(0);
+        animation: zoomIn .5s .8s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+      }
+    }
+    &.out {
+      transform:scale(1);
+      animation:unfoldOut 1s .3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+      .modal-background {
+        .modal {
+          animation: zoomOut .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+        }
+      }
+    }
+  }
+}
+@keyframes unfoldIn {
+  0% {
+    transform:scaleY(.005) scaleX(0);
+  }
+  50% {
+    transform:scaleY(.005) scaleX(1);
+  }
+  100% {
+    transform:scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes unfoldOut {
+  0% {
+    transform:scaleY(1) scaleX(1);
+  }
+  50% {
+    transform:scaleY(.005) scaleX(1);
+  }
+  100% {
+    transform:scaleY(.005) scaleX(0);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform:scale(0);
+  }
+  100% {
+    transform:scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform:scale(1);
+  }
+  100% {
+    transform:scale(0);
+  }
+}
+
+
 </style>

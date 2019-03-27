@@ -1,6 +1,6 @@
 <template>
-  <div class="card-preview" v-if="card._id !== 'fun'">
-    <router-link :to="'/card/edit/' + card._id">
+  <div class="card-preview">
+    <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
       <section class="title-card">
         <div class="containerHead">
           <ul class="labels">

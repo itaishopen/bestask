@@ -204,9 +204,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.card{
-  background-color: rgba(255, 255, 255, 0); 
-  border: 1px solid rgba(0, 0, 0, 0); 
+.card {
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
 }
 .list {
   .header {
@@ -225,21 +225,22 @@ export default {
       font-size: 18px;
       font-weight: bold;
       height: 32px;
-      width: 100%;
+      width: 90%;
       border: none;
+      border-top-left-radius: 7px;
       background: rgba(255, 255, 255, 0.911);
       padding-left: 10px;
     }
     .btn-title-list {
+      border-top-right-radius: 7px;
+      height: 32px;
       background: rgba(255, 255, 255, 0.911);
       border: none;
     }
   }
   .main {
-     max-height: 68vh;
-  overflow-y: scroll;
-
-    
+    max-height: 68vh;
+    overflow-y: scroll;
   }
   .footer {
     .list-add-card {
@@ -293,32 +294,32 @@ export default {
 
 .everyCard {
   width: 100%;
-  height:100%;
+  height: 100%;
   overflow: auto;
   overflow-x: scroll;
   overflow-y: hidden;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .items::-webkit-scrollbar {
   width: 0.5em;
   height: 0.5em;
-  background-color:#ebebeb;
-} 
+  background-color: #ebebeb;
+}
 .items::-webkit-scrollbar-thumb {
   background: rgb(206, 205, 205);
   -webkit-border-radius: 6px;
-} 
-.items::-webkit-scrollbar-track { 
-  background-color:#ebebeb;
+}
+.items::-webkit-scrollbar-track {
+  background-color: #ebebeb;
   -webkit-border-radius: 6px;
 }
 .items::-webkit-scrollbar-button {
   -webkit-border-radius: 6px;
   background: #1900f8;
-  display: block; 
-  height:100%;
-} 
+  display: block;
+  height: 100%;
+}
 
 .ghost {
   opacity: 0.3;

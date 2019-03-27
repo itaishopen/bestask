@@ -44,13 +44,15 @@
           <textarea
             class="text-area"
             v-model="card.title"
-            placeholder="Enter text here..."
+            placeholder="Enter title here..."
             autofocus
           ></textarea>
         </div>
         <div class="container-add-card-btns">
           <button class="list-new-card-options" type="submit">Add card</button>
-          <button class="list-x-card-options" @click="closeAdd">&times;</button>
+          <button class="list-x-card-options" @click="closeAdd">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
       </form>
     </main>
@@ -71,6 +73,7 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import moment from "moment";
+
 export default {
   name: "list",
   props: ["list"],
@@ -79,12 +82,13 @@ export default {
       listArray: [this.list],
       isAddClick: false,
       isChangeTitle: false,
-      hasfocus: false
-    };
+      hasfocus: false,
+    }
   },
   components: {
     CardPreview,
-    draggable
+    draggable,
+
   },
   methods: {
     funToMove(env) {
@@ -96,19 +100,18 @@ export default {
       var fromList = this.$store.getters.getLists.find(
         list => list._id === fromListId
       );
-
       if (fromListId !== toListId) {
         var toList = this.$store.getters.getLists.find(
           list => list._id === toListId
         );
         var card = toList.cards.find(card => card._id === cardId);
+        card.listId = toListId;
         for (var i = 0; i < toList.cards.length; i++) {
           toList.cards[i].order = i;
         }
         for (var j = 0; j < fromList.cards.length; j++) {
           fromList.cards[j].order = j;
         }
-        card.listId = toListId;
         this.$store.dispatch({ type: "saveList", list: toList }).then(() => {
           this.$store
             .dispatch({ type: "saveList", list: fromList })
@@ -120,8 +123,6 @@ export default {
         for (var k = 0; k < fromList.cards.length; k++) {
           fromList.cards[k].order = k;
         }
-        var card = fromList.cards.find(card => card._id === cardId);
-        card.listId = toListId;
         this.$store.dispatch({ type: "saveList", list: fromList }).then(() => {
           SocketService.send(this.list.boardId);
         });
@@ -242,7 +243,7 @@ export default {
   .main {
     max-height: 68vh;
     overflow-y: scroll;
-      .form-add-card {
+    .form-add-card {
       width: 270px;
       height: 110px;
       display: flex;
@@ -258,19 +259,26 @@ export default {
       border-radius: 10px;
       padding: 5px;
       margin-top: 10px;
+      box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+      border-bottom: 0.9px solid rgb(167, 165, 165);
     }
     .list-new-card-options {
+      font-size: 17px;
+      font-weight: bold;
       background-color: rgb(51, 236, 66);
       color: rgb(255, 255, 255);
       border: none;
       border-radius: 5px;
-      padding: 8px;
+      padding: 8px 18px;
       margin: 0 3px;
     }
     .list-x-card-options {
-      background-color: rgba(51, 236, 66, 0);
+      background-color: rgb(236, 51, 51);
+      color: rgb(255, 255, 255);
       border: none;
-      width: 20px;
+      border-radius: 5px;
+      padding: 8px 18px;
+      margin: 0 3px;
     }
   }
   .footer {

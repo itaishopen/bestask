@@ -1,7 +1,7 @@
 <template>
   <section class="board">
-    <div class="board-title" v-if="!isChangeTitle" @click.prevent="choseTitle">{{board.title}}</div>
-    <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
+    <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
+    <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
       <input
         class="input-title-board"
         ref="title"
@@ -42,36 +42,43 @@
           class="create-list-input form-add-list"
         >
           <div>
-            <input class="input-new-list" v-model="list.title" placeholder="Enter text here...">
+            <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
           </div>
           <div class="container-add-list-btns">
             <button class="create-list-options list-new-list-options" type="submit">
               <i class="fa fa-plus"></i>
             </button>
-            <button class="list-x-list-options" @click="closeAdd">&times;</button>
+            <button class="list-x-list-options" @click="closeAdd">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
         </form>
       </div>
     </ul>
+    <card-edit v-if="showModal" ref="card">
+      <router-view name="Card Edit" />
+    </card-edit>
   </section>
 </template>
 
 <script>
 import CardService from "../services/CardService.js";
+import CardEdit from '../views/CardEdit.vue'
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
 import draggable from "vuedraggable";
-import nestedDraggable from "vuedraggable";
 import moment from "moment";
 
 export default {
   name: "board",
+
   data() {
     return {
       isAddListClick: false,
-      isChangeTitle: false
+      isChangeTitle: false,
+      showModal: this.$route.meta.showModal
     };
   },
   created() {
@@ -81,14 +88,16 @@ export default {
     // var user = this.$store.getters.loggedInUser;
     // if (user) SocketService.on('userConnected', user)
     // else SocketService.on('userConnected', null)
-    SocketService.on("board-change", boardId => {
-      this.$store.dispatch({ type: "loadBoard", boardId });
-    });
+    // SocketService.on("board-change", incomeBoardId => {
+    //   console.log(incomeBoardId);
+
+    //   this.$store.dispatch({ type: "loadBoard", incomeBoardId });
+    // });
   },
   components: {
     list,
     draggable,
-    nestedDraggable
+    CardEdit
   },
 
   computed: {
@@ -123,7 +132,6 @@ export default {
 
   methods: {
     fun(boardId) {
-      console.log("activated by socket EVENTTT");
       this.$store.dispatch({ type: "loadBoard", boardId });
     },
     newList() {
@@ -154,13 +162,13 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
-      console.log("isChangeTitle", this.isChangeTitle);
+      // console.log( this.isChangeTitle , this.board , 'title');
       this.isChangeTitle = !this.isChangeTitle;
     },
     changeTitle() {
       console.log("this.board", this.board);
-      this.$store.dispatch({ type: "saveBoard", board: this.board });
-      SocketService.send(this.board._id);
+      this.$store.dispatch({ type: "saveBoard", board: this.board }).then(() => SocketService.send(this.board._id));
+
       this.isChangeTitle = !this.isChangeTitle;
     },
     moveList(evt) {
@@ -178,8 +186,10 @@ export default {
     }
   },
 
-  watch: {
-    
+   watch: {
+    "$route.meta"({ showModal }) {
+      this.showModal = showModal;
+    }
   }
 };
 </script>
@@ -252,8 +262,7 @@ export default {
   background-color: #ebebeb;
   border: 1px solid #cecece;
   border-radius: 8px;
-
-  margin: 3px;
+  margin: 0 3px;
 }
 .input-new-list {
   min-width: 264px;
@@ -263,6 +272,8 @@ export default {
   border-radius: 10px;
   padding: 5px;
   margin-top: 10px;
+  box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+  border-bottom: 0.9px solid rgb(167, 165, 165);
 }
 .container-list-card-btns {
   display: flex;
@@ -278,13 +289,16 @@ export default {
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
-  padding: 8px;
+  padding: 8px 18px;
   margin: 0 3px;
 }
 .list-x-list-options {
-  background-color: rgba(51, 236, 66, 0);
+  background-color: rgb(236, 51, 51);
+  color: rgb(255, 255, 255);
   border: none;
-  width: 20px;
+  border-radius: 5px;
+  padding: 8px 18px;
+  margin: 0 3px;
 }
 .input-title-board {
   font-size: 18px;

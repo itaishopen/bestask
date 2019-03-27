@@ -10,7 +10,9 @@ export default {
     removeCard,
     saveCard,
     getEmptyCard,
-    updateCards
+    updateCards,
+    getEmptyChecklist,
+    getEmptyToDo
 }
 
 function query() {
@@ -30,7 +32,7 @@ function updateCards(cards) {
 }
 
 function saveCard(card) {
-    if (card._id) {        
+    if (card._id) {
         return HttpService.put(`${CARD_URL}/${card._id}`, card).then(resolveData)
     } else {
         return HttpService.post(CARD_URL, card).then(resolveData)
@@ -52,4 +54,28 @@ function getEmptyCard() {
         et: null,
         at: null
     }
+}
+
+function getEmptyChecklist() {
+    return {
+        id: randomId(12),
+        title: "",
+        toDos: []
+    }
+}
+
+function getEmptyToDo() {
+    return { id: randomId(12), name: "", done: false }
+}
+
+function randomId(length_) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
+    if (typeof length_ !== "number") {
+        length_ = Math.floor(Math.random() * chars.length_);
+    }
+    var str = '';
+    for (var i = 0; i < length_; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
 }

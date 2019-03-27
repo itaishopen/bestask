@@ -13,7 +13,7 @@ export default {
     getters: {
         getBoard: state => state.board,
         getLists: state => state.lists,
-        getBoardActivities: state => state.board.activities,
+        getBoardActivities: state => state.activities,
         getCurrCard: state => state.currCard,
     },
     mutations: {
@@ -61,8 +61,8 @@ export default {
         loadBoard(context, { boardId }) {
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
-                    console.log(board[0]);
-
+                    console.log(activities);
+                    
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
                     context.commit({ type: 'setBoardActivities', activities });
@@ -72,6 +72,7 @@ export default {
         saveBoard(context, { board }) {
             return BoardService.saveBoard(board).then(savedBoard => {
                 context.commit({ type: 'setBoard', savedBoard: savedBoard[0] })
+                return savedBoard[0]
             })
         },
         updateLists(context, { lists }) {

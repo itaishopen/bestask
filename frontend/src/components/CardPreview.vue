@@ -9,7 +9,14 @@
             </li>
           </ul>
         </div>
-        <div class="title-card-text">{{card.title}}</div>
+        <div class="card-middle">
+          <div class="title-card-text">{{card.title}}</div>
+          <div
+            class="due-date"
+            v-if="card.dueDate"
+            :style="{ background: checkDoDate() }"
+          >{{changeDate}}</div>
+        </div>
         <div class="info-bar">
           <div class="info-bar-left">
             <div class="info-bar-marks" title="cardDescr()" v-if="card.description">
@@ -51,10 +58,11 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() {},
+  created() { },
   data() {
     return {};
   },
@@ -76,6 +84,9 @@ export default {
         }
       }
       return usertodisplay;
+    },
+    changeDate() {
+      return moment(this.card.dueDate, 'YYYY/MM/DD').format('DD/MM')
     }
   },
   methods: {
@@ -86,6 +97,15 @@ export default {
       if (this.card.users.length > 2) {
         return true;
       }
+    },
+    checkDoDate() {
+      let dateAsMoment = moment(this.card.dueDate, 'YYYY/MM/DD')
+      let today = moment()
+      if (dateAsMoment.diff(today, 'days') <= 0) return '#848383'
+      if (dateAsMoment.diff(today, 'days') <= 1) return '#e73737'
+      if (dateAsMoment.diff(today, 'days') <= 3) return '#ffef16'
+      return '#21af44'
+
     }
   },
   components: {}
@@ -138,13 +158,33 @@ a:hover {
 .title-card:hover {
   background-color: rgb(250, 250, 250);
 }
-.title-card-text {
-  color: black;
-  font-size: 18px;
+.card-middle {
   display: flex;
-  justify-self: center;
-  align-self: center;
+  width: 100%;
+  & .title-card-text {
+    color: black;
+    font-size: 18px;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    width: 190px;
+    justify-content: flex-start;
+  }
+  & .due-date {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    font-size: 12px;
+    color: black;
+    padding: 5px 10px 5px 10px;
+    border-radius: 25px;
+    border: 1px solid black;
+    box-shadow: inset 2px 3px 3px 0px rgba(190, 188, 188, 0.623);
+  }
 }
+
 .card-preview {
   display: flex;
   flex-direction: column;
@@ -157,6 +197,7 @@ a:hover {
   flex-direction: row;
   justify-content: flex-start;
 }
+
 .info-bar {
   color: #525252;
   width: 100%;

@@ -47,7 +47,19 @@ export default new Router({
     },
     { path: '/board/:boardId/archive',
       name: 'Board archive',
-      component: BoardArchive
+      component: BoardArchive,
+      meta: { showModal: false } ,
+      children: [
+        { 
+          path: '/card/edit/:cardId', 
+          name: "Card Edit" , 
+          component: {
+            page: BoardArchive, 
+            card: EditCard
+          } , 
+          meta: { showModal: true } 
+        }
+      ]
     },
     {
       path: '/login',

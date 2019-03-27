@@ -34,7 +34,7 @@
           @start="drag=true"
           @end="funToMove"
         >
-          <div v-for="card in list.cards" :key="card._id" class="card" :class="card._id">
+          <div v-for="card in list.cards" :key="card._id" class="card" :class="[card._id, card.archived ? 'hide-card' : '']">
             <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
           </div>
         </draggable>
@@ -173,6 +173,9 @@ export default {
     }
   },
   computed: {
+    hideCard(card) {
+      return card.archived ? 'hide-card' : ''
+    },
     card: {
       get() {
         return this.$store.getters.getCurrCard;
@@ -206,6 +209,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.hide-card {
+  display: none;
+}
 .card {
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(0, 0, 0, 0);

@@ -1,7 +1,6 @@
 <template>
-  <div id="modal-container" class="one" :class="modalOpen ? '': 'out'">
+  <div id="modal-container" class="card-edit one" :class="modalOpen ? '': 'out'">
     <div class="modal-background">
-      <div class="card-edit">
         <b-modal
           v-if="card"
           v-model="showModal"
@@ -212,7 +211,6 @@
         <!-- </section> -->
       </div>
     </div>
-  </div>
 </template>
 
 <script>

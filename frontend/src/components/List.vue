@@ -13,7 +13,7 @@
         <i class='fa fa-plus'></i>
       </button>
     </form>
-    <draggable
+    <!-- <draggable
       v-model='list.cards'
       v-bind='dragOptions'
       group='list'
@@ -28,7 +28,25 @@
           </div>
           
       </transition-group>
-    </draggable>
+    </draggable> -->
+     <Container
+            group-name="list"
+            @drop="(e) => onCardDrop(list._id, e)"
+            @drag-start="(e) => log('drag start', e)"
+            @drag-end="(e) => log('drag end', e)"
+            :get-child-payload="getCardPayload(list._id)"
+            drag-class="card-ghost"
+            drop-class="card-ghost-drop"
+            :drop-placeholder="dropPlaceholderOptions"
+          >
+            <Draggable v-for="card in list.cards" :key="card._id">
+              <!-- <div :class="card.props.className" :style="card.props.style">
+                <p>{{ card.data }}</p>
+              </div> -->
+              <!-- <card-preview v-if='!card.archived' :card='card'></card-preview> -->
+              <card-preview :card='card'></card-preview>
+            </Draggable>
+      </Container>
     <!-- <ul class='list-cards'>
             <li v-for='card in list.cards' :key='card._id'>
                 <card-preview v-if='!card.archived' :card='card'></card-preview>
@@ -53,11 +71,12 @@
 <script>
 import CardPreview from '@/components/CardPreview.vue'
 import CardService from '../services/CardService.js'
-import draggable from 'vuedraggable'
+// import draggable from 'vuedraggable'
 import ListService from '../services/ListService.js'
 import ActivityService from '../services/ActivityService.js'
 import SocketService from '../services/SocketService.js'
 import moment from 'moment'
+import { Container, Draggable } from 'vue-smooth-dnd'
 export default {
   name: 'list',
   props: ['list'],
@@ -70,17 +89,64 @@ export default {
       fromList: null,
       toList: null,
       isChangeTitle: false,
-      hasfocus: false
+      hasfocus: false,
       // toListFutureIndex: -1
       // cardTitle: null,
       // currList: null
+      dropPlaceholderOptions: {
+        className: 'drop-preview',
+        animationDuration: '150',
+        showOnTop: true
+      }
     }
   },
   components: {
     CardPreview,
-    draggable
+    // draggable,
+    Container,
+    Draggable
   },
   methods: {
+    onCardDrop (listId, dropResult) {
+      console.log('onCardDrop', dropResult);
+      if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+        // const scene = Object.assign({}, this.scene)
+        // const column = scene.children.filter(p => p.id === columnId)[0]
+        const fromList = this.$store.getters.getLists.find(list => list._id === listId);
+        // const columnIndex = scene.children.indexOf(column)
+        const fromListIndex = this.$store.getters.getLists.indexOf(fromList);
+        // const newColumn = Object.assign({}, column)
+        const newList = Object.assign({}, this.list);
+        newList.cards = this.applyDrag(newList.cards, dropResult);
+        // scene.children.splice(columnIndex, 1, newColumn)
+        // this.scene = scene
+      }
+    },
+    log (...params) {
+      // console.log(...params)
+    },
+    getCardPayload (listId) {
+      return index => {
+        return this.list.cards[index];
+      }
+    },
+    applyDrag (arr, dragResult) {
+      const { removedIndex, addedIndex, payload } = dragResult
+      if (removedIndex === null && addedIndex === null) return arr
+
+      const result = [...arr]
+      let itemToAdd = payload
+
+      if (removedIndex !== null) {
+        itemToAdd = result.splice(removedIndex, 1)[0]
+      }
+
+      if (addedIndex !== null) {
+        result.splice(addedIndex, 0, itemToAdd)
+      }
+
+  return result
+},
     moveCard(evt) {
       console.log(evt.relatedContext);
       
@@ -315,6 +381,139 @@ export default {
 }
 .drag-group {
   min-height: 50px;
+}
+
+.draggable-item {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    display: block;
+    background-color: #fff;
+    outline: 0;
+    border: 1px solid rgba(0, 0, 0, .125);
+    margin-bottom: 2px;
+    margin-top: 2px;
+    cursor: default;
+    user-select: none;
+}
+
+.draggable-item-horizontal {
+    height: 300px;
+    padding: 10px;
+    line-height: 100px;
+    text-align: center;
+    /* width : 200px; */
+    display: block;
+    background-color: #fff;
+    outline: 0;
+    border: 1px solid rgba(0, 0, 0, .125);
+    margin-right: 4px;
+    cursor: default;
+}
+
+.dragging {
+    background-color: yellow;
+}
+
+.card-scene {
+    padding: 50px;
+    /* background-color: #fff; */
+}
+
+.card-container {
+    width: 320px;
+    padding: 10px;
+    margin: 5px;
+    margin-right: 45px;
+    background-color: #f3f3f3;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24);
+}
+
+.card {
+    margin: 5px;
+    /* border: 1px solid #ccc; */
+    background-color: white;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24);
+    padding: 10px;
+}
+
+.card-column-header {
+    font-size: 18px;
+}
+
+.column-drag-handle {
+    cursor: move;
+    padding: 5px;
+}
+
+.card-ghost {
+    transition: transform 0.18s ease;
+    transform: rotateZ(5deg)
+}
+
+.card-ghost-drop {
+    transition: transform 0.18s ease-in-out;
+    transform: rotateZ(0deg)
+}
+
+.opacity-ghost {
+    transition: all .18s ease;
+    opacity: 0.8;
+    /* transform: rotateZ(5deg); */
+    background-color: cornflowerblue;
+    box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.3);
+}
+
+.opacity-ghost-drop {
+    opacity: 1;
+    /* transform: rotateZ(0deg); */
+    background-color: white;
+    box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.0);
+}
+
+
+.form-demo {
+    width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    display: flex
+}
+
+.form {
+    flex: 3;
+    /* width: 500px; */
+    /* background-color: #f3f3f3; */
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08), 0px 3px 3px rgba(0, 0, 0, 0.08);
+}
+
+.form-fields-panel {
+    flex: 1;
+    margin-right: 50px;
+}
+
+
+.form-ghost {
+    transition: 0.18s ease;
+    box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.08);
+}
+
+.form-ghost-drop {
+    box-shadow: 0 0 2px 5px rgba(0, 0, 0, 0.0);
+}
+
+.drop-preview {
+  background-color: rgba(150, 150, 200, 0.1);
+  border: 1px dashed #abc;
+  margin: 5px;
+}
+
+.cards-drop-preview {
+  background-color: rgba(150, 150, 200, 0.1);
+  border: 1px dashed #abc;
+  margin: 5px 45px 5px 5px;
 }
 </style>
 

@@ -126,7 +126,7 @@
               max-rows="10"
             />
 
-            <div v-for="checklist in card.checklists" :key="checklist.id">
+            <!-- <div v-for="checklist in card.checklists" :key="checklist.id">
               TITLE: {{checklist.title}}
               ID: {{checklist.id}}
               <div v-for="toDo in checklist.toDos" :key="toDo.id">
@@ -162,7 +162,7 @@
                   @click="addToDo(checklist.id)"
                 >Add item</button>
               </div>
-            </div>
+            </div> -->
 
             <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
             <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>

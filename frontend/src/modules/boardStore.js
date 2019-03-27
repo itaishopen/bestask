@@ -61,7 +61,7 @@ export default {
         loadBoard(context, { boardId }) {
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
-                    console.log(board, lists, activities);
+                    console.log(board[0]);
 
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
@@ -76,7 +76,6 @@ export default {
         },
         updateLists(context, { lists }) {
             return ListService.updateLists(lists).then(savedLists => {
-                console.log(savedLists);
                 context.commit({ type: 'setLists', lists: savedLists });
             })
         },
@@ -85,8 +84,6 @@ export default {
             return CardService.updateCards(list.cards)
                 .then(cards => ListService.saveList(list)
                     .then(savedList => {
-                        console.log(savedList, cards);
-
                         if (isEdit) context.commit({ type: 'updateList', savedList: savedList[0] });
                         else context.commit({ type: 'addList', savedList: savedList[0] });
                         return savedList[0]
@@ -101,9 +98,7 @@ export default {
         saveCardToList(context, { card }) {
             const isEdit = !!card._id;
             return CardService.saveCard(card)
-                .then(savedCard => {
-                    console.log(savedCard);
-                    
+                .then(savedCard => {                    
                     if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
                     else context.commit({ type: 'addCard', savedCard: savedCard[0] });
                     return savedCard[0]

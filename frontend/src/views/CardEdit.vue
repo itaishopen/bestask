@@ -307,6 +307,8 @@ export default {
       this.$router.go(-1);
     },
     saveCard(archive) {
+        console.log();
+        
       console.log("archive", archive);
       if (archive) this.card.archived = true;
       console.log("Saving card..", this.card);

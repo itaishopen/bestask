@@ -70,7 +70,6 @@
 
         <div v-for="checklist in card.checklists" :key="checklist.id">
           TITLE: {{checklist.title}}
-          ID: {{checklist.id}}
           <div v-for="toDo in checklist.toDos" :key="toDo.id">
             <div v-if="editStatus" class="flex">
               <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
@@ -163,6 +162,7 @@
 
     <!-- Modal Members Component -->
     <b-modal id="modal6" title="Members" v-if="board.users">
+        {{board}}
       <div v-for="user in board.users" :key="user._id">
         <div class="container-member" @click="memberToCard(user._id , user)">
           <div class="container-name-member">

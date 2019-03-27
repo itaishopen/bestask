@@ -194,7 +194,6 @@ export default {
   min-height: 80vh;
   max-height: 80vh;
   min-width: 280px;
-  overflow: auto;
   /* max-height: 100vh; */
   background-color: rgb(235, 235, 235);
   border: 1px solid rgb(206, 206, 206);

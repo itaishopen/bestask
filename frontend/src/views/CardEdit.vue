@@ -9,6 +9,7 @@
     no-close-on-backdrop
     hide-header-close
   >
+ 
     <section class="nav-modal">
       <div class="containerLabel" v-b-modal.modal4>
         <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
@@ -18,7 +19,7 @@
         <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
-      <div v-b-modal.modal6 class="container-member-nav">
+      <div class="container-member-nav" v-b-modal.modal6 >
         <div v-for="user in card.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
@@ -143,7 +144,7 @@
     <!-- Modal Members Component -->
     <b-modal id="modal6" title="Members" v-if="board.users">
       <div v-for="user in board.users" :key="user._id">
-        <div class="container-member" @click="memberToCard(user._id)">
+        <div class="container-member" @click="memberToCard(user._id , user)">
           <div class="container-name-member">
             <div
               class="logo-user-name"
@@ -242,14 +243,15 @@ export default {
     }
   },
   methods: {
-    memberToCard(userId) {
-      console.log(this.card, "memberToCard");
-
+    memberToCard(userId , user) {
       const index = this.card.members.findIndex(member => member === userId);
+      const idx = this.card.users.findIndex(member => member === user);
       if (index === -1) {
         this.card.members.push(userId);
+        this.card.users.push(user);
       } else {
         this.card.members.splice(index, 1);
+        this.card.users.splice(idx, 1);
       }
     },
     checkMember(userId) {
@@ -497,7 +499,7 @@ export default {
   height: 35px;
   line-height: 35px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid rgb(66, 178, 206);
   background-color: rgb(174, 216, 226);
   justify-content: flex-start;
 }

@@ -102,7 +102,7 @@
         </b-dropdown>
 
         <b-button class="m-1 btn-block" size="sm">Copy</b-button>
-        <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(true)">Archive</b-button>
+        <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(!card.archived)">{{isArchived}}</b-button>
         <!-- <b-form-checkbox
                     button
                     v-model='card.archived'
@@ -242,6 +242,9 @@ export default {
     },
     share() {
       return window.location.href;
+    },
+    isArchived(){
+      return this.card.archived?'Restore':'Archive';
     }
   },
   methods: {
@@ -312,8 +315,8 @@ export default {
     closeModal() {
       this.$router.go(-1)
     },
-    saveCard(archive) {
-      if (archive) this.card.archived = true
+    saveCard(isArchive) {
+      this.card.archived = isArchive;
       console.log('Saving card..', this.card)
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })

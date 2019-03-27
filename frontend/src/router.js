@@ -6,6 +6,7 @@ import SignUp from './views/SignUp.vue'
 import TaskApp from './views/TaskApp.vue'
 import CardEdit from './views/CardEdit.vue'
 import Board from './components/Board.vue'
+import BoardArchive from './components/BoardArchive.vue'
 
 
 Vue.use(Router)
@@ -25,6 +26,7 @@ export default new Router({
     // { path: '/task', component: TaskApp },
     { path: '/board', component: TaskApp, meta: { showModal: false } },
     { path: '/board/:boardId', component: Board, meta: { showModal: false } },
+    { path: '/board/:boardId/archive', component: BoardArchive },
     { path: '/card/edit/:cardId', component: CardEdit, meta: { showModal: true } },
     {
       path: '/login',

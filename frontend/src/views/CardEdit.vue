@@ -5,7 +5,6 @@
     id="modal1"
     ref="myModalRef"
     @hide="modalClosed"
-    title="Edit Card"
     no-close-on-esc
     no-close-on-backdrop
     hide-header-close
@@ -31,9 +30,9 @@
         </div>
       </div>
     </section>
+    <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
     <div class="container flex">
       <main class="content flex">
-        <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
         <b-form-textarea
           class="m-1"
           id="textarea"

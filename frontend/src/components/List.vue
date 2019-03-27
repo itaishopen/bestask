@@ -291,7 +291,6 @@ export default {
   }
 }
 
-
 .everyCard {
   width: 100%;
   height:100%;
@@ -320,20 +319,6 @@ export default {
   display: block; 
   height:100%;
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .ghost {
   opacity: 0.3;

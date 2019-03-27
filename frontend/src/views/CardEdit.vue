@@ -1,4 +1,4 @@
-<template>  
+<template>
   <b-modal
     v-if="card"
     v-model="showModal"
@@ -9,7 +9,6 @@
     no-close-on-backdrop
     hide-header-close
   >
- 
     <section class="nav-modal">
       <div class="containerLabel" v-b-modal.modal4>
         <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
@@ -19,7 +18,7 @@
         <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
-      <div class="container-member-nav" v-b-modal.modal6 >
+      <div class="container-member-nav" v-b-modal.modal6>
         <div v-for="user in card.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
@@ -35,12 +34,24 @@
       <main class="content flex">
         <div class="flex">
           <label class="mt-3" for="time">Cost:</label>
-          <b-form-select size="sm" class="m-1" :value="card.et" id="time" v-model="card.et"
-            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}">
+          <b-form-select
+            size="sm"
+            class="m-1"
+            :value="card.et"
+            id="time"
+            v-model="card.et"
+            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
+          >
             <option slot="first" :value="null">ET</option>
           </b-form-select>
-          <b-form-select size="sm" class="m-1" :value="card.at" id="time" v-model="card.at"
-            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}">
+          <b-form-select
+            size="sm"
+            class="m-1"
+            :value="card.at"
+            id="time"
+            v-model="card.at"
+            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
+          >
             <option slot="first" :value="null">AT</option>
           </b-form-select>
           <label class="mt-3" for="date">Date:</label>
@@ -55,18 +66,25 @@
           max-rows="10"
         />
 
-        <div v-for="checklist in card.checklists" :key="checklist._id">
+        <div v-for="checklist in card.checklists" :key="checklist.id">
           TITLE: {{checklist.title}}
-          <div v-for="toDo in checklist.toDos" :key="toDo._id">
-            <div class="flex">
-              <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
-              <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
-              <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
+          ID: {{checklist.id}}
+          <div v-for="toDo in checklist.toDos" :key="toDo.id">
+            <div v-if="editStatus" class="flex">
+              <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
+              <i
+                v-if="toDo.done"
+                @click="checkDone(checklist.id , toDo.id)"
+                class="fa fa-check-square"
+              ></i>
+              <div @click.prevent="closeEditor">{{toDo.name}}</div>
             </div>
             <div class="flex" v-if="!editStatus">
               <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
-              <button @click="closeEditor">&times;</button>
+              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo(todo.id)">Add</b-button>
+              <button @click="closeEditor">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -160,11 +178,12 @@
 
     <!-- Modal Checklist Component -->
     <b-modal id="modal5" title="Checklist" hide-footer>
-      <form class="add-checklist" @submit="addCheklist()">
-        Title
-        <b-form-input type="text" v-model="checklist.title"/>
+      <form class="add-checklist" @submit.prevent="addCheklist()">
+        Add Title
+        <b-form-input type="text" v-model="titleCheckList"/>
         <b-button class="mt-3 float-right" type="submit">create</b-button>
       </form>
+      <pre>{{card}}</pre>
     </b-modal>
     <!-- Share Modal  -->
     <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
@@ -181,19 +200,16 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import CardService from "../services/CardService";
 
 export default {
   name: "CardEdit",
   data() {
     return {
       comment: "",
+      titleCheckList: "",
       openModalMembers: false,
       SumMember: false,
-      checklist: {
-        title: "",
-        toDos: []
-      },
-      toDo: { name: "", done: false },
       editStatus: false
     };
   },
@@ -235,7 +251,7 @@ export default {
         return this.$route.meta.showModal;
       },
       set(value) {
-        this.$route.meta.showModal = value
+        this.$route.meta.showModal = value;
       }
     },
     share() {
@@ -243,7 +259,7 @@ export default {
     }
   },
   methods: {
-    memberToCard(userId , user) {
+    memberToCard(userId, user) {
       const index = this.card.members.findIndex(member => member === userId);
       const idx = this.card.users.findIndex(member => member === user);
       if (index === -1) {
@@ -268,12 +284,25 @@ export default {
     closeEditor() {
       this.editStatus = !this.editStatus;
     },
-    checkDone() {
-      this.toDo.done = !this.toDo.done
+    checkDone(checklistId, toDoId) {
+      console.log(this.card.checklists, "checkDone");
+      this.card.checklists.forEach(checklist => {
+        if (checklist.id === checklistId) {
+          console.log(checklist, "checkDone");
+          checklist.todos.forEach(toDo => {
+            if (toDoId === toDo.id) {
+              toDo.done = !toDo.done;
+            }
+          });
+        }
+      });
     },
     addCheklist() {
-      this.checklist.toDos.push(this.toDo);
-      this.card.checklists.push(this.checklist);
+      var newChecklist = CardService.getEmptyChecklist();
+      newChecklist.title = this.titleCheckList;
+      var newToDo = CardService.getEmptyToDo();
+      newChecklist.toDos.push(newToDo);
+      this.card.checklists.push(newChecklist);
     },
     addToDo() {
       this.card.checklists.forEach(checklist => {
@@ -287,7 +316,7 @@ export default {
       this.card.members.push(member);
     },
     checkLabel(color) {
-      return this.card.labels.findIndex(label => label === color) !== -1
+      return this.card.labels.findIndex(label => label === color) !== -1;
     },
     markChose() {
       this.card.labels.forEach(label => {
@@ -298,7 +327,6 @@ export default {
         });
       });
     },
-
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
       if (index === -1) {
@@ -308,11 +336,11 @@ export default {
       }
     },
     closeModal() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     saveCard(archive) {
-      if (archive) this.card.archived = true
-      console.log('Saving card..', this.card)
+      if (archive) this.card.archived = true;
+      console.log("Saving card..", this.card);
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -323,31 +351,31 @@ export default {
           activity.listId = card.listId;
           activity.cardId = card._id;
           activity.createdAt = moment(Date.now()).format(
-            'MMMM Do YYYY, h:mm:ss a'
-          )
-          this.$store.dispatch({ type: 'saveActivity', activity })
-          this.$router.go(-1)
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
+          this.$router.go(-1);
         })
         .catch(err => {
-          console.log(err)
-          this.$router.go(-1)
-        })
+          console.log(err);
+          this.$router.go(-1);
+        });
     },
 
     addComment() {
       if (this.comment) {
-        var date = moment(Date.now()).format('DD/MM/YY hh:mm')
-        var comment = date + ' ' + this.comment
-        if (!this.card.comments) this.card.comments = [comment]
-        else this.card.comments.unshift(comment)
-        this.comment = ''
+        var date = moment(Date.now()).format("DD/MM/YY hh:mm");
+        var comment = date + " " + this.comment;
+        if (!this.card.comments) this.card.comments = [comment];
+        else this.card.comments.unshift(comment);
+        this.comment = "";
       }
     },
     modalClosed() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     moveCard() {
-      this.$store.getters.getLists.map(list => console.log(list.title))
+      this.$store.getters.getLists.map(list => console.log(list.title));
     }
   },
 

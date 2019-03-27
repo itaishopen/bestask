@@ -73,6 +73,7 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import moment from "moment";
+
 export default {
   name: "list",
   props: ["list"],
@@ -81,12 +82,13 @@ export default {
       listArray: [this.list],
       isAddClick: false,
       isChangeTitle: false,
-      hasfocus: false
-    };
+      hasfocus: false,
+    }
   },
   components: {
     CardPreview,
-    draggable
+    draggable,
+
   },
   methods: {
     funToMove(env) {
@@ -98,19 +100,18 @@ export default {
       var fromList = this.$store.getters.getLists.find(
         list => list._id === fromListId
       );
-
       if (fromListId !== toListId) {
         var toList = this.$store.getters.getLists.find(
           list => list._id === toListId
         );
         var card = toList.cards.find(card => card._id === cardId);
+        card.listId = toListId;
         for (var i = 0; i < toList.cards.length; i++) {
           toList.cards[i].order = i;
         }
         for (var j = 0; j < fromList.cards.length; j++) {
           fromList.cards[j].order = j;
         }
-        card.listId = toListId;
         this.$store.dispatch({ type: "saveList", list: toList }).then(() => {
           this.$store
             .dispatch({ type: "saveList", list: fromList })
@@ -122,8 +123,6 @@ export default {
         for (var k = 0; k < fromList.cards.length; k++) {
           fromList.cards[k].order = k;
         }
-        var card = fromList.cards.find(card => card._id === cardId);
-        card.listId = toListId;
         this.$store.dispatch({ type: "saveList", list: fromList }).then(() => {
           SocketService.send(this.list.boardId);
         });

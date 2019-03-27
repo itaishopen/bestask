@@ -9,15 +9,21 @@
 
 <script>
 import Board from "./Board.vue";
-import SocketService from "../services/SocketService";
+
 export default {
   name: "BoardPreview",
   props: ["board"],
+  data() {
+    return {
+     
+    };
+  },
   components: {
     Board
   },
   created() {},
-  computed: {}
+  computed: {},
+ 
 };
 </script>
 

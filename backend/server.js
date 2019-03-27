@@ -34,16 +34,7 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Example app listening on port ${port}`))
 io.on('connection', socket => {
-	console.log('coooonet', socket.id);
 	socket.on('boardRequested', ({boardId}) => {
-		console.log("fun" , boardId);
-		
-		// if (socket.theBoardId) {
-		// 	// First un-join the room
-		// 	console.log(fun);
-			
-		// 	socket.leave(socket.theBoardId);
-		// }
 		console.log('User', 'Requested to join room:', boardId);
 		socket.join(boardId);
 		io.to(boardId).emit('userConnected', 'puki');
@@ -53,8 +44,7 @@ io.on('connection', socket => {
 	});
 
 	socket.on('post-change', boardId => {
-		console.log('POsting a message', boardId, 'to:', boardId);
-		// socket.to(boardId).emit('board-change', boardId);
+		console.log('POsting a message', boardId, 'to:', socket.theBoardId);
 		socket.to(socket.theBoardId).emit('board-change', boardId);
 	});
 

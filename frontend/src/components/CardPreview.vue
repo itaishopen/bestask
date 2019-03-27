@@ -31,8 +31,8 @@
             </div>
           </div>
           <div class="info-bar-center">
-            <div class="et far fa-clock" v-if="card.et && !card.at">Et: {{card.et}}</div>
-            <div class="at far fa-clock" v-if="card.at">At: {{card.at}}</div>
+            <div class="et far fa-clock fa-sm" v-if="card.et && !card.at">ET: {{card.et}}</div>
+            <div class="at far fa-clock fa-sm" v-if="card.at">AT: {{card.at}}</div>
           </div>
           <div class="info-bar-right">
             <section class="container-member">
@@ -101,10 +101,10 @@ export default {
     checkDoDate() {
       let dateAsMoment = moment(this.card.dueDate, 'YYYY/MM/DD')
       let today = moment()
-      if (dateAsMoment.diff(today, 'days') <= 0) return '#848383'
-      if (dateAsMoment.diff(today, 'days') <= 1) return '#e73737'
-      if (dateAsMoment.diff(today, 'days') <= 3) return '#ffef16'
-      return '#21af44'
+      if (dateAsMoment.diff(today, 'days') <= -1) return '#544e44'
+      if (dateAsMoment.diff(today, 'days') <= 1) return '#e52e2d'
+      if (dateAsMoment.diff(today, 'days') <= 3) return '#eea41c'
+      return '#3b8006'
 
     }
   },
@@ -177,11 +177,9 @@ a:hover {
     justify-items: center;
     text-align: center;
     font-size: 12px;
-    color: black;
+    color: rgb(255, 255, 255);
     padding: 5px 10px 5px 10px;
     border-radius: 25px;
-    border: 1px solid black;
-    box-shadow: inset 2px 3px 3px 0px rgba(190, 188, 188, 0.623);
   }
 }
 

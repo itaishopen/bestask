@@ -33,7 +33,7 @@
     <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
     <div class="container flex">
       <main class="content flex">
-        <div class="flex">
+        <div class="cost flex">
           <label class="mt-3" for="time">Cost:</label>
           <b-form-select size="sm" class="m-1" :value="card.et" id="time" v-model="card.et"
             :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}">
@@ -43,8 +43,10 @@
             :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}">
             <option slot="first" :value="null">AT</option>
           </b-form-select>
+        </div>
+        <div class="time flex">
           <label class="mt-3" for="date">Date:</label>
-          <input type="date" class="form-control" name="bday" size="sm" v-model="card.dueDate">
+          <input type="date" class="custom-select custom-select-sm m-1" name="bday" size="sm" v-model="card.dueDate">
         </div>
         <b-form-textarea
           class="m-1"

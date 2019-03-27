@@ -6,6 +6,7 @@ import SignUp from './views/SignUp.vue'
 import TaskApp from './views/TaskApp.vue'
 import EditCard from './views/CardEdit.vue'
 import Board from './components/Board.vue'
+import BoardArchive from './components/BoardArchive.vue'
 
 
 Vue.use(Router)
@@ -43,6 +44,10 @@ export default new Router({
           meta: { showModal: true } 
         }
       ]
+    },
+    { path: '/board/:boardId/archive',
+      name: 'Board archive',
+      component: BoardArchive
     },
     {
       path: '/login',

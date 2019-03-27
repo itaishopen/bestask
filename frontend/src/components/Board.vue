@@ -13,6 +13,9 @@
         <i class="fa fa-plus"></i>
       </button>
     </form>
+    <router-link :to="'/board/' + board._id + '/archive'">
+      <div>Go to archive</div>
+    </router-link>
     <ul class="board-list-ul">
       <draggable
         v-model="lists"

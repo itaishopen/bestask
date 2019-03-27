@@ -10,6 +10,7 @@
     no-close-on-backdrop
     hide-header-close
   >
+  <pre>{{card.labels}}</pre>
     <section class="nav-modal">
       <div class="containerLabel" v-b-modal.modal4>
         <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
@@ -273,7 +274,7 @@ export default {
       this.card.members.push(member);
     },
     checkLabel(color) {
-      return this.card.labels.findIndex(label => label === color) === -1
+      return this.card.labels.findIndex(label => label === color) !== -1
     },
     markChose() {
       this.card.labels.forEach(label => {

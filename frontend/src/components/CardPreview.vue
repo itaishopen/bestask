@@ -127,7 +127,9 @@ a:hover {
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(230, 230, 230);
   border-radius: 10px;
-  margin: 3px;
+  margin: 0.7px 3px;
+  box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+  border-bottom: 0.9px solid rgb(167, 165, 165);
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -187,27 +189,6 @@ a:hover {
   margin: 5px;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f100;
-  border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgb(187, 187, 187);
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(172, 172, 172);
-}
 .container-member {
   display: flex;
   flex-direction: row;

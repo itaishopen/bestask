@@ -33,32 +33,65 @@
             <i class="fas fa-plus"></i>
           </div>
         </div>
-      </section>
-      <div class="container flex">
-        <main class="content flex">
-          <b-form-input class="m-1" v-model="card.title" placeholder="Title"/>
-          <b-form-textarea
+    </section>
+    <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
+    <div class="container flex">
+      <main class="content flex">
+        <div class="cost flex">
+          <label class="mt-3" for="time">Cost:</label>
+          <b-form-select
+            size="sm"
             class="m-1"
-            id="textarea"
-            v-model="card.description"
-            placeholder="Description"
-            rows="6"
-            max-rows="10"
-          />
+            :value="card.et"
+            id="time"
+            v-model="card.et"
+            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
+          >
+            <option slot="first" :value="null">ET</option>
+          </b-form-select>
+          <b-form-select
+            size="sm"
+            class="m-1"
+            :value="card.at"
+            id="time"
+            v-model="card.at"
+            :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
+          >
+            <option slot="first" :value="null">AT</option>
+          </b-form-select>
+        </div>
+        <div class="time flex">
+          <label class="mt-3" for="date">Date:</label>
+          <input type="date" class="custom-select custom-select-sm m-1" name="bday" size="sm" v-model="card.dueDate">
+        </div>
+        <b-form-textarea
+          class="m-1"
+          id="textarea"
+          v-model="card.description"
+          placeholder="Description"
+          rows="6"
+          max-rows="10"
+        />
 
-          <div v-for="checklist in card.checklists" :key="checklist._id">
-            TITLE: {{checklist.title}}
-            <div v-for="toDo in checklist.toDos" :key="toDo._id">
-              <div class="flex">
-                <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
-                <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
-                <div v-if="editStatus" @click.prevent="closeEditor">{{toDo.name}}</div>
-              </div>
-              <div class="flex" v-if="!editStatus">
-                <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-                <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo">Add</b-button>
-                <button @click="closeEditor">&times;</button>
-              </div>
+        <div v-for="checklist in card.checklists" :key="checklist.id">
+          TITLE: {{checklist.title}}
+          ID: {{checklist.id}}
+          <div v-for="toDo in checklist.toDos" :key="toDo.id">
+            <div v-if="editStatus" class="flex">
+              <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
+              <i
+                v-if="toDo.done"
+                @click="checkDone(checklist.id , toDo.id)"
+                class="fa fa-check-square"
+              ></i>
+              <div @click.prevent="closeEditor">{{toDo.name}}</div>
+            </div>
+            <div class="flex" v-if="!editStatus">
+              <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
+              <b-button class="m-1 float-right" variant="primary" size="sm" @click="addToDo(todo.id)">Add</b-button>
+              <button @click="closeEditor">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
 
@@ -132,35 +165,34 @@
         </div>
       </b-modal>
 
-      <!-- Modal Members Component -->
-      <b-modal id="modal6" title="Members" v-if="board.users">
-        <div v-for="user in board.users" :key="user._id">
-          <div class="container-member" @click="memberToCard(user._id)">
-            <div class="container-name-member">
-              <div
-                class="logo-user-name"
-              >{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</div>
-              <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
-            </div>
-            <div>
-              <i class="fa fa-check" v-if="checkMember(user._id)"></i>
-            </div>
+    <!-- Modal Members Component -->
+    <b-modal id="modal6" title="Members" v-if="board.users">
+      <div v-for="user in board.users" :key="user._id">
+        <div class="container-member" @click="memberToCard(user._id , user)">
+          <div class="container-name-member">
+            <div
+              class="logo-user-name"
+            >{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
+          </div>
+          <div>
+            <i class="fa fa-check" v-if="checkMember(user._id)"></i>
           </div>
         </div>
       </b-modal>
 
-      <!-- Modal Checklist Component -->
-      <b-modal id="modal5" title="Checklist" hide-footer>
-        <form class="add-checklist" @submit="addCheklist()">
-          Title
-          <b-form-input type="text" v-model="checklist.title"/>
-          <b-button class="mt-3 float-right" type="submit">create</b-button>
-        </form>
-      </b-modal>
-      <!-- Share Modal  -->
-      <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-        <b-form-input class="m-1" v-model="share" readonly/>
-      </b-modal>
+    <!-- Modal Checklist Component -->
+    <b-modal id="modal5" title="Checklist" hide-footer>
+      <form class="add-checklist" @submit.prevent="addCheklist()">
+        Add Title
+        <b-form-input type="text" v-model="titleCheckList"/>
+        <b-button class="mt-3 float-right" type="submit">create</b-button>
+      </form>
+      <pre>{{card}}</pre>
+    </b-modal>
+    <!-- Share Modal  -->
+    <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+      <b-form-input class="m-1" v-model="share" readonly/>
     </b-modal>
     <!-- </section> -->
   </div>
@@ -184,13 +216,9 @@ export default {
   data() {
     return {
       comment: "",
+      titleCheckList: "",
       openModalMembers: false,
       SumMember: false,
-      checklist: {
-        title: "",
-        toDos: []
-      },
-      toDo: { name: "", done: false },
       editStatus: false,
       modalOpen: false
     };
@@ -234,7 +262,7 @@ export default {
         return this.$route.meta.showModal;
       },
       set(value) {
-        this.$route.meta.showModal = value
+        this.$route.meta.showModal = value;
       }
     },
     share() {
@@ -242,14 +270,15 @@ export default {
     }
   },
   methods: {
-    memberToCard(userId) {
-      console.log(this.card, "memberToCard");
-
+    memberToCard(userId, user) {
       const index = this.card.members.findIndex(member => member === userId);
+      const idx = this.card.users.findIndex(member => member === user);
       if (index === -1) {
         this.card.members.push(userId);
+        this.card.users.push(user);
       } else {
         this.card.members.splice(index, 1);
+        this.card.users.splice(idx, 1);
       }
     },
     checkMember(userId) {
@@ -266,12 +295,25 @@ export default {
     closeEditor() {
       this.editStatus = !this.editStatus;
     },
-    checkDone() {
-      this.toDo.done = !this.toDo.done
+    checkDone(checklistId, toDoId) {
+      console.log(this.card.checklists, "checkDone");
+      this.card.checklists.forEach(checklist => {
+        if (checklist.id === checklistId) {
+          console.log(checklist, "checkDone");
+          checklist.todos.forEach(toDo => {
+            if (toDoId === toDo.id) {
+              toDo.done = !toDo.done;
+            }
+          });
+        }
+      });
     },
     addCheklist() {
-      this.checklist.toDos.push(this.toDo);
-      this.card.checklists.push(this.checklist);
+      var newChecklist = CardService.getEmptyChecklist();
+      newChecklist.title = this.titleCheckList;
+      var newToDo = CardService.getEmptyToDo();
+      newChecklist.toDos.push(newToDo);
+      this.card.checklists.push(newChecklist);
     },
     addToDo() {
       this.card.checklists.forEach(checklist => {
@@ -285,7 +327,7 @@ export default {
       this.card.members.push(member);
     },
     checkLabel(color) {
-      return this.card.labels.findIndex(label => label === color) === -1
+      return this.card.labels.findIndex(label => label === color) !== -1;
     },
     markChose() {
       this.card.labels.forEach(label => {
@@ -296,7 +338,6 @@ export default {
         });
       });
     },
-
     changeLabel(chosenColor) {
       const index = this.card.labels.findIndex(label => label === chosenColor);
       if (index === -1) {
@@ -326,18 +367,18 @@ export default {
           this.$router.go(-1)
         })
         .catch(err => {
-          console.log(err)
-          this.$router.go(-1)
-        })
+          console.log(err);
+          this.$router.go(-1);
+        });
     },
 
     addComment() {
       if (this.comment) {
-        var date = moment(Date.now()).format('DD/MM/YY hh:mm')
-        var comment = date + ' ' + this.comment
-        if (!this.card.comments) this.card.comments = [comment]
-        else this.card.comments.unshift(comment)
-        this.comment = ''
+        var date = moment(Date.now()).format("DD/MM/YY hh:mm");
+        var comment = date + " " + this.comment;
+        if (!this.card.comments) this.card.comments = [comment];
+        else this.card.comments.unshift(comment);
+        this.comment = "";
       }
     },
     modalClosed() {
@@ -345,7 +386,7 @@ export default {
       this.$router.go(-1)
     },
     moveCard() {
-      this.$store.getters.getLists.map(list => console.log(list.title))
+      this.$store.getters.getLists.map(list => console.log(list.title));
     }
   },
 
@@ -488,7 +529,7 @@ export default {
   height: 35px;
   line-height: 35px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid rgb(66, 178, 206);
   background-color: rgb(174, 216, 226);
   justify-content: flex-start;
 }

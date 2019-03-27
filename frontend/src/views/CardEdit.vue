@@ -22,7 +22,7 @@
               <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
               <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
             </div>
-            <div v-b-modal.modal6 class="container-member-nav">
+            <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
               <div v-for="user in card.users.slice(0, 2)" :key="user._id">
                 <div class="container-name-member" v-if="checkMember(user._id)">
                   <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>

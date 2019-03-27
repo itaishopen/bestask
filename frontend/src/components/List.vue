@@ -204,6 +204,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.card{
+  background-color: rgba(255, 255, 255, 0); 
+  border: 1px solid rgba(0, 0, 0, 0); 
+}
 .list {
   .header {
     .title-list {

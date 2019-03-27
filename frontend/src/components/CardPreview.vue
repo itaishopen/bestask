@@ -31,8 +31,8 @@
             </div>
           </div>
           <div class="info-bar-center">
-            <div class="et far fa-clock fa-sm" v-if="card.et && !card.at">ET: {{card.et}}</div>
-            <div class="at far fa-clock fa-sm" v-if="card.at">AT: {{card.at}}</div>
+            <div class="et far fa-clock fa-xs" v-if="card.et && !card.at">ET: {{card.et}}</div>
+            <div class="at far fa-clock fa-xs" v-if="card.at">AT: {{card.at}}</div>
           </div>
           <div class="info-bar-right">
             <section class="container-member">

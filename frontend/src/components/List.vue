@@ -56,7 +56,7 @@
     </main>
 
     <footer class="footer">
-      <button class="list-add-card" v-if="!isAddClick" @click="newCard">
+      <button class="list-add-card" v-if="!isAddClick" @click="newCard()">
         Add card
         <i class="fa fa-plus"></i>
       </button>

@@ -3,7 +3,7 @@ import CardService from '../services/CardService.js';
 const cardStore = {
     state: {
         cards: [],
-        currCard: null,
+        // currCard: null,
     },
     mutations: {
         setCards(state, payload) {
@@ -42,13 +42,13 @@ const cardStore = {
                     context.commit({ type: 'setCards', cards })
                 })
         },
-        loadCard(context, { cardId }) {
-            return CardService.getCardById(cardId)
-                .then(card => {                    
-                    context.commit({ type: 'setCard', card: card[0] });
-                    return card[0]
-                })
-        },
+        // loadCard(context, { cardId }) {
+        //     return CardService.getCardById(cardId)
+        //         .then(card => {                    
+        //             context.commit({ type: 'setCard', card: card[0] });
+        //             return card[0]
+        //         })
+        // },
         removeCard(context, { cardId }) {
             return CardService.removeCard(cardId)
                 .then(() => {

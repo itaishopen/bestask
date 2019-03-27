@@ -22,7 +22,7 @@
         <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav">
-        <div v-for="user in board.users.slice(0, 2)" :key="user._id">
+        <div v-for="user in card.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
@@ -44,9 +44,9 @@
           max-rows="10"
         />
 
-        <div v-for="checklist in card.checklists" :key="checklist">
+        <div v-for="checklist in card.checklists" :key="checklist._id">
           TITLE: {{checklist.title}}
-          <div v-for="toDo in checklist.toDos" :key="toDo">
+          <div v-for="toDo in checklist.toDos" :key="toDo._id">
             <div class="flex">
               <i v-if="!toDo.done" @click="checkDone" class="far fa-square"></i>
               <i v-if="toDo.done" @click="checkDone" class="fa fa-check-square"></i>
@@ -157,105 +157,108 @@
     </b-modal>
     <!-- Share Modal  -->
     <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-        <b-form-input class="m-1" v-model="share" readonly/>
+      <b-form-input class="m-1" v-model="share" readonly/>
     </b-modal>
-    </b-modal>
+  </b-modal>
   <!-- </section> -->
 </template>
 
 <script>
-import moment from 'moment'
-import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
-Vue.use(BootstrapVue)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import moment from "moment";
+import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
+Vue.use(BootstrapVue);
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 export default {
-  name: 'CardEdit',
+  name: "CardEdit",
   data() {
     return {
-      comment: '',
+      comment: "",
       openModalMembers: false,
       SumMember: false,
       checklist: {
-        title: '',
+        title: "",
         toDos: []
       },
-      toDo: { name: '', done: false },
+      toDo: { name: "", done: false },
       editStatus: false
-    }
+    };
   },
   created() {
-    var cardId = this.$route.params.cardId
-    this.$store.dispatch({ type: 'loadCard', cardId }).then(card => {
-      this.card = card
-    })
+    var cardId = this.$route.params.cardId;
+    this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
+      this.card = card;
+      console.log(this.card, "created");
+    });
   },
   mounted() {
-    this.$refs.myModalRef.show()
+    this.$refs.myModalRef.show();
   },
   computed: {
     card: {
       get() {
-        return this.$store.getters.getCurrCard
+        return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
-        this.$store.commit('setCard', { card: cardItem })
+        this.$store.commit("setCard", { card: cardItem });
       }
     },
     board: {
       get() {
-        return this.$store.getters.getBoard
+        return this.$store.getters.getBoard;
       },
       set(boardItem) {
-        this.$store.commit('setBoard', { board: boardItem })
+        this.$store.commit("setBoard", { board: boardItem });
       }
     },
     lists() {
       return this.$store.getters.getLists.filter(
         list => list._id !== this.card.listId
-      )
+      );
     },
 
     showModal: {
       get() {
-        return this.$route.meta.showModal
+        return this.$route.meta.showModal;
       },
       set(value) {
         // this.$store.commit('setCard', { card: cardItem })
-        this.$route.meta.showModal = value
+        this.$route.meta.showModal = value;
       }
     },
     share() {
-      return window.location.href
+      return window.location.href;
     }
   },
   methods: {
     memberToCard(userId) {
-      const index = this.card.members.findIndex(member => member === userId)
+      console.log(this.card, "memberToCard");
+
+      const index = this.card.members.findIndex(member => member === userId);
       if (index === -1) {
-        this.card.members.push(userId)
+        this.card.members.push(userId);
       } else {
-        this.card.members.splice(index, 1)
+        this.card.members.splice(index, 1);
       }
     },
     checkMember(userId) {
       return this.card.members.findIndex(member => member === userId) === -1
         ? false
-        : true
+        : true;
     },
     checkSumMember() {
       var sum = 0;
-      if (this.card.users.length > 3) {
+      if (this.card.users.length > 2) {
         return true;
       }
     },
     closeEditor() {
-      this.editStatus = !this.editStatus
+      this.editStatus = !this.editStatus;
     },
     checkDone() {
-      this.toDo.done = !this.toDo.done
+      this.toDo.done = !this.toDo.done;
       // this.card.checklists.forEach(checklist => {
       //     if (checklist.title === this.checklist.title) {
       //   checklist.toDo.done = !checklist.toDo.done
@@ -263,97 +266,97 @@ export default {
       //   })
     },
     addCheklist() {
-      this.checklist.toDos.push(this.toDo)
-      this.card.checklists.push(this.checklist)
+      this.checklist.toDos.push(this.toDo);
+      this.card.checklists.push(this.checklist);
     },
     addToDo() {
       this.card.checklists.forEach(checklist => {
         if (checklist.title === this.checklist.title) {
-          checklist.toDos.push(this.toDo)
-          this.toDo = { name: '', done: false }
+          checklist.toDos.push(this.toDo);
+          this.toDo = { name: "", done: false };
         }
-      })
+      });
     },
     addMember(member) {
-      this.card.members.push(member)
+      this.card.members.push(member);
     },
     checkLabel(color) {
       return this.card.labels.findIndex(label => label === color) === -1
         ? false
-        : true
+        : true;
     },
     markChose() {
       this.card.labels.forEach(label => {
         this.labelIsChosen.forEach(color => {
           if (label === color) {
-            this.labelIsChosen = true
+            this.labelIsChosen = true;
           }
-        })
-      })
+        });
+      });
     },
 
     changeLabel(chosenColor) {
-      const index = this.card.labels.findIndex(label => label === chosenColor)
+      const index = this.card.labels.findIndex(label => label === chosenColor);
       if (index === -1) {
-        this.card.labels.push(chosenColor)
+        this.card.labels.push(chosenColor);
       } else {
-        this.card.labels.splice(index, 1)
+        this.card.labels.splice(index, 1);
       }
     },
     closeModal() {
       // this.$refs.myModalRef.hide()
       // this.$router.push('/card')
       // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     saveCard(archive) {
-      console.log('archive', archive)
-      if (archive) this.card.archived = true
-      console.log('Saving card..', this.card)
+      console.log("archive", archive);
+      if (archive) this.card.archived = true;
+      console.log("Saving card..", this.card);
       this.$store
-        .dispatch({ type: 'saveCardToList', card: this.card })
+        .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
-          let activity = ActivityService.getEmptyActivity()
-          activity.text = ' changed the card in list '
-          activity.userId = this.$store.getters.loggedInUser._id
-          activity.boardId = this.board._id
-          activity.listId = card.listId
-          activity.cardId = card._id
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = " changed the card in list ";
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.board._id;
+          activity.listId = card.listId;
+          activity.cardId = card._id;
           activity.createdAt = moment(Date.now()).format(
-            'MMMM Do YYYY, h:mm:ss a'
-          )
-          this.$store.dispatch({ type: 'saveActivity', activity })
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
           // this.$router.push('/card')
           // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-          this.$router.go(-1)
+          this.$router.go(-1);
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           // this.$router.push('/card')
           // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-          this.$router.go(-1)
-        })
+          this.$router.go(-1);
+        });
     },
 
     addComment() {
       if (this.comment) {
         // var date = moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
-        var date = moment(Date.now()).format('DD/MM/YY hh:mm')
-        var comment = date + ' ' + this.comment
-        if (!this.card.comments) this.card.comments = [comment]
-        else this.card.comments.unshift(comment)
-        this.comment = ''
+        var date = moment(Date.now()).format("DD/MM/YY hh:mm");
+        var comment = date + " " + this.comment;
+        if (!this.card.comments) this.card.comments = [comment];
+        else this.card.comments.unshift(comment);
+        this.comment = "";
       }
     },
     modalClosed() {
-      console.log('modalClosed')
+      console.log("modalClosed");
       // this.$router.push('/card')
       // this.$router.push('/board/' + this.$store.getters.getBoard._id)
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     moveCard() {
       // console.log(this.$store.getters.getLists)
-      this.$store.getters.getLists.map(list => console.log(list.title))
+      this.$store.getters.getLists.map(list => console.log(list.title));
     }
   },
 
@@ -364,10 +367,10 @@ export default {
   //     this.$store.dispatch({ type: 'saveCard', card: this.card })
   //   }
   // },
-  '$route.meta'({ showModal }) {
-    this.showModal = showModal
+  "$route.meta"({ showModal }) {
+    this.showModal = showModal;
   }
-}
+};
 </script>
 
 <style lang='scss' scoped>
@@ -485,7 +488,7 @@ export default {
   grid-template-rows: repeat(1, [row] auto);
 }
 .container-member {
-    justify-content: space-between;
+  justify-content: space-between;
   border: 1px solid rgb(216, 216, 216);
   background-color: rgb(245, 245, 245);
   border-radius: 12px;

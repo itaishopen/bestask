@@ -29,12 +29,14 @@
           </div>
           <div class="info-bar-right">
             <section class="container-member">
-              <div v-for="user in this.card.users.slice(0, 3)" :key="user">
+              <div v-for="user in this.card.users.slice(0, 2)" :key="user._id">
                 <div class="container-name-member">
                   <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
                 </div>
               </div>
-              <div class="logo-user-name" v-if="checkSumMember()"></div>
+              <div class="logo-user-name" v-if="checkSumMember()">
+                <i class="fas fa-plus"></i>
+              </div>
             </section>
           </div>
         </div>
@@ -50,45 +52,44 @@
 
 <script>
 export default {
-  name: 'CardPreview',
-  props: ['card'],
-  created() { },
+  name: "CardPreview",
+  props: ["card"],
+  created() {},
   data() {
-    return {}
+    return {};
   },
   computed: {
     board: {
       get() {
-        return this.$store.getters.getBoard
+        return this.$store.getters.getBoard;
       },
       set(boardItem) {
-        this.$store.commit('setBoard', { board: boardItem })
+        this.$store.commit("setBoard", { board: boardItem });
       }
     },
     users() {
-      var usertodisplay = []
+      var usertodisplay = [];
       for (let i = 0; i < this.board.users.length; i++) {
-        var user = this.board.users[i]
+        var user = this.board.users[i];
         if (user) {
-          usertodisplay.push(user)
+          usertodisplay.push(user);
         }
       }
-      return usertodisplay
+      return usertodisplay;
     }
   },
   methods: {
     checkMember(userId) {
-      return this.card.members.findIndex(member => member === userId) === -1
+      return this.card.members.findIndex(member => member === userId) === -1;
     },
-     checkSumMember() {
-      var sum = 0;
-      if (this.card.users.length > 3) {
+    checkSumMember() {
+      if (this.card.users.length > 2) {
         return true;
       }
     }
   },
   components: {}
-}
+};
 </script>
 <style>
 a {
@@ -208,13 +209,8 @@ a:hover {
   background: rgb(172, 172, 172);
 }
 .container-member {
-  grid-column: col 1 / span 3;
-  grid-row: row 1;
-}
-.container-name-member {
-  display: grid;
-  grid-template-columns: repeat(4, [col] 25px);
-  grid-template-rows: repeat(1, [row] auto);
+  display: flex;
+  flex-direction: row;
 }
 .logo-user-name {
   font-size: 10px;

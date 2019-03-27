@@ -4,8 +4,6 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({userId = 'guest'}) {
-    console.log({userId});
-
     if (userId !== 'guest') userId = new ObjectId(userId)
     return mongoService.connect()
         .then(db => {
@@ -40,8 +38,9 @@ function query({userId = 'guest'}) {
 
 function addBoard(board) {
     if (board._id) board._id = new ObjectId(board._id);
+    delete board.users
     board.members.forEach(user => {
-        if (user.userId !== 'guest') user.userId = new ObjectId(user.userId);
+        if (user !== 'guest') user = new ObjectId(user);
     })
     return mongoService.connect()
         .then(db => {
@@ -91,8 +90,9 @@ function removeBoard(boardId) {
 function updateBoard(board) {
     let boardId = board._id
     board._id = new ObjectId(board._id);
+    delete board.users
     board.members.forEach(user => {
-        if (user.userId !== 'guest') user.userId = new ObjectId(user.userId);
+        if (user !== 'guest') user = new ObjectId(user);
     })
     return mongoService.connect()
         .then(db => {

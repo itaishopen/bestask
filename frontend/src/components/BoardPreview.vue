@@ -1,7 +1,7 @@
 <template>
   <section v-if="board" class="board-preview">
     <router-link :to="'/board/' + board._id">
-      <div>{{board.title}}</div>
+        <h1 class="Collection_title">{{ board.title }}</h1>
       <!-- <board :board="board"></board> -->
     </router-link>
   </section>
@@ -27,5 +27,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss' scoped>
+.Collection_title {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0; 
+    }
 </style>

@@ -6,6 +6,7 @@ import SignUp from './views/SignUp.vue'
 import TaskApp from './views/TaskApp.vue'
 import EditCard from './views/CardEdit.vue'
 import Board from './components/Board.vue'
+import BoardArchive from './components/BoardArchive.vue'
 
 
 Vue.use(Router)
@@ -38,6 +39,22 @@ export default new Router({
           name: "Card Edit" , 
           component: {
             page: Board, 
+            card: EditCard
+          } , 
+          meta: { showModal: true } 
+        }
+      ]
+    },
+    { path: '/board/:boardId/archive',
+      name: 'Board archive',
+      component: BoardArchive,
+      meta: { showModal: false } ,
+      children: [
+        { 
+          path: '/card/edit/:cardId', 
+          name: "Card Edit" , 
+          component: {
+            page: BoardArchive, 
             card: EditCard
           } , 
           meta: { showModal: true } 

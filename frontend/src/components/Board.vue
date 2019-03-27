@@ -13,6 +13,9 @@
         <i class="fa fa-plus"></i>
       </button>
     </form>
+    <router-link :to="'/board/' + board._id + '/archive'">
+      <div>Go to archive</div>
+    </router-link>
     <ul class="board-list-ul">
       <draggable
         v-model="lists"
@@ -201,7 +204,7 @@ export default {
   font-size: 20px;
 }
 .board-list-li {
-  min-height: 80vh;
+  min-height: 20vh;
   max-height: 80vh;
   min-width: 280px;
   /* max-height: 100vh; */

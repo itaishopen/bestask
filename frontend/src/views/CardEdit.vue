@@ -37,7 +37,7 @@
           <main class="content flex">
             <div class="cost flex">
               <label class="mt-3" for="time">Cost:</label>
-              <b-form-select
+              <!-- <b-form-select
                 size="sm"
                 class="m-1"
                 id="textarea"
@@ -45,7 +45,7 @@
                 placeholder="Description"
                 rows="6"
                 max-rows="10"
-              />
+              /> -->
               <b-form-select
                 size="sm"
                 class="m-1"

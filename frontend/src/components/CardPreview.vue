@@ -1,5 +1,5 @@
 <template>
-  <div class="card-preview">
+  <div class="card-preview" v-if="card._id !== 'fun'">
     <router-link :to="'/card/edit/' + card._id">
       <section class="title-card">
         <div class="containerHead">
@@ -50,37 +50,35 @@
 
 <script>
 export default {
-  name: "CardPreview",
-  props: ["card"],
-  created() {},
+  name: 'CardPreview',
+  props: ['card'],
+  created() { },
   data() {
-    return {};
+    return {}
   },
   computed: {
     board: {
       get() {
-        return this.$store.getters.getBoard;
+        return this.$store.getters.getBoard
       },
       set(boardItem) {
-        this.$store.commit("setBoard", { board: boardItem });
+        this.$store.commit('setBoard', { board: boardItem })
       }
     },
     users() {
-      var usertodisplay = [];
+      var usertodisplay = []
       for (let i = 0; i < this.board.users.length; i++) {
-        var user = this.board.users[i][0];
+        var user = this.board.users[i]
         if (user) {
-          usertodisplay.push(user);
+          usertodisplay.push(user)
         }
       }
-      return usertodisplay;
+      return usertodisplay
     }
   },
   methods: {
     checkMember(userId) {
       return this.card.members.findIndex(member => member === userId) === -1
-        ? false
-        : true;
     },
      checkSumMember() {
       var sum = 0;
@@ -90,7 +88,7 @@ export default {
     }
   },
   components: {}
-};
+}
 </script>
 <style>
 a {

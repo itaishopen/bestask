@@ -4,7 +4,7 @@ const BOARDS_DB = 'boards';
 const ObjectId = require('mongodb').ObjectId;
 
 function query({userId = 'guest'}) {
-    console.log(userId);
+    console.log({userId});
 
     if (userId !== 'guest') userId = new ObjectId(userId)
     return mongoService.connect()

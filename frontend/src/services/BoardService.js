@@ -1,8 +1,6 @@
 import HttpService from './HttpService';
 
 const BOARD_URL = HttpService.getUrl('board')
-console.log(BOARD_URL);
-
 
 const resolveData = res => res.data
 
@@ -19,7 +17,7 @@ function getBoardById(boardId) {
 }
 
 function query({userId}) {
-    return HttpService.get(BOARD_URL, userId).then(resolveData);
+    return HttpService.get(BOARD_URL, userId).then(resolveData)
 }
 
 function saveBoard(board) {        

@@ -14,19 +14,19 @@ export default {
 }
 
 function query() {
-    return HttpService.get(CARD_URL).then(resolveData);
+    return HttpService.get(CARD_URL).then(resolveData)
 }
 
 function getCardById(cardId) {
-    return HttpService.get(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.get(`${CARD_URL}/${cardId}`).then(resolveData)
 }
 
 function removeCard(cardId) {
-    return HttpService.delete(`${CARD_URL}/${cardId}`).then(resolveData);
+    return HttpService.delete(`${CARD_URL}/${cardId}`)
 }
 
 function updateCards(cards) {
-    return Promise.all([cards.map(card => this.saveCard(card))])
+    return Promise.all([cards.map(card => this.saveCard(card))]).then(() => cards)
 }
 
 function saveCard(card) {

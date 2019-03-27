@@ -60,6 +60,7 @@ import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
 import draggable from "vuedraggable";
+import nestedDraggable from "vuedraggable";
 import moment from "moment";
 
 export default {
@@ -90,7 +91,8 @@ export default {
   },
   components: {
     list,
-    draggable
+    draggable,
+    nestedDraggable
   },
 
   computed: {

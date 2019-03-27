@@ -18,18 +18,18 @@ function getListById(listId) {
 }
 
 function query({ boardId, archived = false }) {
-    return HttpService.get(LIST_URL, { boardId, archived }).then(resolveData);
+    return HttpService.get(LIST_URL, { boardId, archived }).then(resolveData)
 }
 
 function updateLists(lists) {
-    return Promise.all([lists.map(list => this.saveList(list))])
+    return Promise.all([lists.map(list => this.saveList(list))]).then(() => lists)
 }
 
-function saveList(list) {    
+function saveList(list) {
     if (list._id) {
-        return HttpService.put(`${LIST_URL}/${list._id}`, list).then(resolveData);
-    } else {        
-        return HttpService.post(LIST_URL, list).then(resolveData);
+        return HttpService.put(`${LIST_URL}/${list._id}`, list).then(resolveData)
+    } else {
+        return HttpService.post(LIST_URL, list).then(resolveData)
     }
 }
 

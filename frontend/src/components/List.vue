@@ -14,24 +14,27 @@
       </button>
     </form>
     <draggable
-      v-model="list.cards"
+      class="list-group-top"
+      v-model="listArray[0].cards"
       v-bind="dragOptions"
-      group="list"
-      @start="drag=true"
-      @end="endMoveCard"
-      :move="moveCard"
+      group="lists"
+      :key="list._id"
+      :animated="100"
     >
-      <transition-group type="transition">
-        <div v-for="card in list.cards" :key="card._id">
-          <card-preview v-if="!card.archived" :card="card"></card-preview>
+      <draggable
+        class="listgroup"
+        :class="list._id"
+        v-model="list.cards"
+        v-bind="dragOptions"
+        group="cards"
+        @start="drag=true"
+        @end="funToMove"
+      >
+        <div v-for="card in list.cards" :key="card._id" class="card" :class="card._id">
+          <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
         </div>
-      </transition-group>
+      </draggable>
     </draggable>
-    <!-- <ul class="list-cards">
-            <li v-for="card in list.cards" :key="card._id">
-                <card-preview v-if="!card.archived" :card="card"></card-preview>
-            </li>
-    </ul>-->
     <button class="list-add-card" v-if="!isAddClick" @click="newCard">
       Add card
       <i class="fa fa-plus"></i>
@@ -47,20 +50,20 @@
     </form>
   </section>
 </template>
-
 <script>
-import CardPreview from "@/components/CardPreview.vue";
-import CardService from "../services/CardService.js";
-import draggable from "vuedraggable";
-import ListService from "../services/ListService.js";
-import ActivityService from "../services/ActivityService.js";
-import SocketService from "../services/SocketService.js";
-import moment from "moment";
+import CardPreview from '@/components/CardPreview.vue'
+import CardService from '../services/CardService.js'
+import draggable from 'vuedraggable'
+import ListService from '../services/ListService.js'
+import ActivityService from '../services/ActivityService.js'
+import SocketService from '../services/SocketService.js'
+import moment from 'moment'
 export default {
-  name: "list",
-  props: ["list"],
+  name: 'list',
+  props: ['list'],
   data() {
     return {
+      listArray: [this.list],
       isAddClick: false,
       moveCardId: null,
       fromListId: null,
@@ -72,152 +75,218 @@ export default {
       // toListFutureIndex: -1
       // cardTitle: null,
       // currList: null
-    };
+    }
   },
   components: {
     CardPreview,
     draggable
   },
   methods: {
-    moveCard(evt) {
-      this.moveCardId = evt.draggedContext.element._id;
-      this.fromListId = evt.draggedContext.element.listId;
-      this.toListId = evt.relatedContext.element.listId;
-      this.fromList = this.$store.getters.getLists.find(
-        list => list._id === this.fromListId
-      );
-      this.toList = this.$store.getters.getLists.find(
-        list => list._id === this.toListId
-      );
-      // if (this.toList.cards.length === 0) {
-      //   this.toList.cards =
-      // }
-      
-    },
-    endMoveCard(evt) {
-      if (this.fromListId === this.toListId) {
-        for (var i = 0; i < this.fromList.cards.length; i++) {
-          this.fromList.cards[i].order = i;
-        }
-        this.$store
-          .dispatch({ type: "saveList", list: this.fromList })
-          .then(() => {
-            SocketService.send(this.list.boardId);
-          });
-      } else {
-        var testCard = this.toList.cards.find(
-          card => card.listId === this.fromListId
-        );
-        for (var i = 0; i < this.fromList.cards.length; i++) {
-          this.fromList.cards[i].order = i;
-        }
-        this.$store.dispatch({ type: "saveList", list: this.fromList });
-        testCard.listId = this.toListId;
-        for (var j = 0; j < this.toList.cards.length; j++) {
-          this.toList.cards[j].order = j;
-        }
-        this.$store
-          .dispatch({ type: "saveList", list: this.toList })
-          .then(() => {
-            SocketService.send(this.list.boardId);
-          });
-      }
-      SocketService.send(this.list.boardId);
+    // moveCard(evt) {
+    //   console.log(evt);
+
+    //   this.moveCardId = evt.draggedContext.element._id
+    //   this.fromListId = evt.draggedContext.element.listId
+    //   if (evt.relatedContext.element) {
+    //     this.toListId = evt.relatedContext.element.listId;
+    //   } else {
+    //     this.toListId = evt.relatedContext.list._id
+    //   }
+    //   this.fromList = this.$store.getters.getLists.find(
+    //     list => list._id === this.fromListId
+    //   )
+    //   this.toList = this.$store.getters.getLists.find(
+    //     list => list._id === this.toListId
+    //   )
+    //   if (this.toList.cards) {
+    //     this.toList.cards = []
+    //   }
+    //   // if (this.toList.cards.length === 0) {
+    //   //   this.toList.cards =
+    //   // }
+
+    // },
+    // endMoveCard(evt) {
+    //   console.log('from', this.fromList);
+    //   console.log('to', this.toList);
+
+    //   if (this.fromListId === this.toListId) {
+    //     for (var i = 0; i < this.fromList.cards.length; i++) {
+    //       this.fromList.cards[i].order = i
+    //     }
+    //     this.$store
+    //       .dispatch({ type: 'saveList', list: this.fromList })
+    //       .then(() => {
+    //         SocketService.send(this.list.boardId)
+    //       })
+    //   } else {
+    //     var testCard = this.toList.cards.find(
+    //       card => card.listId === this.fromListId
+    //     )
+    //     for (var i = 0; i < this.fromList.cards.length; i++) {
+    //       this.fromList.cards[i].order = i
+    //     }
+    //     this.$store.dispatch({ type: 'saveList', list: this.fromList })
+    //     testCard.listId = this.toListId
+    //     for (var j = 0; j < this.toList.cards.length; j++) {
+    //       this.toList.cards[j].order = j
+    //     }
+    //     this.$store
+    //       .dispatch({ type: 'saveList', list: this.toList })
+    //       .then(() => {
+    //         SocketService.send(this.list.boardId)
+    //       })
+    //   }
+    //   SocketService.send(this.list.boardId)
       // this.$store.dispatch({ type: 'saveCard', card: this.card })
       //     .then(res => {
-      //         console.log(res);
-      //         console.log(this.toList);
-      //         this.$store.dispatch({ type: "saveList", list: this.fromList });
+      //         console.log(res)
+      //         console.log(this.toList)
+      //         this.$store.dispatch({ type: 'saveList', list: this.fromList })
       //         if (this.fromListId !== this.toListId) {
-      //             this.$store.dispatch({ type: "saveList", list: this.toList });
+      //             this.$store.dispatch({ type: 'saveList', list: this.toList })
       //         }
-      //         // console.log(this.toList);
-      //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card);
-      //         // console.log(this.toList);
+      //         // console.log(this.toList)
+      //         // this.toList.cards.splice(this.toListFutureIndex, 0, this.card)
+      //         // console.log(this.toList)
       //     })
       //     .catch(err => {
-      //         console.log(err);
-      //     });
+      //         console.log(err)
+      //     })
+    // },
+    funToMove(env) {
+      var fromListId = env.from.className.split(' ')[1]
+      var toListId = env.to.className.split(' ')[1]
+      var cardId = env.item.className.split(' ')[1]
+      var newIdx = env.newIndex
+      var oldIdx = env.oldIndex
+      var fromList = this.$store.getters.getLists.find(
+        list => list._id === fromListId
+      )
+
+      if (fromListId !== toListId) {
+        var toList = this.$store.getters.getLists.find(
+          list => list._id === toListId
+        )
+        var card = toList.cards.find(
+          card => card._id === cardId
+        )
+        for (var i = 0; i < toList.cards.length; i++) {
+          toList.cards[i].order = i
+        }
+        for (var j = 0; j < fromList.cards.length; j++) {
+          fromList.cards[j].order = j
+        }
+        card.listId = toListId;
+        this.$store.dispatch({ type: 'saveList', list: toList }).then(() => {
+          this.$store.dispatch({ type: 'saveList', list: fromList }).then(() => {
+            SocketService.send(this.list.boardId)
+          })
+        })
+      } else {
+        for (var k = 0; k < fromList.cards.length; k++) {
+          fromList.cards[k].order = k
+        }
+        var card = fromList.cards.find(
+          card => card._id === cardId
+        )
+        card.listId = toListId;
+        this.$store.dispatch({ type: 'saveList', list: fromList }).then(() => {
+          SocketService.send(this.list.boardId)
+        })
+      }
+
+
+
     },
     newCard() {
-      // this.cardTitle = CardService.getEmpty();
-      console.log("new card", this.card);
-      console.log((this.card.order = this.list.cards.length + 1));
-      this.isAddClick = !this.isAddClick;
+      // this.cardTitle = CardService.getEmpty()
+      console.log('new card', this.card)
+      console.log((this.card.order = this.list.cards.length + 1))
+      this.isAddClick = !this.isAddClick
     },
     closeAdd() {
-      this.isAddClick = !this.isAddClick;
+      this.isAddClick = !this.isAddClick
     },
     addCard() {
-      this.card.listId = this.list._id;
+      this.card.listId = this.list._id
       // (this.card.order = this.list.cards[this.list.cards.length - 1].order + 1),
-      this.card.order = this.list.cards.length;
+      this.card.order = this.list.cards.length
       this.$store
-        .dispatch({ type: "saveCardToList", card: this.card })
+        .dispatch({ type: 'saveCardToList', card: this.card })
         .then(card => {
-          var boardId = this.list.boardId;
-          let activity = ActivityService.getEmptyActivity();
-          activity.text = " added a new card to list ";
-          activity.userId = this.$store.getters.loggedInUser._id;
-          activity.boardId = boardId;
-          activity.listId = this.list._id;
-          activity.cardId = card._id;
+          var boardId = this.list.boardId
+          let activity = ActivityService.getEmptyActivity()
+          activity.text = ' added a new card to list '
+          activity.userId = this.$store.getters.loggedInUser._id
+          activity.boardId = boardId
+          activity.listId = this.list._id
+          activity.cardId = card._id
           activity.createdAt = moment(Date.now()).format(
-            "MMMM Do YYYY, h:mm:ss a"
-          );
-          this.$store.dispatch({ type: "saveActivity", activity });
-          var cardItem = CardService.getEmptyCard();
-          this.$store.commit("setCard", { card: cardItem });
-          this.$store.dispatch({ type: "loadBoard", boardId });
-          SocketService.send(boardId);
-        });
-      this.isAddClick = !this.isAddClick;
+            'MMMM Do YYYY, h:mm:ss a'
+          )
+          this.$store.dispatch({ type: 'saveActivity', activity })
+          var cardItem = CardService.getEmptyCard()
+          this.$store.commit('setCard', { card: cardItem })
+          this.$store.dispatch({ type: 'loadBoard', boardId })
+          SocketService.send(boardId)
+        })
+      this.isAddClick = !this.isAddClick
     },
     choseTitle() {
-      console.log("isChangeTitle", this.isChangeTitle);
-      this.isChangeTitle = !this.isChangeTitle;
+      console.log('isChangeTitle', this.isChangeTitle)
+      this.isChangeTitle = !this.isChangeTitle
     },
     changeTitle() {
-      console.log("this.list", this.list);
-      this.$store.dispatch({ type: "saveList", list: this.list });
-      this.isChangeTitle = !this.isChangeTitle;
-      SocketService.send(this.list.boardId);
+      console.log('this.list', this.list)
+      this.$store.dispatch({ type: 'saveList', list: this.list })
+      this.isChangeTitle = !this.isChangeTitle
+      SocketService.send(this.list.boardId)
     }
   },
   computed: {
     card: {
       get() {
-        return this.$store.getters.getCurrCard;
+        return this.$store.getters.getCurrCard
       },
       set(cardItem) {
-        this.$store.commit("setCard", { card: cardItem });
+        this.$store.commit('setCard', { card: cardItem })
       }
     },
     dragOptions() {
       return {
         animation: 200,
-        group: "description",
+        group: 'description',
         disabled: false,
-        ghostClass: "ghost"
-      };
+        ghostClass: 'ghost'
+      }
+    },
+    checkList() {
+      if (!this.list.cards) {
+        this.list.cards = [{ _id: 'fun' }]
+      }
+      return this.list.cards
     }
   },
+
   created() {
-    var cardItem = CardService.getEmptyCard();
-    this.$store.commit("setCard", { card: cardItem });
-    // this.currList = this.list;
+    var cardItem = CardService.getEmptyCard()
+    this.$store.commit('setCard', { card: cardItem })
+    // this.currList = this.list
   },
   watch: {
-    // list: function() {
-    //   console.log("change in list");
-    //   this.$store.dispatch({ type: "saveList", list: this.list });
-    //   SocketService.send(this.list.boardId);
+    // list: function (val) {
+    //   console.log(val)
+    //   // this.checkList()
+    // },
+    // board: function (val) {
+    //   console.log(val)
     // }
   }
-};
+}
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 .title-list {
   cursor: pointer;
   display: flex;
@@ -306,6 +375,12 @@ export default {
   opacity: 0.3;
   background: #c8ebfb;
 }
+.fun-drag {
+  min-height: 50px;
+}
+.list-group {
+  min-height: 50px;
+}
 </style>
 
 
@@ -338,7 +413,7 @@ export default {
 //     width: 88% - 2 * 4%;
 //     padding: 10px 4%;
 //     min-height: 50px;
-//     font-family: "Open Sans", sans-serif;
+//     font-family: 'Open Sans', sans-serif;
 //     font-weight: 400;
 //     font-size: 12px;
 //     color: #4d4d4d;
@@ -348,7 +423,7 @@ export default {
 //     width: 275px;
 //     background-color: #e2e4e6;
 //     border-radius: 3px;
-//     font-family: "Open Sans", sans-serif;
+//     font-family: 'Open Sans', sans-serif;
 //     font-weight: 700;
 //     font-size: 15px;
 //     color: #ffffff;
@@ -368,7 +443,7 @@ export default {
 //         text-align: left;
 //         cursor: pointer;
 //         border-radius: 3px;
-//         font-family: "Open Sans", sans-serif;
+//         font-family: 'Open Sans', sans-serif;
 //         font-weight: 400;
 //         font-size: 12px;
 //         color: #959da1;

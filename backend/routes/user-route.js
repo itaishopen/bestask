@@ -13,7 +13,9 @@ function addUserRoutes(app) {
 
     // SINGLE - GET Full details including boards
     app.get(`${USER_URL}/:userId`, (req, res) => {
-        const userId = req.params.userId;        
+        const userId = req.params.userId;
+        console.log(userId);
+                
         Promise.all([
             userService.getUserById({userId}),
             boardService.query({userId})
@@ -33,6 +35,8 @@ function addUserRoutes(app) {
     // UPDATE
     app.put(`${USER_URL}/:userId`, (req, res) => {
         const user = req.body;
+        user.firstName[0].toUpperCase()
+        user.lastName[0].toUpperCase()
         userService.updateUser(user)
             .then(user => res.json(user))
     })
@@ -50,6 +54,8 @@ function addUserRoutes(app) {
     // CREATE
     app.post(`/api/singup`, (req, res) => {
         const newUser = req.body;
+        newUser.firstName[0].toUpperCase()
+        newUser.lastName[0].toUpperCase()
         userService.addUser(newUser)
             .then(user => res.json(user))
     })

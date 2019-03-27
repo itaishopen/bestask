@@ -11,8 +11,7 @@ function getUserAndBoard(userId) {
     return HttpService.get(`${USER_URL}/${userId}`).then(resolveData)
 }
 function login(userCredentials) {
-    return HttpService.put(`${BASE_URL}/login`, userCredentials)
-        .then(resolveData)
+    return HttpService.put(`${BASE_URL}/login`, userCredentials).then(resolveData)
 }
 
 function signup(user) {

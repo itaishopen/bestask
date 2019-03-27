@@ -65,7 +65,7 @@ function getEmptyChecklist() {
 }
 
 function getEmptyToDo() {
-    return { id: randomId(12), name: "", done: false }
+    return { id: randomId(12), name: "", done: false, editStatus: true }
 }
 
 function randomId(length_) {

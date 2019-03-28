@@ -68,7 +68,6 @@
               </b-form-select>
             </div>
 
-            
 
             <div class="time flex">
               <label class="mt-3" for="date">Date:</label>
@@ -128,6 +127,12 @@
                   </button>
                 </div>
               </div>
+                <button
+                  class="new-todo-options new-todo"
+                  v-if="!editorOpen"
+                  size="sm"
+                  @click="addToDo(checklist.id)"
+                >Add item</button>
             </div>
 
             <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
@@ -633,6 +638,7 @@ export default {
 }
 
 .edit-checklist {
+  color: black;
   display: flex;
   flex-direction: column;
 }

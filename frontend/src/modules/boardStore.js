@@ -70,6 +70,8 @@ export default {
                 })
         },
         saveBoard(context, { board }) {
+            console.log(board , 'board store');
+            
             return BoardService.saveBoard(board).then(savedBoard => {
                 context.commit({ type: 'setBoard', savedBoard: savedBoard[0] })
                 return savedBoard[0]

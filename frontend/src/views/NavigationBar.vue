@@ -7,23 +7,24 @@
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>|
       <router-link to="/board">Bestask</router-link>|
-      <router-link to="/login/">login</router-link>|
-      <router-link to="/sign-up/">creat new acount</router-link>
+    </div>
+    <div class="login">
+      <router-link to="/login/">Login</router-link>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-  name: 'NavigationBar',
+  name: "NavigationBar",
   data() {
-    return {}
+    return {};
   },
-  created() { },
+  created() {},
   computed: {},
   methods: {},
   components: {}
-}
+};
 </script>
 
 <style lang='scss' scoped>
@@ -51,5 +52,16 @@ export default {
   margin-left: 40vw;
   display: flex;
   align-items: center;
+}
+.login {
+  font-family: Raleway-Regular, "Open Sans", sans-serif;
+  font-weight: bold;
+  line-height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  width: 50px;
+  height: 50px;
 }
 </style>

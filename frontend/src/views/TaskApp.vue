@@ -1,6 +1,6 @@
 <template>
   <section class="task-app task-wrapper Collection" v-if="boards">
-    <h1>My Boards:</h1>
+    <h1 class="title-board-prev">My Boards:</h1>
     <div class="board-flex">
       <div
         class="Collection_item"
@@ -8,7 +8,7 @@
         :key="board._id"
         :style="{ background: board.prefs.bgColor.color }"
       >
-        <board-preview :board="board"></board-preview>
+        <board-preview class="board-preview" :board="board"></board-preview>
       </div>
       <div
         class="Collection_newItem"
@@ -93,6 +93,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.title-board-prev {
+  margin: 26px;
+  font-family: Raleway-Regular, "Open Sans", sans-serif;
+  font-size: 30px;
+}
 .board-flex {
   display: flex;
   // flex-direction: column;
@@ -105,22 +110,28 @@ export default {
   //   flex-direction: row;
   //   // flex-wrap: wrap;
   // }
-  & .Collection_item {
-    display: block;
-    position: relative;
+ .board-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 85px;
+    width: 250px;
+    & :hover {
+      background-color: #ffffff1f;
+    }
+  }
+  & .Collection_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     margin: 0 20px 20px 0;
     border-radius: 3px;
     cursor: pointer;
-    padding: 10px 2% 10px 2%;
-    width: 250px;
-    // background-color: #026aa7;
-  }
-  & .Collection_item:hover {
-    background-color: #055a8c;
+    transition: 0.3s;
   }
   & .Collection_addBoard {
-    font-family: "Open Sans", sans-serif;
+    font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 15px;
     color: #4d4d4d;
@@ -147,7 +158,7 @@ export default {
     padding: 10px 2% 10px 2%;
     width: 250px;
     background-color: #cdd2d4;
-    font-family: "Open Sans", sans-serif;
+    font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 15px;
     color: #4d4d4d;
@@ -163,3 +174,5 @@ export default {
   }
 }
 </style>
+
+

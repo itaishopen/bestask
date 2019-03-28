@@ -34,7 +34,12 @@
           @start="drag=true"
           @end="funToMove"
         >
-          <div v-for="card in list.cards" :key="card._id" class="card" :class="[card._id, card.archived ? 'hide-card' : '']">
+          <div
+            v-for="card in list.cards"
+            :key="card._id"
+            class="card"
+            :class="[card._id, card.archived ? 'hide-card' : '']"
+          >
             <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
           </div>
         </draggable>
@@ -82,13 +87,12 @@ export default {
       listArray: [this.list],
       isAddClick: false,
       isChangeTitle: false,
-      hasfocus: false,
-    }
+      hasfocus: false
+    };
   },
   components: {
     CardPreview,
-    draggable,
-
+    draggable
   },
   methods: {
     funToMove(env) {
@@ -174,7 +178,7 @@ export default {
   },
   computed: {
     hideCard(card) {
-      return card.archived ? 'hide-card' : ''
+      return card.archived ? "hide-card" : "";
     },
     card: {
       get() {
@@ -280,11 +284,13 @@ export default {
     }
     .list-x-card-options {
       background-color: rgb(236, 51, 51);
-      color: rgb(255, 255, 255);
       border: none;
       border-radius: 5px;
       padding: 8px 18px;
       margin: 0 3px;
+    }
+    .fa-times {
+      color: rgb(255, 255, 255);
     }
   }
   .footer {
@@ -299,8 +305,10 @@ export default {
       border-radius: 7px;
       transition: 0.3s;
       &:hover {
-        background-color: rgba(199, 199, 199, 0);
         color: rgb(0, 0, 0);
+      }
+      .fa-plus {
+        color: rgb(48, 47, 47);
       }
     }
   }

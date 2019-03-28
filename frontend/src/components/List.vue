@@ -1,6 +1,6 @@
 <template class="everyCard">
   <section class="list slide">
-    <header class="header title">
+    <header class="header title drag-me">
       <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
       <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
         <input
@@ -16,18 +16,18 @@
       </form>
     </header>
 
-    <main class="main items">
-      <draggable
+    <main class="main items drag-me">
+      <!-- <draggable
         class="list-group-top"
         :class="list._id"
         v-model="listArray[0].cards"
         v-bind="dragOptionsList"
         :key="list._id"
-      >
+      > -->
         <draggable
           class="listgroup"
           :class="list._id"
-          v-model="list.cards"
+          v-model="listArray"
           v-bind="dragOptionsCard"
           @start="drag=true"
           @end="funToMove"
@@ -41,7 +41,7 @@
             <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
           </div>
         </draggable>
-      </draggable>
+      <!-- </draggable> -->
       <!-- <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
         <div>
           <textarea
@@ -93,7 +93,7 @@ export default {
   props: ["list"],
   data() {
     return {
-      listArray: [this.list],
+      listArray: this.cardList,
       isAddClick: false,
       isChangeTitle: false,
       hasfocus: false
@@ -105,6 +105,7 @@ export default {
   },
   methods: {
     funToMove(env) {
+      console.log(env);
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
       var cardId = env.item.className.split(" ")[1];
@@ -147,7 +148,7 @@ export default {
     newCard() {
       this.card = CardService.getEmptyCard()
       console.log("new card", this.card);
-      console.log((this.card.order = this.list.cards.length + 1));
+      this.card.order = this.list.cards.length;
       this.isAddClick = !this.isAddClick;
       // this.list.scrollBy(0, 100);
     },
@@ -191,9 +192,8 @@ export default {
   },
   computed: {
     cardList() {
-      if (this.list.cards.length === 0) {
+      if (!this.list.cards && this.list.cards.length === 0) {
         this.list.cards = []
-        return []
       }
       return this.list.cards
     },
@@ -214,8 +214,7 @@ export default {
         group: "cards",
         disabled: false,
         ghostClass: "ghost",
-        // delay: 3,
-        touchStartThreshold: 1
+        delay: 2,
       }
     },
     dragOptionsCard() {
@@ -226,7 +225,7 @@ export default {
         draggable: ".card",
         // easing: "cubic-bezier(0.86, 0, 0.07, 1)",
         ghostClass: "ghost",
-        // delay: 3
+        // delay: 1
       }
     },
   },
@@ -398,5 +397,6 @@ export default {
 }
 .listgroup {
   cursor: move;
+  min-height: 50px;
 }
 </style>

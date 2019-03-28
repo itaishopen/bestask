@@ -1,6 +1,5 @@
 <template>
   <div class="sign-up">
-    <h1>This is an sign up page</h1>
     <form class="form-sign-up" @submit.prevent="submit">
       <input class="first-name-sign-up" v-model="user.firstName" placeholder="First name" required>
       <input class="last-name-sign-up" v-model="user.lastName" placeholder="Last name" required>

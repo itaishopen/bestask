@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <h1>This is an login page</h1>
     <form class="form-login" @submit.prevent="login">
       <input
         class="username-login"

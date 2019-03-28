@@ -33,45 +33,45 @@
           </b-navbar-nav>
         </b-collapse> 
       </b-navbar>-->
-      </header>
+    </header>
     <main>
-    <ul class="board-list-ul">
-      <draggable
-        v-model="lists"
-        v-bind="dragOptions"
-        @start="drag=true"
-        @end="endMoveList"
-        :move="moveList"
-        class="draggable"
-      >
-        <li class="board-list-li" v-for="list in lists" :key="list._id">
-          <list :list="list"/>
-        </li>
-      </draggable>
-      <div class="create-list">
-        <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-          Add new list
-          <i class="fa fa-plus"></i>
-        </button>
-
-        <form
-          v-if="isAddListClick"
-          @submit.prevent="addList"
-          class="create-list-input form-add-list"
+      <ul class="board-list-ul">
+        <draggable
+          v-model="lists"
+          v-bind="dragOptions"
+          @start="drag=true"
+          @end="endMoveList"
+          :move="moveList"
+          class="draggable"
         >
-          <div>
-            <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
-          </div>
-          <div class="container-add-list-btns">
-            <button class="create-list-options list-new-list-options" type="submit">
-              <i class="fa fa-plus"></i>
-            </button>
-            <button class="list-x-list-options" @click="closeAdd">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </form>    
-      </div>
+          <li class="board-list-li" v-for="list in lists" :key="list._id">
+            <list :list="list"/>
+          </li>
+        </draggable>
+        <div class="create-list">
+          <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+            Add new list
+            <i class="fa fa-plus"></i>
+          </button>
+
+          <form
+            v-if="isAddListClick"
+            @submit.prevent="addList"
+            class="create-list-input form-add-list"
+          >
+            <div>
+              <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
+            </div>
+            <div class="container-add-list-btns">
+              <button class="create-list-options list-new-list-options" type="submit">
+                <i class="fa fa-plus"></i>
+              </button>
+              <button class="list-x-list-options" @click="closeAdd">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </form>
+        </div>
       </ul>
       <card-edit v-if="showModal" ref="card">
         <router-view name="Card Edit"/>
@@ -87,7 +87,7 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
-import Activities from './Activities.vue';
+import Activities from "./Activities.vue";
 
 import draggable from "vuedraggable";
 import moment from "moment";
@@ -118,9 +118,11 @@ export default {
   computed: {
     board() {
       if (this.$store.getters.getBoard) {
-        return this.$store.getters.getBoard
+        return this.$store.getters.getBoard;
       }
-      return this.$store.dispatch({ type: "loadBoard", boardId }).then(board => board)
+      return this.$store
+        .dispatch({ type: "loadBoard", boardId })
+        .then(board => board);
     },
     lists: {
       get() {
@@ -138,10 +140,9 @@ export default {
         ghostClass: "ghost",
         delay: 3,
         touchStartThreshold: 1
-      }
-    },
+      };
+    }
   },
-
 
   methods: {
     fun(boardId) {
@@ -200,7 +201,7 @@ export default {
           SocketService.send(this.board._id);
         });
     },
-    toggleActivity(){
+    toggleActivity() {
       this.showAtivities = !this.showAtivities;
     }
   },
@@ -351,9 +352,12 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
 }
-.fa-times , .fa-plus  {
-      color: rgb(255, 255, 255);
-    }
+.fa-times {
+  color: rgb(255, 255, 255);
+}
+.fa-plus {
+  color: rgb(0, 0, 0);
+}
 
 .draggable {
   display: flex;
@@ -365,19 +369,19 @@ export default {
   background: #c8ebfb;
 }
 
-.navbar{
+.navbar {
   width: 350px;
   position: absolute;
-  z-index:1;
+  z-index: 1;
 }
-.navbar-text{
+.navbar-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-// .container-add-list-btns{
-//   .fa-plus   {
-//       color: rgb(255, 255, 255);
-//     }
-// }
+.container-add-list-btns {
+  .fa-plus {
+    color: rgb(255, 255, 255);
+  }
+}
 </style>

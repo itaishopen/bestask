@@ -16,23 +16,21 @@
           </button>
         </div>
       </form>
-      <!-- <b-navbar toggleable type="light" variant="light" class="navbar">
-        <b-navbar-toggle target="nav_text_collapse" />
-        <b-navbar-brand>Menu</b-navbar-brand>
-        <b-collapse is-nav id="nav_text_collapse">
-          <b-navbar-nav class="navbar-text">
-            <b-nav-text>
-              <router-link :to="'/board/' + board._id + '/archive'">
-                <b-button variant="link">Archived items</b-button>
-              </router-link>
-            </b-nav-text>
-            <b-nav-text>
-              <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
-              <activities v-if="showAtivities" :board="board"></activities>
-            </b-nav-text>
-          </b-navbar-nav>
-        </b-collapse> 
-      </b-navbar>-->
+      <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
+      <div class="menu-modal" v-show="showMenu">
+        <button v-on:click="toggleMenu" class="menu-close-btn">
+            <i class="fas fa-times" style="color:#000000;"></i>
+        </button>
+        <div>
+          <router-link :to="'/board/' + board._id + '/archive'">
+            <b-button variant="link">Archived items</b-button>
+          </router-link>
+        </div>
+        <div>
+          <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
+          <activities v-if="showAtivities" :board="board" class="activities"></activities>
+        </div>
+      </div>
     </header>
     <main>
       <ul class="board-list-ul">
@@ -100,6 +98,7 @@ export default {
       isAddListClick: false,
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
+      showMenu: false,
       showAtivities: false,
       boardId: this.$route.params.boardId
     };
@@ -203,6 +202,9 @@ export default {
     },
     toggleActivity() {
       this.showAtivities = !this.showAtivities;
+    },
+    toggleMenu(){
+      this.showMenu = !this.showMenu;
     }
   },
 
@@ -383,5 +385,25 @@ export default {
   .fa-plus {
     color: rgb(255, 255, 255);
   }
+}
+.menu-close-btn {
+  outline: none;
+  border: none;
+  align-self:flex-end;
+}
+
+.menu-modal{
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  max-height: 100%;
+  background-color: #ebebeb;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  margin: 0px 5px;  
+}
+.activities{
+  overflow: auto;
+  max-height: 100vh;
 }
 </style>

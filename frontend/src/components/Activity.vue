@@ -1,57 +1,56 @@
 <template>
-    <div v-if="board" class="activity">
+    <div v-if="activity">
         <!-- <h1>Activity comp</h1> -->
-        <div>
-            <pre>{{activities}}</pre>
+        <div class="activity flex">
+            <h2>Board: {{board}}</h2>
+            <h3>Card: {{card}}</h3>
+            <h3>Created: {{createdAt}}</h3>
+            <h3>List: {{list}}</h3>
+            <h3>Text: {{text}}</h3>
+            <h3>User: {{user}}</h3>
+            <hr>
         </div>
-
-        <!-- <div v-for="activity in activities" :key="activity._id" class="flex activities"> -->
-        <!-- <div v-if="activity.board">
-                <div>Board: {{activity.board[0].title}}</div>
-        </div>-->
-        <!-- <div v-if="activity.card">{{activity.card[0].title}}</div> -->
-        <!-- <div>Created At: {{activity.createdAt}}</div> -->
-        <!-- <div>List: {{activity.list[0].title}}</div> -->
-        <!-- <div>Text: {{activity.text}}</div> -->
-        <!-- <div v-if="activity.user">User: {{activity.user[0].userName}}</div> -->
-        <!-- </div> -->
     </div>
 </template>
 
 <script>
 export default {
     name: 'Activity',
-    props: ['board'],
+    props: ['activity'],
     data() {
         return {
         }
     },
     created() {
-        this.$store.dispatch({ type: "loadBoard", boardId: this.board._id })
-            .then(res => {
-                console.log(res);
-                console.log(this.$store.getters.getBoardActivities);
-            })
-
+        // console.log(this.activity);
     },
     components: {
     },
     computed: {
-        activities() {
-            // return this.$store.getters.getBoardActivities;
-            var activities = this.$store.getters.getBoardActivities;
-            var res = '';
-            activities.forEach(activity => {
-                if (activity.board[0].title) res += `Board: ${activity.board[0].title}\n`;
-                if (activity.card[0]) res += `Card: ${activity.card[0].title}\n`;
-                if (activity.createdAt) res += `Created At: ${activity.createdAt}\n`;
-                if (activity.list[0]) res += `List: ${activity.list[0].title}\n`;
-                if (activity.text) res += `Text: ${activity.text}\n`;
-                if (activity.user[0]) res += `User: ${activity.user[0].userName}\n`;
-            });
-            return res;
+        board() {
+            if (this.activity.board[0].title) return this.activity.board[0].title;
+            return '';
         },
-
+        card() {
+            if (this.activity.card[0]) return this.activity.card[0].title;
+            return '';
+        },
+        createdAt() {
+            if (this.activity.createdAt) return this.activity.createdAt;
+            return '';
+        },
+        list() {
+            if (this.activity.list[0]) return this.activity.list[0].title;
+            return '';
+        },
+        text() {
+            if (this.activity.text) return this.activity.text;
+            return '';
+        },
+        user() {
+            if (this.activity.user[0]) return this.activity.user[0].userName;
+            return '';
+        }
     },
     methods: {
 
@@ -63,7 +62,26 @@ export default {
 .flex {
     display: flex;
 }
-.activities {
+.activity {
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    padding: 4px;
+    min-width: 320px;
+    max-width: 320px;
+    min-height: 120px;
+    max-height: 120px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 10px;
+    margin: 0.7px 3px;
+    box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+    border-bottom: 0.9px solid rgb(167, 165, 165);
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    transition: 0.2s;
+    font-weight: bold;
 }
 </style>

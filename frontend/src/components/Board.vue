@@ -5,15 +5,15 @@
         <b-navbar-toggle target="nav_text_collapse" />
         <!-- <b-navbar-brand>Menu</b-navbar-brand> -->
         <b-collapse is-nav id="nav_text_collapse">
-          <b-navbar-nav>
+          <b-navbar-nav class="navbar-text">
             <b-nav-text>
               <router-link :to="'/board/' + board._id + '/archive'">
-                <div>Archived items</div>
+                <b-button variant="link">Archived items</b-button>
               </router-link>
             </b-nav-text>
             <b-nav-text>
               <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
-              <activity v-if="showActivity" :board="board"></activity>
+              <activities v-if="showAtivities" :board="board"></activities>
             </b-nav-text>
           </b-navbar-nav>
         </b-collapse>
@@ -87,7 +87,7 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
-import Activity from "./Activity.vue";
+import Activities from './Activities.vue';
 
 import draggable from "vuedraggable";
 import moment from "moment";
@@ -100,7 +100,7 @@ export default {
       isAddListClick: false,
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
-      showActivity: false
+      showAtivities: false
     };
   },
   created() {
@@ -120,7 +120,7 @@ export default {
     list,
     draggable,
     CardEdit,
-    Activity
+    Activities
   },
 
   computed: {
@@ -208,7 +208,7 @@ export default {
         });
     },
     toggleActivity(){
-      this.showActivity = !this.showActivity;
+      this.showAtivities = !this.showAtivities;
     }
   },
 
@@ -351,8 +351,13 @@ export default {
 }
 
 .navbar{
-  width: 300px;
-  // position: fixed;
+  width: 350px;
+  position: absolute;
   z-index:1;
+}
+.navbar-text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>

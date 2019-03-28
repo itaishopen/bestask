@@ -14,9 +14,12 @@
         <i class="fab fa-flipboard nav-btn"></i>
       </router-link>
     </div>
-    <div class="login">
-      <router-link to="/login/">
+    <div class="login" >
+      <router-link to="/login/" v-if="!userConnect">
         <i class="fas fa-sign-in-alt nav-btn"></i>
+      </router-link>
+      <router-link to="/login/" v-if="userConnect">
+        {{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}
       </router-link>
     </div>
   </section>
@@ -28,7 +31,9 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return { };
+    return { 
+      userConnect: false,
+    };
   },
   created() {
    
@@ -37,6 +42,7 @@ export default {
     user: {
       get() {
         if (this.$store.getters.isUserLoggedIn) {
+          this.userConnect = true;
           return this.$store.getters.loggedInUser
         }
       },

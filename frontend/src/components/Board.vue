@@ -362,7 +362,7 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
 }
-.fa-times , .fa-plus  {
+.fa-times   {
       color: rgb(255, 255, 255);
     }
 
@@ -385,5 +385,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+.container-add-list-btns{
+  .fa-plus   {
+      color: rgb(255, 255, 255);
+    }
 }
 </style>

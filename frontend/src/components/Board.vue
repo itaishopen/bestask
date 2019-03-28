@@ -1,69 +1,77 @@
 <template>
   <section class="board">
-    <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
-    <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
-      <input
-        class="input-title-board"
-        ref="title"
-        v-model="board.title"
-        placeholder="Enter title here..."
-        autofocus
-      >
-      <button class="btn-title-board" type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-    <router-link :to="'/board/' + board._id + '/archive'">
-      <div>Go to archive</div>
-    </router-link>
-    <ul class="board-list-ul">
-      <draggable
-        v-model="lists"
-        v-bind="dragOptions"
-        group="lists"
-        @start="drag=true"
-        @end="endMoveList"
-        :move="moveList"
-        class="draggable"
-      >
-        <li class="board-list-li" v-for="list in lists" :key="list._id">
-          <list :list="list"/>
-        </li>
-      </draggable>
-      <div class="create-list">
-        <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-          Add new list
-          <i class="fa fa-plus"></i>
-        </button>
-
-        <form
-          v-if="isAddListClick"
-          @submit.prevent="addList"
-          class="create-list-input form-add-list"
-        >
-          <div>
-            <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
-          </div>
-          <div class="container-add-list-btns">
-            <button class="create-list-options list-new-list-options" type="submit">
-              <i class="fa fa-plus"></i>
-            </button>
-            <button class="list-x-list-options" @click="closeAdd">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </form>
+    <header class="nav-board">
+      <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
+      <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
+        <div class="title-input-container">
+          <input
+            class="input-title-board"
+            ref="title"
+            v-model="board.title"
+            placeholder="Enter title here..."
+            autofocus
+          >
+          <button class="btn-title-board" type="submit">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </form>
+      <div class="archive-btn">
+        <router-link :to="'/board/' + board._id + '/archive'">
+          <div>Go to archive</div>
+        </router-link>
       </div>
-    </ul>
-    <card-edit v-if="showModal" ref="card">
-      <router-view name="Card Edit" />
-    </card-edit>
+    </header>
+    <main>
+      <ul class="board-list-ul">
+        <draggable
+          v-model="lists"
+          v-bind="dragOptions"
+          group="lists"
+          @start="drag=true"
+          @end="endMoveList"
+          :move="moveList"
+          class="draggable"
+        >
+          <li class="board-list-li" v-for="list in lists" :key="list._id">
+            <list :list="list"/>
+          </li>
+        </draggable>
+        <div class="create-list">
+          <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+            Add new list
+            <i class="fa fa-plus"></i>
+          </button>
+
+          <form
+            v-if="isAddListClick"
+            @submit.prevent="addList"
+            class="create-list-input form-add-list"
+          >
+            <div>
+              <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
+            </div>
+            <div class="container-add-list-btns">
+              <button class="create-list-options list-new-list-options" type="submit">
+                <i class="fa fa-plus"></i>
+              </button>
+              <button class="list-x-list-options" @click="closeAdd">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </ul>
+      <card-edit v-if="showModal" ref="card">
+        <router-view name="Card Edit"/>
+      </card-edit>
+    </main>
   </section>
 </template>
 
 <script>
 import CardService from "../services/CardService.js";
-import CardEdit from '../views/CardEdit.vue'
+import CardEdit from "../views/CardEdit.vue";
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
@@ -162,14 +170,17 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
+      console.log("this.board", this.board);
       // console.log( this.isChangeTitle , this.board , 'title');
       this.isChangeTitle = !this.isChangeTitle;
     },
     changeTitle() {
       console.log("this.board", this.board);
-      this.$store.dispatch({ type: "saveBoard", board: this.board }).then(() => SocketService.send(this.board._id));
-
+      this.$store
+        .dispatch({ type: "saveBoard", board: this.board })
+        .then(() => SocketService.send(this.board._id));
       this.isChangeTitle = !this.isChangeTitle;
+      console.log("this.isChangeTitle after change", this.isChangeTitle);
     },
     moveList(evt) {
       // console.log(evt);
@@ -186,7 +197,7 @@ export default {
     }
   },
 
-   watch: {
+  watch: {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     }
@@ -195,6 +206,21 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.board {
+  display: flex;
+  flex-direction: column;
+}
+.board-list-ul {
+  margin-top: 50px;
+}
+.nav-board {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+}
 .board-title {
   width: 200px;
   cursor: pointer;
@@ -202,6 +228,26 @@ export default {
   padding: 15px;
   font-family: Lato_bold;
   font-size: 20px;
+}
+.archive-btn{
+  margin-right: 30px;
+}
+.title-input-container {
+  display: flex;
+  flex-direction: row;
+}
+.input-title-board {
+  font-size: 18px;
+  font-weight: bold;
+  height: 32px;
+  width: 300px;
+  border: none;
+  background: rgba(255, 255, 255, 0.911);
+  padding-left: 10px;
+}
+.btn-title-board {
+  background: rgba(255, 255, 255, 0.911);
+  border: none;
 }
 .board-list-li {
   min-height: 20vh;
@@ -299,19 +345,6 @@ export default {
   border-radius: 5px;
   padding: 8px 18px;
   margin: 0 3px;
-}
-.input-title-board {
-  font-size: 18px;
-  font-weight: bold;
-  height: 32px;
-  width: 300px;
-  border: none;
-  background: rgba(255, 255, 255, 0.911);
-  padding-left: 10px;
-}
-.btn-title-board {
-  background: rgba(255, 255, 255, 0.911);
-  border: none;
 }
 
 .draggable {

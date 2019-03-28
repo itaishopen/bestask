@@ -1,5 +1,24 @@
 <template>
   <section class="board">
+    <!-- <div> -->
+      <b-navbar toggleable type="light" variant="light" class="navbar">
+        <b-navbar-toggle target="nav_text_collapse" />
+        <!-- <b-navbar-brand>Menu</b-navbar-brand> -->
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-navbar-nav>
+            <b-nav-text>
+              <router-link :to="'/board/' + board._id + '/archive'">
+                <div>Archived items</div>
+              </router-link>
+            </b-nav-text>
+            <b-nav-text>
+              <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
+              <activity v-if="showActivity" :board="board"></activity>
+            </b-nav-text>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    <!-- </div> -->
     <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
     <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
       <input
@@ -13,9 +32,9 @@
         <i class="fa fa-plus"></i>
       </button>
     </form>
-    <router-link :to="'/board/' + board._id + '/archive'">
+    <!-- <router-link :to="'/board/' + board._id + '/archive'">
       <div>Go to archive</div>
-    </router-link>
+    </router-link> -->
     <ul class="board-list-ul">
       <draggable
         v-model="lists"
@@ -68,6 +87,8 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
+import Activity from "./Activity.vue";
+
 import draggable from "vuedraggable";
 import moment from "moment";
 
@@ -78,7 +99,8 @@ export default {
     return {
       isAddListClick: false,
       isChangeTitle: false,
-      showModal: this.$route.meta.showModal
+      showModal: this.$route.meta.showModal,
+      showActivity: false
     };
   },
   created() {
@@ -97,7 +119,8 @@ export default {
   components: {
     list,
     draggable,
-    CardEdit
+    CardEdit,
+    Activity
   },
 
   computed: {
@@ -183,6 +206,9 @@ export default {
         .then(() => {
           SocketService.send(this.board._id);
         });
+    },
+    toggleActivity(){
+      this.showActivity = !this.showActivity;
     }
   },
 
@@ -322,5 +348,11 @@ export default {
 .ghost {
   opacity: 0.3;
   background: #c8ebfb;
+}
+
+.navbar{
+  width: 300px;
+  // position: fixed;
+  z-index:1;
 }
 </style>

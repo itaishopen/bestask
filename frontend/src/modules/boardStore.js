@@ -13,7 +13,7 @@ export default {
     getters: {
         getBoard: state => state.board,
         getLists: state => state.lists,
-        getBoardActivities: state => state.board.activities,
+        getBoardActivities: state => state.activities,
         getCurrCard: state => state.currCard,
     },
     mutations: {

@@ -124,6 +124,9 @@ export default {
           list => list._id === toListId
         );
         var card = toList.cards.find(card => card._id === cardId);
+        if (!card) {
+          var card = fromList.cards.find(card => card._id === cardId);
+        }
         card.listId = toListId;
         for (var i = 0; i < toList.cards.length; i++) {
           toList.cards[i].order = i;

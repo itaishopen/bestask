@@ -100,13 +100,13 @@ export default {
       isAddListClick: false,
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
-      showAtivities: false
+      showAtivities: false,
+      boardId: this.$route.params.boardId
     };
   },
   created() {
-    var boardId = this.$route.params.boardId;
-    SocketService.init(boardId);
-    this.$store.dispatch({ type: "loadBoard", boardId });
+    SocketService.init(this.boardId);
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
   components: {
     list,
@@ -121,7 +121,7 @@ export default {
         return this.$store.getters.getBoard;
       }
       return this.$store
-        .dispatch({ type: "loadBoard", boardId })
+        .dispatch({ type: "loadBoard", boardId: this.boardId })
         .then(board => board);
     },
     lists: {

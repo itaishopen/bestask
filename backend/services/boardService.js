@@ -39,8 +39,8 @@ function query({userId = 'guest'}) {
 function addBoard(board) {
     if (board._id) board._id = new ObjectId(board._id);
     delete board.users
-    board.members.forEach(user => {
-        if (user !== 'guest') user = new ObjectId(user);
+    board.members = board.members.map(user => {
+        if (user !== 'guest') return new ObjectId(user);
     })
     return mongoService.connect()
         .then(db => {
@@ -91,8 +91,8 @@ function updateBoard(board) {
     let boardId = board._id
     board._id = new ObjectId(board._id);
     delete board.users
-    board.members.forEach(user => {
-        if (user !== 'guest') user = new ObjectId(user);
+    board.members = board.members.map(user => {
+        if (user !== 'guest') return new ObjectId(user);
     })
     return mongoService.connect()
         .then(db => {

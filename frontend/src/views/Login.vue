@@ -4,14 +4,14 @@
       <input
         class="username-login"
         type="text"
-        v-model="chekUser.userName"
+        v-model="user.userName"
         placeholder="Username"
         required
       >
       <input
         class="password-login"
         type="password"
-        v-model="chekUser.password"
+        v-model="user.password"
         placeholder="Password"
         required
       >
@@ -19,7 +19,7 @@
       <span v-if="isWorng">worng credinatls</span>
     </form>
     <button class="btn-login">
-      <router-link to="/sign-up/">creat new acount</router-link>
+      <router-link to="/signup/">creat new acount</router-link>
     </button>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
   name: "login",
   data() {
     return {
-      chekUser:{
+      user:{
         userName: "",
         password: "",
       },
@@ -41,14 +41,16 @@ export default {
       this.$store
         .dispatch({
           type: "login",
-          user: this.chekUser
+          user: this.user
         })
         .then(user => {
-          if (!user) {
-            this.isWorng = true;
-          } else {
+          console.log(user);
+          
+          if (user.length) {
             this.isWorng = false;
-                router.push({ path: "/board" });
+            this.$router.push({ path: "/board" });
+          } else {
+            this.isWorng = true;
           }
         });
     }

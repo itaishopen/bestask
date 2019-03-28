@@ -460,9 +460,9 @@ export default {
           );
           this.$store.dispatch({ type: "saveActivity", activity });
           SocketService.send(this.board._id);
-          setTimeout(() => {
+          // setTimeout(() => {
             this.$router.go(-1);
-          }, 1500);
+          // }, 1500);
         })
         .catch(err => {
           console.log(err);
@@ -481,9 +481,9 @@ export default {
     },
     modalClosed() {
       this.modalOpen = false;
-      setTimeout(() => {
+      // setTimeout(() => {
         this.$router.go(-1);
-      }, 1500);
+      // }, 1500);
     },
     moveCard() {
       this.$store.getters.getLists.map(list => console.log(list.title));

@@ -39,7 +39,6 @@
       <draggable
         v-model="lists"
         v-bind="dragOptions"
-        group="lists"
         @start="drag=true"
         @end="endMoveList"
         :move="moveList"
@@ -108,14 +107,6 @@ export default {
     var boardId = this.$route.params.boardId;
     SocketService.init(boardId);
     this.$store.dispatch({ type: "loadBoard", boardId });
-    // var user = this.$store.getters.loggedInUser;
-    // if (user) SocketService.on('userConnected', user)
-    // else SocketService.on('userConnected', null)
-    // SocketService.on("board-change", incomeBoardId => {
-    //   console.log(incomeBoardId);
-
-    //   this.$store.dispatch({ type: "loadBoard", incomeBoardId });
-    // });
   },
   components: {
     list,
@@ -126,7 +117,10 @@ export default {
 
   computed: {
     board() {
-      return this.$store.getters.getBoard;
+      if (this.$store.getters.getBoard) {
+        return this.$store.getters.getBoard
+      }
+      return this.$store.dispatch({ type: "loadBoard", boardId }).then(board => board)
     },
     lists: {
       get() {
@@ -139,20 +133,15 @@ export default {
     dragOptions() {
       return {
         animation: 200,
-        group: "description",
+        group: "lists",
         disabled: false,
-        ghostClass: "ghost"
-      };
-    }
+        ghostClass: "ghost",
+        delay: 3,
+        touchStartThreshold: 1
+      }
+    },
   },
-  dragOptions() {
-    return {
-      animation: 200,
-      group: "description",
-      disabled: false,
-      ghostClass: "ghost"
-    };
-  },
+
 
   methods: {
     fun(boardId) {

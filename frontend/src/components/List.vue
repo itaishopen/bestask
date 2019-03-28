@@ -29,15 +29,42 @@
           :class="list._id"
           v-model="list.cards"
           v-bind="dragOptionsCard"
-          @start="drag=true" 
+          @start="drag=true"
           @end="funToMove"
         >
-          <div v-for="card in list.cards" :key="card._id" class="card" :class="[card._id, card.archived ? 'hide-card' : '']"
+          <div
+            v-for="card in list.cards"
+            :key="card._id"
+            class="card"
+            :class="[card._id, card.archived ? 'hide-card' : '']"
           >
             <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
           </div>
         </draggable>
       </draggable>
+      <!-- <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
+        <div>
+          <textarea
+            class="text-area"
+            v-model="card.title"
+            placeholder="Enter title here..."
+            autofocus
+          ></textarea>
+        </div>
+        <div class="container-add-card-btns">
+          <button class="list-new-card-options" type="submit">Add card</button>
+          <button class="list-x-card-options" @click="closeAdd">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </form>-->
+    </main>
+
+    <footer class="footer">
+      <button class="list-add-card" v-if="!isAddClick" @click="newCard()">
+        Add card
+        <i class="fa fa-plus"></i>
+      </button>
       <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
         <div>
           <textarea
@@ -54,13 +81,6 @@
           </button>
         </div>
       </form>
-    </main>
-
-    <footer class="footer">
-      <button class="list-add-card" v-if="!isAddClick" @click="newCard()">
-        Add card
-        <i class="fa fa-plus"></i>
-      </button>
     </footer>
   </section>
 </template>
@@ -131,7 +151,7 @@ export default {
       console.log("new card", this.card);
       console.log((this.card.order = this.list.cards.length + 1));
       this.isAddClick = !this.isAddClick;
-      this.list.scrollBy(0, 100);
+      // this.list.scrollBy(0, 100);
     },
     closeAdd() {
       this.isAddClick = !this.isAddClick;
@@ -197,7 +217,7 @@ export default {
         disabled: false,
         ghostClass: "ghost",
         // delay: 3,
-        touchStartThreshold:1
+        touchStartThreshold: 1
       }
     },
     dragOptionsCard() {
@@ -231,6 +251,11 @@ export default {
   cursor: pointer;
 }
 .list {
+  max-height: 100%;
+  background-color: #ebebeb;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  margin: 0px 5px;
   .header {
     .title-list {
       cursor: pointer;
@@ -261,47 +286,8 @@ export default {
     }
   }
   .main {
-    max-height: 68vh;
+    max-height: 60vh;
     overflow-y: scroll;
-    .form-add-card {
-      width: 270px;
-      height: 110px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin: 3px;
-    }
-    .text-area {
-      min-width: 270px;
-      height: 80px;
-      border: none;
-      border: 1px solid rgb(230, 230, 230);
-      border-radius: 10px;
-      padding: 5px;
-      margin-top: 10px;
-      box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
-      border-bottom: 0.9px solid rgb(167, 165, 165);
-    }
-    .list-new-card-options {
-      font-size: 17px;
-      font-weight: bold;
-      background-color: rgb(51, 236, 66);
-      color: rgb(255, 255, 255);
-      border: none;
-      border-radius: 5px;
-      padding: 8px 18px;
-      margin: 0 3px;
-    }
-    .list-x-card-options {
-      background-color: rgb(236, 51, 51);
-      border: none;
-      border-radius: 5px;
-      padding: 8px 18px;
-      margin: 0 3px;
-    }
-    .fa-times {
-      color: rgb(255, 255, 255);
-    }
   }
   .footer {
     .list-add-card {
@@ -319,6 +305,53 @@ export default {
       }
       .fa-plus {
         color: rgb(48, 47, 47);
+      }
+    }
+    .form-add-card {
+      width: 270px;
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 3px;
+      .text-area {
+        min-width: 270px;
+        height: 80px;
+        border: none;
+        resize: none;
+        border: 1px solid rgb(230, 230, 230);
+        border-radius: 10px;
+        padding: 5px;
+        margin-top: 10px;
+        box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+        border-bottom: 0.9px solid rgb(167, 165, 165);
+      }
+      .container-add-card-btns {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        justify-items: center;
+        align-items: center;
+        .list-new-card-options {
+          font-size: 17px;
+          font-weight: bold;
+          background-color: rgb(51, 236, 66);
+          color: rgb(255, 255, 255);
+          border: none;
+          border-radius: 5px;
+          padding: 8px 18px;
+          margin: 0 3px;
+        }
+        .list-x-card-options {
+          background-color: rgb(236, 51, 51);
+          border: none;
+          border-radius: 5px;
+          padding: 6.5px 18px;
+          margin: 0 3px;
+          .fa-times {
+            color: rgb(255, 255, 255);
+          }
+        }
       }
     }
   }

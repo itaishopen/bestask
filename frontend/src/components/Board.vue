@@ -260,10 +260,10 @@ export default {
   max-height: 80vh;
   min-width: 280px;
   /* max-height: 100vh; */
-  background-color: rgb(235, 235, 235);
-  border: 1px solid rgb(206, 206, 206);
-  border-radius: 8px;
-  margin: 0px 5px;
+  // background-color: rgb(235, 235, 235);
+  // border: 1px solid rgb(206, 206, 206);
+  // border-radius: 8px;
+  // margin: 0px 5px;
 }
 .board-list-ul {
   /* margin: 0 auto; */

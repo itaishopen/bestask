@@ -28,22 +28,21 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return { user: "" };
+    return { };
   },
   created() {
-    if (this.$store.getters.isUserLoggedIn) {
-      this.user = this.$store.getters.loggedInUser;
-      console.log(user, "navbar");
-    }
+   
   },
   computed: {
     user: {
       get() {
-        return this.$store.getters.isUserLoggedIn;
+        if (this.$store.getters.isUserLoggedIn) {
+          return this.$store.getters.loggedInUser
+        }
       },
       set(userId) {
+      console.log(this.user);
         console.log(userId , 'userId');
-
         this.$store.commit("setUser", { card: userId });
       }
     }

@@ -13,11 +13,11 @@
       <router-link class="nav-btns" to="/board">
         <i class="fab fa-flipboard nav-btn"></i>
       </router-link>
-    </div>
-    <div class="login">
-      <router-link to="/login/">
-        <i class="fas fa-sign-in-alt nav-btn"></i>
-      </router-link>
+      <div class="login">
+        <router-link to="/login/">
+          <i class="fas fa-sign-in-alt nav-btn"></i>
+        </router-link>
+      </div>
     </div>
   </section>
 </template>
@@ -28,10 +28,10 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return { };
+    return {};
   },
   created() {
-   
+
   },
   computed: {
     user: {
@@ -41,8 +41,8 @@ export default {
         }
       },
       set(userId) {
-      console.log(this.user);
-        console.log(userId , 'userId');
+        console.log(this.user);
+        console.log(userId, 'userId');
         this.$store.commit("setUser", { card: userId });
       }
     }
@@ -55,6 +55,7 @@ export default {
 <style lang='scss' scoped>
 .navigation-bar {
   position: fixed;
+  width: 100%;
   top: 0;
   padding: 0 30px;
   display: flex;
@@ -74,7 +75,6 @@ export default {
   }
 }
 .navigation {
-  margin-left: 40vw;
   display: flex;
   align-items: center;
   .nav-btns {

@@ -196,7 +196,7 @@ export default {
         group: "cards",
         disabled: false,
         ghostClass: "ghost",
-        delay: 3,
+        // delay: 3,
         touchStartThreshold:1
       }
     },
@@ -211,12 +211,6 @@ export default {
         // delay: 3
       }
     },
-    checkList() {
-      if (!this.list.cards) {
-        this.list.cards = [{ _id: "fun" }];
-      }
-      return this.list.cards;
-    }
   },
 
   created() {

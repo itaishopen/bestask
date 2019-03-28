@@ -16,7 +16,6 @@
           </button>
         </div>
       </form>
-    <!-- <div> -->
       <!-- <b-navbar toggleable type="light" variant="light" class="navbar">
         <b-navbar-toggle target="nav_text_collapse" />
         <b-navbar-brand>Menu</b-navbar-brand>
@@ -32,11 +31,10 @@
               <activities v-if="showAtivities" :board="board"></activities>
             </b-nav-text>
           </b-navbar-nav>
-        </b-collapse> -->
-      </b-navbar>
+        </b-collapse> 
+      </b-navbar>-->
       </header>
     <main>
-    <!-- </div> -->
     <ul class="board-list-ul">
       <draggable
         v-model="lists"

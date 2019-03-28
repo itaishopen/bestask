@@ -112,14 +112,14 @@ function getUserById({ userId = 'guest' }) {
                     },
                 ]).toArray())
     } else {
-        return {
+        return [{
             firstName: null,
             lastName: null,
             userName: 'guest'+ makeId(3),
             password: null,
             email: null,
             prefs: { userPic: null, bgColor: '#ffffff', color: '#000000' }
-        }
+        }]
     }
 
 }

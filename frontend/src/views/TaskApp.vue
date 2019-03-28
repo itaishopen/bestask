@@ -50,7 +50,14 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch({ type: 'updateUser', userId: 'guest' })
+    //todo chek in sesion
+    let user = {_id: 'guest'}
+    if (this.$store.getters.isUserLoggedIn){
+      user = this.$store.getters.loggedInUser
+      console.log(user);
+      
+    }
+    this.$store.dispatch({ type: 'updateUser', userId: user._id })
   },
   computed: {
     boards() {

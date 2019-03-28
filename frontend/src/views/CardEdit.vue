@@ -1,216 +1,238 @@
 <template>
-  <div id="modal-container" class="one" :class="modalOpen ? '': 'out'">
+  <div id="modal-container" class="card-edit one" :class="modalOpen ? '': 'out'">
     <div class="modal-background">
-      <div class="card-edit">
-        <b-modal
-          v-if="card"
-          v-model="showModal"
-          id="modal1"
-          ref="myModalRef"
-          @hide="modalClosed"
-          title="Edit Card"
-          no-close-on-esc
-          no-close-on-backdrop
-          hide-header-close
-        >
-          <section class="nav-modal">
-            <div class="containerLabel" v-b-modal.modal4>
-              <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
-              <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
-              <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
-              <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
-              <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
-              <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
-            </div>
-            <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
-              <div v-for="user in card.users.slice(0, 2)" :key="user._id">
-                <div class="container-name-member" v-if="checkMember(user._id)">
-                  <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
-                </div>
-              </div>
-              <div class="logo-user-name" v-if="checkSumMember()">
-                <i class="fas fa-plus"></i>
+      <b-modal
+        v-if="card"
+        v-model="showModal"
+        id="modal1"
+        ref="myModalRef"
+        @hide="modalClosed"
+        title="Edit Card"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+      >
+        <section class="nav-modal">
+          <div class="containerLabel" v-b-modal.modal4>
+            <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
+            <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
+            <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
+            <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
+            <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
+            <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
+          </div>
+          <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
+            <div v-for="user in card.users.slice(0, 2)" :key="user._id">
+              <div class="container-name-member" v-if="checkMember(user._id)">
+                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
               </div>
             </div>
-          </section>
-          <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
-          <div class="container flex">
-            <main class="content flex">
-              <div class="cost flex">
-                <label class="mt-3" for="time">Cost:</label>
-                <b-form-select
-                  size="sm"
-                  class="m-1"
-                  :value="card.et"
-                  id="time"
-                  v-model="card.et"
-                  :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
-                >
-                  <option slot="first" :value="null">ET</option>
-                </b-form-select>
-                <b-form-select
-                  size="sm"
-                  class="m-1"
-                  :value="card.at"
-                  id="time"
-                  v-model="card.at"
-                  :options="{ '0.5':'0.5','1': '1', '2': '2','3':'3','5':'5','8':'8','13':'13'}"
-                >
-                  <option slot="first" :value="null">AT</option>
-                </b-form-select>
-              </div>
-              <div class="time flex">
-                <label class="mt-3" for="date">Date:</label>
-                <input
-                  type="date"
-                  class="custom-select custom-select-sm m-1"
-                  name="bday"
-                  size="sm"
-                  v-model="card.dueDate"
-                >
-              </div>
-              <b-form-textarea
+            <div class="logo-user-name" v-if="checkSumMember()">
+              <i class="fas fa-plus"></i>
+            </div>
+          </div>
+        </section>
+        <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
+        <div class="container flex">
+          <main class="content flex">
+            <div class="cost flex">
+              <label class="mt-3" for="time">Cost:</label>
+              <!-- <b-form-select
+                size="sm"
                 class="m-1"
                 id="textarea"
                 v-model="card.description"
                 placeholder="Description"
                 rows="6"
                 max-rows="10"
-              />
+              />-->
+              <b-form-select
+                size="sm"
+                class="m-1"
+                :value="card.et"
+                id="time"
+                v-model="card.et"
+                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '2 Hours': '2 Hours','3 Hours':'3 Hours','5 Hours':'5 Hours','8 Hours':'8 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
+              >
+                <option slot="first" :value="null">ET</option>
+              </b-form-select>
+              <b-form-select
+                size="sm"
+                class="m-1"
+                :value="card.at"
+                id="time"
+                v-model="card.at"
+                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '2 Hours': '2 Hours','3 Hours':'3 Hours','5 Hours':'5 Hours','8 Hours':'8 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
+              >
+                <option slot="first" :value="null">AT</option>
+              </b-form-select>
+            </div>
 
-              <div v-for="checklist in card.checklists" :key="checklist.id">
-                TITLE: {{checklist.title}}
-                ID: {{checklist.id}}
-                <div v-for="toDo in checklist.toDos" :key="toDo.id">
-                  <div v-if="editStatus" class="flex">
-                    <i
-                      v-if="!toDo.done"
-                      @click="checkDone(checklist.id , toDo.id)"
-                      class="far fa-square"
-                    ></i>
-                    <i
-                      v-if="toDo.done"
-                      @click="checkDone(checklist.id , toDo.id)"
-                      class="fa fa-check-square"
-                    ></i>
-                    <div @click.prevent="closeEditor">{{toDo.name}}</div>
-                  </div>
-                  <div class="flex" v-if="!editStatus">
-                    <b-input name="add-todo" placeholder="Add todo" size="sm" v-model="toDo.name"/>
-                    <b-button
-                      class="m-1 float-right"
-                      variant="primary"
-                      size="sm"
-                      @click="addToDo(todo.id)"
-                    >Add</b-button>
-                    <button @click="closeEditor">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
+            
+
+            <div class="time flex">
+              <label class="mt-3" for="date">Date:</label>
+              <input
+                type="date"
+                class="custom-select custom-select-sm m-1"
+                name="bday"
+                size="sm"
+                v-model="card.dueDate"
+              >
+            </div>
+            <b-form-textarea
+              class="m-1"
+              id="textarea"
+              v-model="card.description"
+              placeholder="Description"
+              rows="6"
+              max-rows="10"
+            />
+
+           <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
+              <div class="title-Todos">TITLE: {{checklist.title}}</div>
+              <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
+                <div class="edit-Todo">
+                  <i
+                    v-if="!toDo.done"
+                    @click="checkDone(checklist.id , toDo.id)"
+                    class="far fa-square"
+                  ></i>
+                  <i
+                    v-if="toDo.done"
+                    @click="checkDone(checklist.id , toDo.id)"
+                    class="fa fa-check-square"
+                  ></i>
+                  <div
+                    v-show="!toDo.editStatus"
+                    @click.prevent="openEditor(checklist.id , toDo.id)"
+                  >{{toDo.name}}</div>
+                </div>
+                <div class="flex editTodo" v-show="toDo.editStatus">
+                  <b-input
+                    name="add-todo"
+                    placeholder="Add todo"
+                    size="sm"
+                    v-model="titleToDo"
+                    autofocus
+                  />
+                  <button
+                    class="new-todo-options"
+                    @click.prevent="addToDo(checklist.id , toDo.id)"
+                  >Add</button>
+                  <button
+                    class="x-todo-options"
+                    @click.prevent="closeEditor(checklist.id , toDo.id)"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
                 </div>
               </div>
+            </div>
 
-              <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
-              <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
-              <b-form-input
-                v-for="comment in card.comments"
-                :key="comment"
-                class="m-1"
-                size="sm"
-                :value="comment"
-                readonly
-              />
-            </main>
-            <div class="nav flex">
-              <label class="m-1">Add to Card</label>
-              <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
-              <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
-              <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
+            <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
+            <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
+            <b-form-input
+              v-for="comment in card.comments"
+              :key="comment"
+              class="m-1"
+              size="sm"
+              :value="comment"
+              readonly
+            />
+          </main>
+          <div class="nav flex">
+            <label class="m-1">Add to Card</label>
+            <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
+            <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
+            <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
-              <label class="m-1">Actions</label>
-              <!-- <b-button class='m-1 btn-block' v-on:click='moveCard'>Move</b-button> -->
-              <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
-                <b-dropdown-item
-                  v-for="list in lists"
-                  :key="list._id"
-                  :value="list._id"
-                  @click="card.listId = list._id"
-                >{{ list.title }}</b-dropdown-item>
-              </b-dropdown>
+            <label class="m-1">Actions</label>
+            <!-- <b-button class='m-1 btn-block' v-on:click='moveCard'>Move</b-button> -->
+            <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
+              <b-dropdown-item
+                v-for="list in lists"
+                :key="list._id"
+                :value="list._id"
+                @click="card.listId = list._id"
+              >{{ list.title }}</b-dropdown-item>
+            </b-dropdown>
 
-              <b-button class="m-1 btn-block" size="sm">Copy</b-button>
-              <b-button class="m-1 btn-block" size="sm" v-on:click="saveCard(!card.archived)">{{isArchived}}</b-button>
-              <!-- <b-form-checkbox
+            <b-button class="m-1 btn-block" size="sm">Copy</b-button>
+            <b-button
+              class="m-1 btn-block"
+              size="sm"
+              v-on:click="saveCard(!card.archived)"
+            >{{isArchived}}</b-button>
+            <!-- <b-form-checkbox
                     button
                     v-model='card.archived'
                     name='check-button'
-              >Archive {{ card.archived }}</b-form-checkbox>-->
-              <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
-            </div>
+            >Archive {{ card.archived }}</b-form-checkbox>-->
+            <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
           </div>
-          <div slot="modal-footer" class="w-100">
-            <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
-            <b-button class="m-1 float-right" @click="modalClosed">Close</b-button>
+        </div>
+        <div slot="modal-footer" class="w-100">
+          <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
+          <b-button class="m-1 float-right" @click="modalClosed">Close</b-button>
+        </div>
+        <!-- Modal Labels Component -->
+        <b-modal id="modal4" title="Labels">
+          <div class="Label Red" @click="changeLabel('red')">
+            Bug
+            <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
           </div>
-          <!-- Modal Labels Component -->
-          <b-modal id="modal4" title="Labels">
-            <div class="Label Red" @click="changeLabel('red')">
-              Bug
-              <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
-            </div>
-            <div class="Label Blue" @click="changeLabel('blue')">
-              Duplicate
-              <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
-            </div>
-            <div class="Label Green" @click="changeLabel('green')">
-              Enhancement
-              <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
-            </div>
-            <div class="Label Yellow" @click="changeLabel('yellow')">
-              Invalid
-              <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
-            </div>
-            <div class="Label Purple" @click="changeLabel('purple')">
-              Question
-              <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
-            </div>
-            <div class="Label Orange" @click="changeLabel('orange')">
-              Wontfix
-              <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
-            </div>
-          </b-modal>
+          <div class="Label Blue" @click="changeLabel('blue')">
+            Duplicate
+            <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
+          </div>
+          <div class="Label Green" @click="changeLabel('green')">
+            Enhancement
+            <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
+          </div>
+          <div class="Label Yellow" @click="changeLabel('yellow')">
+            Invalid
+            <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
+          </div>
+          <div class="Label Purple" @click="changeLabel('purple')">
+            Question
+            <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
+          </div>
+          <div class="Label Orange" @click="changeLabel('orange')">
+            Wontfix
+            <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
+          </div>
+        </b-modal>
 
-          <!-- Modal Members Component -->
-          <b-modal id="modal6" title="Members" v-if="board.users">
-            <div v-for="user in board.users" :key="user._id">
-              <div class="container-member" @click="memberToCard(user._id , user)">
-                <div class="container-name-member">
-                  <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
-                  <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
-                </div>
-                <div>
-                  <i class="fa fa-check" v-if="checkMember(user._id)"></i>
-                </div>
+        <!-- Modal Members Component -->
+        <b-modal id="modal6" title="Members" v-if="board.users">
+          <div v-for="user in board.users" :key="user._id">
+            <div class="container-member" @click="memberToCard(user._id , user)">
+              <div class="container-name-member">
+                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+                <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
+              </div>
+              <div>
+                <i class="fa fa-check" v-if="checkMember(user._id)"></i>
               </div>
             </div>
-          </b-modal>
-
-          <!-- Modal Checklist Component -->
-          <b-modal id="modal5" title="Checklist" hide-footer>
-            <form class="add-checklist" @submit.prevent="addCheklist()">
-              Add Title
-              <b-form-input type="text" v-model="titleCheckList"/>
-              <b-button class="mt-3 float-right" type="submit">create</b-button>
-            </form>
-            <pre>{{card}}</pre>
-          </b-modal>
-          <!-- Share Modal  -->
-          <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-            <b-form-input class="m-1" v-model="share" readonly/>
-          </b-modal>
+          </div>
         </b-modal>
-        <!-- </section> -->
-      </div>
+
+        <!-- Modal Checklist Component -->
+        <b-modal id="modal5" title="Checklist" hide-footer>
+          <form class="add-checklist" @submit.prevent="addCheklist()">
+            Add Title
+            <b-form-input type="text" v-model="titleCheckList" autofocus/>
+            <b-button class="mt-3 float-right" type="submit">create</b-button>
+          </form>
+        </b-modal>
+        <!-- Share Modal  -->
+        <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
+          <b-form-input class="m-1" v-model="share" readonly/>
+        </b-modal>
+      </b-modal>
+      <!-- </section> -->
     </div>
   </div>
 </template>
@@ -222,8 +244,9 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-import ActivityService from '../services/ActivityService'
-import SocketService from '../services/SocketService'
+import ActivityService from "../services/ActivityService";
+import SocketService from "../services/SocketService";
+import CardService from "../services/CardService";
 import { TweenMax, Power4 } from "gsap";
 
 export default {
@@ -232,17 +255,19 @@ export default {
     return {
       comment: "",
       titleCheckList: "",
+      titleToDo: "",
       openModalMembers: false,
       SumMember: false,
       editStatus: false,
-      modalOpen: false
+      modalOpen: false,
+      editorOpen: false
     };
   },
   created() {
     var cardId = this.$route.params.cardId;
     this.$store.dispatch({ type: "loadCard", cardId }).then(card => {
       this.card = card;
-      this.modalOpen = true
+      this.modalOpen = true;
       console.log(this.card, "created");
     });
   },
@@ -283,8 +308,8 @@ export default {
     share() {
       return window.location.href;
     },
-    isArchived(){
-      return this.card.archived?'Restore':'Archive';
+    isArchived() {
+      return this.card.archived ? "Restore" : "Archive";
     }
   },
   methods: {
@@ -310,15 +335,41 @@ export default {
         return true;
       }
     },
-    closeEditor() {
-      this.editStatus = !this.editStatus;
+    closeEditor(checklistId, toDoId) {
+      this.editorOpen = false;
+      this.card.checklists.forEach(checklist => {
+        if (checklist.id === checklistId) {
+          checklist.toDos.forEach(toDo => {
+            if (toDoId === toDo.id) {
+              toDo.editStatus = false;
+              if (toDo.name === "") {
+                console.log(checklist.length);
+                checklist.toDos.splice(checklist.toDos.length - 1, 1);
+              }
+            }
+          });
+        }
+      });
+    },
+    openEditor(checklistId, toDoId) {
+      this.editorOpen = true;
+      this.card.checklists.forEach(checklist => {
+        if (checklist.id === checklistId) {
+          checklist.toDos.forEach(toDo => {
+            toDo.editStatus = false;
+            if (toDoId === toDo.id) {
+              this.titleToDo = toDo.name;
+              toDo.editStatus = true;
+            }
+          });
+        }
+      });
     },
     checkDone(checklistId, toDoId) {
-      console.log(this.card.checklists, "checkDone");
       this.card.checklists.forEach(checklist => {
         if (checklist.id === checklistId) {
           console.log(checklist, "checkDone");
-          checklist.todos.forEach(toDo => {
+          checklist.toDos.forEach(toDo => {
             if (toDoId === toDo.id) {
               toDo.done = !toDo.done;
             }
@@ -327,19 +378,41 @@ export default {
       });
     },
     addCheklist() {
+      this.editorOpen = true;
       var newChecklist = CardService.getEmptyChecklist();
       newChecklist.title = this.titleCheckList;
       var newToDo = CardService.getEmptyToDo();
       newChecklist.toDos.push(newToDo);
       this.card.checklists.push(newChecklist);
     },
-    addToDo() {
+    addToDo(checklistId, toDoId) {
+      var newTodo = false;
       this.card.checklists.forEach(checklist => {
-        if (checklist.title === this.checklist.title) {
-          checklist.toDos.push(this.toDo);
-          this.toDo = { name: "", done: false };
+        if (!toDoId && checklistId === checklist.id) {
+          console.log(checklist.id, checklistId);
+          this.editorOpen = true;
+          var newToDo = CardService.getEmptyToDo();
+          checklist.toDos.push(newToDo);
+          this.titleToDo = "";
+        }
+        if (checklist.id === checklistId) {
+          checklist.toDos.forEach(toDo => {
+            if (toDoId === toDo.id) {
+              if (toDo.name === "") {
+                newTodo = true;
+              }
+              toDo.name = this.titleToDo;
+              toDo.editStatus = false;
+            }
+          });
+          if (newTodo) {
+            var newToDo = CardService.getEmptyToDo();
+            checklist.toDos.push(newToDo);
+            this.titleToDo = "";
+          }
         }
       });
+      this.editStatus = !this.editStatus;
     },
     addMember(member) {
       this.card.members.push(member);
@@ -366,8 +439,8 @@ export default {
     },
     saveCard(isArchive) {
       this.card.archived = isArchive;
-      console.log('Saving card..', this.card)
-      this.modalOpen = false
+      console.log("Saving card..", this.card);
+      this.modalOpen = false;
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
@@ -378,13 +451,13 @@ export default {
           activity.listId = card.listId;
           activity.cardId = card._id;
           activity.createdAt = moment(Date.now()).format(
-            'MMMM Do YYYY, h:mm:ss a'
-          )
-          this.$store.dispatch({ type: 'saveActivity', activity })
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
           SocketService.send(this.board._id);
           setTimeout(() => {
-            this.$router.go(-1)
-          }, 1500)
+            this.$router.go(-1);
+          }, 1500);
         })
         .catch(err => {
           console.log(err);
@@ -402,17 +475,17 @@ export default {
       }
     },
     modalClosed() {
-      this.modalOpen = false
+      this.modalOpen = false;
       setTimeout(() => {
-        this.$router.go(-1)
-      }, 1500)
+        this.$router.go(-1);
+      }, 1500);
     },
     moveCard() {
       this.$store.getters.getLists.map(list => console.log(list.title));
     }
   },
 
-  components: {},
+  components: {}
 };
 </script>
 
@@ -559,6 +632,49 @@ export default {
   margin-left: 8px;
 }
 
+.edit-checklist {
+  display: flex;
+  flex-direction: column;
+}
+.edit-Todos {
+  display: flex;
+}
+.edit-Todo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title-Todos {
+  margin: 10px 0;
+}
+.fa-square,
+.fa-check-square {
+  font-size: 25px;
+  margin-right: 8px;
+}
+.new-todo-options {
+  max-width: 109px;
+  font-size: 17px;
+  font-weight: bold;
+  background-color: rgb(51, 236, 66);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 18px;
+  margin: 0 3px;
+}
+.new-todo {
+  margin: 8px 0;
+}
+
+.x-todo-options {
+  background-color: rgb(236, 51, 51);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 18px;
+  margin: 0 3px;
+}
 #modal-container {
   position: fixed;
   display: table;

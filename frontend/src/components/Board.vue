@@ -230,7 +230,7 @@ export default {
   font-size: 20px;
 }
 .board-list-li {
-  min-height: 80vh;
+  min-height: 20vh;
   max-height: 80vh;
   min-width: 280px;
   /* max-height: 100vh; */

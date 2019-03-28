@@ -9,7 +9,14 @@
             </li>
           </ul>
         </div>
-        <div class="title-card-text">{{card.title}}</div>
+        <div class="card-middle">
+          <div class="title-card-text">{{card.title}}</div>
+          <div
+            class="due-date"
+            v-if="card.dueDate"
+            :style="{ background: checkDoDate() }"
+          >{{changeDate}}</div>
+        </div>
         <div class="info-bar">
           <div class="info-bar-left">
             <div class="info-bar-marks" title="cardDescr()" v-if="card.description">
@@ -24,8 +31,8 @@
             </div>
           </div>
           <div class="info-bar-center">
-            <div class="et far fa-clock" v-if="card.et && !card.at">Et: {{card.et}}</div>
-            <div class="at far fa-clock" v-if="card.at">At: {{card.at}}</div>
+            <div class="et far fa-clock fa-xs" v-if="card.et && !card.at">ET: {{card.et}}</div>
+            <div class="at far fa-clock fa-xs" v-if="card.at">AT: {{card.at}}</div>
           </div>
           <div class="info-bar-right">
             <section class="container-member">
@@ -51,10 +58,11 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() {},
+  created() { },
   data() {
     return {};
   },
@@ -76,6 +84,9 @@ export default {
         }
       }
       return usertodisplay;
+    },
+    changeDate() {
+      return moment(this.card.dueDate, 'YYYY/MM/DD').format('DD/MM')
     }
   },
   methods: {
@@ -86,6 +97,15 @@ export default {
       if (this.card.users.length > 2) {
         return true;
       }
+    },
+    checkDoDate() {
+      let dateAsMoment = moment(this.card.dueDate, 'YYYY/MM/DD')
+      let today = moment()
+      if (dateAsMoment.diff(today, 'days') <= -1) return '#544e44'
+      if (dateAsMoment.diff(today, 'days') <= 1) return '#e52e2d'
+      if (dateAsMoment.diff(today, 'days') <= 3) return '#eea41c'
+      return '#3b8006'
+
     }
   },
   components: {}
@@ -138,13 +158,31 @@ a:hover {
 .title-card:hover {
   background-color: rgb(250, 250, 250);
 }
-.title-card-text {
-  color: black;
-  font-size: 18px;
+.card-middle {
   display: flex;
-  justify-self: center;
-  align-self: center;
+  width: 100%;
+  & .title-card-text {
+    color: black;
+    font-size: 18px;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    width: 190px;
+    justify-content: flex-start;
+  }
+  & .due-date {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    padding: 5px 10px 5px 10px;
+    border-radius: 25px;
+  }
 }
+
 .card-preview {
   display: flex;
   flex-direction: column;
@@ -157,6 +195,7 @@ a:hover {
   flex-direction: row;
   justify-content: flex-start;
 }
+
 .info-bar {
   color: #525252;
   width: 100%;

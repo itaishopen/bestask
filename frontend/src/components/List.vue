@@ -67,12 +67,7 @@
       </button>
       <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
         <div>
-          <textarea
-            class="text-area"
-            v-model="card.title"
-            placeholder="Enter title here..."
-            autofocus
-          ></textarea>
+          <textarea class="text-area" v-model="card.title" placeholder="Enter title here..."></textarea>
         </div>
         <div class="container-add-card-btns">
           <button class="list-new-card-options" type="submit">Add card</button>
@@ -110,7 +105,6 @@ export default {
   },
   methods: {
     funToMove(env) {
-      console.log(env)
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
       var cardId = env.item.className.split(" ")[1];
@@ -151,6 +145,7 @@ export default {
       }
     },
     newCard() {
+      this.card = CardService.getEmptyCard()
       console.log("new card", this.card);
       console.log((this.card.order = this.list.cards.length + 1));
       this.isAddClick = !this.isAddClick;
@@ -293,6 +288,7 @@ export default {
     overflow-y: scroll;
   }
   .footer {
+    max-height: 200px;
     .list-add-card {
       padding: 10px 0;
       width: 270px;
@@ -319,13 +315,14 @@ export default {
       margin: 3px;
       .text-area {
         min-width: 270px;
-        height: 80px;
+        height: 60px;
         border: none;
         resize: none;
         border: 1px solid rgb(230, 230, 230);
         border-radius: 10px;
         padding: 5px;
         margin-top: 10px;
+        line-height: 1.2em;
         box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
         border-bottom: 0.9px solid rgb(167, 165, 165);
       }

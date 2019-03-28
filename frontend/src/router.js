@@ -52,7 +52,7 @@ export default new Router({
       children: [
         { 
           path: '/card/edit/:cardId', 
-          name: "Card Edit" , 
+          name: "Archive Card Edit" , 
           component: {
             page: BoardArchive, 
             card: EditCard

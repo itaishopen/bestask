@@ -15,7 +15,10 @@
       </router-link>
       <div class="login">
         <router-link to="/login/">
-          <span class="user-logedin" v-if="user && user._id">{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</span>
+          <span
+            class="user-logedin"
+            v-if="user && user._id"
+          >{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</span>
           <i v-else class="fas fa-sign-in-alt nav-btn"></i>
         </router-link>
       </div>
@@ -29,24 +32,22 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return { 
-      userConnect: false,
+    return {
+      userConnect: false
     };
   },
-  created() {
-
-  },
+  created() {},
   computed: {
     user: {
       get() {
         if (this.$store.getters.isUserLoggedIn) {
           this.userConnect = true;
-          return this.$store.getters.loggedInUser
+          return this.$store.getters.loggedInUser;
         }
       },
       set(userId) {
         console.log(this.user);
-        console.log(userId, 'userId');
+        console.log(userId, "userId");
         this.$store.commit("setUser", { card: userId });
       }
     }
@@ -87,6 +88,7 @@ export default {
     padding: 5px;
     margin-right: 3px;
     min-width: 37px;
+    transition: 0.2s;
     background-color: #0000007a;
     &:hover {
       background-color: #050505c5;
@@ -106,11 +108,14 @@ export default {
   color: #ffffff;
   width: 37px;
   height: 37px;
+  transition: 0.2s;
   &:hover {
     background-color: #050505c5;
   }
-  &.user-logedin{
+  .user-logedin {
+    margin-bottom: 4px;
     color: #ffffff;
+    font-size: 20px;
   }
 }
 </style>

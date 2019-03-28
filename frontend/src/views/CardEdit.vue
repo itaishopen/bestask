@@ -67,7 +67,6 @@
               </b-form-select>
             </div>
 
-            
 
             <div class="time flex">
               <label class="mt-3" for="date">Date:</label>
@@ -127,6 +126,12 @@
                   </button>
                 </div>
               </div>
+                <button
+                  class="new-todo-options new-todo"
+                  v-if="!editorOpen"
+                  size="sm"
+                  @click="addToDo(checklist.id)"
+                >Add item</button>
             </div>
 
             <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
@@ -453,9 +458,9 @@ export default {
           );
           this.$store.dispatch({ type: "saveActivity", activity });
           SocketService.send(this.board._id);
-          setTimeout(() => {
+          // setTimeout(() => {
             this.$router.go(-1);
-          }, 1500);
+          // }, 1500);
         })
         .catch(err => {
           console.log(err);
@@ -474,9 +479,9 @@ export default {
     },
     modalClosed() {
       this.modalOpen = false;
-      setTimeout(() => {
+      // setTimeout(() => {
         this.$router.go(-1);
-      }, 1500);
+      // }, 1500);
     },
     moveCard() {
       this.$store.getters.getLists.map(list => console.log(list.title));
@@ -631,6 +636,7 @@ export default {
 }
 
 .edit-checklist {
+  color: black;
   display: flex;
   flex-direction: column;
 }

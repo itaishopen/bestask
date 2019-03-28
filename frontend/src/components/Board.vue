@@ -1,21 +1,40 @@
 <template>
   <section class="board">
-    <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
-    <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
-      <input
-        class="input-title-board"
-        ref="title"
-        v-model="board.title"
-        placeholder="Enter title here..."
-        autofocus
-      >
-      <button class="btn-title-board" type="submit">
-        <i class="fa fa-plus"></i>
-      </button>
-    </form>
-    <router-link :to="'/board/' + board._id + '/archive'">
-      <div>Go to archive</div>
-    </router-link>
+    <header class="nav-board">
+      <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
+      <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
+        <div class="title-input-container">
+          <input
+            class="input-title-board"
+            ref="title"
+            v-model="board.title"
+            placeholder="Enter title here..."
+            autofocus
+          >
+          <button class="btn-title-board" type="submit">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </form>
+      <!-- <b-navbar toggleable type="light" variant="light" class="navbar">
+        <b-navbar-toggle target="nav_text_collapse" />
+        <b-navbar-brand>Menu</b-navbar-brand>
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-navbar-nav class="navbar-text">
+            <b-nav-text>
+              <router-link :to="'/board/' + board._id + '/archive'">
+                <b-button variant="link">Archived items</b-button>
+              </router-link>
+            </b-nav-text>
+            <b-nav-text>
+              <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
+              <activities v-if="showAtivities" :board="board"></activities>
+            </b-nav-text>
+          </b-navbar-nav>
+        </b-collapse> 
+      </b-navbar>-->
+      </header>
+    <main>
     <ul class="board-list-ul">
       <draggable
         v-model="lists"
@@ -51,22 +70,25 @@
               <i class="fas fa-times"></i>
             </button>
           </div>
-        </form>
+        </form>    
       </div>
-    </ul>
-    <card-edit v-if="showModal" ref="card">
-      <router-view name="Card Edit"/>
-    </card-edit>
+      </ul>
+      <card-edit v-if="showModal" ref="card">
+        <router-view name="Card Edit"/>
+      </card-edit>
+    </main>
   </section>
 </template>
 
 <script>
 import CardService from "../services/CardService.js";
-import CardEdit from '../views/CardEdit.vue'
+import CardEdit from "../views/CardEdit.vue";
 import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
+import Activities from './Activities.vue';
+
 import draggable from "vuedraggable";
 import moment from "moment";
 
@@ -77,7 +99,8 @@ export default {
     return {
       isAddListClick: false,
       isChangeTitle: false,
-      showModal: this.$route.meta.showModal
+      showModal: this.$route.meta.showModal,
+      showAtivities: false
     };
   },
   created() {
@@ -88,7 +111,8 @@ export default {
   components: {
     list,
     draggable,
-    CardEdit
+    CardEdit,
+    Activities
   },
 
   computed: {
@@ -151,14 +175,17 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
+      console.log("this.board", this.board);
       // console.log( this.isChangeTitle , this.board , 'title');
       this.isChangeTitle = !this.isChangeTitle;
     },
     changeTitle() {
       console.log("this.board", this.board);
-      this.$store.dispatch({ type: "saveBoard", board: this.board }).then(() => SocketService.send(this.board._id));
-
+      this.$store
+        .dispatch({ type: "saveBoard", board: this.board })
+        .then(() => SocketService.send(this.board._id));
       this.isChangeTitle = !this.isChangeTitle;
+      console.log("this.isChangeTitle after change", this.isChangeTitle);
     },
     moveList(evt) {
       // console.log(evt);
@@ -172,6 +199,9 @@ export default {
         .then(() => {
           SocketService.send(this.board._id);
         });
+    },
+    toggleActivity(){
+      this.showAtivities = !this.showAtivities;
     }
   },
 
@@ -185,7 +215,19 @@ export default {
 
 <style lang='scss' scoped>
 .board {
-  max-height: calc(100vh - 75px);
+  display: flex;
+  flex-direction: column;
+}
+.board-list-ul {
+  margin-top: 50px;
+}
+.nav-board {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
 }
 .board-title {
   width: 200px;
@@ -194,6 +236,23 @@ export default {
   padding: 15px;
   font-family: Lato_bold;
   font-size: 20px;
+}
+.title-input-container {
+  display: flex;
+  flex-direction: row;
+}
+.input-title-board {
+  font-size: 18px;
+  font-weight: bold;
+  height: 32px;
+  width: 300px;
+  border: none;
+  background: rgba(255, 255, 255, 0.911);
+  padding-left: 10px;
+}
+.btn-title-board {
+  background: rgba(255, 255, 255, 0.911);
+  border: none;
 }
 .board-list-li {
   min-height: 20vh;
@@ -292,19 +351,9 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
 }
-.input-title-board {
-  font-size: 18px;
-  font-weight: bold;
-  height: 32px;
-  width: 300px;
-  border: none;
-  background: rgba(255, 255, 255, 0.911);
-  padding-left: 10px;
-}
-.btn-title-board {
-  background: rgba(255, 255, 255, 0.911);
-  border: none;
-}
+.fa-times , .fa-plus  {
+      color: rgb(255, 255, 255);
+    }
 
 .draggable {
   display: flex;
@@ -314,5 +363,16 @@ export default {
 .ghost {
   opacity: 0.3;
   background: #c8ebfb;
+}
+
+.navbar{
+  width: 350px;
+  position: absolute;
+  z-index:1;
+}
+.navbar-text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>

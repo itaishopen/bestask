@@ -19,11 +19,13 @@ export default {
     },
     actions: {
         updateUser(context, { userId }) {
+            console.log(userId);
+            
             return UserService.getUserAndBoard(userId)
                 .then(({user, boards}) => {
                     console.log(boards , user);
                     
-                    context.commit({ type: 'setUser', user })
+                    context.commit({ type: 'setUser', user: user[0] })
                     context.commit({ type: 'setBoards', boards })
                 })
         },
@@ -31,7 +33,7 @@ export default {
             return UserService.login(user)
                 .then(user => {
                     if (user) {
-                        context.commit({ type: 'setUser', user })
+                        context.commit({ type: 'setUser', user: user[0] })
                     }
                     return user
                 })
@@ -39,8 +41,10 @@ export default {
         signup(context, { user }) {
             return UserService.signup(user)
                 .then(user => {
+                    console.log(user[0]);
+                    
                     if (user) {
-                        context.commit({ type: 'setUser', user })
+                        context.commit({ type: 'setUser', user: user[0] })
                     }
                     return user
                 })

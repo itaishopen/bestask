@@ -29,9 +29,9 @@ export default {
 
 <style lang='scss' scoped>
 .Collection_title {
-    font-family: 'Open Sans', sans-serif;
+    font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 21px;
     color: #FFFFFF;
     margin: 0;
     padding: 0; 

@@ -4,26 +4,52 @@
       <img src="../../img/bestask-logo-black.png" class="logo-nav" alt>
     </div>
     <div class="navigation">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>|
-      <router-link to="/board">Bestask</router-link>|
-      <router-link to="/login/">login</router-link>|
-      <router-link to="/sign-up/">creat new acount</router-link>
+      <router-link class="nav-btns" to="/">
+        <i class="fas fa-home nav-btn"></i>
+      </router-link>
+      <router-link class="nav-btns" to="/about">
+        <i class="fas fa-info nav-btn"></i>
+      </router-link>
+      <router-link class="nav-btns" to="/board">
+        <i class="fab fa-flipboard nav-btn"></i>
+      </router-link>
+    </div>
+    <div class="login">
+      <router-link to="/login/">
+        <i class="fas fa-sign-in-alt nav-btn"></i>
+      </router-link>
     </div>
   </section>
 </template>
 
 <script>
+import UserService from "../services/UserService.js";
+
 export default {
-  name: 'NavigationBar',
+  name: "NavigationBar",
   data() {
-    return {}
+    return { };
   },
-  created() { },
-  computed: {},
+  created() {
+   
+  },
+  computed: {
+    user: {
+      get() {
+        if (this.$store.getters.isUserLoggedIn) {
+          return this.$store.getters.loggedInUser
+        }
+      },
+      set(userId) {
+      console.log(this.user);
+        console.log(userId , 'userId');
+        this.$store.commit("setUser", { card: userId });
+      }
+    }
+  },
   methods: {},
   components: {}
-}
+};
 </script>
 
 <style lang='scss' scoped>
@@ -41,7 +67,7 @@ export default {
   }
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #ffffff;
     &:hover {
       color: #348a62;
     }
@@ -51,5 +77,34 @@ export default {
   margin-left: 40vw;
   display: flex;
   align-items: center;
+  .nav-btns {
+    font-size: 22px;
+    border-radius: 4px;
+    padding: 5px;
+    margin-right: 3px;
+    min-width: 37px;
+    background-color: #0000007a;
+    &:hover {
+      background-color: #050505c5;
+    }
+  }
+}
+.nav-btn {
+  color: white;
+}
+.login {
+  font-size: 22px;
+
+  font-family: Raleway-Regular, "Open Sans", sans-serif;
+  font-weight: bold;
+  line-height: 37px;
+  border-radius: 50%;
+  background-color: #0000007a;
+  color: #ffffff;
+  width: 37px;
+  height: 37px;
+  &:hover {
+    background-color: #050505c5;
+  }
 }
 </style>

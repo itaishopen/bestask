@@ -5,9 +5,13 @@
 
 * {
     box-sizing: border-box;
-    a:link {
+    color: black;
+    a{
+        color: black;
+     &:link {
         text-decoration: none;
-      }
+      }   
+    }
 }
 
 html{

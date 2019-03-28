@@ -41,6 +41,7 @@ function addBoard(board) {
     delete board.users
     board.members = board.members.map(user => {
         if (user !== 'guest') return new ObjectId(user);
+        return user
     })
     return mongoService.connect()
         .then(db => {
@@ -93,6 +94,7 @@ function updateBoard(board) {
     delete board.users
     board.members = board.members.map(user => {
         if (user !== 'guest') return new ObjectId(user);
+        return user
     })
     return mongoService.connect()
         .then(db => {

@@ -15,7 +15,8 @@
       </router-link>
       <div class="login">
         <router-link to="/login/">
-          <i class="fas fa-sign-in-alt nav-btn"></i>
+          <span class="user-logedin" v-if="user && user._id">{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</span>
+          <i v-else class="fas fa-sign-in-alt nav-btn"></i>
         </router-link>
       </div>
     </div>
@@ -28,7 +29,9 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return {};
+    return { 
+      userConnect: false,
+    };
   },
   created() {
 
@@ -37,6 +40,7 @@ export default {
     user: {
       get() {
         if (this.$store.getters.isUserLoggedIn) {
+          this.userConnect = true;
           return this.$store.getters.loggedInUser
         }
       },
@@ -94,7 +98,6 @@ export default {
 }
 .login {
   font-size: 22px;
-
   font-family: Raleway-Regular, "Open Sans", sans-serif;
   font-weight: bold;
   line-height: 37px;
@@ -105,6 +108,9 @@ export default {
   height: 37px;
   &:hover {
     background-color: #050505c5;
+  }
+  &.user-logedin{
+    color: #ffffff;
   }
 }
 </style>

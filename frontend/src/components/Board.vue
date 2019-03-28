@@ -375,4 +375,9 @@ export default {
   flex-direction: column;
   align-items: flex-start;
 }
+// .container-add-list-btns{
+//   .fa-plus   {
+//       color: rgb(255, 255, 255);
+//     }
+// }
 </style>

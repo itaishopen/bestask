@@ -39,6 +39,8 @@ export default {
         signup(context, { user }) {
             return UserService.signup(user)
                 .then(user => {
+                    console.log(user);
+                    
                     if (user) {
                         context.commit({ type: 'setUser', user })
                     }

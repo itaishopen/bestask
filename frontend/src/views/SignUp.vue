@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     submit() {
-      console.log();
+      console.log(this.user);
       
       this.$store
         .dispatch({
@@ -43,7 +43,7 @@ export default {
             this.isWorng = true;
           } else {
             this.isWorng = false;
-            router.push({ path: "/board" });
+            this.$router.push({ path: "/board" });
           }
         });
     }

@@ -15,7 +15,7 @@ function login(userCredentials) {
 }
 
 function signup(user) {
-    return HttpService.put(`${BASE_URL}/signup`, user).then(resolveData)
+    return HttpService.post(`${BASE_URL}/signup`, user).then(resolveData)
 }
 
 function getEmptyUser() {

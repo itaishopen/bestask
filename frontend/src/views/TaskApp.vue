@@ -117,7 +117,7 @@ export default {
     height: 85px;
     width: 250px;
     & :hover {
-      background-color: #ffffff1f;
+      // background-color: #ffffff1f;
     }
   }
   & .Collection_item {
@@ -160,7 +160,7 @@ export default {
     background-color: #cdd2d4;
     font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 21px;
     color: #4d4d4d;
     &:hover {
       background-color: #b6bbbf;

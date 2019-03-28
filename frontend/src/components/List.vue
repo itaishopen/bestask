@@ -19,22 +19,21 @@
     <main class="main items">
       <draggable
         class="list-group-top"
+        :class="list._id"
         v-model="listArray[0].cards"
-        v-bind="dragOptions"
-        group="lists"
+        v-bind="dragOptionsList"
         :key="list._id"
-        :animated="100"
       >
         <draggable
           class="listgroup"
           :class="list._id"
           v-model="list.cards"
-          v-bind="dragOptions"
-          group="cards"
-          @start="drag=true"
+          v-bind="dragOptionsCard"
+          @start="drag=true" 
           @end="funToMove"
         >
-          <div v-for="card in list.cards" :key="card._id" class="card" :class="[card._id, card.archived ? 'hide-card' : '']">
+          <div v-for="card in list.cards" :key="card._id" class="card" :class="[card._id, card.archived ? 'hide-card' : '']"
+          >
             <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
           </div>
         </draggable>
@@ -92,6 +91,7 @@ export default {
   },
   methods: {
     funToMove(env) {
+      console.log(env)
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
       var cardId = env.item.className.split(" ")[1];
@@ -173,6 +173,13 @@ export default {
     }
   },
   computed: {
+    cardList() {
+      if (this.list.cards.length === 0) {
+        this.list.cards = []
+        return []
+      }
+      return this.list.cards
+    },
     hideCard(card) {
       return card.archived ? 'hide-card' : ''
     },
@@ -184,13 +191,26 @@ export default {
         this.$store.commit("setCard", { card: cardItem });
       }
     },
-    dragOptions() {
+    dragOptionsList() {
       return {
         animation: 200,
-        group: "description",
+        group: "cards",
         disabled: false,
-        ghostClass: "ghost"
-      };
+        ghostClass: "ghost",
+        delay: 3,
+        touchStartThreshold:1
+      }
+    },
+    dragOptionsCard() {
+      return {
+        animation: 200,
+        group: "cards",
+        disabled: false,
+        draggable: ".card",
+        // easing: "cubic-bezier(0.86, 0, 0.07, 1)",
+        ghostClass: "ghost",
+        // delay: 3
+      }
     },
     checkList() {
       if (!this.list.cards) {
@@ -215,6 +235,7 @@ export default {
 .card {
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(0, 0, 0, 0);
+  cursor: pointer;
 }
 .list {
   .header {
@@ -342,7 +363,10 @@ export default {
 .fun-drag {
   min-height: 50px;
 }
-.list-group {
+.list-group-top {
   min-height: 50px;
+}
+.listgroup {
+  cursor: move;
 }
 </style>

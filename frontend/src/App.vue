@@ -19,6 +19,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 #app {
+  height: calc(100vh - 75px);
+  overflow-y: hidden;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

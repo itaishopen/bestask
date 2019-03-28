@@ -16,51 +16,65 @@
           </button>
         </div>
       </form>
-      <div class="archive-btn">
-        <router-link :to="'/board/' + board._id + '/archive'">
-          <div>Go to archive</div>
-        </router-link>
-      </div>
-    </header>
+    <!-- <div> -->
+      <!-- <b-navbar toggleable type="light" variant="light" class="navbar">
+        <b-navbar-toggle target="nav_text_collapse" />
+        <b-navbar-brand>Menu</b-navbar-brand>
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-navbar-nav class="navbar-text">
+            <b-nav-text>
+              <router-link :to="'/board/' + board._id + '/archive'">
+                <b-button variant="link">Archived items</b-button>
+              </router-link>
+            </b-nav-text>
+            <b-nav-text>
+              <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
+              <activities v-if="showAtivities" :board="board"></activities>
+            </b-nav-text>
+          </b-navbar-nav>
+        </b-collapse> -->
+      </b-navbar>
+      </header>
     <main>
-      <ul class="board-list-ul">
-        <draggable
-          v-model="lists"
-          v-bind="dragOptions"
-          group="lists"
-          @start="drag=true"
-          @end="endMoveList"
-          :move="moveList"
-          class="draggable"
-        >
-          <li class="board-list-li" v-for="list in lists" :key="list._id">
-            <list :list="list"/>
-          </li>
-        </draggable>
-        <div class="create-list">
-          <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-            Add new list
-            <i class="fa fa-plus"></i>
-          </button>
+    <!-- </div> -->
+    <ul class="board-list-ul">
+      <draggable
+        v-model="lists"
+        v-bind="dragOptions"
+        group="lists"
+        @start="drag=true"
+        @end="endMoveList"
+        :move="moveList"
+        class="draggable"
+      >
+        <li class="board-list-li" v-for="list in lists" :key="list._id">
+          <list :list="list"/>
+        </li>
+      </draggable>
+      <div class="create-list">
+        <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+          Add new list
+          <i class="fa fa-plus"></i>
+        </button>
 
-          <form
-            v-if="isAddListClick"
-            @submit.prevent="addList"
-            class="create-list-input form-add-list"
-          >
-            <div>
-              <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
-            </div>
-            <div class="container-add-list-btns">
-              <button class="create-list-options list-new-list-options" type="submit">
-                <i class="fa fa-plus"></i>
-              </button>
-              <button class="list-x-list-options" @click="closeAdd">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </form>
-        </div>
+        <form
+          v-if="isAddListClick"
+          @submit.prevent="addList"
+          class="create-list-input form-add-list"
+        >
+          <div>
+            <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
+          </div>
+          <div class="container-add-list-btns">
+            <button class="create-list-options list-new-list-options" type="submit">
+              <i class="fa fa-plus"></i>
+            </button>
+            <button class="list-x-list-options" @click="closeAdd">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </form>    
+      </div>
       </ul>
       <card-edit v-if="showModal" ref="card">
         <router-view name="Card Edit"/>
@@ -76,6 +90,8 @@ import ListService from "../services/ListService.js";
 import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
+import Activities from './Activities.vue';
+
 import draggable from "vuedraggable";
 import moment from "moment";
 
@@ -86,7 +102,8 @@ export default {
     return {
       isAddListClick: false,
       isChangeTitle: false,
-      showModal: this.$route.meta.showModal
+      showModal: this.$route.meta.showModal,
+      showAtivities: false
     };
   },
   created() {
@@ -105,7 +122,8 @@ export default {
   components: {
     list,
     draggable,
-    CardEdit
+    CardEdit,
+    Activities
   },
 
   computed: {
@@ -194,6 +212,9 @@ export default {
         .then(() => {
           SocketService.send(this.board._id);
         });
+    },
+    toggleActivity(){
+      this.showAtivities = !this.showAtivities;
     }
   },
 
@@ -228,9 +249,6 @@ export default {
   padding: 15px;
   font-family: Lato_bold;
   font-size: 20px;
-}
-.archive-btn{
-  margin-right: 30px;
 }
 .title-input-container {
   display: flex;
@@ -358,5 +376,16 @@ export default {
 .ghost {
   opacity: 0.3;
   background: #c8ebfb;
+}
+
+.navbar{
+  width: 350px;
+  position: absolute;
+  z-index:1;
+}
+.navbar-text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>

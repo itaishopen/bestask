@@ -50,11 +50,6 @@
       </section>
     </router-link>
   </div>
-  <!-- <div class="card-preview flex">
-        <router-link :to="'/card/edit/' + card._id">
-            <div class="title-card">{{card.title}} (order {{card.order}})</div>
-        </router-link>
-  </div>-->
 </template>
 
 <script>
@@ -142,8 +137,8 @@ a:hover {
   padding: 4px;
   min-width: 270px;
   max-width: 270px;
-  min-height: 80px;
-  max-height: 80px;
+  min-height: 90px;
+  max-height: 250px;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(230, 230, 230);
   border-radius: 10px;

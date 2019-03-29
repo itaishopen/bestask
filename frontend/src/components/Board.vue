@@ -137,9 +137,9 @@ export default {
         group: "lists",
         disabled: false,
         ghostClass: "ghost",
-        delay: 3,
-        touchStartThreshold: 1,
-        // draggable: "list"
+        // delay: 3,
+        // touchStartThreshold: 1,
+        // draggable: ".drag-me .list"
       };
     }
   },

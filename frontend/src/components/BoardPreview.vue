@@ -1,7 +1,7 @@
 <template>
   <section v-if="board" class="board-preview">
-    <router-link :to="'/board/' + board._id">
-        <h1 class="Collection_title">{{ board.title }}</h1>
+    <router-link class="collection-item" :to="'/board/' + board._id">
+      <h1 class="collection-title">{{ board.title }}</h1>
       <!-- <board :board="board"></board> -->
     </router-link>
   </section>
@@ -15,25 +15,30 @@ export default {
   props: ["board"],
   data() {
     return {
-     
+
     };
   },
   components: {
     Board
   },
-  created() {},
+  created() { },
   computed: {},
- 
+
 };
 </script>
 
 <style lang='scss' scoped>
-.Collection_title {
-    font-family: Raleway-Regular, "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 21px;
-    color: #FFFFFF;
-    margin: 0;
-    padding: 0; 
-    }
+.collection-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Raleway-Regular, "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 21px;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  height: 85px;
+  width: 250px;
+}
 </style>

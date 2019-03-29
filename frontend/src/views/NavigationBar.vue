@@ -1,22 +1,29 @@
 <template>
   <section class="navigation-bar">
     <div class="logo">
-      <img src="../../img/bestask-logo-black.png" class="logo-nav" alt>
+      <router-link to="/">
+        <img src="../../img/small-logo.png" class="logo-nav" alt>
+      </router-link>
     </div>
     <div class="navigation">
-      <router-link class="nav-btns" to="/">
+      <router-link class="nav-btns" to="/" title="Home">
         <i class="fas fa-home nav-btn"></i>
       </router-link>
-      <router-link class="nav-btns" to="/about">
+      <router-link class="nav-btns" to="/about" title="About">
         <i class="fas fa-info nav-btn"></i>
       </router-link>
-      <router-link class="nav-btns" to="/board">
+      <router-link class="nav-btns" to="/board" title="Boards">
         <i class="fab fa-flipboard nav-btn"></i>
       </router-link>
-      <div class="login">
+      <div class="login" >
         <router-link to="/login/">
-          <span class="user-logedin" v-if="user && user._id">{{user.firstName[0].toUpperCase()}}{{user.lastName[0].toUpperCase()}}</span>
-          <i v-else class="fas fa-sign-in-alt nav-btn"></i>
+          <span class="user-logedin" v-if="user && user._id" title="Logout">
+            <span v-if="user.prefs.userPic">
+              <img src="user.prefs.userPic" alt>
+            </span>
+            <span v-else class="no-pic-user" :style="{ background: user.prefs.bgColor, color: user.prefs.color }">{{user.firstName[0]}}{{user.lastName[0]}}</span>
+          </span>
+          <i v-else class="fas fa-sign-in-alt nav-btn" title="Login"></i>
         </router-link>
       </div>
     </div>
@@ -29,7 +36,7 @@ import UserService from "../services/UserService.js";
 export default {
   name: "NavigationBar",
   data() {
-    return { 
+    return {
       userConnect: false,
     };
   },
@@ -60,6 +67,7 @@ export default {
 .navigation-bar {
   position: fixed;
   width: 100%;
+  height: 70px;
   top: 0;
   padding: 0 30px;
   display: flex;
@@ -67,8 +75,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   .logo-nav {
-    width: 100px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
   }
   a {
     font-weight: bold;
@@ -106,11 +114,19 @@ export default {
   color: #ffffff;
   width: 37px;
   height: 37px;
+  border: 1px solid #0000007a;
   &:hover {
     background-color: #050505c5;
   }
-  &.user-logedin{
+  .user-logedin {
     color: #ffffff;
+  }
+  .no-pic-user {
+    width: 37px;
+    height: 37px;
+    &:hover {
+      background-color: #050505c5;
+    }
   }
 }
 </style>

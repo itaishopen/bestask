@@ -25,7 +25,7 @@ function getEmptyUser() {
         userName: '',
         password: '',
         email: '',
-        prefs: { userPic: null, bgColor: '#ffffff', color: '#000000' }
+        prefs: { userPic: null, bgColor: '#0000007a', color: '#ffffff' }
     }
 }
 

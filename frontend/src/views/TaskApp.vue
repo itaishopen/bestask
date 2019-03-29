@@ -1,9 +1,9 @@
 <template>
-  <section class="task-app task-wrapper Collection" v-if="boards">
+  <section class="task-app task-wrapper collection" v-if="boards">
     <h1 class="title-board-prev">My Boards:</h1>
     <div class="board-flex">
       <div
-        class="Collection_item"
+        class="collection-item"
         v-for="board in boards"
         :key="board._id"
         :style="{ background: board.prefs.bgColor.color }"
@@ -11,19 +11,19 @@
         <board-preview class="board-preview" :board="board"></board-preview>
       </div>
       <div
-        class="Collection_newItem"
-        v-bind:class="{ 'Collection_newItem-active': isNewBoard }"
+        class="collection-newItem"
+        v-bind:class="{ 'collection-newItem-active': isNewBoard }"
         v-on:click="isNewBoard = true;"
       >
-        <h1 class="Collection_title" v-show="!isNewBoard">Create a board...</h1>
+        <h1 class="collection-title" v-show="!isNewBoard">Create a board...</h1>
         <input
-          class="Collection_addBoard"
+          class="collection-addBoard"
           v-model="newBoardTitle"
           v-on:keyup.enter.prevent="createNewBoard()"
           placeholder="Create a board..."
           v-show="isNewBoard"
         >
-        <div class="Collection_options" v-show="isNewBoard">
+        <div class="collection-options" v-show="isNewBoard">
           <button class="Button" v-on:click.stop="createNewBoard()">Save</button>
           <svg class="Cancel" v-on:click.stop="isNewBoard = !isNewBoard">
             <line x1="0" y1="0" x2="15" y2="15"></line>
@@ -127,7 +127,7 @@ export default {
       // background-color: #ffffff1f;
     }
   }
-  & .Collection_item {
+  & .collection-item {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,8 +136,9 @@ export default {
     border-radius: 3px;
     cursor: pointer;
     transition: 0.3s;
+    
   }
-  & .Collection_addBoard {
+  & .collection-addBoard {
     font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 15px;
@@ -149,7 +150,7 @@ export default {
     border-radius: 3px;
     background-color: #ffffff;
   }
-  & .Collection_options {
+  & .collection-options {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -157,7 +158,10 @@ export default {
     justify-content: flex-start;
     margin: 10px auto;
   }
-  & .Collection_newItem {
+  & .collection-newItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 85px;
     margin: 0 20px 20px 0;
     border-radius: 3px;
@@ -173,7 +177,7 @@ export default {
       background-color: #b6bbbf;
     }
   }
-  & .Collection_newItem-active {
+  & .collection-newItem-active {
     background-color: #cdd2d4 !important;
     &:hover {
       background-color: #cdd2d4 !important;

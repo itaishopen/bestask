@@ -17,7 +17,7 @@
         </div>
       </form>
       <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
-      <div class="menu-modal" v-show="showMenu">
+      <!-- <div class="menu-modal" v-show="showMenu">
         <button v-on:click="toggleMenu" class="menu-close-btn">
             <i class="fas fa-times" style="color:#000000;"></i>
         </button>
@@ -30,18 +30,27 @@
           <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
           <activities v-if="showAtivities" :board="board" class="activities"></activities>
         </div>
-      </div>
+      </div>-->
     </header>
     <main>
+      <div class="menu-modal" v-show="showMenu">
+        <button v-on:click="toggleMenu" class="menu-close-btn">
+          <i class="fas fa-times" style="color:#000000;"></i>
+        </button>
+        <div>
+          <router-link :to="'/board/' + board._id + '/archive'">
+            <b-button variant="link">Archived items</b-button>
+          </router-link>
+        </div>
+        <div>
+          <b-button variant="link" v-on:click="toggleActivity">
+            <span v-if="showAtivities">Hide Activities</span>
+            <span v-else>Show Activities</span></b-button>
+          <activities v-if="showAtivities" :board="board" class="activities"></activities>
+        </div>
+      </div>
       <ul class="board-list-ul">
-        <draggable
-          v-model="lists"
-          v-bind="dragOptions"
-          @start="drag=true"
-          @end="endMoveList"
-          :move="moveList"
-          class="draggable"
-        >
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -204,7 +213,7 @@ export default {
     toggleActivity() {
       this.showAtivities = !this.showAtivities;
     },
-    toggleMenu(){
+    toggleMenu() {
       this.showMenu = !this.showMenu;
     }
   },
@@ -259,8 +268,8 @@ export default {
   border: none;
 }
 .board-list-li {
-  min-height: 20vh;
-  max-height: 80vh;
+  // min-height: 20vh;
+  height: 100%;
   min-width: 280px;
   /* max-height: 100vh; */
   // background-color: rgb(235, 235, 235);
@@ -390,21 +399,26 @@ export default {
 .menu-close-btn {
   outline: none;
   border: none;
-  align-self:flex-end;
+  align-self: flex-end;
 }
 
-.menu-modal{
+.menu-modal {
   display: flex;
+  position: fixed;
+  top: 70px;
+  right: -5px;
   flex-direction: column;
-  width: 330px;
-  max-height: 100%;
+  width: 340px;
+  max-height: calc(100vh - 110px);
   background-color: #ebebeb;
   border: 1px solid #cecece;
   border-radius: 8px;
-  margin: 0px 5px;  
+  margin: 0px 5px;
+  z-index: 500;
+  height: 100%;
 }
-.activities{
+.activities {
   overflow: auto;
-  max-height: 100vh;
+  max-height: calc(100vh - 250px);
 }
 </style>

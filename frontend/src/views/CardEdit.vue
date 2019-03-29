@@ -51,7 +51,7 @@
                 :value="card.et"
                 id="time"
                 v-model="card.et"
-                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '2 Hours': '2 Hours','3 Hours':'3 Hours','5 Hours':'5 Hours','8 Hours':'8 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
+                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '1.5 Hours': '1.5 Hours','2.5 Hours':'2.5 Hours','5 Hours':'5 Hours','7.5 Hours':'7.5 Hours','12.5 Hours':'12.5 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '1.5 Days': '1.5 Days','2.5 Days':'2.5 Days','5 Days':'5 Days','7.5 Days':'7.5 Days','12.5 Days':'12.5 Days'}"
               >
                 <option slot="first" :value="null">ET</option>
               </b-form-select>
@@ -61,7 +61,7 @@
                 :value="card.at"
                 id="time"
                 v-model="card.at"
-                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '2 Hours': '2 Hours','3 Hours':'3 Hours','5 Hours':'5 Hours','8 Hours':'8 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
+                :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '1.5 Hours': '1.5 Hours','2.5 Hours':'2.5 Hours','5 Hours':'5 Hours','7.5 Hours':'7.5 Hours','12.5 Hours':'12.5 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '1.5 Days': '1.5 Days','2.5 Days':'2.5 Days','5 Days':'5 Days','7.5 Days':'7.5 Days','12.5 Days':'12.5 Days'}"
               >
                 <option slot="first" :value="null">AT</option>
               </b-form-select>

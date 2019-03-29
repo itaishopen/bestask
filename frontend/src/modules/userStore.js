@@ -15,16 +15,17 @@ export default {
         },
         setBoards(state, { boards }){
             state.boards = boards
-        }
+        },
+        logout(state, { userId }){
+            if (userId === state.user._id) {
+                state.user = {}
+            }
+        },
     },
     actions: {
-        updateUser(context, { userId }) {
-            console.log(userId);
-            
+        updateUser(context, { userId }) {            
             return UserService.getUserAndBoard(userId)
-                .then(({user, boards}) => {
-                    console.log(boards , user);
-                    
+                .then(({user, boards}) => {                    
                     context.commit({ type: 'setUser', user: user[0] })
                     context.commit({ type: 'setBoards', boards })
                 })
@@ -37,6 +38,9 @@ export default {
                     }
                     return user
                 })
+        },
+        logout(context, { userId }) {
+            context.commit({type:"logout", userId})
         },
         signup(context, { user }) {
             return UserService.signup(user)

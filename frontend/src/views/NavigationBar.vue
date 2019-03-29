@@ -59,6 +59,7 @@ export default {
 
 <style lang='scss' scoped>
 .navigation-bar {
+  background: rgba(19, 19, 19, 0.137);
   position: fixed;
   width: 100%;
   top: 0;

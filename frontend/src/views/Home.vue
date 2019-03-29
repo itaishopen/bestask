@@ -1,12 +1,13 @@
 <template>
-<section>
-  <div class="home">
-    <img src="../../img/1.jpg" class="home-img">
-  </div>
-  <div class="home-btns">
-    <button class="login">login</button>
-    <button class="guest">guest</button>
-  </div></section>
+  <section>
+    <div class="home">
+      <img src="../../img/1.jpg" class="home-img">
+    </div>
+    <div class="home-btns">
+      <button class="login">login</button>
+      <button class="guest">guest</button>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -31,18 +32,20 @@ export default {
   height: 100vh;
   object-fit: cover;
 }
-.home-btns{
-  display: flex;
-  justify-content: space-evenly;
+.home-btns {
+  display: flex;  
   align-items: center;
-.login{
-margin-top: 70vh; 
-
-}
-.guest{
-margin-top: 70vh; 
-  
-}
-
+  .login,
+  .guest {
+    font-family: LeckerliOne-Regular;
+    margin-top: 20vh;
+    font-size: 35px;
+    background-color: rgba(102, 102, 102, 0.445);
+    color: rgb(66, 66, 66);
+    border: none;
+    border: 1px solid rgb(56, 56, 56);
+    border-radius: 5px;
+    padding: 8px 18px;
+  }
 }
 </style>

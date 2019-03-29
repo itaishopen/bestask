@@ -12,12 +12,12 @@ self.__precacheManifest = [
     "url": "/fonts/PontanoSans-Regular.54f7b1a9.ttf"
   },
   {
-    "revision": "6515c3d64a5fd47319fb",
-    "url": "/js/app.c18f3599.js"
+    "revision": "4d3d03bac8f1cb246cb6",
+    "url": "/js/app.f9c2a093.js"
   },
   {
-    "revision": "e1bece2b9be2c4dc408d",
-    "url": "/js/chunk-vendors.6ede87cf.js"
+    "revision": "352a2e78030d32c3a9ca",
+    "url": "/js/chunk-vendors.fe47ac07.js"
   },
   {
     "revision": "580d0778ad254335be45bf58bb449f43",
@@ -28,12 +28,12 @@ self.__precacheManifest = [
     "url": "/js/about.f0b58730.js"
   },
   {
-    "revision": "355ccccb2f28543a775f9a52df96bf31",
+    "revision": "a62d9bf94ef13c1fc2832252b572c548",
     "url": "/index.html"
   },
   {
-    "revision": "6c201fcc35f571b4bb800441dc1543e9",
-    "url": "/img/bestask-logo-black.6c201fcc.png"
+    "revision": "3c56eec75aed2c52632d22e365eb81b6",
+    "url": "/img/small-logo.3c56eec7.png"
   },
   {
     "revision": "3b9b99039cc0a98dd50c3cbfac57ccb2",
@@ -56,11 +56,11 @@ self.__precacheManifest = [
     "url": "/fonts/Acme-Regular.cf2842ec.ttf"
   },
   {
-    "revision": "e1bece2b9be2c4dc408d",
+    "revision": "352a2e78030d32c3a9ca",
     "url": "/css/chunk-vendors.172ce37f.css"
   },
   {
-    "revision": "6515c3d64a5fd47319fb",
-    "url": "/css/app.c168aadb.css"
+    "revision": "4d3d03bac8f1cb246cb6",
+    "url": "/css/app.d80b3310.css"
   }
 ];

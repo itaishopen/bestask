@@ -212,7 +212,7 @@ export default {
         disabled: false,
         draggable: ".card",
         ghostClass: "ghost",
-        delay: 3
+        delay: 1
       }
     },
   },

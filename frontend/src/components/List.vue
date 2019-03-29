@@ -23,24 +23,23 @@
         v-model="listArray[0].cards"
         v-bind="dragOptionsList"
         :key="list._id"
-      > -->
-        <draggable
-          class="listgroup"
-          :class="list._id"
-          v-model="listArray"
-          v-bind="dragOptionsCard"
-          @start="drag=true"
-          @end="funToMove"
+      >-->
+      <draggable
+        class="listgroup"
+        :class="list._id"
+        v-model="listArray"
+        v-bind="dragOptionsCard"
+        @end="funToMove"
+      >
+        <div
+          v-for="card in list.cards"
+          :key="card._id"
+          class="card"
+          :class="[card._id, card.archived ? 'hide-card' : '']"
         >
-          <div
-            v-for="card in list.cards"
-            :key="card._id"
-            class="card"
-            :class="[card._id, card.archived ? 'hide-card' : '']"
-          >
-            <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
-          </div>
-        </draggable>
+          <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
+        </div>
+      </draggable>
       <!-- </draggable> -->
       <!-- <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
         <div>
@@ -105,7 +104,6 @@ export default {
   },
   methods: {
     funToMove(env) {
-      console.log(env);
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
       var cardId = env.item.className.split(" ")[1];
@@ -121,21 +119,22 @@ export default {
         var card = toList.cards.find(card => card._id === cardId);
         if (!card) {
           var card = fromList.cards.find(card => card._id === cardId);
+          fromList.cards.splice(env.oldIndex, 1)
+          toList.cards.splice(env.newIndex, 0, card)
         }
         card.listId = toListId;
+        card.order = env.newIndex
         for (var i = 0; i < toList.cards.length; i++) {
           toList.cards[i].order = i;
         }
         for (var j = 0; j < fromList.cards.length; j++) {
           fromList.cards[j].order = j;
         }
-        this.$store.dispatch({ type: "saveList", list: toList }).then(() => {
-          this.$store
-            .dispatch({ type: "saveList", list: fromList })
-            .then(() => {
-              SocketService.send(this.list.boardId);
-            });
-        });
+        this.$store.dispatch({ type: "saveList", list: fromList })
+        this.$store.dispatch({ type: "saveList", list: toList })
+          .then(() => {
+            SocketService.send(this.list.boardId);
+          });
       } else {
         for (var k = 0; k < fromList.cards.length; k++) {
           fromList.cards[k].order = k;
@@ -147,10 +146,8 @@ export default {
     },
     newCard() {
       this.card = CardService.getEmptyCard()
-      console.log("new card", this.card);
       this.card.order = this.list.cards.length;
       this.isAddClick = !this.isAddClick;
-      // this.list.scrollBy(0, 100);
     },
     closeAdd() {
       this.isAddClick = !this.isAddClick;
@@ -208,22 +205,12 @@ export default {
         this.$store.commit("setCard", { card: cardItem });
       }
     },
-    dragOptionsList() {
-      return {
-        animation: 200,
-        group: "cards",
-        disabled: false,
-        ghostClass: "ghost",
-        delay: 2,
-      }
-    },
     dragOptionsCard() {
       return {
         animation: 200,
         group: "cards",
         disabled: false,
         draggable: ".card",
-        // easing: "cubic-bezier(0.86, 0, 0.07, 1)",
         ghostClass: "ghost",
         // delay: 1
       }

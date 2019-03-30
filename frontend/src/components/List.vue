@@ -230,6 +230,7 @@ export default {
   display: none;
 }
 .card {
+  position: initial;
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(0, 0, 0, 0);
   cursor: pointer;

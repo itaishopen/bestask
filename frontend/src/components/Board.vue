@@ -17,20 +17,6 @@
         </div>
       </form>
       <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
-      <!-- <div class="menu-modal" v-show="showMenu">
-        <button v-on:click="toggleMenu" class="menu-close-btn">
-            <i class="fas fa-times" style="color:#000000;"></i>
-        </button>
-        <div>
-          <router-link :to="'/board/' + board._id + '/archive'">
-            <b-button variant="link">Archived items</b-button>
-          </router-link>
-        </div>
-        <div>
-          <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
-          <activities v-if="showAtivities" :board="board" class="activities"></activities>
-        </div>
-      </div>-->
     </header>
     <main>
       <div class="menu-modal" v-show="showMenu">
@@ -412,7 +398,7 @@ export default {
   max-height: calc(100vh - 110px);
   background-color: #ebebeb;
   border: 1px solid #cecece;
-  border-radius: 8px;
+  // border-radius: 8px;
   margin: 0px 5px;
   z-index: 500;
   height: 100%;

@@ -71,7 +71,7 @@ export default {
 @media (min-width: 850px) {
   .home-btns {
     width: 100%;
-    margin-top: 60vh;
+    margin-top: 52vh;
     background-color: rgba(255, 255, 255, 0.76);
     border-radius: 0;
     .login,

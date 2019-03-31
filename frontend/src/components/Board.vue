@@ -16,7 +16,7 @@
           </button>
         </div>
       </form>
-      <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
+      <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
     </header>
     <main>
       <transition name="slide">
@@ -49,6 +49,14 @@
               <div class="color colore06bfd" @click="paintBoard('#e06bfd')"></div>
               <div class="color color83d8ff" @click="paintBoard('#83d8ff')"></div>
               <div class="color colorf5cf66" @click="paintBoard('#f5cf66')"></div>
+              <div class="color colorffffff" @click="paintBoard('#ffffff')"></div>
+              <div class="color colorf566ca" @click="paintBoard('#f566ca')"></div>
+              <div class="color colorff8383" @click="paintBoard('#ff8383')"></div>
+              <div class="color color78ff6c" @click="paintBoard('#78ff6c')"></div>
+              <div class="color color6f6cff" @click="paintBoard('#6f6cff')"></div>
+              <div class="color color6ce9ff" @click="paintBoard('#6ce9ff')"></div>
+              <div class="color color959595" @click="paintBoard('#959595')"></div>
+              <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
             </div>
           </div>
         </div>
@@ -152,7 +160,7 @@ export default {
         disabled: false,
         draggable: ".board-list-li",
         // filter: ".no-drag",
-        ghostClass: "ghost",
+        ghostClass: "ghost"
         // delay: 3,
         // forceFallback: true,
         // fallbackTolerance: 1,
@@ -422,7 +430,20 @@ export default {
   align-self: flex-end;
   background-color: #ebebeb;
 }
-
+.menu-btn {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.116);
+  color: rgb(75, 75, 75);
+  border: 2px solid rgb(75, 75, 75);
+  border-radius: 5px;
+  padding: 8px 18px;
+  transition: 0.3s;
+  &:hover {
+    background-color: rgba(241, 241, 241, 0.308);
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(0, 0, 0);
+  }
+}
 .menu-modal {
   display: flex;
   position: fixed;
@@ -461,10 +482,12 @@ export default {
   width: 340px;
 }
 .ColorBoard {
-  border: 1px solid rgb(0, 0, 0);
-  width: 80%;
+  border: 1px solid rgb(138, 138, 138);
+  width: 90%;
   margin: 20px auto 0;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   .color {
     cursor: pointer;
     margin: 10px;
@@ -483,6 +506,30 @@ export default {
   }
   .colore06bfd {
     background-color: #e06bfd;
+  }
+  .colorffffff {
+    background-color: #ffffff;
+  }
+  .colorf566ca {
+    background-color: #f566ca;
+  }
+  .colorff8383 {
+    background-color: #ff8383;
+  }
+  .color78ff6c {
+    background-color: #78ff6c;
+  }
+  .colorfffd6c {
+    background-color: #fffd6c;
+  }
+  .color959595 {
+    background-color: #959595;
+  }
+  .color6ce9ff {
+    background-color: #6ce9ff;
+  }
+  .color6f6cff {
+    background-color: #6f6cff;
   }
 }
 </style>

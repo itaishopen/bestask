@@ -22,12 +22,12 @@
         :class="list._id"
         v-model="listArray"
         v-bind="dragOptionsCard"
+        @onChoose="choseOption"
         @end="funToMove"
       >
         <div
           v-for="card in list.cards"
           :key="card._id"
-          :delay="3"
           class="card"
           :class="[card._id, card.archived ? 'hide-card' : '']"
         >
@@ -72,7 +72,8 @@ export default {
       listArray: this.cardList,
       isAddClick: false,
       isChangeTitle: false,
-      hasfocus: false
+      hasfocus: false,
+      preventDragClick: false
     };
   },
   components: {
@@ -80,6 +81,9 @@ export default {
     draggable
   },
   methods: {
+    choseOption(evn) {
+      console.log(evn)
+    },
     funToMove(env) {
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
@@ -189,6 +193,11 @@ export default {
         disabled: false,
         draggable: ".card",
         ghostClass: "ghost",
+        delay: 5,
+        forceFallback: true,
+        // onUpdate: function () {
+        //   preventDragClick = true
+        // }
         // delay: 1
       }
     },

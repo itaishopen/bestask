@@ -53,15 +53,8 @@
           </div>
         </div>
       </transition>
-      <ul class="board-list-ul" :style="{ background: board.prefs.bgColor.color}">
-        <draggable
-          v-model="lists"
-          v-bind="dragOptions"
-          @start="delay=3"
-          @end="endMoveList"
-          class="draggable"
-          :style="{ background: board.prefs.bgColor.color}"
-        >
+      <ul class="board-list-ul">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList"  class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -158,7 +151,9 @@ export default {
         group: "lists",
         disabled: false,
         draggable: ".board-list-li",
-        ghostClass: "ghost"
+        ghostClass: "ghost",
+        delay: 5,
+        forceFallback: true,
         // delay: 3,
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"

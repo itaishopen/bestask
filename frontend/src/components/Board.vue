@@ -137,13 +137,18 @@ export default {
   },
 
   computed: {
-    board() {
+    board: {
+      get() {
       if (this.$store.getters.getBoard) {
         return this.$store.getters.getBoard;
       }
       return this.$store
         .dispatch({ type: "loadBoard", boardId: this.boardId })
         .then(board => board);
+    },
+      set() {
+        this.$store.commit("setBoard", { board: board });
+      }
     },
     lists: {
       get() {

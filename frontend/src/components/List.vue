@@ -196,12 +196,6 @@ export default {
         delay: 5,
         forceFallback: true,
         fallbackTolerance: 3,
-        // swapThreshold: 0.5,
-        // style: {}
-        // onUpdate: function () {
-        //   preventDragClick = true
-        // }
-        // delay: 1
       }
     },
   },

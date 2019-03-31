@@ -1,0 +1,27 @@
+
+* {
+    box-sizing: border-box;
+    color: black;
+    a{
+        color: black;
+        &:link {
+            text-decoration: none;
+        } 
+        &:hover{
+            color: black;
+      }  
+    }
+}
+
+html{
+    padding-top: 60px;
+}
+
+.VueCarousel-dot-container{
+    margin-bottom: 60px !important;
+}
+
+.VueCarousel-dot--active{
+    background-color: rgb(124, 203, 255)!important;
+
+}

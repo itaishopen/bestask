@@ -234,7 +234,9 @@
         <!-- Share Modal  -->
         <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
           <b-form-input class="m-1" v-model="share" readonly/>
-        </b-modal>
+        </b-modal>.
+
+        
       </b-modal>
       <!-- </section> -->
 </template>

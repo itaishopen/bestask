@@ -20,7 +20,6 @@
     </header>
     <main>
       <transition name="slide">
-        >
         <div class="menu-modal" v-show="showMenu">
           <button v-on:click="toggleMenu" class="menu-close-btn">
             <i class="fas fa-times" style="color:#000000;"></i>
@@ -28,21 +27,9 @@
           <h1>Menu</h1>
           <hr class="divider">
           <div>
-            <router-link :to="'/board/' + board._id + '/archive'">
-              <b-button variant="link">Archived items</b-button>
-            </router-link>
-          </div>
-          <div>
-            <b-button variant="link" v-on:click="toggleActivity">
-              <span v-if="showAtivities">Hide Activities</span>
-              <span v-else>Show Activities</span>
-            </b-button>
-            <activities v-if="showAtivities" :board="board" class="activities"></activities>
-          </div>
-          <div>
             <b-button variant="link" v-on:click="toggleColorBoard">
-              <span v-if="showColorBoard">Hide painting board</span>
-              <span v-else>Show painting board</span>
+              <span v-if="showColorBoard">Hide preferences</span>
+              <span v-else>Show preferences</span>
             </b-button>
             <div v-if="showColorBoard" class="ColorBoard">
               <div class="color color1dc78e" @click="paintBoard('#1dc78e')"></div>
@@ -58,6 +45,18 @@
               <div class="color color959595" @click="paintBoard('#959595')"></div>
               <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
             </div>
+          </div>
+          <div>
+            <router-link :to="'/board/' + board._id + '/archive'">
+              <b-button variant="link">Archived items</b-button>
+            </router-link>
+          </div>
+          <div>
+            <b-button variant="link" v-on:click="toggleActivity">
+              <span v-if="showAtivities">Hide Activities</span>
+              <span v-else>Show Activities</span>
+            </b-button>
+            <activities v-if="showAtivities" :board="board" class="activities"></activities>
           </div>
         </div>
       </transition>

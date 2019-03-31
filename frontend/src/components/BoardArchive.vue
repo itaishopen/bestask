@@ -134,4 +134,7 @@ export default {
 .hide-card {
   display: none;
 }
+.archive {
+    padding-top: 70px;
+}
 </style>

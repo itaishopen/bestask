@@ -59,10 +59,12 @@ export default {
     },
     actions: {
         loadBoard(context, { boardId }) {
+            context.commit({ type: 'setBoard', board: {} });
+            context.commit({ type: 'setLists', lists: [] });
+            context.commit({ type: 'setCard', card: null });
+            context.commit({ type: 'setBoardActivities', activities: [] });
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
-                    console.log(activities);
-                    
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
                     context.commit({ type: 'setBoardActivities', activities });

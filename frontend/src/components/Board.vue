@@ -54,7 +54,7 @@
         </div>
       </transition>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList"  class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -119,7 +119,7 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
   },
   components: {
     list,
@@ -232,7 +232,6 @@ export default {
     paintBoard(color) {
       console.log("this.board", this.board);
       this.board.prefs.bgColor.color = color;
-      this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
       this.$store
@@ -244,17 +243,22 @@ export default {
   watch: {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
+    },
+    board: val => {
+      
     }
   }
 };
 </script>
 
 <style lang='scss' scoped>
-
 .board {
-    width: auto;
-  height: calc(100vh - 85px);
-  display: inline-block;
+  // position: relative;
+  width: auto;
+  padding-top: 70px;
+  height: 100vh;
+  width: 100%;
+  display: inline-table;
   flex-direction: column;
 }
 .board-list-ul {

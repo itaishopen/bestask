@@ -88,4 +88,7 @@ export default {
     width: 100vw; // 100% view width
     flex-wrap:wrap;
 }
+.archive {
+    padding-top: 70px;
+}
 </style>

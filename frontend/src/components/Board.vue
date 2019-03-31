@@ -25,7 +25,7 @@
           <i class="fas fa-times" style="color:#000000;"></i>
         </button>
         <h1>Menu</h1>
-        <hr/>
+        <hr class="divider"/>
         <div>
           <router-link :to="'/board/' + board._id + '/archive'">
             <b-button variant="link">Archived items</b-button>
@@ -40,7 +40,7 @@
       </div>
       </transition>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" :delay="3" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -135,6 +135,7 @@ export default {
         animation: 200,
         group: "lists",
         disabled: false,
+        draggable: ".board-list-li",
         ghostClass: "ghost",
         // delay: 3,
         // touchStartThreshold: 1,
@@ -380,6 +381,7 @@ export default {
   outline: none;
   border: none;
   align-self: flex-end;
+  background-color: #ebebeb;
 }
 
 .menu-modal {
@@ -414,5 +416,9 @@ export default {
 .activities {
   overflow: auto;
   max-height: calc(100vh - 250px);
+}
+.divider{
+  height: 1px;
+  width: 340px;
 }
 </style>

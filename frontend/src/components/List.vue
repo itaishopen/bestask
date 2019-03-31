@@ -34,6 +34,7 @@
         <div
           v-for="card in list.cards"
           :key="card._id"
+          :delay="3"
           class="card"
           :class="[card._id, card.archived ? 'hide-card' : '']"
         >

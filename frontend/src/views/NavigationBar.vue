@@ -77,6 +77,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  z-index: 20;
   .logo-nav {
     width: 40px;
     height: 40px;

@@ -96,6 +96,12 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.collection {
+  
+  padding-top: 70px;
+  overflow-y: scroll;
+  height: calc(100vh - 70px);
+}
 .title-board-prev {
   margin: 26px;
   font-family: Raleway-Regular, "Open Sans", sans-serif;

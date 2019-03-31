@@ -373,7 +373,7 @@ export default {
   
 }
 
-.chosenClass {
-  transform: rotateZ( 30deg)
-}
+// .chosenClass {
+//   transform: rotateZ( 30deg)
+// }
 </style>

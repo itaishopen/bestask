@@ -307,7 +307,7 @@ export default {
   /* margin: 0 auto; */
   width: min-content;
 
-  background-color: rgb(255, 255, 255);
+  // background-color: rgb(255, 255, 255);
   /* border: 1px solid black; */
   display: flex;
   flex-direction: row;

@@ -126,7 +126,7 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
   components: {
     list,
@@ -180,6 +180,8 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     closeAdd() {
+      console.log("this.board", this.board);
+
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
@@ -251,9 +253,7 @@ export default {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     },
-    board: val => {
-      
-    }
+    board: val => {}
   }
 };
 </script>

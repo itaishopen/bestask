@@ -168,7 +168,7 @@ export default {
   left: 0;
   z-index: -1;
   position: absolute;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   object-fit: cover;
   display: flex;
@@ -212,7 +212,7 @@ export default {
   }
   .about-footer {
     padding-top: 140px;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background-color: rgb(131, 131, 131);
     font-size: 25px;
@@ -272,8 +272,8 @@ export default {
     }
   }
 }
-// @media (min-width: 850px) {
-//   .home-btns {
-//   }
-// }
+@media (max-width: 850px) {
+  .about { 
+  }
+}
 </style>

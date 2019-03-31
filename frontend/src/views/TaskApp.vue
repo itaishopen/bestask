@@ -96,6 +96,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.task-app {
+  padding-top: 70px;
+}
+
 .title-board-prev {
   margin: 26px;
   font-family: Raleway-Regular, "Open Sans", sans-serif;
@@ -144,8 +148,7 @@ export default {
     outline: 0;
     border-radius: 3px;
     background-color: #ffffff;
-          border: 1px solid rgb(73, 73, 73);
-
+    border: 1px solid rgb(73, 73, 73);
   }
   & .collection-options {
     padding: 0;

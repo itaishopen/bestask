@@ -1,7 +1,7 @@
 <template>
-  <div class="card-preview">
+  <div class="card-preview" >
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
-      <section class="title-card">
+      <section class="title-card" :style="{ background: card.prefs.bgColor.color}">
         <div class="card-preview-head">
           <ul class="labels">
             <li class="label-li" v-for="label in card.labels" :key="label">

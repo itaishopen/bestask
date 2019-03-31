@@ -49,7 +49,7 @@ export default {
   width: 100%;
   margin: 0 auto;
   justify-content: center;
-  margin-top: 55vh;
+  margin-top: 60vh;
   background-color: rgba(255, 255, 255, 0.76);
   // border: 1px solid rgb(17, 26, 146);
   border-radius: 2px;
@@ -71,7 +71,7 @@ export default {
 @media (min-width: 850px) {
   .home-btns {
     width: 100%;
-    margin-top: 52vh;
+    margin-top: 57vh;
     background-color: rgba(255, 255, 255, 0.76);
     border-radius: 0;
     .login,

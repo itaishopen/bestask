@@ -2,23 +2,3 @@
 @import 'helpers.scss';
 @import 'bestask.scss';
 @import url('https://use.fontawesome.com/releases/v5.7.2/css/all.css');
-
-* {
-    box-sizing: border-box;
-    color: black;
-    a{
-        color: black;
-        &:link {
-            text-decoration: none;
-        } 
-        &:hover{
-            color: black;
-
-      }  
-    }
-}
-
-
-html{
-    padding-top: 60px;
-}

@@ -1,11 +1,13 @@
 <template>
   <section>
     <div class="home">
-      <img src="../../img/1.jpg" class="home-img">
+      <video autoplay muted loop class="home-img">
+        <source src="../../img/3.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="home-btns">
-      <button class="login">login</button>
-      <button class="guest">guest</button>
+      <button class="login" @click="login">login</button>
+      <button class="guest" @click="guest">guest</button>
     </div>
   </section>
 </template>
@@ -16,6 +18,14 @@ export default {
   name: "home",
   components: {
     // BoardPreview
+  },
+  methods: {
+    guest() {
+      this.$router.push({ path: "/board" });
+    },
+    login() {
+      this.$router.push({ path: "/login" });
+    }
   },
   created() {}
 };
@@ -33,19 +43,42 @@ export default {
   object-fit: cover;
 }
 .home-btns {
-  display: flex;  
+  display: flex;
   align-items: center;
+  // margin-left: 20px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  margin-top: 55vh;
+  background-color: rgba(255, 255, 255, 0.76);
+  // border: 1px solid rgb(17, 26, 146);
+  border-radius: 2px;
   .login,
   .guest {
-    font-family: LeckerliOne-Regular;
-    margin-top: 20vh;
-    font-size: 35px;
-    background-color: rgba(102, 102, 102, 0.445);
-    color: rgb(66, 66, 66);
     border: none;
-    border: 1px solid rgb(56, 56, 56);
-    border-radius: 5px;
-    padding: 8px 18px;
+    color: rgb(1, 3, 29);
+    background-color: rgba(143, 151, 255, 0);
+    font-family: LeckerliOne-Regular;
+    font-size: 40px;
+    padding: 20px 20px;
+    transition: 0.3s;
+    &:hover {
+      color: rgb(0, 14, 209);
+      // background-color: rgba(255, 255, 255, 0.445);
+    }
+  }
+}
+@media (min-width: 850px) {
+  .home-btns {
+    width: 100%;
+    margin-top: 60vh;
+    background-color: rgba(255, 255, 255, 0.76);
+    border-radius: 0;
+    .login,
+    .guest {
+      font-size: 60px;
+      padding: 25px 60px;
+    }
   }
 }
 </style>

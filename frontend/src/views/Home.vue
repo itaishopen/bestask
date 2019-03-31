@@ -2,7 +2,7 @@
   <section>
     <div class="home">
       <video autoplay muted loop class="home-img">
-        <source src="../../img/3.mp4" type="video/mp4">
+        <source src="../../img/2.mp4" type="video/mp4">
       </video>
     </div>
     <div class="home-btns">

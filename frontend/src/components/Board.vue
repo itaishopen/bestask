@@ -1,6 +1,6 @@
 <template>
-  <section class="board">
-    <header class="nav-board">
+  <section class="board" :style="{ background: board.prefs.bgColor.color}">
+    <header class="nav-board" :style="{ background: board.prefs.bgColor.color}">
       <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
       <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
         <div class="title-input-container">
@@ -19,28 +19,49 @@
       <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
     </header>
     <main>
-      <transition name="slide">>
-      <div class="menu-modal" v-show="showMenu">
-        <button v-on:click="toggleMenu" class="menu-close-btn">
-          <i class="fas fa-times" style="color:#000000;"></i>
-        </button>
-        <h1>Menu</h1>
-        <hr class="divider"/>
-        <div>
-          <router-link :to="'/board/' + board._id + '/archive'">
-            <b-button variant="link">Archived items</b-button>
-          </router-link>
+      <transition name="slide">
+        >
+        <div class="menu-modal" v-show="showMenu">
+          <button v-on:click="toggleMenu" class="menu-close-btn">
+            <i class="fas fa-times" style="color:#000000;"></i>
+          </button>
+          <h1>Menu</h1>
+          <hr class="divider">
+          <div>
+            <router-link :to="'/board/' + board._id + '/archive'">
+              <b-button variant="link">Archived items</b-button>
+            </router-link>
+          </div>
+          <div>
+            <b-button variant="link" v-on:click="toggleActivity">
+              <span v-if="showAtivities">Hide Activities</span>
+              <span v-else>Show Activities</span>
+            </b-button>
+            <activities v-if="showAtivities" :board="board" class="activities"></activities>
+          </div>
+          <div>
+            <b-button variant="link" v-on:click="toggleColorBoard">
+              <span v-if="showColorBoard">Hide painting board</span>
+              <span v-else>Show painting board</span>
+            </b-button>
+            <div v-if="showColorBoard" class="ColorBoard">
+              <div class="color color1dc78e" @click="paintBoard('#1dc78e')"></div>
+              <div class="color colore06bfd" @click="paintBoard('#e06bfd')"></div>
+              <div class="color color83d8ff" @click="paintBoard('#83d8ff')"></div>
+              <div class="color colorf5cf66" @click="paintBoard('#f5cf66')"></div>
+            </div>
+          </div>
         </div>
-        <div>
-          <b-button variant="link" v-on:click="toggleActivity">
-            <span v-if="showAtivities">Hide Activities</span>
-            <span v-else>Show Activities</span></b-button>
-          <activities v-if="showAtivities" :board="board" class="activities"></activities>
-        </div>
-      </div>
       </transition>
-      <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @start="delay=3" @end="endMoveList"  class="draggable">
+      <ul class="board-list-ul" :style="{ background: board.prefs.bgColor.color}">
+        <draggable
+          v-model="lists"
+          v-bind="dragOptions"
+          @start="delay=3"
+          @end="endMoveList"
+          class="draggable"
+          :style="{ background: board.prefs.bgColor.color}"
+        >
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -99,6 +120,7 @@ export default {
       showModal: this.$route.meta.showModal,
       showMenu: false,
       showAtivities: false,
+      showColorBoard: false,
       boardId: this.$route.params.boardId
     };
   },
@@ -136,7 +158,7 @@ export default {
         group: "lists",
         disabled: false,
         draggable: ".board-list-li",
-        ghostClass: "ghost",
+        ghostClass: "ghost"
         // delay: 3,
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"
@@ -204,8 +226,21 @@ export default {
     toggleActivity() {
       this.showAtivities = !this.showAtivities;
     },
+    toggleColorBoard() {
+      this.showColorBoard = !this.showColorBoard;
+    },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    paintBoard(color) {
+      console.log("this.board", this.board);
+      this.board.prefs.bgColor.color = color;
+      this.board.prefs.bgColor.color = color;
+      this.showColorBoard = !this.showColorBoard;
+      this.showMenu = !this.showMenu;
+      this.$store
+        .dispatch({ type: "saveBoard", board: this.board })
+        .then(() => SocketService.send(this.board._id));
     }
   },
 
@@ -218,8 +253,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+
 .board {
-  display: flex;
+    width: auto;
+  height: calc(100vh - 85px);
+  display: inline-block;
   flex-direction: column;
 }
 .board-list-ul {
@@ -401,12 +439,12 @@ export default {
 }
 
 .slide-enter-active {
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   // transition: left 0.5s ease;
 }
 .slide-leave-active {
   // transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 .slide-enter, .slide-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
@@ -417,8 +455,34 @@ export default {
   overflow: auto;
   max-height: calc(90vh - 200px);
 }
-.divider{
+.divider {
   height: 1px;
   width: 340px;
 }
+.ColorBoard {
+  border: 1px solid rgb(0, 0, 0);
+  width: 80%;
+  margin: 20px auto 0;
+  display: flex;
+  .color {
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  .color1dc78e {
+    background-color: #1dc78e;
+  }
+  .colorf5cf66 {
+    background-color: #f5cf66;
+  }
+  .color83d8ff {
+    background-color: #83d8ff;
+  }
+  .colore06bfd {
+    background-color: #e06bfd;
+  }
+}
 </style>
+

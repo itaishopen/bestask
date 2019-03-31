@@ -40,7 +40,7 @@
       </div>
       </transition>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" :delay="3" class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @start="delay=3" @end="endMoveList"  class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -415,7 +415,7 @@ export default {
 }
 .activities {
   overflow: auto;
-  max-height: calc(100vh - 250px);
+  max-height: calc(90vh - 200px);
 }
 .divider{
   height: 1px;

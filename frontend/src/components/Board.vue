@@ -50,7 +50,7 @@
         </div>
       </div>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" :delay="3" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -145,6 +145,7 @@ export default {
         animation: 200,
         group: "lists",
         disabled: false,
+        draggable: ".board-list-li",
         ghostClass: "ghost",
         // delay: 3,
         // touchStartThreshold: 1,

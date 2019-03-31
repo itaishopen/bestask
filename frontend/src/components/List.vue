@@ -187,7 +187,7 @@ export default {
     },
     dragOptionsCard() {
       return {
-        animation: 200,
+        animation: 150,
         group: "cards",
         disabled: false,
         draggable: ".card",

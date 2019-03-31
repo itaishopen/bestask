@@ -9,12 +9,14 @@ export default {
         lists: [],
         activities: [],
         currCard: null,
+        isAddCard: false
     },
     getters: {
         getBoard: state => state.board,
         getLists: state => state.lists,
         getBoardActivities: state => state.activities,
         getCurrCard: state => state.currCard,
+        isAddCard: state => state.isAddCard,
     },
     mutations: {
         setBoard(state, { board }) {
@@ -39,7 +41,7 @@ export default {
         },
         updateCard(state, { savedCard }) {
             const cardList = state.lists.find(list => list._id === savedCard.listId);
-            const cardIdx =  cardList.cards.findIndex(card => card._id === savedCard._id)            
+            const cardIdx = cardList.cards.findIndex(card => card._id === savedCard._id)
             cardList.cards.splice(cardIdx, 1, savedCard);
             const listIdx = state.lists.findIndex(list => list._id === cardList._id);
             state.lists.splice(listIdx, 1, cardList);
@@ -55,6 +57,9 @@ export default {
         },
         setBoardActivities(state, { activities }) {
             state.activities = activities
+        },
+        setIsAddCard(state, { isAddCard }) {
+            state.isAddCard = isAddCard;
         }
     },
     actions: {
@@ -62,7 +67,7 @@ export default {
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
                     console.log(activities);
-                    
+                    context.commit({ type: 'setIsAddCard', isAddCard: false });
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
                     context.commit({ type: 'setBoardActivities', activities });
@@ -70,8 +75,8 @@ export default {
                 })
         },
         saveBoard(context, { board }) {
-            console.log(board , 'board store');
-            
+            console.log(board, 'board store');
+
             return BoardService.saveBoard(board).then(savedBoard => {
                 context.commit({ type: 'setBoard', savedBoard: savedBoard[0] })
                 return savedBoard[0]
@@ -101,7 +106,7 @@ export default {
         saveCardToList(context, { card }) {
             const isEdit = !!card._id;
             return CardService.saveCard(card)
-                .then(savedCard => {                    
+                .then(savedCard => {
                     if (isEdit) context.commit({ type: 'updateCard', savedCard: savedCard[0] });
                     else context.commit({ type: 'addCard', savedCard: savedCard[0] });
                     return savedCard[0]

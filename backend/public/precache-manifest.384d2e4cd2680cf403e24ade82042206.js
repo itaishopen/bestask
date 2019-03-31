@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/fonts/BerkshireSwash-Regular.0511c175.ttf"
   },
   {
-    "revision": "2dcd0c2646f2ee83defd",
-    "url": "/css/app.14d2d4c7.css"
+    "revision": "1024e3a09c118d8a6c9d",
+    "url": "/css/app.1e14209f.css"
   },
   {
     "revision": "352a2e78030d32c3a9ca",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/js/about.80fe9ce8.js"
   },
   {
-    "revision": "2dcd0c2646f2ee83defd",
-    "url": "/js/app.2bfae3b9.js"
+    "revision": "1024e3a09c118d8a6c9d",
+    "url": "/js/app.48afd429.js"
   },
   {
     "revision": "66e2160a3481cc78b7684014fadcc1c3",
@@ -64,15 +64,15 @@ self.__precacheManifest = [
     "url": "/fonts/EmilysCandy-Regular.d0383190.ttf"
   },
   {
-    "revision": "eb9532033c2adf99b1314611b5e9cd0e",
-    "url": "/fonts/Lato_Bold.eb953203.ttf"
-  },
-  {
     "revision": "3b9b99039cc0a98dd50c3cbfac57ccb2",
     "url": "/fonts/Lato_Regular.3b9b9903.ttf"
   },
   {
-    "revision": "ff50fa08ccfd94e7c259dbf8b4626eef",
+    "revision": "eb9532033c2adf99b1314611b5e9cd0e",
+    "url": "/fonts/Lato_Bold.eb953203.ttf"
+  },
+  {
+    "revision": "a37179782d42578a7c350909c9989a77",
     "url": "/index.html"
   },
   {

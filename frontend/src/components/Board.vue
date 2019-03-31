@@ -132,13 +132,15 @@ export default {
     },
     dragOptions() {
       return {
-        animation: 200,
+        animation: 150,
         group: "lists",
         disabled: false,
         draggable: ".board-list-li",
+        // filter: ".no-drag",
         ghostClass: "ghost",
-        delay: 5,
-        forceFallback: true,
+        // delay: 3,
+        // forceFallback: true,
+        // fallbackTolerance: 1,
         // delay: 3,
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"

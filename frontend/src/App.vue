@@ -20,7 +20,6 @@ export default {
 <style lang='scss' scoped>
 #app {
   height: 100vh;
-  // width: 100%;
   overflow-y: hidden;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

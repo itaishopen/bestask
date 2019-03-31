@@ -125,12 +125,16 @@ export default {
       }
     },
     newCard() {
-      this.card = CardService.getEmptyCard()
-      this.card.order = this.list.cards.length;
-      this.isAddClick = !this.isAddClick;
+      if(!this.isAddCard){
+        this.card = CardService.getEmptyCard();
+        this.card.order = this.list.cards.length;
+        this.isAddClick = !this.isAddClick;
+        this.isAddCard = true;
+      }
     },
     closeAdd() {
       this.isAddClick = !this.isAddClick;
+      this.isAddCard = false;
     },
     addCard() {
       this.card.listId = this.list._id;
@@ -138,6 +142,7 @@ export default {
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
         .then(card => {
+          this.isAddCard = false;
           var boardId = this.list.boardId;
           let activity = ActivityService.getEmptyActivity();
           activity.text = " added a new card to list ";
@@ -198,6 +203,14 @@ export default {
         fallbackTolerance: 3,
       }
     },
+    isAddCard:{
+      get() {
+        return this.$store.getters.isAddCard;
+      },
+      set(value) {
+        this.$store.commit("setIsAddCard", { isAddCard: value });
+      }
+    }
   },
 
   created() {

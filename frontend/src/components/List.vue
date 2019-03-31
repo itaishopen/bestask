@@ -4,7 +4,7 @@
       <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
       <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
         <input
-          class="input-title-list"
+          class="input-title-list no-drag"
           ref="title"
           v-model="list.title"
           placeholder="Enter title here..."
@@ -22,7 +22,6 @@
         :class="list._id"
         v-model="listArray"
         v-bind="dragOptionsCard"
-        @onChoose="choseOption"
         @end="funToMove"
       >
         <div
@@ -36,12 +35,12 @@
       </draggable>
     </main>
 
-    <footer class="footer">
+    <footer class="footer no-drag">
       <button class="list-add-card" v-if="!isAddClick" @click="newCard()">
         Add card
         <i class="fa fa-plus"></i>
       </button>
-      <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
+      <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card no-drag">
         <div>
           <textarea class="text-area" v-model="card.title" placeholder="Enter title here..."></textarea>
         </div>
@@ -188,17 +187,15 @@ export default {
     },
     dragOptionsCard() {
       return {
-        animation: 200,
+        animation: 150,
         group: "cards",
         disabled: false,
         draggable: ".card",
+        filter: ".no-drag",
         ghostClass: "ghost",
         delay: 5,
         forceFallback: true,
-        // onUpdate: function () {
-        //   preventDragClick = true
-        // }
-        // delay: 1
+        fallbackTolerance: 3,
       }
     },
   },
@@ -362,6 +359,7 @@ export default {
 .ghost {
   opacity: 0.3;
   background: #c8ebfb;
+  // transform: rotateZ( 30deg)
 }
 .fun-drag {
   min-height: 50px;
@@ -372,5 +370,10 @@ export default {
 .listgroup {
   cursor: move;
   min-height: 50px;
+  
 }
+
+// .chosenClass {
+//   transform: rotateZ( 30deg)
+// }
 </style>

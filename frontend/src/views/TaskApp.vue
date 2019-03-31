@@ -36,66 +36,62 @@
 </template>
 
 <script>
-import BoardPreview from '../components/BoardPreview.vue';
-import BoardService from '../services/BoardService'
+import BoardPreview from "../components/BoardPreview.vue";
+import BoardService from "../services/BoardService";
 // import CardEdit from '@/views/CardEdit.vue';
 
-
 export default {
-  name: 'TaskApp',
+  name: "TaskApp",
   data() {
     return {
       isNewBoard: false,
-      newBoardTitle: '',
+      newBoardTitle: ""
     };
   },
   created() {
     //todo chek in sesion
-    let user = {_id: 'guest'}
-    if (this.$store.getters.isUserLoggedIn){
-      user = this.$store.getters.loggedInUser
+    let user = { _id: "guest" };
+    if (this.$store.getters.isUserLoggedIn) {
+      user = this.$store.getters.loggedInUser;
       console.log(user);
-      
     }
-    this.$store.dispatch({ type: 'updateUser', userId: user._id })
+    this.$store.dispatch({ type: "updateUser", userId: user._id });
   },
   computed: {
     boards() {
       return this.$store.getters.getboards;
     }
-
   },
   methods: {
     createNewBoard() {
-      var newBoard = BoardService.getEmptyBoard()
+      var newBoard = BoardService.getEmptyBoard();
       newBoard.title = this.newBoardTitle;
       if (newBoard.title.length > 0) {
-        var user = this.$store.getters.loggedInUser
+        var user = this.$store.getters.loggedInUser;
         if (user._id) {
-          newBoard.members.push(user._id)
+          newBoard.members.push(user._id);
         } else {
-          newBoard.members.push('guest')
+          newBoard.members.push("guest");
         }
-        this.$store.dispatch({ type: 'saveBoard', board: newBoard })
+        this.$store
+          .dispatch({ type: "saveBoard", board: newBoard })
           .then(board => {
             console.log(board);
 
-            this.$router.push(`/board/${board._id}`)
-          })
-        this.newBoardTitle = '';
-
+            this.$router.push(`/board/${board._id}`);
+          });
+        this.newBoardTitle = "";
       }
     },
     activateNewBoard() {
       if (!this.isNewBoard) {
         this.isNewBoard = true;
       }
-    },
+    }
   },
   components: {
-    BoardPreview,
-  },
-
+    BoardPreview
+  }
 };
 </script>
 
@@ -117,7 +113,7 @@ export default {
   //   flex-direction: row;
   //   // flex-wrap: wrap;
   // }
- .board-preview {
+  .board-preview {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,7 +132,6 @@ export default {
     border-radius: 3px;
     cursor: pointer;
     transition: 0.3s;
-    
   }
   & .collection-addBoard {
     font-family: Raleway-Regular, "Open Sans", sans-serif;
@@ -149,6 +144,8 @@ export default {
     outline: 0;
     border-radius: 3px;
     background-color: #ffffff;
+          border: 1px solid rgb(73, 73, 73);
+
   }
   & .collection-options {
     padding: 0;
@@ -157,9 +154,24 @@ export default {
     align-items: center;
     justify-content: flex-start;
     margin: 10px auto;
+    .Button {
+      font-size: 17px;
+      font-weight: bold;
+      color: rgb(73, 73, 73);
+      border: none;
+      border-radius: 5px;
+      padding: 4px 18px;
+      margin: 0 auto;
+      transition: 0.4s;
+      border: 1px solid rgb(73, 73, 73);
+      &:hover {
+        border: 1px solid rgb(24, 24, 24);
+        color: rgb(24, 24, 24);
+      }
+    }
   }
   & .collection-newItem {
-    display: flex;
+    // display: flex;
     justify-content: center;
     align-items: center;
     height: 85px;
@@ -175,6 +187,10 @@ export default {
     color: #4d4d4d;
     &:hover {
       background-color: #b6bbbf;
+    }
+    .collection-title {
+      margin: 0 auto;
+      line-height: 70px;
     }
   }
   & .collection-newItem-active {

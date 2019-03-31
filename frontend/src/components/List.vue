@@ -193,7 +193,7 @@ export default {
         disabled: false,
         draggable: ".card",
         ghostClass: "ghost",
-        delay: 3,
+        delay: 5,
         forceFallback: true,
         // onUpdate: function () {
         //   preventDragClick = true

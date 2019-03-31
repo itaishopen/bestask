@@ -137,7 +137,7 @@ export default {
         disabled: false,
         draggable: ".board-list-li",
         ghostClass: "ghost",
-        delay: 3,
+        delay: 5,
         forceFallback: true,
         // delay: 3,
         // touchStartThreshold: 1,

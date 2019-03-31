@@ -1,4 +1,4 @@
-<template>
+<template v-if="board">
   <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
     <header class="nav-board">
       <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>

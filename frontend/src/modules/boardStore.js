@@ -19,6 +19,13 @@ export default {
         isAddCard: state => state.isAddCard,
     },
     mutations: {
+        resetState(state) {
+            state.board = {};
+            state.lists = [];
+            state.activities = [];
+            state.currCard = null;
+            state.isAddCard = false;
+        },
         setBoard(state, { board }) {
             state.board = board;
         },
@@ -64,10 +71,9 @@ export default {
     },
     actions: {
         loadBoard(context, { boardId }) {
+            context.commit({ type: 'resetState'});
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
-                    console.log(activities);
-                    context.commit({ type: 'setIsAddCard', isAddCard: false });
                     context.commit({ type: 'setBoard', board: board[0] });
                     context.commit({ type: 'setLists', lists });
                     context.commit({ type: 'setBoardActivities', activities });

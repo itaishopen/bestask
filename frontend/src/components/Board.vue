@@ -42,7 +42,7 @@
               <div class="color color78ff6c" @click="paintBoard('#78ff6c')"></div>
               <div class="color color6f6cff" @click="paintBoard('#6f6cff')"></div>
               <div class="color color6ce9ff" @click="paintBoard('#6ce9ff')"></div>
-              <div class="color color383838" @click="paintBoard('#383838')"></div>
+              <div class="color color959595" @click="paintBoard('#959595')"></div>
               <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
   },
   components: {
     list,
@@ -159,7 +159,7 @@ export default {
         disabled: false,
         draggable: ".board-list-li",
         // filter: ".no-drag",
-        ghostClass: "ghost",
+        ghostClass: "ghost"
         // delay: 3,
         // forceFallback: true,
         // fallbackTolerance: 1,
@@ -239,7 +239,6 @@ export default {
     paintBoard(color) {
       console.log("this.board", this.board);
       this.board.prefs.bgColor.color = color;
-      this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
       this.$store
@@ -251,6 +250,9 @@ export default {
   watch: {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
+    },
+    board: val => {
+      
     }
   }
 };
@@ -258,9 +260,12 @@ export default {
 
 <style lang='scss' scoped>
 .board {
+  // position: relative;
   width: auto;
-  height: calc(100vh - 85px);
-  display: inline-block;
+  padding-top: 70px;
+  height: 100vh;
+  width: 100%;
+  display: inline-table;
   flex-direction: column;
 }
 .board-list-ul {
@@ -432,11 +437,10 @@ export default {
   border-radius: 5px;
   padding: 8px 18px;
   transition: 0.3s;
-  &:hover{
-    background-color: rgba(255, 255, 255, 0.308);
-    color: rgb(236, 236, 236);
-    border: 2px solid rgb(236, 236, 236);
-    
+  &:hover {
+    background-color: rgba(241, 241, 241, 0.308);
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(0, 0, 0);
   }
 }
 .menu-modal {
@@ -517,8 +521,8 @@ export default {
   .colorfffd6c {
     background-color: #fffd6c;
   }
-  .color383838 {
-    background-color: #383838;
+  .color959595 {
+    background-color: #959595;
   }
   .color6ce9ff {
     background-color: #6ce9ff;

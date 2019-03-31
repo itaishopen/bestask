@@ -2,7 +2,7 @@
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
       <section class="title-card">
-        <div class="containerHead">
+        <div class="card-preview-head">
           <ul class="labels">
             <li class="label-li" v-for="label in card.labels" :key="label">
               <div class="label" :style="{background: label}"></div>
@@ -17,24 +17,24 @@
             :style="{ background: checkDoDate() }"
           >{{changeDate}}</div>
         </div>
-        <div class="info-bar">
-          <div class="info-bar-left">
-            <div class="info-bar-marks" title="cardDescr()" v-if="card.description">
+        <div class="card-preview-footer">
+          <div class="card-preview-footer-left">
+            <div class="card-preview-footer-marks description" title="description" v-if="card.description">
               <i class="fas fa-bars"></i>
             </div>
             <div
-              class="info-bar-marks"
-              title="You have card.checklists.length checklists"
+              class="card-preview-footer-marks checklists"
+              title="checklists"
               v-if="card.checklists.length !== 0"
             >
               <i class="fas fa-list"></i>
             </div>
           </div>
-          <div class="info-bar-center">
+          <div class="card-preview-footer-center">
             <div class="et far fa-clock fa-xs" v-if="card.et && !card.at">ET: {{card.et}}</div>
             <div class="at far fa-clock fa-xs" v-if="card.at">AT: {{card.at}}</div>
           </div>
-          <div class="info-bar-right">
+          <div class="card-preview-footer-right">
             <section class="container-member">
               <div v-for="user in this.card.users.slice(0, 2)" :key="user._id">
                 <div class="container-name-member">
@@ -107,6 +107,120 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.card-preview {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  .title-card {
+    padding: 4px;
+    min-width: 270px;
+    max-width: 270px;
+    min-height: 90px;
+    max-height: 250px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 10px;
+    margin: 0.7px 3px;
+    box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+    border-bottom: 0.9px solid rgb(167, 165, 165);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    transition: 0.2s;
+    &:hover {
+      background-color: rgb(250, 250, 250);
+    }
+  }
+  .card-preview-head {
+    height: 25px;
+    top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    .labels {
+      display: flex;
+      justify-content: flex-start;
+      .label-li {
+        height: 10px;
+        .label {
+          margin: 0 3px;
+          width: 37px;
+          height: 9px;
+          border-radius: 20px;
+        }
+      }
+    }
+  }
+  .card-middle {
+    display: flex;
+    width: 100%;
+    height: 22px;
+    .title-card-text {
+      color: black;
+      font-size: 18px;
+      display: flex;
+      justify-self: center;
+      align-self: center;
+      width: 190px;
+      justify-content: flex-start;
+    }
+    .due-date {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      font-size: 12px;
+      color: rgb(255, 255, 255);
+      padding: 5px 10px 5px 10px;
+      border-radius: 25px;
+    }
+  }
+  .card-preview-footer {
+    color: #525252;
+    width: 100%;
+    display: flex;
+    height: 27px;
+    bottom: 5px;
+    .card-preview-footer-left {
+      display: flex;
+      min-width: 75px;
+      justify-content: flex-start;
+      .card-preview-footer-marks {
+        margin: 5px;
+      }
+    }
+    .card-preview-footer-center {
+      min-width: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-preview-footer-right {
+      display: flex;
+      flex-direction: row-reverse;
+      min-width: 75px;
+      align-items: center;
+      justify-items: flex-end;
+      .container-member {
+        display: flex;
+        flex-direction: row;
+        .logo-user-name {
+          font-size: 10px;
+          font-weight: bold;
+          width: 22px;
+          height: 22px;
+          line-height: 22px;
+          border-radius: 50%;
+          color: black;
+          border: 1px solid rgb(133, 133, 133);
+          background-color: rgb(243, 243, 243);
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}
 a {
   text-decoration: none;
   outline: none;
@@ -119,124 +233,5 @@ a:hover {
   outline: none;
   text-decoration-line: none;
   text-decoration-style: none;
-}
-.label-li {
-  height: 10px;
-}
-.labels {
-  display: flex;
-  justify-content: flex-start;
-}
-.label {
-  margin: 0 3px;
-  width: 37px;
-  height: 9px;
-  border-radius: 20px;
-}
-.title-card {
-  padding: 4px;
-  min-width: 270px;
-  max-width: 270px;
-  min-height: 90px;
-  max-height: 250px;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(230, 230, 230);
-  border-radius: 10px;
-  margin: 0.7px 3px;
-  box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
-  border-bottom: 0.9px solid rgb(167, 165, 165);
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-  transition: 0.2s;
-}
-.title-card:hover {
-  background-color: rgb(250, 250, 250);
-}
-.card-middle {
-  display: flex;
-  width: 100%;
-  & .title-card-text {
-    color: black;
-    font-size: 18px;
-    display: flex;
-    justify-self: center;
-    align-self: center;
-    width: 190px;
-    justify-content: flex-start;
-  }
-  & .due-date {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    justify-items: center;
-    text-align: center;
-    font-size: 12px;
-    color: rgb(255, 255, 255);
-    padding: 5px 10px 5px 10px;
-    border-radius: 25px;
-  }
-}
-
-.card-preview {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-}
-.containerHead {
-  height: 25px;
-  top: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.info-bar {
-  color: #525252;
-  width: 100%;
-  display: flex;
-  bottom: 5px;
-}
-
-.info-bar-left {
-  display: flex;
-  min-width: 75px;
-  justify-content: flex-start;
-}
-
-.info-bar-right {
-  display: flex;
-  flex-direction: row-reverse;
-  min-width: 75px;
-  align-items: center;
-  justify-items: flex-end;
-}
-
-.info-bar-center {
-  min-width: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.info-bar-marks {
-  margin: 5px;
-}
-
-.container-member {
-  display: flex;
-  flex-direction: row;
-}
-.logo-user-name {
-  font-size: 10px;
-  font-weight: bold;
-  width: 22px;
-  height: 22px;
-  line-height: 22px;
-  border-radius: 50%;
-  color: black;
-  border: 1px solid rgb(133, 133, 133);
-  background-color: rgb(243, 243, 243);
-  justify-content: flex-start;
 }
 </style>

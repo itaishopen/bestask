@@ -2,66 +2,15 @@ const mongoService = require('./mongoService')
 const USERS_DB = 'users';
 const ObjectId = require('mongodb').ObjectId;
 
-// function query({ boardId = null }) {
-//     if (boardId) boardId = new ObjectId(boardId)
-//     return mongoService.connect()
-//         .then(db => db.collection(USERS_DB)
-//             .aggregate([
-//                 { "$match": { "boardId": { "$in": boards } } },
-//                 {
-//                     "$lookup": {
-//                         "from": "activities",
-//                         "let": { "user_id": "$_id" },
-//                         "pipeline": [
-//                             { "$match": { "$expr": { "$eq": ["$userId", "$$user_id"] } } },
-//                             {
-//                                 "$lookup": {
-//                                     "from": "users",
-//                                     "let": { "user_Id": "$userId" },
-//                                     "pipeline": [
-//                                         { "$match": { "$expr": { "$eq": ["$_id", "$$user_Id"] } } }
-//                                     ],
-//                                     "as": "user"
-//                                 }
-//                             },
-//                             {
-//                                 "$lookup": {
-//                                     "from": "boards",
-//                                     "let": { "board_Id": "$boardId" },
-//                                     "pipeline": [
-//                                         { "$match": { "$expr": { "$eq": ["$_id", "$$board_Id"] } } }
-//                                     ],
-//                                     "as": "board"
-//                                 }
-//                             },
-//                             {
-//                                 "$lookup": {
-//                                     "from": "lists",
-//                                     "let": { "list_Id": "$listId" },
-//                                     "pipeline": [
-//                                         { "$match": { "$expr": { "$eq": ["$_id", "$$list_Id"] } } }
-//                                     ],
-//                                     "as": "list"
-//                                 }
-//                             },
-//                             {
-//                                 "$lookup": {
-//                                     "from": "cards",
-//                                     "let": { "card_Id": "$cardId" },
-//                                     "pipeline": [
-//                                         { "$match": { "$expr": { "$eq": ["$_id", "$$card_Id"] } } }
-//                                     ],
-//                                     "as": "card"
-//                                 }
-//                             }
-//                         ],
-//                         "as": "activities"
-//                     }
-//                 },
-//             ]).toArray())
-// }
+function query({ boardId = null }) {
+    if (boardId) boardId = new ObjectId(boardId)
+    return mongoService.connect()
+        .then(db => db.collection(USERS_DB).find({}))
+}
 
 function addUser(user) {
+    user.firstName[0].toUpperCase();
+    user.lastName[0].toUpperCase();
     return mongoService.connect()
         .then(db => db.collection(USERS_DB).insertOne(user).then(res => {
             user._id = res.insertedId
@@ -118,7 +67,7 @@ function getUserById({ userId = 'guest' }) {
             userName: 'guest'+ makeId(3),
             password: null,
             email: null,
-            prefs: { userPic: null, bgColor: '#ffffff', color: '#000000' }
+            prefs: { userPic: null, bgColor: '#0000007a', color: '#ffffff' }
         }]
     }
 
@@ -132,7 +81,9 @@ function removeUser(userId) {
 
 function updateUser(user) {
     user._id = new ObjectId(user._id);
-    user.activities = null
+    user.activities = null;
+    user.firstName[0].toUpperCase();
+    user.lastName[0].toUpperCase();
     return mongoService.connect()
         .then(db => db.collection(USERS_DB).updateOne({ _id: user._id }, { $set: user }))
 }
@@ -204,7 +155,7 @@ function makeId(length) {
 }
 
 module.exports = {
-    // query,
+    query,
     addUser,
     getUserById,
     removeUser,

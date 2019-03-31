@@ -53,9 +53,7 @@ function addUserRoutes(app) {
 
     // CREATE
     app.post(`/api/signup`, (req, res) => {
-        const newUser = req.body;
-        console.log(newUser);
-        
+        const newUser = req.body;        
         newUser.firstName[0].toUpperCase()
         newUser.lastName[0].toUpperCase()
         userService.addUser(newUser)

@@ -16,7 +16,7 @@
           </button>
         </div>
       </form>
-      <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
+      <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
     </header>
     <main>
       <transition name="slide">
@@ -49,12 +49,20 @@
               <div class="color colore06bfd" @click="paintBoard('#e06bfd')"></div>
               <div class="color color83d8ff" @click="paintBoard('#83d8ff')"></div>
               <div class="color colorf5cf66" @click="paintBoard('#f5cf66')"></div>
+              <div class="color colorffffff" @click="paintBoard('#ffffff')"></div>
+              <div class="color colorf566ca" @click="paintBoard('#f566ca')"></div>
+              <div class="color colorff8383" @click="paintBoard('#ff8383')"></div>
+              <div class="color color78ff6c" @click="paintBoard('#78ff6c')"></div>
+              <div class="color color6f6cff" @click="paintBoard('#6f6cff')"></div>
+              <div class="color color6ce9ff" @click="paintBoard('#6ce9ff')"></div>
+              <div class="color color383838" @click="paintBoard('#383838')"></div>
+              <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
             </div>
           </div>
         </div>
       </transition>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList"  class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -153,7 +161,7 @@ export default {
         draggable: ".board-list-li",
         ghostClass: "ghost",
         delay: 5,
-        forceFallback: true,
+        forceFallback: true
         // delay: 3,
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"
@@ -248,9 +256,8 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
 .board {
-    width: auto;
+  width: auto;
   height: calc(100vh - 85px);
   display: inline-block;
   flex-direction: column;
@@ -416,7 +423,21 @@ export default {
   align-self: flex-end;
   background-color: #ebebeb;
 }
-
+.menu-btn {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.116);
+  color: rgb(75, 75, 75);
+  border: 2px solid rgb(75, 75, 75);
+  border-radius: 5px;
+  padding: 8px 18px;
+  transition: 0.3s;
+  &:hover{
+    background-color: rgba(255, 255, 255, 0.308);
+    color: rgb(236, 236, 236);
+    border: 2px solid rgb(236, 236, 236);
+    
+  }
+}
 .menu-modal {
   display: flex;
   position: fixed;
@@ -455,10 +476,12 @@ export default {
   width: 340px;
 }
 .ColorBoard {
-  border: 1px solid rgb(0, 0, 0);
-  width: 80%;
+  border: 1px solid rgb(138, 138, 138);
+  width: 90%;
   margin: 20px auto 0;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   .color {
     cursor: pointer;
     margin: 10px;
@@ -477,6 +500,30 @@ export default {
   }
   .colore06bfd {
     background-color: #e06bfd;
+  }
+  .colorffffff {
+    background-color: #ffffff;
+  }
+  .colorf566ca {
+    background-color: #f566ca;
+  }
+  .colorff8383 {
+    background-color: #ff8383;
+  }
+  .color78ff6c {
+    background-color: #78ff6c;
+  }
+  .colorfffd6c {
+    background-color: #fffd6c;
+  }
+  .color383838 {
+    background-color: #383838;
+  }
+  .color6ce9ff {
+    background-color: #6ce9ff;
+  }
+  .color6f6cff {
+    background-color: #6f6cff;
   }
 }
 </style>

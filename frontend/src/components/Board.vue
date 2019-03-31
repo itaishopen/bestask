@@ -40,7 +40,7 @@
       </div>
       </transition>
       <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @start="delay=3" @end="endMoveList"  class="draggable">
+        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList"  class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
             <list :list="list"/>
           </li>
@@ -137,6 +137,8 @@ export default {
         disabled: false,
         draggable: ".board-list-li",
         ghostClass: "ghost",
+        delay: 3,
+        forceFallback: true,
         // delay: 3,
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"

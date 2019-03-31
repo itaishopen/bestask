@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/fonts/BerkshireSwash-Regular.0511c175.ttf"
   },
   {
-    "revision": "a15e9b33ce61769f7bb0",
-    "url": "/css/app.b55169e4.css"
+    "revision": "a5756d50327e42b13dc1",
+    "url": "/css/app.c1859662.css"
   },
   {
     "revision": "352a2e78030d32c3a9ca",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/js/about.80fe9ce8.js"
   },
   {
-    "revision": "a15e9b33ce61769f7bb0",
-    "url": "/js/app.68f4df2c.js"
+    "revision": "a5756d50327e42b13dc1",
+    "url": "/js/app.26a72b5f.js"
   },
   {
     "revision": "66e2160a3481cc78b7684014fadcc1c3",
@@ -72,7 +72,7 @@ self.__precacheManifest = [
     "url": "/fonts/Lato_Regular.3b9b9903.ttf"
   },
   {
-    "revision": "016cb88e5eb466bbad1816d7bfc27553",
+    "revision": "3a892b258974c47299948dce4ea96b96",
     "url": "/index.html"
   },
   {

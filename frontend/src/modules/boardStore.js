@@ -71,7 +71,7 @@ export default {
     },
     actions: {
         loadBoard(context, { boardId }) {
-            context.commit({ type: 'resetState'});
+            context.commit({ type: 'setIsAddCard', isAddCard: false });
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
                     context.commit({ type: 'setBoard', board: board[0] });
@@ -79,6 +79,11 @@ export default {
                     context.commit({ type: 'setBoardActivities', activities });
                     return board[0]
                 })
+        },
+        resetBoard(context, { isReset }) {
+            if(isReset) {
+                context.commit({ type: 'resetState'});
+            }
         },
         saveBoard(context, { board }) {
             console.log(board, 'board store');

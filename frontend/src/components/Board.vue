@@ -17,26 +17,15 @@
         </div>
       </form>
       <b-button v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
-      <!-- <div class="menu-modal" v-show="showMenu">
-        <button v-on:click="toggleMenu" class="menu-close-btn">
-            <i class="fas fa-times" style="color:#000000;"></i>
-        </button>
-        <div>
-          <router-link :to="'/board/' + board._id + '/archive'">
-            <b-button variant="link">Archived items</b-button>
-          </router-link>
-        </div>
-        <div>
-          <b-button variant="link" v-on:click="toggleActivity">Show Activities</b-button>
-          <activities v-if="showAtivities" :board="board" class="activities"></activities>
-        </div>
-      </div>-->
     </header>
     <main>
+      <transition name="slide">>
       <div class="menu-modal" v-show="showMenu">
         <button v-on:click="toggleMenu" class="menu-close-btn">
           <i class="fas fa-times" style="color:#000000;"></i>
         </button>
+        <h1>Menu</h1>
+        <hr class="divider"/>
         <div>
           <router-link :to="'/board/' + board._id + '/archive'">
             <b-button variant="link">Archived items</b-button>
@@ -49,6 +38,7 @@
           <activities v-if="showAtivities" :board="board" class="activities"></activities>
         </div>
       </div>
+      </transition>
       <ul class="board-list-ul">
         <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" :delay="3" class="draggable">
           <li class="board-list-li" v-for="list in lists" :key="list._id">
@@ -382,16 +372,6 @@ export default {
   background: #c8ebfb;
 }
 
-.navbar {
-  width: 350px;
-  position: absolute;
-  z-index: 1;
-}
-.navbar-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
 .container-add-list-btns {
   .fa-plus {
     color: rgb(255, 255, 255);
@@ -401,6 +381,7 @@ export default {
   outline: none;
   border: none;
   align-self: flex-end;
+  background-color: #ebebeb;
 }
 
 .menu-modal {
@@ -413,13 +394,31 @@ export default {
   max-height: calc(100vh - 110px);
   background-color: #ebebeb;
   border: 1px solid #cecece;
-  border-radius: 8px;
+  // border-radius: 8px;
   margin: 0px 5px;
   z-index: 500;
   height: 100%;
 }
+
+.slide-enter-active {
+  transition: all .2s ease;
+  // transition: left 0.5s ease;
+}
+.slide-leave-active {
+  // transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .2s ease;
+}
+.slide-enter, .slide-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(340px);
+  // opacity: 0;
+}
 .activities {
   overflow: auto;
   max-height: calc(100vh - 250px);
+}
+.divider{
+  height: 1px;
+  width: 340px;
 }
 </style>

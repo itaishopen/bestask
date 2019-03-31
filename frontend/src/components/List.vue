@@ -1,6 +1,6 @@
 <template class="everyCard">
   <section class="list slide">
-    <header class="header title drag-me">
+    <header class="header title">
       <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
       <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
         <input
@@ -17,13 +17,6 @@
     </header>
 
     <main class="main items drag-me">
-      <!-- <draggable
-        class="list-group-top"
-        :class="list._id"
-        v-model="listArray[0].cards"
-        v-bind="dragOptionsList"
-        :key="list._id"
-      >-->
       <draggable
         class="listgroup"
         :class="list._id"
@@ -41,23 +34,6 @@
           <card-preview class="drag-me" v-if="!card.archived" :card="card"></card-preview>
         </div>
       </draggable>
-      <!-- </draggable> -->
-      <!-- <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card">
-        <div>
-          <textarea
-            class="text-area"
-            v-model="card.title"
-            placeholder="Enter title here..."
-            autofocus
-          ></textarea>
-        </div>
-        <div class="container-add-card-btns">
-          <button class="list-new-card-options" type="submit">Add card</button>
-          <button class="list-x-card-options" @click="closeAdd">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-      </form>-->
     </main>
 
     <footer class="footer">
@@ -272,7 +248,7 @@ export default {
     }
   }
   .main {
-    max-height: 60vh;
+    max-height: 55vh;
     overflow-y: scroll;
   }
   .footer {

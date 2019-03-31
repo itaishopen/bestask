@@ -13,15 +13,19 @@
         <i class="fas fa-info nav-btn"></i>
       </router-link>
       <router-link class="nav-btns" to="/board" title="Boards">
-        <i class="fab fa-flipboard nav-btn"></i>
+        <i class="fas fa-chalkboard nav-btn"></i>
       </router-link>
-      <div class="login" >
+      <div class="login">
         <router-link to="/login/">
           <span class="user-logedin" v-if="user && user._id" title="Logout">
             <span v-if="user.prefs.userPic">
               <img src="user.prefs.userPic" alt>
             </span>
-            <span v-else class="no-pic-user" :style="{ background: user.prefs.bgColor, color: user.prefs.color }">{{user.firstName[0]}}{{user.lastName[0]}}</span>
+            <span
+              v-else
+              class="no-pic-user"
+              :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+            >{{user.firstName[0]}}{{user.lastName[0]}}</span>
           </span>
           <i v-else class="fas fa-sign-in-alt nav-btn" title="Login"></i>
         </router-link>
@@ -37,7 +41,7 @@ export default {
   name: "NavigationBar",
   data() {
     return {
-      userConnect: false,
+      userConnect: false
     };
   },
   created() {},

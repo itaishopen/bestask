@@ -226,6 +226,8 @@ export default {
       align-items: center;
       .about-me {
         .img-footer {
+          border-radius: 50%;
+          border: 2px solid rgb(36, 36, 36);
           width: 110px;
           margin-bottom: 9px;
         }

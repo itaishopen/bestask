@@ -249,12 +249,13 @@ export default {
       align-items: center;
       .fab {
         padding: 4px;
+        cursor: pointer;
       }
       .twitter,
       .facebook,
       .whatsapp,
       .linkedin {
-          transition: 0.2s;
+        transition: 0.2s;
       }
       .twitter:hover {
         color: #1da1f2;

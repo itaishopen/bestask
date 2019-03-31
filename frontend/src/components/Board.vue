@@ -1,6 +1,6 @@
 <template>
-  <section class="board" :style="{ background: board.prefs.bgColor.color}">
-    <header class="nav-board" :style="{ background: board.prefs.bgColor.color}">
+  <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
+    <header class="nav-board">
       <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
       <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
         <div class="title-input-container">
@@ -126,7 +126,8 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
+    this.$store.dispatch({ type: "resetBoard", isReset: true })
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
   },
   components: {
     list,
@@ -243,9 +244,11 @@ export default {
       this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
-      this.$store
-        .dispatch({ type: "saveBoard", board: this.board })
-        .then(() => SocketService.send(this.board._id));
+      this.$store.dispatch({ type: "saveBoard", board: this.board })
+        .then(board => {
+          this.board = board;
+          SocketService.send(this.board._id)
+          });
     }
   },
 
@@ -253,7 +256,6 @@ export default {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     },
-    board: val => {}
   }
 };
 </script>
@@ -272,6 +274,7 @@ export default {
   margin-top: 50px;
 }
 .nav-board {
+  background: rgba(255, 255, 255, 0.2);
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -450,13 +453,13 @@ export default {
   right: -5px;
   flex-direction: column;
   width: 340px;
-  max-height: calc(100vh - 110px);
+  max-height: calc(100vh - 87px);
   background-color: #ebebeb;
   border: 1px solid #cecece;
   // border-radius: 8px;
   margin: 0px 5px;
   z-index: 500;
-  height: 100%;
+  min-height: 10px;
 }
 
 .slide-enter-active {
@@ -474,7 +477,7 @@ export default {
 }
 .activities {
   overflow: auto;
-  max-height: calc(90vh - 200px);
+  max-height: calc(90vh - 190px);
 }
 .divider {
   height: 1px;

@@ -13,7 +13,7 @@
         <i class="fas fa-info nav-btn"></i>
       </router-link>
       <router-link class="nav-btns" to="/board" title="Boards">
-        <i class="fas fa-chalkboard nav-btn"></i>
+        <i class="fas fa-table nav-btn"></i>
       </router-link>
       <div class="login">
         <router-link to="/login/">

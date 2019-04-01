@@ -42,7 +42,7 @@
       </button>
       <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card no-drag">
         <div>
-          <textarea class="text-area" v-model="card.title" placeholder="Enter title here..."></textarea>
+          <textarea class="text-area" v-on:keyup.enter="addCard" v-model="card.title" placeholder="Enter title here..."></textarea>
         </div>
         <div class="container-add-card-btns">
           <button class="list-new-card-options" type="submit">Add card</button>

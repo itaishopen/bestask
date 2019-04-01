@@ -17,8 +17,8 @@
             </button>
           </div>
         </form>
-        <section class="container-member">
-          <div v-for="user in this.board.users.slice(0, 2)" :key="user._id">
+        <section class="container-member" v-if="board.users">
+          <div  v-for="user in board.users.slice(0, 2)" :key="user._id">
             <div class="container-name-member">
               <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
             </div>

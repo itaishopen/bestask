@@ -1,7 +1,7 @@
 <template>
-  <div class="card-preview" >
+  <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
-      <section class="title-card" :style="{ background: card.prefs.bgColor.color}">
+      <section class="title-card" :style="{ background: card.prefs.bgColor}">
         <div class="card-preview-head">
           <ul class="labels">
             <li class="label-li" v-for="label in card.labels" :key="label">
@@ -19,7 +19,11 @@
         </div>
         <div class="card-preview-footer">
           <div class="card-preview-footer-left">
-            <div class="card-preview-footer-marks description" title="description" v-if="card.description">
+            <div
+              class="card-preview-footer-marks description"
+              title="description"
+              v-if="card.description"
+            >
               <i class="fas fa-bars"></i>
             </div>
             <div
@@ -57,7 +61,7 @@ import moment from "moment";
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() { },
+  created() {},
   data() {
     return {};
   },
@@ -81,7 +85,7 @@ export default {
       return usertodisplay;
     },
     changeDate() {
-      return moment(this.card.dueDate, 'YYYY/MM/DD').format('DD/MM')
+      return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
     }
   },
   methods: {
@@ -94,13 +98,12 @@ export default {
       }
     },
     checkDoDate() {
-      let dateAsMoment = moment(this.card.dueDate, 'YYYY/MM/DD')
-      let today = moment()
-      if (dateAsMoment.diff(today, 'days') <= -1) return '#544e44'
-      if (dateAsMoment.diff(today, 'days') <= 1) return '#e52e2d'
-      if (dateAsMoment.diff(today, 'days') <= 3) return '#eea41c'
-      return '#3b8006'
-
+      let dateAsMoment = moment(this.card.dueDate, "YYYY/MM/DD");
+      let today = moment();
+      if (dateAsMoment.diff(today, "days") <= -1) return "#544e44";
+      if (dateAsMoment.diff(today, "days") <= 1) return "#e52e2d";
+      if (dateAsMoment.diff(today, "days") <= 3) return "#eea41c";
+      return "#3b8006";
     }
   },
   components: {}

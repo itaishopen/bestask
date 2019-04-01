@@ -1,4 +1,4 @@
-<template>
+<template v-if="board">
   <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
     <header class="nav-board">
       <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
@@ -137,13 +137,18 @@ export default {
   },
 
   computed: {
-    board() {
+    board: {
+      get() {
       if (this.$store.getters.getBoard) {
         return this.$store.getters.getBoard;
       }
       return this.$store
         .dispatch({ type: "loadBoard", boardId: this.boardId })
         .then(board => board);
+    },
+      set() {
+        this.$store.commit("setBoard", { board: board });
+      }
     },
     lists: {
       get() {

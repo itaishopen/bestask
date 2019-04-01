@@ -169,11 +169,34 @@
       <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
       <b-button class="m-1 float-right" @click="modalClosed">Close</b-button>
     </div>
-    <!-- Modal Labels Component -->
+    <!-- Modal card color Component -->
     <b-modal id="modal10" title="Color card">
-      <div class="Label Red" @click="changeLabel('red')">
-        <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
-      </div>
+      <section class="plateColor">
+        <div class="color colorffffff" @click="changeCardColor('#ffffff')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ffffff')"></i>
+        </div>
+        <div class="color colorff9191" @click="changeCardColor('#ff9191')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ff9191')"></i>
+        </div>
+        <div class="color colorffd591" @click="changeCardColor('#ffd591')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ffd591')"></i>
+        </div>
+        <div class="color colorfdff91" @click="changeCardColor('#fdff91')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#fdff91')"></i>
+        </div>
+        <div class="color color9eff91" @click="changeCardColor('#9eff91')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#9eff91')"></i>
+        </div>
+        <div class="color color91ffda" @click="changeCardColor('#91ffda')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#91ffda')"></i>
+        </div>
+        <div class="color color91abff" @click="changeCardColor('#91abff')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#91abff')"></i>
+        </div>
+        <div class="color colore991ff" @click="changeCardColor('#e991ff')">
+          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#e991ff')"></i>
+        </div>
+      </section>
     </b-modal>
 
     <!-- Modal Labels Component -->
@@ -230,8 +253,7 @@
     <!-- Share Modal  -->
     <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
       <b-form-input class="m-1" v-model="share" readonly/>
-    </b-modal>
-.
+    </b-modal>.
   </b-modal>
   <!-- </section> -->
 </template>
@@ -435,6 +457,13 @@ export default {
       } else {
         this.card.labels.splice(index, 1);
       }
+    },
+    checkCorectColor(color) {
+      return this.card.prefs.bgColor === color;
+    },
+    changeCardColor(chosenColor) {
+      this.card.prefs.bgColor = chosenColor;
+      console.log(this.card);
     },
     saveCard(isArchive) {
       this.card.archived = isArchive;
@@ -675,6 +704,53 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
 }
+
+// card color
+.plateColor {
+  display: flex;
+}
+.color {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: #858585 solid 1px;
+  transition: 0.2s;
+}
+.colorffffff {
+  background-color: #ffffff;
+}
+.colorff9191 {
+  background-color: #ff9191;
+}
+.colorffd591 {
+  background-color: #ffd591;
+}
+.colorfdff91 {
+  background-color: #fdff91;
+}
+.color9eff91 {
+  background-color: #9eff91;
+}
+.color91ffda {
+  background-color: #91ffda;
+}
+.color91abff {
+  background-color: #91abff;
+}
+.colore991ff {
+  background-color: #e991ff;
+}
+.Vgrey {
+  display: flex;
+  flex-direction: row-reverse;
+  color: rgba(102, 102, 102, 0.342);
+}
+
 // #modal-container {
 //   position: fixed;
 //   display: table;

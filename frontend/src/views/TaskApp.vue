@@ -96,10 +96,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.task-app {
+.collection {
   padding-top: 70px;
+  overflow-y: scroll;
+  height: calc(100vh - 70px);
 }
-
 .title-board-prev {
   margin: 26px;
   font-family: Raleway-Regular, "Open Sans", sans-serif;

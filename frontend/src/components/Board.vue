@@ -1,21 +1,33 @@
 <template v-if="board">
   <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
     <header class="nav-board">
-      <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
-      <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
-        <div class="title-input-container">
-          <input
-            class="input-title-board"
-            ref="title"
-            v-model="board.title"
-            placeholder="Enter title here..."
-            autofocus
-          >
-          <button class="btn-title-board" type="submit">
-            <i class="fa fa-plus"></i>
-          </button>
-        </div>
-      </form>
+      <div class="nav-board-left">
+        <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
+        <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
+          <div class="title-input-container">
+            <input
+              class="input-title-board"
+              ref="title"
+              v-model="board.title"
+              placeholder="Enter title here..."
+              autofocus
+            >
+            <button class="btn-title-board" type="submit">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </form>
+        <section class="container-member">
+          <div v-for="user in this.board.users.slice(0, 3)" :key="user._id">
+            <div class="container-name-member">
+              <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            </div>
+          </div>
+          <div class="logo-user-name" v-if="checkSumMember()">
+            <i class="fas fa-plus"></i>
+          </div>
+        </section>
+      </div>
       <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
     </header>
     <main>
@@ -126,8 +138,8 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
-    this.$store.dispatch({ type: "resetBoard", isReset: true })
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
+    this.$store.dispatch({ type: "resetBoard", isReset: true });
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
   components: {
     list,
@@ -244,18 +256,24 @@ export default {
       this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
-      this.$store.dispatch({ type: "saveBoard", board: this.board })
+      this.$store
+        .dispatch({ type: "saveBoard", board: this.board })
         .then(board => {
           this.board = board;
-          SocketService.send(this.board._id)
+          SocketService.send(this.board._id);
         });
+    },
+    checkSumMember() {
+      if (this.board.users.length > 3) {
+        return true;
+      }
     }
   },
 
   watch: {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
-    },
+    }
   }
 };
 </script>
@@ -281,6 +299,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100vw;
+  .nav-board-left {
+    display: flex;
+    flex-direction: row;
+  align-items: center;
+  }
 }
 .board-title {
   width: 200px;
@@ -307,6 +330,24 @@ export default {
   background: rgba(255, 255, 255, 0.911);
   border: none;
 }
+
+.container-member {
+  display: flex;
+  flex-direction: row;
+  .logo-user-name {
+    font-size: 10px;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    color: black;
+    border: 1px solid rgb(133, 133, 133);
+    background-color: rgb(243, 243, 243);
+    justify-content: flex-start;
+  }
+}
+
 .board-list-li {
   // min-height: 20vh;
   height: 100%;

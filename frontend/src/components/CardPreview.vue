@@ -2,13 +2,6 @@
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
       <section class="title-card" :style="{ background: card.prefs.bgColor}">
-        <div class="card-preview-head">
-          <ul class="labels">
-            <li class="label-li" v-for="label in card.labels" :key="label">
-              <div class="label" :style="{background: label}"></div>
-            </li>
-          </ul>
-        </div>
         <div class="card-middle">
           <div class="title-card-text">{{card.title}}</div>
           <div
@@ -134,26 +127,7 @@ export default {
       background-color: rgb(250, 250, 250);
     }
   }
-  .card-preview-head {
-    height: 25px;
-    top: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    .labels {
-      display: flex;
-      justify-content: flex-start;
-      .label-li {
-        height: 10px;
-        .label {
-          margin: 0 3px;
-          width: 37px;
-          height: 9px;
-          border-radius: 20px;
-        }
-      }
-    }
-  }
+  
   .card-middle {
     display: flex;
     width: 100%;

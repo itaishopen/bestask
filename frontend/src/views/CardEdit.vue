@@ -12,12 +12,12 @@
   >
     <section class="nav-modal">
       <div class="containerLabel" v-b-modal.modal4>
-        <div class="LabelMenu Red" v-if="checkLabel('red')"></div>
-        <div class="LabelMenu Blue" v-if="checkLabel('blue')"></div>
-        <div class="LabelMenu Green" v-if="checkLabel('green')"></div>
-        <div class="LabelMenu Yellow" v-if="checkLabel('yellow')"></div>
-        <div class="LabelMenu Purple" v-if="checkLabel('purple')"></div>
-        <div class="LabelMenu Orange" v-if="checkLabel('orange')"></div>
+        <div class="LabelMenu Red" v-if="checkCorectColor('#ff9191')"></div>
+        <div class="LabelMenu Blue" v-if="checkCorectColor('#91abff')"></div>
+        <div class="LabelMenu Green" v-if="checkCorectColor('#9eff91')"></div>
+        <div class="LabelMenu Yellow" v-if="checkCorectColor('#fdff91')"></div>
+        <div class="LabelMenu Purple" v-if="checkCorectColor('#e991ff')"></div>
+        <div class="LabelMenu Orange" v-if="checkCorectColor('#ffd591')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
         <div v-for="user in card.users.slice(0, 2)" :key="user._id">
@@ -136,7 +136,7 @@
       <div class="nav flex">
         <label class="m-1">Add to Card</label>
         <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
-        <b-button v-b-modal.modal4 class="m-1 btn-block" size="sm">Labels</b-button>
+        <b-button v-b-modal.modal10 class="m-1 btn-block" size="sm">Labels</b-button>
         <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>
@@ -173,58 +173,34 @@
     <b-modal id="modal10" title="Color card">
       <section class="plateColor">
         <div class="color colorffffff" @click="changeCardColor('#ffffff')">
+          none
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ffffff')"></i>
         </div>
         <div class="color colorff9191" @click="changeCardColor('#ff9191')">
+          Bug
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ff9191')"></i>
         </div>
         <div class="color colorffd591" @click="changeCardColor('#ffd591')">
+          Duplicate
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#ffd591')"></i>
         </div>
         <div class="color colorfdff91" @click="changeCardColor('#fdff91')">
+          Enhancement
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#fdff91')"></i>
         </div>
         <div class="color color9eff91" @click="changeCardColor('#9eff91')">
+          Invalid
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#9eff91')"></i>
         </div>
-        <div class="color color91ffda" @click="changeCardColor('#91ffda')">
-          <i class="fa fa-check Vgrey" v-if="checkCorectColor('#91ffda')"></i>
-        </div>
         <div class="color color91abff" @click="changeCardColor('#91abff')">
+          Wontfix
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#91abff')"></i>
         </div>
         <div class="color colore991ff" @click="changeCardColor('#e991ff')">
+          Question
           <i class="fa fa-check Vgrey" v-if="checkCorectColor('#e991ff')"></i>
         </div>
       </section>
-    </b-modal>
-
-    <!-- Modal Labels Component -->
-    <b-modal id="modal4" title="Labels">
-      <div class="Label Red" @click="changeLabel('red')">
-        Bug
-        <i class="fa fa-check Vwhite" v-if="checkLabel('red')"></i>
-      </div>
-      <div class="Label Blue" @click="changeLabel('blue')">
-        Duplicate
-        <i class="fa fa-check Vwhite" v-if="checkLabel('blue')"></i>
-      </div>
-      <div class="Label Green" @click="changeLabel('green')">
-        Enhancement
-        <i class="fa fa-check Vwhite" v-if="checkLabel('green')"></i>
-      </div>
-      <div class="Label Yellow" @click="changeLabel('yellow')">
-        Invalid
-        <i class="fa fa-check Vwhite" v-if="checkLabel('yellow')"></i>
-      </div>
-      <div class="Label Purple" @click="changeLabel('purple')">
-        Question
-        <i class="fa fa-check Vwhite" v-if="checkLabel('purple')"></i>
-      </div>
-      <div class="Label Orange" @click="changeLabel('orange')">
-        Wontfix
-        <i class="fa fa-check Vwhite" v-if="checkLabel('orange')"></i>
-      </div>
     </b-modal>
 
     <!-- Modal Members Component -->
@@ -438,26 +414,7 @@ export default {
     addMember(member) {
       this.card.members.push(member);
     },
-    checkLabel(color) {
-      return this.card.labels.findIndex(label => label === color) !== -1;
-    },
-    markChose() {
-      this.card.labels.forEach(label => {
-        this.labelIsChosen.forEach(color => {
-          if (label === color) {
-            this.labelIsChosen = true;
-          }
-        });
-      });
-    },
-    changeLabel(chosenColor) {
-      const index = this.card.labels.findIndex(label => label === chosenColor);
-      if (index === -1) {
-        this.card.labels.push(chosenColor);
-      } else {
-        this.card.labels.splice(index, 1);
-      }
-    },
+
     checkCorectColor(color) {
       return this.card.prefs.bgColor === color;
     },
@@ -563,31 +520,15 @@ export default {
   flex-direction: column;
 }
 
-.Label {
-  padding: 10px;
-  margin: 3px;
-  cursor: pointer;
-  height: 37px;
-  border-radius: 10px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-}
-.Label:hover {
-  border-left: 15px solid rgba(78, 78, 78, 0.13);
-}
-.containerLabel {
-  display: flex;
-  flex-direction: row;
-}
 .LabelMenu {
   cursor: pointer;
   width: 23px;
   height: 23px;
   border-radius: 20%;
   margin: 2px;
+}
+.white {
+  background-color: rgb(255, 255, 255);
 }
 .Red {
   background-color: rgb(231, 55, 55);
@@ -610,7 +551,7 @@ export default {
 .Vwhite {
   display: flex;
   flex-direction: row-reverse;
-  color: rgb(255, 255, 255);
+  color: rgb(109, 109, 109);
 }
 
 .nav-modal {
@@ -708,15 +649,17 @@ export default {
 // card color
 .plateColor {
   display: flex;
+  flex-direction: column;
 }
 .color {
   cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 20px;
   align-items: center;
-  margin: 5px;
-  border-radius: 50%;
-  width: 50px;
+  margin: 2px;
+  border-radius: 10px;
+  min-width: 150px;
   height: 50px;
   border: #858585 solid 1px;
   transition: 0.2s;
@@ -736,9 +679,6 @@ export default {
 .color9eff91 {
   background-color: #9eff91;
 }
-.color91ffda {
-  background-color: #91ffda;
-}
 .color91abff {
   background-color: #91abff;
 }
@@ -748,7 +688,7 @@ export default {
 .Vgrey {
   display: flex;
   flex-direction: row-reverse;
-  color: rgba(102, 102, 102, 0.342);
+  color: rgba(0, 0, 0, 0.774);
 }
 
 // #modal-container {

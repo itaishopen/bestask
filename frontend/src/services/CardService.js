@@ -52,7 +52,10 @@ function getEmptyCard() {
         order: null,
         archived: false,
         et: null,
-        at: null
+        at: null,
+        prefs : {
+            bgColor : '#ffffff'
+        }
     }
 }
 

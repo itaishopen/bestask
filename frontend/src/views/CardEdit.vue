@@ -162,7 +162,6 @@
                     name='check-button'
         >Archive {{ card.archived }}</b-form-checkbox>-->
         <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
-        <b-button v-b-modal.modal10 class="m-1 btn-block" size="sm">Color card</b-button>
       </div>
     </div>
     <div slot="modal-footer" class="w-100">

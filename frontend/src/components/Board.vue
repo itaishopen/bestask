@@ -1,21 +1,34 @@
 <template v-if="board">
   <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
     <header class="nav-board">
-      <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
-      <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
-        <div class="title-input-container">
-          <input
-            class="input-title-board"
-            ref="title"
-            v-model="board.title"
-            placeholder="Enter title here..."
-            autofocus
-          >
-          <button class="btn-title-board" type="submit">
-            <i class="fa fa-plus"></i>
-          </button>
-        </div>
-      </form>
+      <div class="nav-board-left">
+        <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
+        <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
+          <div class="title-input-container">
+            <input
+              class="input-title-board"
+              ref="title"
+              v-model="board.title"
+              placeholder="Enter title here..."
+              autofocus
+            >
+            <button class="btn-title-board" type="submit">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </form>
+        <section class="container-member">
+          <div v-for="user in this.board.users.slice(0, 2)" :key="user._id">
+            <div class="container-name-member">
+              <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            </div>
+          </div>
+          <div
+            class="logo-user-name logo-user-more"
+            v-if="checkSumMember()"
+          >{{board.users.length-2}}</div>
+        </section>
+      </div>
       <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
     </header>
     <main>
@@ -181,6 +194,8 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     closeAdd() {
+      console.log("this.board", this.board);
+
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
@@ -245,18 +260,24 @@ export default {
       this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
-      this.$store.dispatch({ type: "saveBoard", board: this.board })
+      this.$store
+        .dispatch({ type: "saveBoard", board: this.board })
         .then(board => {
           this.board = board;
-          SocketService.send(this.board._id)
+          SocketService.send(this.board._id);
         });
+    },
+    checkSumMember() {
+      if (this.board.users.length > 2) {
+        return true;
+      }
     }
   },
 
   watch: {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
-    },
+    }
   }
 };
 </script>
@@ -282,6 +303,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100vw;
+  .nav-board-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 .board-title {
   width: 200px;
@@ -308,6 +334,37 @@ export default {
   background: rgba(255, 255, 255, 0.911);
   border: none;
 }
+
+.container-member {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 30px);
+  grid-template-rows: repeat(1, [row] auto);
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 5px;
+  margin: 5px;
+  .logo-user-name {
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50%;
+    color: black;
+    background-color: rgb(223, 223, 223);
+    justify-content: flex-start;
+  }
+  .logo-user-more {
+    color: rgb(255, 255, 255);
+    background-color: rgb(82, 82, 82);
+  }
+  .container-name-member {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 .board-list-li {
   // min-height: 20vh;
   height: 100%;

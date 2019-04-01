@@ -97,7 +97,6 @@ export default {
 
 <style lang='scss' scoped>
 .collection {
-  
   padding-top: 70px;
   overflow-y: scroll;
   height: calc(100vh - 70px);
@@ -150,8 +149,7 @@ export default {
     outline: 0;
     border-radius: 3px;
     background-color: #ffffff;
-          border: 1px solid rgb(73, 73, 73);
-
+    border: 1px solid rgb(73, 73, 73);
   }
   & .collection-options {
     padding: 0;

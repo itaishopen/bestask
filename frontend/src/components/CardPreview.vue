@@ -1,14 +1,7 @@
 <template>
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
-      <section class="title-card">
-        <div class="card-preview-head">
-          <ul class="labels">
-            <li class="label-li" v-for="label in card.labels" :key="label">
-              <div class="label" :style="{background: label}"></div>
-            </li>
-          </ul>
-        </div>
+      <section class="title-card" :style="{ background: card.prefs.bgColor}">
         <div class="card-middle">
           <div class="title-card-text">{{card.title}}</div>
           <div
@@ -19,7 +12,11 @@
         </div>
         <div class="card-preview-footer">
           <div class="card-preview-footer-left">
-            <div class="card-preview-footer-marks description" title="description" v-if="card.description">
+            <div
+              class="card-preview-footer-marks description"
+              title="description"
+              v-if="card.description"
+            >
               <i class="fas fa-bars"></i>
             </div>
             <div
@@ -57,7 +54,7 @@ import moment from "moment";
 export default {
   name: "CardPreview",
   props: ["card"],
-  created() { },
+  created() {},
   data() {
     return {};
   },
@@ -81,7 +78,7 @@ export default {
       return usertodisplay;
     },
     changeDate() {
-      return moment(this.card.dueDate, 'YYYY/MM/DD').format('DD/MM')
+      return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
     }
   },
   methods: {
@@ -94,13 +91,12 @@ export default {
       }
     },
     checkDoDate() {
-      let dateAsMoment = moment(this.card.dueDate, 'YYYY/MM/DD')
-      let today = moment()
-      if (dateAsMoment.diff(today, 'days') <= -1) return '#544e44'
-      if (dateAsMoment.diff(today, 'days') <= 1) return '#e52e2d'
-      if (dateAsMoment.diff(today, 'days') <= 3) return '#eea41c'
-      return '#3b8006'
-
+      let dateAsMoment = moment(this.card.dueDate, "YYYY/MM/DD");
+      let today = moment();
+      if (dateAsMoment.diff(today, "days") <= -1) return "#544e44";
+      if (dateAsMoment.diff(today, "days") <= 1) return "#e52e2d";
+      if (dateAsMoment.diff(today, "days") <= 3) return "#eea41c";
+      return "#3b8006";
     }
   },
   components: {}
@@ -131,26 +127,7 @@ export default {
       background-color: rgb(250, 250, 250);
     }
   }
-  .card-preview-head {
-    height: 25px;
-    top: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    .labels {
-      display: flex;
-      justify-content: flex-start;
-      .label-li {
-        height: 10px;
-        .label {
-          margin: 0 3px;
-          width: 37px;
-          height: 9px;
-          border-radius: 20px;
-        }
-      }
-    }
-  }
+  
   .card-middle {
     display: flex;
     width: 100%;

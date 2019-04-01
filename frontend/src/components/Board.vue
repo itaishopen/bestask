@@ -18,14 +18,12 @@
           </div>
         </form>
         <section class="container-member">
-          <div v-for="user in this.board.users.slice(0, 3)" :key="user._id">
+          <div v-for="user in this.board.users.slice(0, 2)" :key="user._id">
             <div class="container-name-member">
               <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
             </div>
           </div>
-          <div class="logo-user-name" v-if="checkSumMember()">
-            <i class="fas fa-plus"></i>
-          </div>
+          <div class="logo-user-name logo-user-more" v-if="checkSumMember()">{{board.users.length-2}}</div>
         </section>
       </div>
       <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
@@ -264,7 +262,7 @@ export default {
         });
     },
     checkSumMember() {
-      if (this.board.users.length > 3) {
+      if (this.board.users.length > 2) {
         return true;
       }
     }
@@ -302,7 +300,7 @@ export default {
   .nav-board-left {
     display: flex;
     flex-direction: row;
-  align-items: center;
+    align-items: center;
   }
 }
 .board-title {
@@ -335,16 +333,20 @@ export default {
   display: flex;
   flex-direction: row;
   .logo-user-name {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: bold;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
     border-radius: 50%;
     color: black;
-    border: 1px solid rgb(133, 133, 133);
-    background-color: rgb(243, 243, 243);
+    background-color: rgb(223, 223, 223);
     justify-content: flex-start;
+  }
+  .logo-user-more{
+    color: rgb(255, 255, 255);
+    background-color: rgb(82, 82, 82);
+
   }
 }
 

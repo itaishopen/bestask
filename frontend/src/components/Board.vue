@@ -139,14 +139,9 @@ export default {
   computed: {
     board: {
       get() {
-      if (this.$store.getters.getBoard) {
         return this.$store.getters.getBoard;
-      }
-      return this.$store
-        .dispatch({ type: "loadBoard", boardId: this.boardId })
-        .then(board => board);
-    },
-      set() {
+      },
+      set(board) {
         this.$store.commit("setBoard", { board: board });
       }
     },
@@ -253,7 +248,7 @@ export default {
         .then(board => {
           this.board = board;
           SocketService.send(this.board._id)
-          });
+        });
     }
   },
 

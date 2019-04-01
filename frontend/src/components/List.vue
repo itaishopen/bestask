@@ -80,9 +80,6 @@ export default {
     draggable
   },
   methods: {
-    choseOption(evn) {
-      console.log(evn)
-    },
     funToMove(env) {
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
@@ -92,6 +89,8 @@ export default {
       var fromList = this.$store.getters.getLists.find(
         list => list._id === fromListId
       );
+      console.log(fromListId, toListId);
+
       if (fromListId !== toListId) {
         var toList = this.$store.getters.getLists.find(
           list => list._id === toListId
@@ -116,6 +115,9 @@ export default {
             SocketService.send(this.list.boardId);
           });
       } else {
+        var card = fromList.cards.find(card => card._id === cardId);
+        fromList.cards.splice(env.oldIndex, 1)
+        fromList.cards.splice(env.newIndex, 0, card)
         for (var k = 0; k < fromList.cards.length; k++) {
           fromList.cards[k].order = k;
         }
@@ -125,7 +127,7 @@ export default {
       }
     },
     newCard() {
-      if(!this.isAddCard){
+      if (!this.isAddCard) {
         this.card = CardService.getEmptyCard();
         this.card.order = this.list.cards.length;
         this.isAddClick = !this.isAddClick;
@@ -203,7 +205,7 @@ export default {
         fallbackTolerance: 3,
       }
     },
-    isAddCard:{
+    isAddCard: {
       get() {
         return this.$store.getters.isAddCard;
       },
@@ -383,7 +385,6 @@ export default {
 .listgroup {
   cursor: move;
   min-height: 50px;
-  
 }
 
 // .chosenClass {

@@ -1,5 +1,5 @@
 <template v-if="board">
-  <section class="board" :style="{ background: this.board.prefs.bgColor.color}">
+  <section class="board" :style="{ 'background': getColor}">
     <header class="nav-board">
       <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
       <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
@@ -168,7 +168,11 @@ export default {
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"
       };
-    }
+    },
+    getColor(){
+      console.log('getColor');
+      if(this.board.prefs) return this.board.prefs.bgColor.color;
+    },
   },
 
   methods: {
@@ -247,7 +251,7 @@ export default {
           this.board = board;
           SocketService.send(this.board._id)
         });
-    }
+    },
   },
 
   watch: {

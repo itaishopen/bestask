@@ -136,7 +136,7 @@
       <div class="nav flex">
         <label class="m-1">Add to Card</label>
         <b-button v-b-modal.modal6 class="m-1 btn-block" size="sm">Members</b-button>
-        <b-button v-b-modal.modal10 class="m-1 btn-block" size="sm">Labels</b-button>
+        <b-button v-b-modal.modal10 class="m-1 btn-block" size="sm">Type</b-button>
         <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>

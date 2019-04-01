@@ -121,13 +121,13 @@ export default {
       showMenu: false,
       showAtivities: false,
       showColorBoard: false,
-      boardId: this.$route.params.boardId
+      boardId: this.$route.params.boardId,
     };
   },
   created() {
     SocketService.init(this.boardId);
     this.$store.dispatch({ type: "resetBoard", isReset: true })
-    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId })
+    this.$store.dispatch({ type: "loadBoard", boardId: this.boardId }).then(board => this.board = board)
   },
   components: {
     list,
@@ -142,7 +142,7 @@ export default {
         return this.$store.getters.getBoard;
       },
       set(board) {
-        this.$store.commit("setBoard", { board: board });
+        this.$store.dispatch("saveBoard", board);
       }
     },
     lists: {
@@ -150,7 +150,7 @@ export default {
         return this.$store.getters.getLists;
       },
       set(lists) {
-        this.$store.commit("setLists", { lists: lists });
+        this.$store.dispatch("updateLists", lists );
       }
     },
     dragOptions() {
@@ -211,7 +211,10 @@ export default {
       console.log("this.board", this.board);
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
-        .then(() => SocketService.send(this.board._id));
+        .then(board => {
+          this.board = board
+          SocketService.send(this.board._id)
+          });
       this.isChangeTitle = !this.isChangeTitle;
       console.log("this.isChangeTitle after change", this.isChangeTitle);
     },
@@ -298,7 +301,7 @@ export default {
   height: 32px;
   width: 300px;
   border: none;
-  background: rgba(255, 255, 255, 0.911);
+  background: transparent;
   padding-left: 10px;
 }
 .btn-title-board {

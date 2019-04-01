@@ -10,9 +10,9 @@
           placeholder="Enter title here..."
           autofocus
         >
-        <button class="btn-title-list" type="submit">
+        <!-- <button class="btn-title-list" type="submit">
           <i class="fa fa-plus"></i>
-        </button>
+        </button> -->
       </form>
     </header>
 
@@ -258,15 +258,16 @@ export default {
       width: 90%;
       border: none;
       border-top-left-radius: 7px;
-      background: rgba(255, 255, 255, 0.911);
-      padding-left: 10px;
+      background: #ebebeb;
+      // padding-left: 10px;
+      margin: 5px -5px 0px;
     }
-    .btn-title-list {
-      border-top-right-radius: 7px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.911);
-      border: none;
-    }
+    // .btn-title-list {
+    //   border-top-right-radius: 7px;
+    //   height: 32px;
+    //   background: rgba(255, 255, 255, 0.911);
+    //   border: none;
+    // }
   }
   .main {
     max-height: 55vh;

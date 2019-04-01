@@ -19,7 +19,7 @@
         </div>
       </div>
       <card-edit v-if="showModal" ref="card">
-        <router-view name="Card Edit"/>
+        <router-view name="Archive Card Edit"/>
       </card-edit>
     </main>
   </section>

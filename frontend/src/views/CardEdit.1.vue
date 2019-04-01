@@ -1,5 +1,5 @@
 <template>
- 
+  
       <b-modal
         v-if="card"
         v-model="showModal"

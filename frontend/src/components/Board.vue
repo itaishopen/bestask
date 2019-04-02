@@ -1,24 +1,26 @@
-<template v-if="board">
-  <section class="board" :style="{ 'background': getColor}">
+<template>
+  <!-- <div></div> -->
+  <section
+    v-if="board"
+    class="board"
+    :style="{ 'background': this.board.prefs.bgColor.color}"
+    @click="closeEditTitle"
+  >
     <header class="nav-board">
       <div class="nav-board-left">
-        <div class="board-title" v-if="!isChangeTitle" @click="choseTitle">{{board.title}}</div>
-        <form v-if="isChangeTitle" @submit="changeTitle" class="form-add">
-          <div class="title-input-container">
-            <input
-              class="input-title-board"
-              ref="title"
-              v-model="board.title"
-              placeholder="Enter title here..."
-              autofocus
-            >
-            <button class="btn-title-board" type="submit">
-              <i class="fa fa-plus"></i>
-            </button>
-          </div>
-        </form>
+        <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
+        <input
+          @click.stop="choseTitle"
+          value="board.title"
+          v-if="isChangeTitle"
+          class="input-title-board"
+          ref="title"
+          v-model="board.title"
+          placeholder="Enter title here..."
+          autofocus
+        >
         <section class="container-member" v-if="board.users">
-          <div  v-for="user in board.users.slice(0, 2)" :key="user._id">
+          <div v-for="user in board.users.slice(0, 2)" :key="user._id">
             <div class="container-name-member">
               <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
             </div>
@@ -29,7 +31,9 @@
           >{{board.users.length-2}}</div>
         </section>
       </div>
-      <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">Show Menu</b-button>
+      <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">
+        <i class="fas fa-bars"></i>
+      </b-button>
     </header>
     <main>
       <transition name="slide">
@@ -139,6 +143,7 @@ export default {
   },
   created() {
     SocketService.init(this.boardId);
+
     this.$store.dispatch({ type: "resetBoard", isReset: true });
     this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
@@ -154,8 +159,8 @@ export default {
       get() {
         return this.$store.getters.getBoard;
       },
-      set(board) {
-        this.$store.commit("setBoard", { board: board });
+      set(sevedBoard) {
+        this.$store.commit("setBoard", { board: sevedBoard });
       }
     },
     lists: {
@@ -181,17 +186,10 @@ export default {
         // touchStartThreshold: 1,
         // draggable: ".drag-me .list"
       };
-    },
-    getColor(){
-      console.log('getColor');
-      if(this.board.prefs) return this.board.prefs.bgColor.color;
-    },
+    }
   },
 
   methods: {
-    fun(boardId) {
-      this.$store.dispatch({ type: "loadBoard", boardId });
-    },
     newList() {
       //  todo: add list
       this.list = ListService.getEmptyList();
@@ -222,18 +220,19 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
-      console.log("this.board", this.board);
-      // console.log( this.isChangeTitle , this.board , 'title');
-      this.isChangeTitle = !this.isChangeTitle;
+      console.log(this.isChangeTitle);
+      this.isChangeTitle = true;
     },
-    changeTitle() {
-      console.log("this.board", this.board);
+    closeEditTitle() {
+      console.log(this.isChangeTitle);
+      this.isChangeTitle = false;
+      console.log(this.board);
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
         .then(() => SocketService.send(this.board._id));
-      this.isChangeTitle = !this.isChangeTitle;
-      console.log("this.isChangeTitle after change", this.isChangeTitle);
+      this.isChangeTitle = false;
     },
+
     moveList(evt) {
       // console.log(evt);
     },
@@ -243,9 +242,7 @@ export default {
       }
       this.$store
         .dispatch({ type: "updateLists", lists: this.lists })
-        .then(() => {
-          SocketService.send(this.board._id);
-        });
+        .then(() => SocketService.send(this.board._id));
     },
     toggleActivity() {
       this.showAtivities = !this.showAtivities;
@@ -257,16 +254,12 @@ export default {
       this.showMenu = !this.showMenu;
     },
     paintBoard(color) {
-      console.log("this.board", this.board);
       this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
-        .then(board => {
-          this.board = board;
-          SocketService.send(this.board._id);
-        });
+        .then(() => SocketService.send(this.board._id));
     },
     checkSumMember() {
       if (this.board.users.length > 2) {

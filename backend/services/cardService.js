@@ -15,6 +15,15 @@ function query({ listId = null }) {
                     {
                         $lookup:
                         {
+                            from: 'lists',
+                            localField: 'listId',
+                            foreignField: '_id',
+                            as: 'list'
+                        }
+                    },
+                    {
+                        $lookup:
+                        {
                             from: "users",
                             let: { members: "$members" },
                             pipeline: [
@@ -54,6 +63,15 @@ function getCardById(cardId) {
             .aggregate([
                 {
                     $match: { _id }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'lists',
+                        localField: 'listId',
+                        foreignField: '_id',
+                        as: 'list'
+                    }
                 },
                 {
                     $lookup:

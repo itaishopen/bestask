@@ -1,20 +1,72 @@
 <template>
-  <v-layout row justify-center>
-      <v-dialog
-        v-if="card"
-        v-model="showModal"
-        id="modal1"
-        ref="myModalRef"
-        persistent max-width="800px"
-      >
+  <v-layout column align-center justify-center>
+    <v-dialog
+      v-if="card"
+      v-model="showModal"
+      id="modal1"
+      ref="myModalRef"
+      persistent
+      max-width="800px"
+    >
       <v-card>
         <v-card-title>
           <v-text-field v-model="card.title" placeholder="Title" class="headline"></v-text-field>
-
+          <v-card-text class="text-xs-left">
+            <small>From list {{card.list[0].title}}</small>
+          </v-card-text>
         </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <div class="containerLabel">
+              <div class="LabelMenu Red" v-if="checkCorectColor('#ff9191')"></div>
+              <div class="LabelMenu Blue" v-if="checkCorectColor('#91abff')"></div>
+              <div class="LabelMenu Green" v-if="checkCorectColor('#9eff91')"></div>
+              <div class="LabelMenu Yellow" v-if="checkCorectColor('#fdff91')"></div>
+              <div class="LabelMenu Purple" v-if="checkCorectColor('#e991ff')"></div>
+              <div class="LabelMenu Orange" v-if="checkCorectColor('#ffd591')"></div>
+            </div>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md4>
+                <v-text-field label="Legal first name*" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field
+                  label="Legal last name*"
+                  hint="example of persistent helper text"
+                  persistent-hint
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Email*" required></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Password*" type="password" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-select :items="['0-17', '18-29', '30-54', '54+']" label="Age*" required></v-select>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-autocomplete
+                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Interests"
+                  multiple
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="showModal = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="showModal = false">Save</v-btn>
+        </v-card-actions>
       </v-card>
-      </v-dialog>
-    </v-layout>
+    </v-dialog>
+  </v-layout>
 </template>
 
 <script>
@@ -233,7 +285,7 @@ export default {
           this.$store.dispatch({ type: "saveActivity", activity });
           SocketService.send(this.board._id);
           // setTimeout(() => {
-            this.$router.go(-1);
+          this.$router.go(-1);
           // }, 1500);
         })
         .catch(err => {
@@ -254,7 +306,7 @@ export default {
     modalClosed() {
       this.modalOpen = false;
       // setTimeout(() => {
-        this.$router.go(-1);
+      this.$router.go(-1);
       // }, 1500);
     },
     moveCard() {

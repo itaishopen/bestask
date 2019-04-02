@@ -1,7 +1,7 @@
 <template>
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
-      <section class="title-card" :style="{ background: card.prefs.bgColor}">
+      <section class="title-card" :style="{ 'background': getColor}">
         <div class="card-middle">
           <div class="title-card-text">{{card.title}}</div>
           <div
@@ -32,8 +32,8 @@
             <div class="at far fa-clock fa-xs" v-if="card.at">AT: {{card.at}}</div>
           </div>
           <div class="card-preview-footer-right">
-            <section class="container-member">
-              <div v-for="user in this.card.users.slice(0, 2)" :key="user._id">
+            <section class="container-member" v-if="card.users">
+              <div v-for="user in card.users.slice(0, 2)" :key="user._id">
                 <div class="container-name-member">
                   <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
                 </div>
@@ -79,7 +79,11 @@ export default {
     },
     changeDate() {
       return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
-    }
+    },
+    getColor(){
+      if(this.card.prefs) return this.card.prefs.bgColor;
+      console.log('this.card.prefs' , this.card.prefs ,  this.card.title , this.card);
+    },
   },
   methods: {
     checkMember(userId) {

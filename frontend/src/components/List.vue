@@ -1,7 +1,7 @@
 <template class="everyCard">
-  <section class="list slide">
+  <section class="list slide" @click="closeEditTitle">
     <header class="header title">
-      <div class="title-list" v-if="!isChangeTitle" @click.prevent="choseTitle">{{list.title}}</div>
+      <div class="title-list" v-if="!isChangeTitle" @click.prevent.stop="choseTitle">{{list.title}}</div>
       <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
         <input
           class="input-title-list no-drag"
@@ -42,7 +42,7 @@
       </button>
       <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card no-drag">
         <div>
-          <textarea class="text-area" v-model="card.title" placeholder="Enter title here..."></textarea>
+          <textarea class="text-area" v-on:keyup.enter="addCard" v-model="card.title" placeholder="Enter title here..."></textarea>
         </div>
         <div class="container-add-card-btns">
           <button class="list-new-card-options" type="submit">Add card</button>
@@ -164,8 +164,12 @@ export default {
       this.isAddClick = !this.isAddClick;
     },
     choseTitle() {
-      console.log("isChangeTitle", this.isChangeTitle);
-      this.isChangeTitle = !this.isChangeTitle;
+      console.log( this.isChangeTitle);
+      this.isChangeTitle = true;
+    },
+    closeEditTitle() {
+      console.log( this.isChangeTitle);
+      this.isChangeTitle = false;
     },
     changeTitle() {
       console.log("this.list", this.list);

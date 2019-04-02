@@ -5,7 +5,7 @@ import ActivityService from '../services/ActivityService.js';
 
 export default {
     state: {
-        board: {},
+        board: null,
         lists: [],
         activities: [],
         currCard: null,
@@ -20,13 +20,15 @@ export default {
     },
     mutations: {
         resetState(state) {
-            state.board = {};
+            state.board = null;
             state.lists = [];
             state.activities = [];
             state.currCard = null;
             state.isAddCard = false;
         },
         setBoard(state, { board }) {
+            console.log(board);
+            
             state.board = board;
         },
         setCard(state, { card }) {
@@ -87,7 +89,7 @@ export default {
         },
         saveBoard(context, { board }) {
             return BoardService.saveBoard(board).then(savedBoard => {                
-                context.commit({ type: 'setBoard', savedBoard: savedBoard[0] })
+                context.commit({ type: 'setBoard', board: savedBoard[0] })
                 return savedBoard[0]
             })
         },

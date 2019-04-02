@@ -6,22 +6,25 @@
           <div class="modal-wrapper">
               <div class="modal-container">
                   <div class="modal-header">
-                        <form v-if="isTitleEdit" @submit.prevent="changeTitle" class="form-add">
-                            <input
-                                class="input-title-list no-drag"
-                                ref="title"
+                        <div class="model-title"  @click="isTitleEdit=!isTitleEdit">
+                            <h2 class="card-title">{{card.title}}</h2>
+                            <textarea
+                                v-if="isTitleEdit"
+                                class="card-title-input no-drag"
                                 v-model="card.title"
                                 placeholder="Enter title here..."
                                 autofocus
-                            >
-                        </form>
-                        <p>in list {{card.list.title}}</p>
+                            ></textarea>
+                        </div>
+                        <div class="title-list-contect">in list {{card.list.title}}</div>
                   </div>
 
                   <div class="modal-body">
-                      <slot name="body"></slot>
-                  </div>
 
+                  </div>
+                <div class="modal-sidebar">
+                    
+                </div>
                   <div class="modal-footer">
                       <slot name="footer">
                           <button class="modal-default-button" v-on:click="emitSave">Save</button>

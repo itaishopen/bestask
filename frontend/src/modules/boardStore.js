@@ -29,11 +29,8 @@ export default {
             state.isAddCard = false;
             state.isEditMode = false;
         },
-        setBoard(state, { board }) {
+        setBoard(state, { board }) {            
             state.board = board;
-        },
-        setCard(state, { card }) {
-            state.currCard = card;
         },
         setLists(state, { lists }) {
             state.lists = lists
@@ -48,6 +45,10 @@ export default {
         deleteList(state, { list }) {
             const idx = state.lists.findIndex(currList => currList._id === list._id);
             state.lists.splice(idx, 1);
+        },
+        setCard(state, { card }) {
+            console.log(card);
+            state.currCard = card;
         },
         updateCard(state, { savedCard }) {
             const cardList = state.lists.find(list => list._id === savedCard.listId);
@@ -132,6 +133,8 @@ export default {
         loadCard(context, { cardId }) {
             return CardService.getCardById(cardId)
                 .then(card => {
+                    console.log(card);
+                    
                     context.commit({ type: 'setCard', card: card[0] });
                     return card[0]
                 })

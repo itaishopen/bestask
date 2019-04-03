@@ -3,7 +3,7 @@
   <section
     v-if="board"
     class="board"
-    :style="{ 'background': this.board.prefs.bgColor.color}"
+    :style="{ 'background': board.prefs.bgColor.color}"
     @click="closeEditTitle"
   >
     <header class="nav-board">
@@ -139,12 +139,11 @@ export default {
       showMenu: false,
       showAtivities: false,
       showColorBoard: false,
-      boardId: this.$route.params.boardId
+      boardId: this.$route.params.boardId,
     };
   },
   created() {
     SocketService.init(this.boardId);
-
     this.$store.dispatch({ type: "resetBoard", isReset: true });
     this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
@@ -169,7 +168,7 @@ export default {
         return this.$store.getters.getLists;
       },
       set(lists) {
-        this.$store.commit("setLists", { lists: lists });
+        this.$store.dispatch("updateLists", lists );
       }
     },
     dragOptions() {
@@ -322,7 +321,7 @@ export default {
   height: 32px;
   width: 200px;
   border: none;
-  background: rgba(255, 255, 255, 0.144);
+  background: transparent;
   padding-left: 10px;
   margin-left: 10px;
 }

@@ -170,6 +170,8 @@ export default {
           );
           this.$store.dispatch({ type: "saveActivity", activity });
           var cardItem = CardService.getEmptyCard();
+          console.log(1, cardItem);
+
           this.$store.commit("setCard", { card: cardItem });
           this.$store.dispatch({ type: "loadBoard", boardId });
           SocketService.send(boardId);
@@ -205,6 +207,7 @@ export default {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
+        console.log(2, cardItem);
         this.$store.commit("setCard", { card: cardItem });
       }
     },
@@ -239,10 +242,11 @@ export default {
     }
   },
 
-  created() {
-    var cardItem = CardService.getEmptyCard();
-    this.$store.commit("setCard", { card: cardItem });
-  },
+  // created() {
+  //   var cardItem = CardService.getEmptyCard();
+  //   console.log(3, cardItem);
+  //   this.$store.commit("setCard", { card: cardItem });
+  // },
   watch: {}
 };
 </script>
@@ -285,13 +289,16 @@ export default {
       border-top-right-radius: 7px;
       background: rgba(255, 255, 255, 0.815);
       padding-left: 10px;
+      background: #ebebeb;
+      // padding-left: 10px;
+      margin: 5px -5px 0px;
     }
-    .btn-title-list {
-      border-top-right-radius: 7px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.911);
-      border: none;
-    }
+    // .btn-title-list {
+    //   border-top-right-radius: 7px;
+    //   height: 32px;
+    //   background: rgba(255, 255, 255, 0.911);
+    //   border: none;
+    // }
   }
   .main {
     max-height: 55vh;

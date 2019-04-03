@@ -1,3 +1,22 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@itaishopen Sign out
+0
+0 0 itaishopen/bestask
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+bestask/frontend/src/views/Home.vue
+@HIELIYA2 HIELIYA2 bugs
+f228d6c 2 days ago
+@HIELIYA2 @nirfuchs73 @itaishopen
+85 lines (81 sloc)  1.64 KB
+    
 <template>
   <section>
     <div class="home">

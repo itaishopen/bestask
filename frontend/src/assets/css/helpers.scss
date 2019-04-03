@@ -30,7 +30,15 @@
     src: url(../fonts/FingerPaint-Regular.ttf)}
 
 /* Grid */
-
+.modal-content {
+    max-width: 70vw;
+    background: #9eff91;
+    border-radius: 25px;
+  }
+  .modal-dialog {
+    max-width: 70vw;
+    border-radius: 25px;
+  }
 .grid {
     display: grid;
     &.justify-center {

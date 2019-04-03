@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <card-edit v-if="showModal" ref="card">
+      <card-edit v-if="showModal" ref="archive_card">
         <router-view name="Archive Card Edit"/>
       </card-edit>
     </main>

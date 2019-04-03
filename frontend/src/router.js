@@ -28,6 +28,22 @@ export default new Router({
       name: "Boards" ,
       component: TaskApp 
     },
+    { path: '/board/:boardId/archive',
+      name: 'Board archive',
+      component: BoardArchive,
+      meta: { showModal: false } ,
+      children: [
+        { 
+          path: '/board/:boardId/archive/card/edit/:cardId', 
+          name: "Archive Card Edit" , 
+          component: {
+            page: BoardArchive, 
+            archive_card: EditCard
+          } , 
+          meta: { showModal: true } 
+        }
+      ]
+    },
     { 
       path: '/board/:boardId', 
       name: "Board" , 
@@ -35,7 +51,7 @@ export default new Router({
       meta: { showModal: false } ,
       children: [
         { 
-          path: '/card/edit/:cardId', 
+          path: '/board/:boardId/card/edit/:cardId', 
           name: "Card Edit" , 
           component: {
             page: Board, 
@@ -45,22 +61,7 @@ export default new Router({
         }
       ]
     },
-    { path: '/board/:boardId/archive',
-      name: 'Board archive',
-      component: BoardArchive,
-      meta: { showModal: false } ,
-      children: [
-        { 
-          path: '/card/edit/:cardId', 
-          name: "Archive Card Edit" , 
-          component: {
-            page: BoardArchive, 
-            card: EditCard
-          } , 
-          meta: { showModal: true } 
-        }
-      ]
-    },
+    
     {
       path: '/login',
       name: 'login',

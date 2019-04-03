@@ -10,6 +10,7 @@
       <div class="nav-board-left">
         <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
         <input
+          @keyup.enter.enter="closeEditTitle"
           @click.stop="choseTitle"
           value="board.title"
           v-if="isChangeTitle"
@@ -220,13 +221,15 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
-      console.log(this.isChangeTitle);
+      if (this.$store.getters.isEditMode) {
+        console.log("something else open");
+      }
       this.isChangeTitle = true;
+      this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      console.log(this.isChangeTitle);
+      this.$store.commit("setIsEditMode", { isEditMode: false });
       this.isChangeTitle = false;
-      console.log(this.board);
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
         .then(() => SocketService.send(this.board._id));
@@ -310,23 +313,18 @@ export default {
   padding: 15px;
   font-family: Lato_bold;
   font-size: 20px;
+  margin-left: 10px;
 }
-.title-input-container {
-  display: flex;
-  flex-direction: row;
-}
+
 .input-title-board {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   height: 32px;
-  width: 300px;
+  width: 200px;
   border: none;
-  background: rgba(255, 255, 255, 0.911);
+  background: rgba(255, 255, 255, 0.144);
   padding-left: 10px;
-}
-.btn-title-board {
-  background: rgba(255, 255, 255, 0.911);
-  border: none;
+  margin-left: 10px;
 }
 
 .container-member {
@@ -485,12 +483,13 @@ export default {
   background-color: #ebebeb;
 }
 .menu-btn {
+  margin-right: 10px;
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.116);
   color: rgb(75, 75, 75);
   border: 2px solid rgb(75, 75, 75);
   border-radius: 5px;
-  padding: 8px 18px;
+  padding: 5px 10px;
   transition: 0.3s;
   &:hover {
     background-color: rgba(241, 241, 241, 0.308);

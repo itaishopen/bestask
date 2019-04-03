@@ -9,7 +9,8 @@ export default {
         lists: [],
         activities: [],
         currCard: null,
-        isAddCard: false
+        isAddCard: false,
+        isEditMode: false,
     },
     getters: {
         getBoard: state => state.board,
@@ -17,6 +18,7 @@ export default {
         getBoardActivities: state => state.activities,
         getCurrCard: state => state.currCard,
         isAddCard: state => state.isAddCard,
+        isEditMode: state => state.isEditMode,
     },
     mutations: {
         resetState(state) {
@@ -25,10 +27,9 @@ export default {
             state.activities = [];
             state.currCard = null;
             state.isAddCard = false;
+            state.isEditMode = false;
         },
         setBoard(state, { board }) {
-            console.log(board);
-            
             state.board = board;
         },
         setCard(state, { card }) {
@@ -69,11 +70,16 @@ export default {
         },
         setIsAddCard(state, { isAddCard }) {
             state.isAddCard = isAddCard;
+        },
+        setIsEditMode(state, { isEditMode }) {
+            console.log('isEditMode store' , isEditMode);
+            state.isEditMode = isEditMode;
         }
     },
     actions: {
         loadBoard(context, { boardId }) {
             context.commit({ type: 'setIsAddCard', isAddCard: false });
+            context.commit({ type: 'setIsEditMode', isEditMode: false });
             return BoardService.getBoardById(boardId)
                 .then(({ board, lists, activities }) => {
                     context.commit({ type: 'setBoard', board: board[0] });
@@ -88,8 +94,6 @@ export default {
             }
         },
         saveBoard(context, { board }) {
-            console.log(board, 'board store');
-
             return BoardService.saveBoard(board).then(savedBoard => {                
                 context.commit({ type: 'setBoard', board: savedBoard[0] })
                 return savedBoard[0]

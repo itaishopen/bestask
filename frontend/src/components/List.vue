@@ -157,6 +157,8 @@ export default {
           );
           this.$store.dispatch({ type: "saveActivity", activity });
           var cardItem = CardService.getEmptyCard();
+          console.log(1, cardItem);
+          
           this.$store.commit("setCard", { card: cardItem });
           this.$store.dispatch({ type: "loadBoard", boardId });
           SocketService.send(boardId);
@@ -193,6 +195,7 @@ export default {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
+        console.log(2, cardItem);
         this.$store.commit("setCard", { card: cardItem });
       }
     },
@@ -219,10 +222,11 @@ export default {
     }
   },
 
-  created() {
-    var cardItem = CardService.getEmptyCard();
-    this.$store.commit("setCard", { card: cardItem });
-  },
+  // created() {
+  //   var cardItem = CardService.getEmptyCard();
+  //   console.log(3, cardItem);
+  //   this.$store.commit("setCard", { card: cardItem });
+  // },
   watch: {}
 };
 </script>

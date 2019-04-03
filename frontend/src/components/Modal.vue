@@ -52,6 +52,7 @@ export default {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
+        console.log(4, cardItem);
         this.$store.commit("setCard", { card: cardItem });
       }
     },

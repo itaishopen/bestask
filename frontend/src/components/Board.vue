@@ -3,7 +3,7 @@
   <section
     v-if="board"
     class="board"
-    :style="{ 'background': this.board.prefs.bgColor.color}"
+    :style="{ 'background': board.prefs.bgColor.color}"
     @click="closeEditTitle"
   >
     <header class="nav-board">

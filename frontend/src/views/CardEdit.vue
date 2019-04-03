@@ -8,9 +8,15 @@
     @hide="modalClosed"
     no-close-on-esc
     no-close-on-backdrop
-    hide-header-close
+
+    :style="{'background-color': card.prefs.bgColor }"
   >
-    <b-form-input slot="modal-header" class="m-1" v-model="card.title" placeholder="Title"/>
+    <b-form-input
+      slot="modal-header"
+      class="m-1 title-input"
+      v-model="card.title"
+      placeholder="Title"
+    />
     <section class="nav-modal">
       <div class="containerLabel" v-b-modal.modal4>
         <div class="LabelMenu Red" v-if="checkCorectColor('#ff9191')"></div>
@@ -23,7 +29,10 @@
       <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
         <div v-for="user in card.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
-            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            <div class="logo-user-name">
+              <!-- <span v-if="user.prefs.userPic" :logo= user.prefs.userPic><span><img v-if="userPic(user)" src="pixel.gif" onload="this.onload=null; this.src=userImg();"/></span></span> -->
+              <span>{{user.firstName[0]}}{{user.lastName[0]}}</span>
+            </div>
           </div>
         </div>
         <div class="logo-user-name" v-if="checkSumMember()">
@@ -36,50 +45,50 @@
       <main class="content flex">
         <div class="cost flex">
           <label class="mt-4" for="time">Cost:</label>
-          <div class="flex column m-1">
-            <label for="timeEt" class="mb-1">Estimate Time</label>
+          <div class="flex column mt-1 mb-2 ml-3">
+            <label for="timeEt" class="mb-3">Estimate Time</label>
             <b-form-select
               size="md"
               label="Estimate Time"
               :value="card.et"
               id="time timeEt"
               v-model="card.et"
-              :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '1.5 Hours': '1.5 Hours','2.5 Hours':'2.5 Hours','5 Hours':'5 Hours','7.5 Hours':'7.5 Hours','12.5 Hours':'12.5 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '1.5 Days': '1.5 Days','2.5 Days':'2.5 Days','5 Days':'5 Days','7.5 Days':'7.5 Days','12.5 Days':'12.5 Days'}"
+              :options="{ '0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
             >
               <option slot="first" :value="null">Estimate Time</option>
             </b-form-select>
           </div>
-          <div class="flex column m-1">
-            <label for="timeAt" class="mb-1">Actual Time</label>
+          <div class="flex column mt-1 mb-2 ml-3">
+            <label for="timeAt" class="mb-3">Actual Time</label>
             <b-form-select
               size="md"
               :value="card.at"
               id="timeAt"
               v-model="card.at"
-              :options="{ '0.5 Hour':'0.5 Hour','1 Hour': '1 Hour', '1.5 Hours': '1.5 Hours','2.5 Hours':'2.5 Hours','5 Hours':'5 Hours','7.5 Hours':'7.5 Hours','12.5 Hours':'12.5 Hours','0.5 Day':'0.5 Day','1 Day': '1 Day', '1.5 Days': '1.5 Days','2.5 Days':'2.5 Days','5 Days':'5 Days','7.5 Days':'7.5 Days','12.5 Days':'12.5 Days'}"
+              :options="{ '0.5 Day':'0.5 Day','1 Day': '1 Day', '2 Days': '2 Days','3 Days':'3 Days','5 Days':'5 Days','8 Days':'8 Days','13 Days':'13 Days'}"
             >
               <option slot="first" :value="null">Actual Time</option>
             </b-form-select>
           </div>
         </div>
 
-        <div class="time flex">
-          <label class="mt-3" for="date">Date:</label>
+        <div class="time flex mt-3">
+          <label class="mt-2" for="date">Date:</label>
           <input
             type="date"
-            class="custom-select custom-select-sm m-1"
+            class="custom-select custom-select-sm ml-3 mr-1 mb-1"
             name="bday"
             size="sm"
             v-model="card.dueDate"
           >
         </div>
         <b-form-textarea
-          class="m-1"
+          class="mt-3"
           id="textarea"
           v-model="card.description"
           placeholder="Description"
-          rows="6"
-          max-rows="10"
+          rows="3"
+          max-rows="5"
         />
 
         <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
@@ -119,8 +128,8 @@
           >Add item</button>
         </div>
 
-        <b-form-input class="m-1" v-model="comment" placeholder="Add comment"/>
-        <b-button class="m-1" size="sm" v-on:click="addComment">Save</b-button>
+        <b-form-input class="mt-2" v-model="comment" placeholder="Add comment"/>
+        <b-button class="mt-2 btn-save" size="sm" v-on:click="addComment">Save</b-button>
         <b-form-input
           v-for="comment in card.comments"
           :key="comment"
@@ -254,7 +263,8 @@ export default {
       SumMember: false,
       editStatus: false,
       modalOpen: false,
-      editorOpen: false
+      editorOpen: false,
+      userSrc: null
     };
   },
   created() {
@@ -265,14 +275,26 @@ export default {
     });
   },
   mounted() {
-    this.$refs.myModalRef.show();
+    if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {
+    userPic(user) {
+      console.log(user.card.users[0]);
+      
+      this.userSrc = user.card.users[0].prefs.userPic
+      
+      return user.card.users[0].prefs.userPic
+    },
+    userImg() {
+      return this.userSrc
+    },
     card: {
       get() {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
+        console.log(5, cardItem);
+
         this.$store.commit("setCard", { card: cardItem });
       }
     },
@@ -587,16 +609,35 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+.logo-user-name-pic {
+  min-width: 35px;
+  max-width: 35px;
+  min-height: 35px;
+  max-height: 35px;
+  border-radius: 50%;
+  background: url(https://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/prototypen/w_sexy_gr.jpg)
+}
 .logo-user-name {
   font-size: 15px;
   font-weight: bold;
   min-width: 35px;
-  height: 35px;
+  max-width: 35px;
+  min-height: 35px;
+  max-height: 35px;
   line-height: 35px;
   border-radius: 50%;
   border: 1px solid rgb(66, 178, 206);
   background-color: rgb(174, 216, 226);
   justify-content: flex-start;
+  img {
+    min-width: 35px;
+    max-width: 35px;
+    min-height: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    border: none;
+    background-color: none;
+  }
 }
 .name-member {
   margin-left: 8px;

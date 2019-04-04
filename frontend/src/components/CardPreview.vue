@@ -2,6 +2,7 @@
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
       <section class="title-card" :style="{ 'background': getColor}">
+
         <div class="card-middle">
           <div class="title-card-text">{{card.title}}</div>
           <div
@@ -82,15 +83,9 @@ export default {
     changeDate() {
       return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
     },
-    getColor() {
-      if (this.card.prefs) return this.card.prefs.bgColor;
-      console.log(
-        "this.card.prefs",
-        this.card.prefs,
-        this.card.title,
-        this.card
-      );
-    }
+    getColor(){
+      if(this.card.prefs) return this.card.prefs.bgColor;
+    },
   },
   methods: {
     checkMember(userId) {
@@ -142,21 +137,24 @@ export default {
   .card-middle {
     display: flex;
     width: 100%;
-    height: 22px;
+    height: 47px;
     .title-card-text {
       color: black;
       font-size: 18px;
       display: flex;
       justify-self: center;
       align-self: center;
-      width: 190px;
+      width: 200px;
       justify-content: flex-start;
+      padding-left: 5px;
     }
     .due-date {
       display: flex;
+      height: 22px;
       justify-content: flex-end;
       align-items: center;
       justify-items: center;
+      align-self: center;
       text-align: center;
       font-size: 12px;
       color: rgb(255, 255, 255);

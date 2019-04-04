@@ -47,7 +47,6 @@ export default {
             state.lists.splice(idx, 1);
         },
         setCard(state, { card }) {
-            console.log(card);
             state.currCard = card;
         },
         updateCard(state, { savedCard }) {
@@ -132,9 +131,7 @@ export default {
         },
         loadCard(context, { cardId }) {
             return CardService.getCardById(cardId)
-                .then(card => {
-                    console.log(card);
-                    
+                .then(card => {                    
                     context.commit({ type: 'setCard', card: card[0] });
                     return card[0]
                 })

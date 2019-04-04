@@ -54,8 +54,6 @@ export default {
         }
       },
       set(userId) {
-        console.log(this.user);
-        console.log(userId, "userId");
         this.$store.commit("setUser", { card: userId });
       }
     }

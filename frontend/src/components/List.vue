@@ -96,8 +96,6 @@ export default {
       var fromList = this.$store.getters.getLists.find(
         list => list._id === fromListId
       );
-      console.log(fromListId, toListId);
-
       if (fromListId !== toListId) {
         var toList = this.$store.getters.getLists.find(
           list => list._id === toListId
@@ -169,9 +167,7 @@ export default {
             "MMMM Do YYYY, h:mm:ss a"
           );
           this.$store.dispatch({ type: "saveActivity", activity });
-          var cardItem = CardService.getEmptyCard();
-          console.log(1, cardItem);
-
+          var cardItem = CardService.getEmptyCard();          
           this.$store.commit("setCard", { card: cardItem });
           this.$store.dispatch({ type: "loadBoard", boardId });
           SocketService.send(boardId);
@@ -179,15 +175,13 @@ export default {
       this.isAddClick = !this.isAddClick;
     },
     choseTitle() {
-      if (this.$store.getters.isEditMode) {
-        console.log("something else open");
-      }
       this.isChangeTitle = true;
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      this.$store.commit("setIsEditMode", { isEditMode: false });
       this.isChangeTitle = false;
+    },
+    changeTitle() {
       this.$store.dispatch({ type: "saveList", list: this.list });
       SocketService.send(this.list.boardId);
     }
@@ -207,7 +201,6 @@ export default {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
-        console.log(2, cardItem);
         this.$store.commit("setCard", { card: cardItem });
       }
     },
@@ -241,12 +234,6 @@ export default {
       }
     }
   },
-
-  // created() {
-  //   var cardItem = CardService.getEmptyCard();
-  //   console.log(3, cardItem);
-  //   this.$store.commit("setCard", { card: cardItem });
-  // },
   watch: {}
 };
 </script>

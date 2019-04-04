@@ -31,8 +31,6 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.user);
-
       this.$store
         .dispatch({
           type: "signup",

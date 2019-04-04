@@ -182,27 +182,17 @@ export default {
         group: "lists",
         disabled: false,
         draggable: ".board-list-li",
-        // filter: ".no-drag",
         ghostClass: "ghost"
-        // delay: 3,
-        // forceFallback: true,
-        // fallbackTolerance: 1,
-        // delay: 3,
-        // touchStartThreshold: 1,
-        // draggable: ".drag-me .list"
       };
     }
   },
 
   methods: {
     newList() {
-      //  todo: add list
       this.list = ListService.getEmptyList();
       this.isAddListClick = !this.isAddListClick;
     },
     closeAdd() {
-      console.log("this.board", this.board);
-
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
@@ -225,15 +215,10 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     choseTitle() {
-      if (this.$store.getters.isEditMode) {
-        console.log("something else open");
-      }
       this.isChangeTitle = true;
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      console.log("click on board");
-      this.$store.commit("setIsEditMode", { isEditMode: false });
       this.isChangeTitle = false;
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
@@ -295,7 +280,7 @@ export default {
   flex-direction: column;
 }
 .board-list-ul {
-  margin-top: 50px;
+  margin-top: 60px;
 }
 .nav-board {
   background: rgba(255, 255, 255, 0.2);
@@ -363,14 +348,8 @@ export default {
 }
 
 .board-list-li {
-  // min-height: 20vh;
   height: 100%;
   min-width: 280px;
-  /* max-height: 100vh; */
-  // background-color: rgb(235, 235, 235);
-  // border: 1px solid rgb(206, 206, 206);
-  // border-radius: 8px;
-  // margin: 0px 5px;
 }
 .board-list-ul {
   /* margin: 0 auto; */
@@ -385,6 +364,7 @@ export default {
 }
 .create-list-title {
   min-width: 280px;
+  padding: 0 3px;
   height: 100px;
   background-color: rgba(255, 255, 255, 0.075);
   border: none;
@@ -398,8 +378,16 @@ export default {
 }
 
 .form-add-list {
+  min-width: 280px;
   background-color: rgba(255, 255, 255, 0);
   display: flex;
+  height: 100px;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #ebebeb;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  margin: 0 3px;
 }
 .list-add-list {
   padding: 10px 0;
@@ -411,17 +399,6 @@ export default {
   color: rgb(82, 82, 82);
   border-radius: 7px;
   transition: 0.3s;
-}
-.form-add-list {
-  width: 270px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: #ebebeb;
-  border: 1px solid #cecece;
-  border-radius: 8px;
-  margin: 0 3px;
 }
 .input-new-list {
   min-width: 264px;
@@ -494,7 +471,7 @@ export default {
   color: rgb(75, 75, 75);
   border: 2px solid rgb(75, 75, 75);
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 4px 18px;
   transition: 0.3s;
   &:hover {
     background-color: rgba(241, 241, 241, 0.308);

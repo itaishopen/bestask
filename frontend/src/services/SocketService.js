@@ -15,7 +15,6 @@ function init(boardId){
 	// });
 
 	socket.on('board-change', boardId => {		
-		console.log('WE GOT A BOARD CHANGE')
 		store.dispatch({ type: "loadBoard", boardId })
 	});
 }

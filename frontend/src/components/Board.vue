@@ -1,117 +1,123 @@
 <template>
-  <!-- <div></div> -->
-  <section
-    v-if="board"
-    class="board"
-    :style="{ 'background': board.prefs.bgColor.color}"
-    @click="closeEditTitle"
-  >
-    <header class="nav-board">
-      <div class="nav-board-left">
-        <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
-        <input
-          @click.stop="choseTitle"
-          value="board.title"
-          v-if="isChangeTitle"
-          class="input-title-board"
-          ref="title"
-          v-model="board.title"
-          placeholder="Enter title here..."
-          autofocus
-        >
-        <section class="container-member" v-if="board.users">
-          <div v-for="user in board.users.slice(0, 2)" :key="user._id">
-            <div class="container-name-member">
-              <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
-            </div>
-          </div>
-          <div
-            class="logo-user-name logo-user-more"
-            v-if="checkSumMember()"
-          >{{board.users.length-2}}</div>
-        </section>
-      </div>
-      <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">
-        <i class="fas fa-bars"></i>
-      </b-button>
-    </header>
-    <main>
-      <transition name="slide">
-        <div class="menu-modal" v-show="showMenu">
-          <button v-on:click="toggleMenu" class="menu-close-btn">
-            <i class="fas fa-times" style="color:#000000;"></i>
-          </button>
-          <h1>Menu</h1>
-          <hr class="divider">
-          <div>
-            <b-button variant="link" v-on:click="toggleColorBoard">
-              <span v-if="showColorBoard">Hide preferences</span>
-              <span v-else>Show preferences</span>
-            </b-button>
-            <div v-if="showColorBoard" class="ColorBoard">
-              <div class="color color1dc78e" @click="paintBoard('#1dc78e')"></div>
-              <div class="color colore06bfd" @click="paintBoard('#e06bfd')"></div>
-              <div class="color color83d8ff" @click="paintBoard('#83d8ff')"></div>
-              <div class="color colorf5cf66" @click="paintBoard('#f5cf66')"></div>
-              <div class="color colorffffff" @click="paintBoard('#ffffff')"></div>
-              <div class="color colorf566ca" @click="paintBoard('#f566ca')"></div>
-              <div class="color colorff8383" @click="paintBoard('#ff8383')"></div>
-              <div class="color color78ff6c" @click="paintBoard('#78ff6c')"></div>
-              <div class="color color6f6cff" @click="paintBoard('#6f6cff')"></div>
-              <div class="color color6ce9ff" @click="paintBoard('#6ce9ff')"></div>
-              <div class="color color959595" @click="paintBoard('#959595')"></div>
-              <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
-            </div>
-          </div>
-          <div>
-            <router-link :to="'/board/' + board._id + '/archive'">
-              <b-button variant="link">Archived items</b-button>
-            </router-link>
-          </div>
-          <div>
-            <b-button variant="link" v-on:click="toggleActivity">
-              <span v-if="showAtivities">Hide Activities</span>
-              <span v-else>Show Activities</span>
-            </b-button>
-            <activities v-if="showAtivities" :board="board" class="activities"></activities>
-          </div>
-        </div>
-      </transition>
-      <ul class="board-list-ul">
-        <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
-          <li class="board-list-li" v-for="list in lists" :key="list._id">
-            <list :list="list"/>
-          </li>
-        </draggable>
-        <div class="create-list">
-          <button v-if="!isAddListClick" class="create-list-title" @click="newList">
-            Add new list
-            <i class="fa fa-plus"></i>
-          </button>
-
-          <form
-            v-if="isAddListClick"
-            @submit.prevent="addList"
-            class="create-list-input form-add-list"
+  <section>
+    <img v-if="!board" class="loading" src="../../img/0_D1icAJvr19HzVBd6.gif" alt="fun"/>
+    <div
+      v-if="board"
+      class="board"
+      :style="{ 'background': board.prefs.bgColor.color}"
+      @click="closeEditTitle"
+    >
+      <header class="nav-board">
+        <div class="nav-board-left">
+          <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
+          <input
+            @click.stop="choseTitle"
+            value="board.title"
+            v-if="isChangeTitle"
+            class="input-title-board"
+            ref="title"
+            v-model="board.title"
+            placeholder="Enter title here..."
+            autofocus
           >
-            <div>
-              <input class="input-new-list" v-model="list.title" placeholder="Enter title here...">
+          <section class="container-member" v-if="board.users">
+            <div v-for="user in board.users.slice(0, 2)" :key="user._id">
+              <div class="container-name-member">
+                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+              </div>
             </div>
-            <div class="container-add-list-btns">
-              <button class="create-list-options list-new-list-options" type="submit">
-                <i class="fa fa-plus"></i>
-              </button>
-              <button class="list-x-list-options" @click="closeAdd">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </form>
+            <div
+              class="logo-user-name logo-user-more"
+              v-if="checkSumMember()"
+            >{{board.users.length-2}}</div>
+          </section>
         </div>
-      </ul>
-      <card-edit v-if="showModal" ref="card">
-        <router-view name="Card Edit"/>
-      </card-edit>
-    </main>
+        <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">
+          <i class="fas fa-bars"></i>
+        </b-button>
+      </header>
+      <main>
+        <transition name="slide">
+          <div class="menu-modal" v-show="showMenu">
+            <button v-on:click="toggleMenu" class="menu-close-btn">
+              <i class="fas fa-times" style="color:#000000;"></i>
+            </button>
+            <h1>Menu</h1>
+            <hr class="divider">
+            <div>
+              <b-button variant="link" v-on:click="toggleColorBoard">
+                <span v-if="showColorBoard">Hide preferences</span>
+                <span v-else>Show preferences</span>
+              </b-button>
+              <div v-if="showColorBoard" class="ColorBoard">
+                <div class="color color1dc78e" @click="paintBoard('#1dc78e')"></div>
+                <div class="color colore06bfd" @click="paintBoard('#e06bfd')"></div>
+                <div class="color color83d8ff" @click="paintBoard('#83d8ff')"></div>
+                <div class="color colorf5cf66" @click="paintBoard('#f5cf66')"></div>
+                <div class="color colorffffff" @click="paintBoard('#ffffff')"></div>
+                <div class="color colorf566ca" @click="paintBoard('#f566ca')"></div>
+                <div class="color colorff8383" @click="paintBoard('#ff8383')"></div>
+                <div class="color color78ff6c" @click="paintBoard('#78ff6c')"></div>
+                <div class="color color6f6cff" @click="paintBoard('#6f6cff')"></div>
+                <div class="color color6ce9ff" @click="paintBoard('#6ce9ff')"></div>
+                <div class="color color959595" @click="paintBoard('#959595')"></div>
+                <div class="color colorfffd6c" @click="paintBoard('#fffd6c')"></div>
+              </div>
+            </div>
+            <div>
+              <router-link :to="'/board/' + board._id + '/archive'">
+                <b-button variant="link">Archived items</b-button>
+              </router-link>
+            </div>
+            <div>
+              <b-button variant="link" v-on:click="toggleActivity">
+                <span v-if="showAtivities">Hide Activities</span>
+                <span v-else>Show Activities</span>
+              </b-button>
+              <activities v-if="showAtivities" :board="board" class="activities"></activities>
+            </div>
+          </div>
+        </transition>
+        <ul class="board-list-ul">
+          <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
+            <li class="board-list-li" v-for="list in lists" :key="list._id">
+              <list :list="list"/>
+            </li>
+          </draggable>
+          <div class="create-list">
+            <button v-if="!isAddListClick" class="create-list-title" @click="newList">
+              Add new list
+              <i class="fa fa-plus"></i>
+            </button>
+
+            <form
+              v-if="isAddListClick"
+              @submit.prevent="addList"
+              class="create-list-input form-add-list"
+            >
+              <div>
+                <input
+                  class="input-new-list"
+                  v-model="list.title"
+                  placeholder="Enter title here..."
+                >
+              </div>
+              <div class="container-add-list-btns">
+                <button class="create-list-options list-new-list-options" type="submit">
+                  <i class="fa fa-plus"></i>
+                </button>
+                <button class="list-x-list-options" @click="closeAdd">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </ul>
+        <card-edit v-if="showModal" ref="card">
+          <router-view name="Card Edit"/>
+        </card-edit>
+      </main>
+    </div>
   </section>
 </template>
 
@@ -123,7 +129,6 @@ import ActivityService from "../services/ActivityService.js";
 import SocketService from "../services/SocketService.js";
 import list from "./List.vue";
 import Activities from "./Activities.vue";
-
 import draggable from "vuedraggable";
 import moment from "moment";
 
@@ -150,7 +155,7 @@ export default {
     list,
     draggable,
     CardEdit,
-    Activities
+    Activities,
   },
 
   computed: {
@@ -167,7 +172,7 @@ export default {
         return this.$store.getters.getLists;
       },
       set(lists) {
-        this.$store.dispatch("updateLists", lists );
+        this.$store.dispatch("updateLists", lists);
       }
     },
     dragOptions() {
@@ -584,6 +589,14 @@ export default {
   .color6f6cff {
     background-color: #6f6cff;
   }
+}
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
 

@@ -8,8 +8,6 @@
     @hide="modalClosed"
     no-close-on-esc
     no-close-on-backdrop
-
-    :style="{'background-color': card.prefs.bgColor }"
   >
     <b-form-input
       slot="modal-header"
@@ -90,9 +88,9 @@
           rows="3"
           max-rows="5"
         />
-
-        <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
-          <div class="title-Todos">TITLE: {{checklist.title}}</div>
+        <div class="mt-3" v-if="card.checklists">
+          <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
+          <div class="title-Todos flex justify-start">{{checklist.title}}</div>
           <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
             <div class="edit-Todo">
               <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
@@ -127,6 +125,8 @@
             @click="addToDo(checklist.id)"
           >Add item</button>
         </div>
+        </div>
+        
 
         <b-form-input class="mt-2" v-model="comment" placeholder="Add comment"/>
         <b-button class="mt-2 btn-save" size="sm" v-on:click="addComment">Save</b-button>

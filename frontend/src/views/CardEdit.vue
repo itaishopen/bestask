@@ -8,7 +8,6 @@
     @hide="modalClosed"
     no-close-on-esc
     no-close-on-backdrop
-    :style="{'background-color': card.prefs.bgColor }"
   >
     <b-form-input
       slot="modal-header"
@@ -89,52 +88,57 @@
           rows="3"
           max-rows="5"
         />
-
-        <div
-          class="edit-checklist"
-          v-for="(checklist , indexCheckList) in card.checklists"
-          :key="checklist.id"
-        >
-          <div class="container-title-Todos">
-            <div class="title-Todos">{{checklist.title}}</div>
+        <div class="mt-3" v-if="card.checklists">
+          <div
+            class="edit-checklist"
+            v-for="(checklist , indexCheckList) in card.checklists"
+            :key="checklist.id"
+          >
+            <div class="container-title-Todos">
+              <div class="title-Todos flex justify-start">{{checklist.title}}</div>
+              <button
+                class="x-checklist-options"
+                @click.prevent="deleteCheclist(checklist.id , indexCheckList)"
+              >Delete list</button>
+            </div>
+            <div class="edit-Todos" v-for="(toDo , index) in checklist.toDos" :key="toDo.id">
+              <div class="edit-Todo" v-if="toDo.name.length">
+                <i
+                  v-if="!toDo.done"
+                  @click="checkDone(checklist.id , toDo.id)"
+                  class="far fa-square"
+                ></i>
+                <i
+                  v-if="toDo.done"
+                  @click="checkDone(checklist.id , toDo.id)"
+                  class="fa fa-check-square"
+                ></i>
+                <div
+                  v-show="!toDo.editStatus"
+                  @click.prevent="openEditor(checklist.id , toDo.id)"
+                >{{toDo.name}}{{toDo.name.length}}</div>
+              </div>
+              <div class="flex editTodo" v-show="toDo.editStatus">
+                <b-input
+                  @keyup.enter.enter="addToDo(checklist.id , toDo.id)"
+                  name="add-todo"
+                  placeholder="Add todo"
+                  size="sm"
+                  v-model="titleToDo"
+                  autofocus
+                  @shown="focusMyElement"
+                />
+                <button class="x-todo-options" @click.prevent="deleteToDo(checklist.id , index)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
             <button
-              class="x-checklist-options"
-              @click.prevent="deleteCheclist(checklist.id , indexCheckList)"
-            >Delete list</button>
+              class="new-todo-options new-todo"
+              size="sm"
+              @click="addToDo(checklist.id)"
+            >Add item</button>
           </div>
-          <div class="edit-Todos" v-for="(toDo , index) in checklist.toDos" :key="toDo.id">
-            <div class="edit-Todo" v-if="toDo.name.length">
-              <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
-              <i
-                v-if="toDo.done"
-                @click="checkDone(checklist.id , toDo.id)"
-                class="fa fa-check-square"
-              ></i>
-              <div
-                v-show="!toDo.editStatus"
-                @click.prevent="openEditor(checklist.id , toDo.id)"
-              >{{toDo.name}}{{toDo.name.length}}</div>
-            </div>
-            <div class="flex editTodo" v-show="toDo.editStatus">
-              <b-input
-                @keyup.enter.enter="addToDo(checklist.id , toDo.id)"
-                name="add-todo"
-                placeholder="Add todo"
-                size="sm"
-                v-model="titleToDo"
-                autofocus
-                @shown="focusMyElement"
-              />
-              <button class="x-todo-options" @click.prevent="deleteToDo(checklist.id , index)">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <button
-            class="new-todo-options new-todo"
-            size="sm"
-            @click="addToDo(checklist.id)"
-          >Add item</button>
         </div>
 
         <b-form-input class="mt-2" v-model="comment" placeholder="Add comment"/>
@@ -290,9 +294,11 @@ export default {
       .addEventListener("Click", function() {
         console.log("click card edit");
       });
-    document.querySelector(".modal-content").addEventListener("click", function() {
-      console.log("click card edit");
-    });
+    document
+      .querySelector(".modal-content")
+      .addEventListener("click", function() {
+        console.log("click card edit");
+      });
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {

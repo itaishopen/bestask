@@ -1,34 +1,38 @@
 <template>
-  <section class="task-app task-wrapper collection" v-if="boards">
-    <h1 class="title-board-prev">My Boards:</h1>
-    <div class="board-flex">
-      <div
-        class="collection-item"
-        v-for="board in boards"
-        :key="board._id"
-        :style="{ background: board.prefs.bgColor.color }"
-      >
-        <board-preview class="board-preview" :board="board"></board-preview>
-      </div>
-      <div
-        class="collection-newItem"
-        v-bind:class="{ 'collection-newItem-active': isNewBoard }"
-        v-on:click="isNewBoard = true;"
-      >
-        <h1 class="collection-title" v-show="!isNewBoard">Create a board...</h1>
-        <input
-          class="collection-addBoard"
-          v-model="newBoardTitle"
-          v-on:keyup.enter.prevent="createNewBoard()"
-          placeholder="Create a board..."
-          v-show="isNewBoard"
+  <section>
+    <img v-if="!boards" class="loading" src="../../img/copper-loader.gif" alt="fun">
+
+    <div class="task-app task-wrapper collection" v-if="boards">
+      <h1 class="title-board-prev">My Boards:</h1>
+      <div class="board-flex">
+        <div
+          class="collection-item"
+          v-for="board in boards"
+          :key="board._id"
+          :style="{ background: board.prefs.bgColor.color }"
         >
-        <div class="collection-options" v-show="isNewBoard">
-          <button class="Button" v-on:click.stop="createNewBoard()">Save</button>
-          <svg class="Cancel" v-on:click.stop="isNewBoard = !isNewBoard">
-            <line x1="0" y1="0" x2="15" y2="15"></line>
-            <line x1="0" y1="15" x2="15" y2="0"></line>
-          </svg>
+          <board-preview class="board-preview" :board="board"></board-preview>
+        </div>
+        <div
+          class="collection-newItem"
+          v-bind:class="{ 'collection-newItem-active': isNewBoard }"
+          v-on:click="isNewBoard = true;"
+        >
+          <h1 class="collection-title" v-show="!isNewBoard">Create a board...</h1>
+          <input
+            class="collection-addBoard"
+            v-model="newBoardTitle"
+            v-on:keyup.enter.prevent="createNewBoard()"
+            placeholder="Create a board..."
+            v-show="isNewBoard"
+          >
+          <div class="collection-options" v-show="isNewBoard">
+            <button class="Button" v-on:click.stop="createNewBoard()">Save</button>
+            <svg class="Cancel" v-on:click.stop="isNewBoard = !isNewBoard">
+              <line x1="0" y1="0" x2="15" y2="15"></line>
+              <line x1="0" y1="15" x2="15" y2="0"></line>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -38,6 +42,7 @@
 <script>
 import BoardPreview from "../components/BoardPreview.vue";
 import BoardService from "../services/BoardService";
+
 // import CardEdit from '@/views/CardEdit.vue';
 
 export default {
@@ -203,6 +208,14 @@ export default {
       background-color: #cdd2d4 !important;
     }
   }
+}
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
 

@@ -139,7 +139,7 @@ export default {
       showMenu: false,
       showAtivities: false,
       showColorBoard: false,
-      boardId: this.$route.params.boardId,
+      boardId: this.$route.params.boardId
     };
   },
   created() {
@@ -168,7 +168,7 @@ export default {
         return this.$store.getters.getLists;
       },
       set(lists) {
-        this.$store.dispatch("updateLists", lists );
+        this.$store.dispatch("updateLists", lists);
       }
     },
     dragOptions() {
@@ -227,6 +227,7 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
+      console.log("click on board");
       this.$store.commit("setIsEditMode", { isEditMode: false });
       this.isChangeTitle = false;
       this.$store

@@ -8,7 +8,6 @@
     @hide="modalClosed"
     no-close-on-esc
     no-close-on-backdrop
-
     :style="{'background-color': card.prefs.bgColor }"
   >
     <b-form-input
@@ -18,7 +17,7 @@
       placeholder="Title"
     />
     <section class="nav-modal">
-      <div class="containerLabel" v-b-modal.modal4>
+      <div class="containerLabel" v-b-modal.modal10>
         <div class="LabelMenu Red" v-if="checkCorectColor('#ff9191')"></div>
         <div class="LabelMenu Blue" v-if="checkCorectColor('#91abff')"></div>
         <div class="LabelMenu Green" v-if="checkCorectColor('#9eff91')"></div>
@@ -91,10 +90,20 @@
           max-rows="5"
         />
 
-        <div class="edit-checklist" v-for="checklist in card.checklists" :key="checklist.id">
-          <div class="title-Todos">TITLE: {{checklist.title}}</div>
-          <div class="edit-Todos" v-for="toDo in checklist.toDos" :key="toDo.id">
-            <div class="edit-Todo">
+        <div
+          class="edit-checklist"
+          v-for="(checklist , indexCheckList) in card.checklists"
+          :key="checklist.id"
+        >
+          <div class="container-title-Todos">
+            <div class="title-Todos">{{checklist.title}}</div>
+            <button
+              class="x-checklist-options"
+              @click.prevent="deleteCheclist(checklist.id , indexCheckList)"
+            >Delete list</button>
+          </div>
+          <div class="edit-Todos" v-for="(toDo , index) in checklist.toDos" :key="toDo.id">
+            <div class="edit-Todo" v-if="toDo.name.length">
               <i v-if="!toDo.done" @click="checkDone(checklist.id , toDo.id)" class="far fa-square"></i>
               <i
                 v-if="toDo.done"
@@ -104,25 +113,25 @@
               <div
                 v-show="!toDo.editStatus"
                 @click.prevent="openEditor(checklist.id , toDo.id)"
-              >{{toDo.name}}</div>
+              >{{toDo.name}}{{toDo.name.length}}</div>
             </div>
             <div class="flex editTodo" v-show="toDo.editStatus">
               <b-input
+                @keyup.enter.enter="addToDo(checklist.id , toDo.id)"
                 name="add-todo"
                 placeholder="Add todo"
                 size="sm"
                 v-model="titleToDo"
                 autofocus
+                @shown="focusMyElement"
               />
-              <button class="new-todo-options" @click.prevent="addToDo(checklist.id , toDo.id)">Add</button>
-              <button class="x-todo-options" @click.prevent="closeEditor(checklist.id , toDo.id)">
+              <button class="x-todo-options" @click.prevent="deleteToDo(checklist.id , index)">
                 <i class="fas fa-times"></i>
               </button>
             </div>
           </div>
           <button
             class="new-todo-options new-todo"
-            v-if="!editorOpen"
             size="sm"
             @click="addToDo(checklist.id)"
           >Add item</button>
@@ -226,7 +235,7 @@
 
     <!-- Modal Checklist Component -->
     <b-modal id="modal5" title="Checklist" hide-footer>
-      <form class="add-checklist" @submit.prevent="addCheklist()">
+      <form class="add-checklist" @submit.prevent="addCheklist()" data-toggle="modal5">
         Add Title
         <b-form-input type="text" v-model="titleCheckList" autofocus/>
         <b-button class="mt-3 float-right" type="submit">create</b-button>
@@ -264,7 +273,8 @@ export default {
       editStatus: false,
       modalOpen: false,
       editorOpen: false,
-      userSrc: null
+      userSrc: null,
+      modalShown: false
     };
   },
   created() {
@@ -275,18 +285,29 @@ export default {
     });
   },
   mounted() {
+    document
+      .querySelector("#modal1___BV_modal_content_")
+      .addEventListener("Click", function() {
+        console.log("click card edit");
+      });
+    document.querySelector(".modal-content").addEventListener("click", function() {
+      console.log("click card edit");
+    });
+    document.querySelector(".modal-header").addEventListener("click", function() {
+      console.log("click card edit");
+    });
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {
     userPic(user) {
       console.log(user.card.users[0]);
-      
-      this.userSrc = user.card.users[0].prefs.userPic
-      
-      return user.card.users[0].prefs.userPic
+
+      this.userSrc = user.card.users[0].prefs.userPic;
+
+      return user.card.users[0].prefs.userPic;
     },
     userImg() {
-      return this.userSrc
+      return this.userSrc;
     },
     card: {
       get() {
@@ -328,6 +349,10 @@ export default {
     }
   },
   methods: {
+    closeEditor() {},
+    focusMyElement(e) {
+      this.$refs.focusThis.focus();
+    },
     memberToCard(userId, user) {
       const index = this.card.members.findIndex(member => member === userId);
       const idx = this.card.users.findIndex(member => member === user);
@@ -350,21 +375,21 @@ export default {
         return true;
       }
     },
-    closeEditor(checklistId, toDoId) {
+    deleteCheclist(checklistId, index) {
+      this.card.checklists.splice(index, 1);
+    },
+    deleteToDo(checklistId, index) {
       this.editorOpen = false;
       this.card.checklists.forEach(checklist => {
         if (checklist.id === checklistId) {
-          checklist.toDos.forEach(toDo => {
-            if (toDoId === toDo.id) {
-              toDo.editStatus = false;
-              if (toDo.name === "") {
-                console.log(checklist.length);
-                checklist.toDos.splice(checklist.toDos.length - 1, 1);
-              }
-            }
-          });
+          console.log(checklist.toDos);
+          checklist.toDos.splice(index, 1);
         }
       });
+    },
+    closeEditor() {
+      this.editorOpen = false;
+      console.log(" this.editorOpen", this.editorOpen);
     },
     openEditor(checklistId, toDoId) {
       this.editorOpen = true;
@@ -537,6 +562,8 @@ export default {
   flex-direction: column;
   /* align-items: center; */
   margin: 5px;
+  position: fixed;
+  right: 18%;
 }
 
 .comments {
@@ -615,7 +642,7 @@ export default {
   min-height: 35px;
   max-height: 35px;
   border-radius: 50%;
-  background: url(https://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/prototypen/w_sexy_gr.jpg)
+  background: url(https://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/prototypen/w_sexy_gr.jpg);
 }
 .logo-user-name {
   font-size: 15px;
@@ -656,8 +683,16 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.container-title-Todos {
+  width: 452px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+}
 .title-Todos {
-  margin: 10px 0;
+  font-weight: bold;
+  font-size: 20px;
 }
 .fa-square,
 .fa-check-square {
@@ -668,12 +703,16 @@ export default {
   max-width: 109px;
   font-size: 17px;
   font-weight: bold;
-  background-color: rgb(51, 236, 66);
+  background-color: rgb(43, 199, 90);
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
   padding: 8px 18px;
   margin: 0 3px;
+  transition: 0.3s;
+  &:hover {
+    background-color: rgb(34, 231, 93);
+  }
 }
 .new-todo {
   margin: 8px 0;
@@ -686,6 +725,20 @@ export default {
   border-radius: 5px;
   padding: 8px 18px;
   margin: 0 3px;
+}
+
+.x-checklist-options {
+  font-weight: bold;
+  background-color: rgb(163, 163, 163);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 18px;
+  margin: 0 3px;
+  transition: 0.3s;
+  &:hover {
+    background-color: rgb(216, 83, 83);
+  }
 }
 
 // card color

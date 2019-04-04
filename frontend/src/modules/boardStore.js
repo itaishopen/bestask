@@ -73,7 +73,7 @@ export default {
             state.isAddCard = isAddCard;
         },
         setIsEditMode(state, { isEditMode }) {
-            console.log('isEditMode store' , isEditMode);
+            // console.log('isEditMode store' , isEditMode);
             state.isEditMode = isEditMode;
         }
     },

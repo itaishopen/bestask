@@ -58,6 +58,8 @@ export default {
   data() {
     return {};
   },
+  mounted() {},
+
   computed: {
     board: {
       get() {
@@ -80,10 +82,15 @@ export default {
     changeDate() {
       return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
     },
-    getColor(){
-      if(this.card.prefs) return this.card.prefs.bgColor;
-      console.log('this.card.prefs' , this.card.prefs ,  this.card.title , this.card);
-    },
+    getColor() {
+      if (this.card.prefs) return this.card.prefs.bgColor;
+      console.log(
+        "this.card.prefs",
+        this.card.prefs,
+        this.card.title,
+        this.card
+      );
+    }
   },
   methods: {
     checkMember(userId) {
@@ -131,7 +138,7 @@ export default {
       background-color: rgb(250, 250, 250);
     }
   }
-  
+
   .card-middle {
     display: flex;
     width: 100%;

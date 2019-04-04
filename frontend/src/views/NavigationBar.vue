@@ -65,12 +65,12 @@ export default {
 
 <style lang='scss' scoped>
 .navigation-bar {
-  background: rgba(19, 19, 19, 0.137);
+  background: rgba(0, 0, 0, 0.35);
   position: fixed;
   width: 100%;
-  height: 70px;
+  height: 50px;
   top: 0;
-  padding: 0 30px;
+  padding: 4px 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -48,8 +48,6 @@ export default {
           user: this.user
         })
         .then(user => {
-          console.log(user);
-
           if (user.length) {
             this.isWorng = false;
             this.$router.push({ path: "/board" });

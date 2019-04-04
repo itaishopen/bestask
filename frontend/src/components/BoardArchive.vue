@@ -38,7 +38,6 @@ export default {
   },
   created() {
     this.boardId = this.$route.params.boardId;
-    // console.log(boardId);
     this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
   },
   components: {
@@ -60,8 +59,6 @@ export default {
       this.$router.push(`/board/${this.boardId}`)
     },
     arciveCheck(list) {
-      console.log(list);
-
       return list.cards.some(card => card.archived)
 
     },

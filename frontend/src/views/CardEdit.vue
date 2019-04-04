@@ -28,7 +28,6 @@
         <div v-for="user in card.users.slice(0, 2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">
-              <!-- <span v-if="user.prefs.userPic" :logo= user.prefs.userPic><span><img v-if="userPic(user)" src="pixel.gif" onload="this.onload=null; this.src=userImg();"/></span></span> -->
               <span>{{user.firstName[0]}}{{user.lastName[0]}}</span>
             </div>
           </div>
@@ -264,7 +263,6 @@ export default {
       editStatus: false,
       modalOpen: false,
       editorOpen: false,
-      userSrc: null
     };
   },
   created() {
@@ -278,23 +276,11 @@ export default {
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {
-    userPic(user) {
-      console.log(user.card.users[0]);
-      
-      this.userSrc = user.card.users[0].prefs.userPic
-      
-      return user.card.users[0].prefs.userPic
-    },
-    userImg() {
-      return this.userSrc
-    },
     card: {
       get() {
         return this.$store.getters.getCurrCard;
       },
       set(cardItem) {
-        console.log(5, cardItem);
-
         this.$store.commit("setCard", { card: cardItem });
       }
     },
@@ -358,7 +344,6 @@ export default {
             if (toDoId === toDo.id) {
               toDo.editStatus = false;
               if (toDo.name === "") {
-                console.log(checklist.length);
                 checklist.toDos.splice(checklist.toDos.length - 1, 1);
               }
             }
@@ -383,7 +368,6 @@ export default {
     checkDone(checklistId, toDoId) {
       this.card.checklists.forEach(checklist => {
         if (checklist.id === checklistId) {
-          console.log(checklist, "checkDone");
           checklist.toDos.forEach(toDo => {
             if (toDoId === toDo.id) {
               toDo.done = !toDo.done;
@@ -404,7 +388,6 @@ export default {
       var newTodo = false;
       this.card.checklists.forEach(checklist => {
         if (!toDoId && checklistId === checklist.id) {
-          console.log(checklist.id, checklistId);
           this.editorOpen = true;
           var newToDo = CardService.getEmptyToDo();
           checklist.toDos.push(newToDo);
@@ -438,11 +421,9 @@ export default {
     },
     changeCardColor(chosenColor) {
       this.card.prefs.bgColor = chosenColor;
-      console.log(this.card);
     },
     saveCard(isArchive) {
       this.card.archived = isArchive;
-      console.log("Saving card..", this.card);
       this.modalOpen = false;
       this.$store
         .dispatch({ type: "saveCardToList", card: this.card })
@@ -463,7 +444,6 @@ export default {
           // }, 1500);
         })
         .catch(err => {
-          console.log(err);
           this.$router.go(-1);
         });
     },
@@ -479,12 +459,10 @@ export default {
     },
     modalClosed() {
       this.modalOpen = false;
-      // setTimeout(() => {
       this.$router.go(-1);
-      // }, 1500);
     },
     moveCard() {
-      this.$store.getters.getLists.map(list => console.log(list.title));
+      this.$store.getters.getLists.map(list => list.title);
     }
   },
 

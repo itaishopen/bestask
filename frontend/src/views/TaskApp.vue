@@ -56,10 +56,7 @@ export default {
   created() {
     //todo chek in sesion
     let user = { _id: "guest" };
-    if (this.$store.getters.isUserLoggedIn) {
-      user = this.$store.getters.loggedInUser;
-      console.log(user);
-    }
+    if (this.$store.getters.isUserLoggedIn) user = this.$store.getters.loggedInUser;
     this.$store.dispatch({ type: "updateUser", userId: user._id });
   },
   computed: {
@@ -78,13 +75,8 @@ export default {
         } else {
           newBoard.members.push("guest");
         }
-        this.$store
-          .dispatch({ type: "saveBoard", board: newBoard })
-          .then(board => {
-            console.log(board);
-
-            this.$router.push(`/board/${board._id}`);
-          });
+        this.$store.dispatch({ type: "saveBoard", board: newBoard })
+          .then(board => this.$router.push(`/board/${board._id}`));
         this.newBoardTitle = "";
       }
     },

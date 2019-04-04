@@ -11,6 +11,5 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  Spinner,
   render: h => h(App)
 }).$mount('#app')

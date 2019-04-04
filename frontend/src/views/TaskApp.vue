@@ -1,6 +1,6 @@
 <template>
   <section>
-    <img v-if="!boards" class="loading" src="../../img/copper-loader.gif" alt="fun">
+    <img v-if="!boards" class="loading" src="../../img/0_D1icAJvr19HzVBd6.gif" alt="fun">
 
     <div class="task-app task-wrapper collection" v-if="boards">
       <h1 class="title-board-prev">My Boards:</h1>

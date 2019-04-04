@@ -293,9 +293,6 @@ export default {
     document.querySelector(".modal-content").addEventListener("click", function() {
       console.log("click card edit");
     });
-    document.querySelector(".modal-header").addEventListener("click", function() {
-      console.log("click card edit");
-    });
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {

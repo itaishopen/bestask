@@ -1,0 +1,55 @@
+.modal {
+    .modal-header {
+        border-bottom: none;
+        padding-bottom: 5px;
+    }
+    .modal-content {
+        max-width: 600px;
+        min-width: 420px;
+        border-radius: 25px;
+        background-color: #f5f6f7;
+    }
+    .modal-dialog {
+        max-width: 600px;
+        min-width: 420px;
+        border-radius: 10px;
+    }
+    .form-control {
+        background-color: rgba(245, 245, 245, 0.5);
+        border-radius: 10px;
+    }
+    .title-input {
+        width: 80%;
+    }
+    .custom-select {
+        background-color: rgba(245, 245, 245, 0.5);
+        border-radius: 10px;
+        option {
+            background-color: rgba(245, 245, 245, 0.5);
+        }
+    }
+    .btn-secondary {
+        background-color: rgba(12, 12, 12, 0.9);
+        color: white;
+        border-radius: 5px;
+        &:hover{
+            background-color: rgba(78, 77, 77, 0.9);
+            box-shadow: 2px 2px 3px 2px rgba(130, 138, 145, 0.5);
+        }
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    .btn-save, .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        &:hover {
+            background-color: #005abb;
+            box-shadow: 2px 2px 3px 2px rgba(130, 138, 145, 0.5);
+        }
+    }
+    .modal-footer {
+        border-top: none;
+        padding-top: 5px;
+    }
+}

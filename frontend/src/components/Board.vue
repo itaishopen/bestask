@@ -1,6 +1,6 @@
 <template>
   <section>
-    <img v-if="!board" class="loading" src="../../img/0_D1icAJvr19HzVBd6.gif" alt="fun"/>
+    <img v-if="!board" class="loading" src="../../img/0_D1icAJvr19HzVBd6.gif" alt="fun">
     <div
       v-if="board"
       class="board"
@@ -11,7 +11,7 @@
         <div class="nav-board-left">
           <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
           <input
-          @keyup.enter.enter="closeEditTitle"
+            @keyup.enter.enter="closeEditTitle"
             @click.stop="choseTitle"
             value="board.title"
             v-if="isChangeTitle"
@@ -156,7 +156,7 @@ export default {
     list,
     draggable,
     CardEdit,
-    Activities,
+    Activities
   },
 
   computed: {
@@ -219,8 +219,8 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      console.log('board click');
-       
+      console.log("board click");
+
       this.isChangeTitle = false;
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
@@ -273,9 +273,8 @@ export default {
 
 <style lang='scss' scoped>
 .board {
-  // position: relative;
   width: auto;
-  padding-top: 70px;
+  padding-top: 50px;
   height: 100vh;
   width: 100%;
   display: inline-table;
@@ -285,7 +284,8 @@ export default {
   margin-top: 60px;
 }
 .nav-board {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.24);
+  color: white;
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -346,108 +346,160 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    .nav-board-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .board-title {
+        width: 200px;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        padding: 15px;
+        font-family: Lato_bold;
+        font-size: 20px;
+      }
+      .input-title-board {
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        height: 32px;
+        width: 300px;
+        border: none;
+        background: transparent;
+        padding-left: 10px;
+      }
+      .container-member {
+        display: grid;
+        grid-template-columns: repeat(4, [col] 30px);
+        grid-template-rows: repeat(1, [row] auto);
+        justify-content: space-between;
+        border-radius: 12px;
+        padding: 5px;
+        margin: 5px;
+        .logo-user-name {
+          font-size: 13px;
+          font-weight: bold;
+          min-width: 36px;
+          height: 36px;
+          line-height: 36px;
+          border-radius: 50%;
+          color: rgba(0, 0, 0, 0.466);
+          background-color: rgb(223, 223, 223);
+          justify-content: flex-start;
+        }
+        .logo-user-more {
+          color: rgb(255, 255, 255);
+          background-color: rgb(82, 82, 82);
+        }
+        .container-name-member {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+      }
+    }
+    .menu-btn {
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.116);
+      color: rgb(255, 255, 255);
+      border: 2px solid rgb(75, 75, 75);
+      border-radius: 5px;
+      padding: 4px 18px;
+      transition: 0.3s;
+      &:hover {
+        background-color: rgba(241, 241, 241, 0.308);
+        color: rgb(255, 255, 255);
+        border: 2px solid rgb(0, 0, 0);
+      }
+      .fa-bars {
+        color: rgb(255, 255, 255);
+      }
+    }
   }
 }
 
-.board-list-li {
-  height: 100%;
-  min-width: 280px;
-}
 .board-list-ul {
-  /* margin: 0 auto; */
+  margin-top: 60px;
   width: min-content;
-
-  // background-color: rgb(255, 255, 255);
-  /* border: 1px solid black; */
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-}
-.create-list-title {
-  min-width: 280px;
-  padding: 0 3px;
-  height: 100px;
-  background-color: rgba(255, 255, 255, 0.075);
-  border: none;
-  font-size: 20px;
-  color: rgb(82, 82, 82);
-  display: flex;
-  justify-content: center;
-}
-.create-list-title:hover {
-  color: rgb(22, 22, 22);
-}
-
-.form-add-list {
-  min-width: 280px;
-  background-color: rgba(255, 255, 255, 0);
-  display: flex;
-  height: 100px;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: #ebebeb;
-  border: 1px solid #cecece;
-  border-radius: 8px;
-  margin: 0 3px;
-}
-.list-add-list {
-  padding: 10px 0;
-  width: 270px;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  font-size: 20px;
-  color: rgb(82, 82, 82);
-  border-radius: 7px;
-  transition: 0.3s;
-}
-.input-new-list {
-  min-width: 264px;
-  height: 40px;
-  border: none;
-  border: 1px solid rgb(230, 230, 230);
-  border-radius: 10px;
-  padding: 5px;
-  margin-top: 10px;
-  box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
-  border-bottom: 0.9px solid rgb(167, 165, 165);
-}
-.container-list-card-btns {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-.list-add-list:hover {
-  background-color: rgba(199, 199, 199, 0);
-  color: rgb(0, 0, 0);
-}
-.list-new-list-options {
-  background-color: rgb(51, 236, 66);
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 5px;
-  padding: 8px 18px;
-  margin: 0 3px;
-}
-.list-x-list-options {
-  background-color: rgb(236, 51, 51);
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 5px;
-  padding: 8px 18px;
-  margin: 0 3px;
-}
-.fa-times {
-  color: rgb(255, 255, 255);
-}
-.fa-plus {
-  color: rgb(0, 0, 0);
-}
-
-.draggable {
-  display: flex;
-  flex-direction: row;
+  .draggable {
+    display: flex;
+    flex-direction: row;
+    .board-list-li {
+      height: 100%;
+      min-width: 280px;
+    }
+  }
+  .create-list-title {
+    min-width: 280px;
+    padding: 0 3px;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.075);
+    border: none;
+    font-size: 20px;
+    color: rgb(82, 82, 82);
+    display: flex;
+    justify-content: center;
+    &:hover {
+      color: rgb(22, 22, 22);
+    }
+    .fa-plus {
+      color: rgb(0, 0, 0);
+    }
+  }
+  .form-add-list {
+    min-width: 280px;
+    background-color: rgba(255, 255, 255, 0);
+    display: flex;
+    height: 100px;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #ebebeb;
+    border: 1px solid #cecece;
+    border-radius: 8px;
+    margin: 0 3px;
+    .input-new-list {
+      min-width: 264px;
+      height: 40px;
+      border: none;
+      border: 1px solid rgb(230, 230, 230);
+      border-radius: 10px;
+      padding: 5px;
+      margin-top: 10px;
+      box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
+      border-bottom: 0.9px solid rgb(167, 165, 165);
+    }
+    .container-add-list-btns {
+      .list-new-list-options {
+        background-color: rgb(51, 236, 66);
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 5px;
+        padding: 8px 18px;
+        margin: 0 3px;
+        .fa-plus {
+          color: rgb(255, 255, 255);
+        }
+      }
+      .list-x-list-options {
+        background-color: rgb(236, 51, 51);
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 5px;
+        padding: 8px 18px;
+        margin: 0 3px;
+        .fa-times {
+          color: rgb(255, 255, 255);
+        }
+      }
+    }
+  }
 }
 
 .ghost {
@@ -484,31 +536,33 @@ export default {
 .menu-modal {
   display: flex;
   position: fixed;
-  top: 70px;
+  top: 50px;
   right: -5px;
   flex-direction: column;
   width: 340px;
   max-height: calc(100vh - 87px);
   background-color: #ebebeb;
   border: 1px solid #cecece;
-  // border-radius: 8px;
   margin: 0px 5px;
   z-index: 500;
   min-height: 10px;
+  .menu-close-btn {
+    outline: none;
+    border: none;
+    align-self: flex-end;
+    background-color: #ebebeb;
+  }
 }
 
 .slide-enter-active {
   transition: all 0.2s ease;
-  // transition: left 0.5s ease;
 }
 .slide-leave-active {
-  // transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   transition: all 0.2s ease;
 }
-.slide-enter, .slide-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-enter,
+.slide-leave-to {
   transform: translateX(340px);
-  // opacity: 0;
 }
 .activities {
   overflow: auto;

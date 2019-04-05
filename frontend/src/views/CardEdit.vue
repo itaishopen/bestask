@@ -186,7 +186,7 @@
       </div>
     </div>
     <div slot="modal-footer" class="w-100">
-      <b-button class="m-1 float-right" variant="primary" @click="saveCard(false)">Save</b-button>
+      <b-button class="m-1 float-right" variant="primary" @click="saveCard(card.archived)">Save</b-button>
       <b-button class="m-1 float-right" @click="modalClosed">Close</b-button>
     </div>
     <!-- Modal card color Component -->

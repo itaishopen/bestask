@@ -536,8 +536,6 @@ export default {
   flex-direction: column;
   /* align-items: center; */
   margin: 5px;
-  position: fixed;
-  right: 16%;
 }
 
 .comments {

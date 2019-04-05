@@ -219,6 +219,8 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
+      console.log('board click');
+       
       this.isChangeTitle = false;
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })

@@ -115,7 +115,7 @@
                 <div
                   v-show="!toDo.editStatus"
                   @click.prevent="openEditor(checklist.id , toDo.id)"
-                >{{toDo.name}}{{toDo.name.length}}</div>
+                >{{toDo.name}}</div>
               </div>
               <div class="flex editTodo" v-show="toDo.editStatus">
                 <b-input
@@ -127,7 +127,10 @@
                   autofocus
                   @shown="focusMyElement"
                 />
-                <button class="x-todo-options" @click.prevent="deleteToDo(checklist.id , index)">
+                <button
+                  class="x-todo-options"
+                  @click.prevent="deleteToDo(checklist.id , index, toDo.id)"
+                >
                   <i class="fas fa-times"></i>
                 </button>
               </div>
@@ -139,7 +142,6 @@
             >Add item</button>
           </div>
         </div>
-
         <b-form-input class="mt-2" v-model="comment" placeholder="Add comment"/>
         <b-button class="mt-2 btn-save" size="sm" v-on:click="addComment">Save</b-button>
         <b-form-input
@@ -275,7 +277,6 @@ export default {
       SumMember: false,
       editStatus: false,
       modalOpen: false,
-      editorOpen: false,
     };
   },
   created() {
@@ -287,12 +288,7 @@ export default {
   },
   mounted() {
     document
-      .querySelector("#modal1___BV_modal_content_")
-      .addEventListener("Click", function() {
-        console.log("click card edit");
-      });
-    document
-      .querySelector(".modal-content")
+      .querySelector(".modal-dialog")
       .addEventListener("click", function() {
         console.log("click card edit");
       });
@@ -337,7 +333,6 @@ export default {
     }
   },
   methods: {
-    closeEditor() {},
     focusMyElement(e) {
       this.$refs.focusThis.focus();
     },
@@ -366,8 +361,7 @@ export default {
     deleteCheclist(checklistId, index) {
       this.card.checklists.splice(index, 1);
     },
-    deleteToDo(checklistId, index) {
-      this.editorOpen = false;
+    deleteToDo(checklistId, index, toDoId) {
       this.card.checklists.forEach(checklist => {
         if (checklist.id === checklistId) {
           checklist.toDos.forEach(toDo => {
@@ -381,12 +375,7 @@ export default {
         }
       });
     },
-    closeEditor() {
-      this.editorOpen = false;
-      console.log(" this.editorOpen", this.editorOpen);
-    },
     openEditor(checklistId, toDoId) {
-      this.editorOpen = true;
       this.card.checklists.forEach(checklist => {
         if (checklist.id === checklistId) {
           checklist.toDos.forEach(toDo => {
@@ -411,7 +400,6 @@ export default {
       });
     },
     addCheklist() {
-      this.editorOpen = true;
       var newChecklist = CardService.getEmptyChecklist();
       newChecklist.title = this.titleCheckList;
       var newToDo = CardService.getEmptyToDo();
@@ -422,7 +410,6 @@ export default {
       var newTodo = false;
       this.card.checklists.forEach(checklist => {
         if (!toDoId && checklistId === checklist.id) {
-          this.editorOpen = true;
           var newToDo = CardService.getEmptyToDo();
           checklist.toDos.push(newToDo);
           this.titleToDo = "";
@@ -550,7 +537,7 @@ export default {
   /* align-items: center; */
   margin: 5px;
   position: fixed;
-  right: 18%;
+  right: 16%;
 }
 
 .comments {

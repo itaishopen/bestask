@@ -5,6 +5,7 @@
         <img src="../../img/small-logo.png" class="logo-nav" alt>
       </router-link>
     </div>
+    {{user}}
     <div class="navigation">
       <router-link class="nav-btns" to="/" title="Home">
         <i class="fas fa-home nav-btn"></i>
@@ -17,7 +18,7 @@
       </router-link>
       <div class="login">
         <router-link to="/login/">
-          <span class="user-logedin" v-if="user && user._id" title="Logout">
+          <span class="user-logedin" v-if="user && user._id" @click="logout()" title="Logout">
             <span v-if="user.prefs.userPic">
               <img src="user.prefs.userPic" alt>
             </span>
@@ -53,12 +54,19 @@ export default {
           return this.$store.getters.loggedInUser;
         }
       },
-      set(userId) {
+      set(userId) {        
         this.$store.commit("setUser", { card: userId });
       }
     }
   },
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch({
+        type: "logout",
+        userId: this.user._id
+      });
+    }
+  },
   components: {}
 };
 </script>

@@ -672,7 +672,7 @@ export default {
   margin-right: 8px;
 }
 .new-todo-options {
-  max-width: 109px;
+  max-width: 115px;
   font-size: 17px;
   font-weight: bold;
   background-color: rgb(43, 199, 90);

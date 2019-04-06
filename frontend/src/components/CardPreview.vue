@@ -59,6 +59,8 @@ export default {
   data() {
     return {};
   },
+  mounted() {},
+
   computed: {
     board: {
       get() {
@@ -131,7 +133,7 @@ export default {
       background-color: rgb(250, 250, 250);
     }
   }
-  
+
   .card-middle {
     display: flex;
     width: 100%;

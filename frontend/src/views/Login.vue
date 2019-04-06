@@ -1,9 +1,11 @@
 <template>
   <div class="login">
+    <img src="../../img/6.jpg" alt class="login-img">
     <div>
       <form class="form-login" @submit.prevent="login">
         <input
           class="username-login"
+          :class="{ wrong: isWrong }"
           type="text"
           v-model="user.userName"
           placeholder="Username"
@@ -11,18 +13,18 @@
         >
         <input
           class="password-login"
+          :class="{ wrong: isWrong }"
           type="password"
           v-model="user.password"
           placeholder="Password"
           required
         >
         <button class="btn-login" type="submit">Log in</button>
-        <span v-if="isWorng">worng credinatls</span>
       </form>
     </div>
     <div>
-      <button class="btn-login">
-        <router-link to="/signup/">creat new acount</router-link>
+      <button class="btn-new-acount">
+        <router-link to="/signup/">Create acount</router-link>
       </button>
     </div>
   </div>
@@ -37,7 +39,7 @@ export default {
         userName: "",
         password: ""
       },
-      isWorng: false
+      isWrong: false
     };
   },
   methods: {
@@ -49,10 +51,10 @@ export default {
         })
         .then(user => {
           if (user.length) {
-            this.isWorng = false;
+            this.isWrong = false;
             this.$router.push({ path: "/board" });
           } else {
-            this.isWorng = true;
+            this.isWrong = true;
           }
         });
     }
@@ -64,7 +66,16 @@ export default {
 
 <style lang='scss' scoped>
 .login {
-  margin-top: 20px;
+  margin-top: calc(50vh - 120px);
+  .login-img {
+    top: 0;
+    left: 0;
+    z-index: -1;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
   .form-login {
     display: flex;
     flex-direction: column;
@@ -73,67 +84,45 @@ export default {
   }
   .username-login,
   .password-login,
-  .btn-login {
-    font-size: 30px;
+  .btn-login,
+  .btn-new-acount {
+    font-size: 18px;
     font-family: PontanoSans-Regular;
     padding: 10px;
     width: 350px;
     height: 50px;
-    border: 1px solid rgb(0, 81, 146);
-    color: rgb(0, 81, 146);
-    background-color: rgb(255, 255, 255);
+    border: 0px solid rgb(31, 31, 31);
+    color: rgb(255, 255, 255);
+    background-color: rgba(136, 136, 136, 0.274);
     margin: 7px 0;
-    border-radius: 6px;
+    border-radius: 50px;
+  }
+  .username-login::placeholder,
+  .password-login::placeholder {
+    color: rgba(255, 255, 255, 0.808);
   }
   a {
-    color: rgb(0, 81, 146);
+    color: rgb(255, 255, 255);
     transition: 0.3s;
+    padding: 13px 95px;
+    border-radius: 50px;
     &:hover {
-      color: rgb(0, 25, 95);
+      color: rgb(255, 255, 255);
     }
   }
-  .btn-login {
+  .btn-login,
+  .btn-new-acount {
     cursor: pointer;
     transition: 0.3s;
+    background-color: rgba(45, 115, 245, 0.644);
   }
-  .btn-login:hover {
-    border: 1px solid rgb(0, 25, 95);
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 25, 95);
+  .btn-login:hover,
+  .btn-new-acount:hover {
+    background-color: rgba(8, 94, 255, 0.863);
+    color: rgb(255, 255, 255);
   }
-}
-
-.sign-up {
-  .form-sign-up {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .first-name-sign-up,
-  .last-name-sign-up,
-  .username-sign-up,
-  .password-sign-up,
-  .btn-sign-up {
-    font-size: 30px;
-    font-family: PontanoSans-Regular;
-    padding: 10px;
-    min-width: 350px;
-    min-height: 40px;
-    border: 1px solid rgb(0, 81, 146);
-    color: rgb(0, 81, 146);
-    background-color: rgb(255, 255, 255);
-    margin: 7px 0;
-    border-radius: 6px;
-  }
-  .btn-sign-up {
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .btn-sign-up:hover {
-    border: 1px solid rgb(0, 25, 95);
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 25, 95);
+  .wrong {
+    border: 2px solid red;
   }
 }
 </style>

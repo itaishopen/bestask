@@ -2,18 +2,16 @@
   <section class="list slide" @click="closeEditTitle">
     <header class="header title">
       <div class="title-list" v-if="!isChangeTitle" @click.prevent.stop="choseTitle">{{list.title}}</div>
-      <form v-if="isChangeTitle" @submit.prevent="changeTitle" class="form-add">
-        <input
-          class="input-title-list no-drag"
-          ref="title"
-          v-model="list.title"
-          placeholder="Enter title here..."
-          autofocus
-        >
-        <!-- <button class="btn-title-list" type="submit">
-          <i class="fa fa-plus"></i>
-        </button> -->
-      </form>
+      <input
+        @keyup.enter.enter="closeEditTitle"
+        @click.stop="choseTitle"
+        v-if="isChangeTitle"
+        class="input-title-list no-drag"
+        ref="title"
+        v-model="list.title"
+        placeholder="Enter title here..."
+        autofocus
+      >
     </header>
 
     <main class="main items drag-me">
@@ -40,9 +38,18 @@
         Add card
         <i class="fa fa-plus"></i>
       </button>
-      <form v-if="isAddClick" @submit.prevent="addCard" class="list-add-card form-add-card no-drag">
+      <form
+        v-if="isAddClick"
+        @submit.prevent.stop="addCard"
+        class="list-add-card form-add-card no-drag"
+      >
         <div>
-          <textarea class="text-area" v-on:keyup.enter="addCard" v-model="card.title" placeholder="Enter title here..."></textarea>
+          <textarea
+            class="text-area"
+            v-on:keyup.enter="addCard"
+            v-model="card.title"
+            placeholder="Enter title here..."
+          ></textarea>
         </div>
         <div class="container-add-card-btns">
           <button class="list-new-card-options" type="submit">Add card</button>
@@ -96,26 +103,25 @@ export default {
         var card = toList.cards.find(card => card._id === cardId);
         if (!card) {
           var card = fromList.cards.find(card => card._id === cardId);
-          fromList.cards.splice(env.oldIndex, 1)
-          toList.cards.splice(env.newIndex, 0, card)
+          fromList.cards.splice(env.oldIndex, 1);
+          toList.cards.splice(env.newIndex, 0, card);
         }
         card.listId = toListId;
-        card.order = env.newIndex
+        card.order = env.newIndex;
         for (var i = 0; i < toList.cards.length; i++) {
           toList.cards[i].order = i;
         }
         for (var j = 0; j < fromList.cards.length; j++) {
           fromList.cards[j].order = j;
         }
-        this.$store.dispatch({ type: "saveList", list: fromList })
-        this.$store.dispatch({ type: "saveList", list: toList })
-          .then(() => {
-            SocketService.send(this.list.boardId);
-          });
+        this.$store.dispatch({ type: "saveList", list: fromList });
+        this.$store.dispatch({ type: "saveList", list: toList }).then(() => {
+          SocketService.send(this.list.boardId);
+        });
       } else {
         var card = fromList.cards.find(card => card._id === cardId);
-        fromList.cards.splice(env.oldIndex, 1)
-        fromList.cards.splice(env.newIndex, 0, card)
+        fromList.cards.splice(env.oldIndex, 1);
+        fromList.cards.splice(env.newIndex, 0, card);
         for (var k = 0; k < fromList.cards.length; k++) {
           fromList.cards[k].order = k;
         }
@@ -125,6 +131,11 @@ export default {
       }
     },
     newCard() {
+      if (this.$store.getters.isEditMode) {
+        console.log("something else open");
+        //todo close another open
+      }
+      this.$store.commit("setIsEditMode", { isEditMode: true });
       if (!this.isAddCard) {
         this.card = CardService.getEmptyCard();
         this.card.order = this.list.cards.length;
@@ -133,10 +144,12 @@ export default {
       }
     },
     closeAdd() {
+      this.$store.commit("setIsEditMode", { isEditMode: false });
       this.isAddClick = !this.isAddClick;
       this.isAddCard = false;
     },
     addCard() {
+      this.$store.commit("setIsEditMode", { isEditMode: false });
       this.card.listId = this.list._id;
       this.card.order = this.list.cards.length;
       this.$store
@@ -163,22 +176,22 @@ export default {
     },
     choseTitle() {
       this.isChangeTitle = true;
+      this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
       this.isChangeTitle = false;
     },
     changeTitle() {
       this.$store.dispatch({ type: "saveList", list: this.list });
-      this.isChangeTitle = !this.isChangeTitle;
       SocketService.send(this.list.boardId);
     }
   },
   computed: {
     cardList() {
       if (!this.list.cards && this.list.cards.length === 0) {
-        this.list.cards = []
+        this.list.cards = [];
       }
-      return this.list.cards
+      return this.list.cards;
     },
     hideCard(card) {
       return card.archived ? "hide-card" : "";
@@ -201,8 +214,8 @@ export default {
         ghostClass: "ghost",
         delay: 5,
         forceFallback: true,
-        fallbackTolerance: 3,
-      }
+        fallbackTolerance: 3
+      };
     },
     isAddCard: {
       get() {
@@ -210,6 +223,14 @@ export default {
       },
       set(value) {
         this.$store.commit("setIsAddCard", { isAddCard: value });
+      }
+    },
+    isEditMode: {
+      get() {
+        return this.$store.getters.isEditMode;
+      },
+      set(value) {
+        this.$store.commit("setIsEditMode", { isEditMode: value });
       }
     }
   },
@@ -249,9 +270,12 @@ export default {
       font-size: 18px;
       font-weight: bold;
       height: 32px;
-      width: 90%;
+      width: 100%;
       border: none;
       border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+      background: rgba(255, 255, 255, 0.815);
+      padding-left: 10px;
       background: #ebebeb;
       // padding-left: 10px;
       margin: 5px -5px 0px;

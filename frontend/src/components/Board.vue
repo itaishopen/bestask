@@ -11,6 +11,7 @@
         <div class="nav-board-left">
           <div class="board-title" v-if="!isChangeTitle" @click.stop="choseTitle">{{board.title}}</div>
           <input
+            @keyup.enter.enter="closeEditTitle"
             @click.stop="choseTitle"
             value="board.title"
             v-if="isChangeTitle"
@@ -20,7 +21,7 @@
             placeholder="Enter title here..."
             autofocus
           >
-          <section class="container-member" v-if="board.users">
+          <section class="container-member" @click.stop="toggleModalMember" v-if="board.users">
             <div v-for="user in board.users.slice(0, 2)" :key="user._id">
               <div class="container-name-member">
                 <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
@@ -31,15 +32,23 @@
               v-if="checkSumMember()"
             >{{board.users.length-2}}</div>
           </section>
+          <transition name="slide-fade">
+            <div class="member-modal" v-show="showModalMember">
+              <button @click="toggleModalMember" class="menu-close-btn">
+                <i class="fas fa-times" style="color:#000000;"></i>
+              </button>
+              <h1>members</h1>
+            </div>
+          </transition>
         </div>
-        <b-button class="menu-btn" v-show="!showMenu" variant="link" v-on:click="toggleMenu">
+        <b-button class="menu-btn" v-show="!showMenu" variant="link" @click="toggleMenu">
           <i class="fas fa-bars"></i>
         </b-button>
       </header>
       <main>
         <transition name="slide">
           <div class="menu-modal" v-show="showMenu">
-            <button v-on:click="toggleMenu" class="menu-close-btn">
+            <button @click="toggleMenu" class="menu-close-btn">
               <i class="fas fa-times" style="color:#000000;"></i>
             </button>
             <h1>Menu</h1>
@@ -141,9 +150,10 @@ export default {
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
       showMenu: false,
+      showModalMember: false,
       showAtivities: false,
       showColorBoard: false,
-      boardId: this.$route.params.boardId,
+      boardId: this.$route.params.boardId
     };
   },
   created() {
@@ -155,7 +165,7 @@ export default {
     list,
     draggable,
     CardEdit,
-    Activities,
+    Activities
   },
 
   computed: {
@@ -187,6 +197,9 @@ export default {
   },
 
   methods: {
+    openModalMember() {
+      console.log("modal member");
+    },
     newList() {
       this.list = ListService.getEmptyList();
       this.isAddListClick = !this.isAddListClick;
@@ -215,9 +228,13 @@ export default {
     },
     choseTitle() {
       this.isChangeTitle = true;
+      this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
+      console.log("board click");
+
       this.isChangeTitle = false;
+      this.showModalMember = false;
       this.$store
         .dispatch({ type: "saveBoard", board: this.board })
         .then(() => SocketService.send(this.board._id));
@@ -243,6 +260,9 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    toggleModalMember() {
+      this.showModalMember = !this.showModalMember;
     },
     paintBoard(color) {
       this.board.prefs.bgColor.color = color;
@@ -275,85 +295,97 @@ export default {
   width: 100%;
   display: inline-table;
   flex-direction: column;
-  .nav-board {
-    background: rgba(0, 0, 0, 0.24);
-    color: white;
-    position: fixed;
+}
+.board-list-ul {
+  margin-top: 60px;
+}
+.nav-board {
+  background: rgba(0, 0, 0, 0.24);
+  color: white;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  .nav-board-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+.board-title {
+  width: 200px;
+  cursor: pointer;
+  display: flex;
+  padding: 15px;
+  font-family: Lato_bold;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.input-title-board {
+  font-size: 20px;
+  font-weight: bold;
+  height: 32px;
+  width: 200px;
+  border: none;
+  background: transparent;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+.container-member {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 30px);
+  grid-template-rows: repeat(1, [row] auto);
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 5px;
+  margin: 5px;
+  .logo-user-name {
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50%;
+    color: black;
+    background-color: rgb(223, 223, 223);
+    justify-content: flex-start;
+  }
+  .logo-user-more {
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: rgb(82, 82, 82);
+  }
+
+  .container-name-member {
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100vw;
     .nav-board-left {
       display: flex;
       flex-direction: row;
       align-items: center;
-      .board-title {
-        width: 200px;
-        cursor: pointer;
-        color: white;
-        display: flex;
-        padding: 15px;
-        font-family: Lato_bold;
-        font-size: 20px;
-      }
-      .input-title-board {
-        font-size: 18px;
-        font-weight: bold;
-        color: white;
-        height: 32px;
-        width: 300px;
-        border: none;
-        background: transparent;
-        padding-left: 10px;
-      }
-      .container-member {
-        display: grid;
-        grid-template-columns: repeat(4, [col] 30px);
-        grid-template-rows: repeat(1, [row] auto);
-        justify-content: space-between;
-        border-radius: 12px;
-        padding: 5px;
-        margin: 5px;
-        .logo-user-name {
-          font-size: 13px;
-          font-weight: bold;
-          min-width: 36px;
-          height: 36px;
-          line-height: 36px;
-          border-radius: 50%;
-          color: rgba(0, 0, 0, 0.466);
-          background-color: rgb(223, 223, 223);
-          justify-content: flex-start;
-        }
-        .logo-user-more {
-          color: rgb(255, 255, 255);
-          background-color: rgb(82, 82, 82);
-        }
-        .container-name-member {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        }
-      }
     }
-    .menu-btn {
-      text-decoration: none;
-      background-color: rgba(255, 255, 255, 0.116);
-      color: rgb(255, 255, 255);
-      border: 2px solid rgb(75, 75, 75);
-      border-radius: 5px;
-      padding: 4px 18px;
-      transition: 0.3s;
-      &:hover {
-        background-color: rgba(241, 241, 241, 0.308);
-        color: rgb(255, 255, 255);
-        border: 2px solid rgb(0, 0, 0);
-      }
-      .fa-bars {
-        color: rgb(255, 255, 255);
-      }
-    }
+  }
+}
+.menu-btn {
+  margin-right: 10px;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.116);
+  color: rgb(255, 255, 255);
+  border: 2px solid rgb(75, 75, 75);
+  border-radius: 5px;
+  padding: 4px 18px;
+  transition: 0.3s;
+  &:hover {
+    background-color: rgba(241, 241, 241, 0.308);
+    color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 0, 0);
   }
 }
 
@@ -443,6 +475,17 @@ export default {
   background: #c8ebfb;
 }
 
+.container-add-list-btns {
+  .fa-plus {
+    color: rgb(255, 255, 255);
+  }
+}
+.menu-close-btn {
+  outline: none;
+  border: none;
+  align-self: flex-end;
+  background-color: #ebebeb;
+}
 .menu-modal {
   display: flex;
   position: fixed;
@@ -470,8 +513,43 @@ export default {
 .slide-leave-active {
   transition: all 0.2s ease;
 }
-.slide-enter, .slide-leave-to {
+.slide-enter,
+.slide-leave-to {
   transform: translateX(340px);
+}
+
+.member-modal {
+  display: flex;
+  position: fixed;
+  top: calc(50vh - 150px);
+  right: calc(50vw - 200px);
+  flex-direction: column;
+  width: 400px;
+  height: 300px;
+  max-height: calc(100vh - 87px);
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  margin: 0px 5px;
+  z-index: 500;
+  min-height: 10px;
+  .menu-close-btn {
+    outline: none;
+    border: none;
+    align-self: flex-end;
+    background-color: #ffffff;
+  }
+}
+
+.slide-fade-enter-active {
+  transition: all 0.4s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-50vh);
+  opacity: 0;
 }
 .activities {
   overflow: auto;

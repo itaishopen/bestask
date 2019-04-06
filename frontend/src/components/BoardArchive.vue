@@ -1,5 +1,5 @@
 <template>
-  <section v-if="lists" class="archive">
+  <section v-if="lists" class="archive" >
     <header class="nav-board">
       <b-button class="back-to-bord-btn" variant="link" v-on:click="backToBord">Back to Board</b-button>
     </header>

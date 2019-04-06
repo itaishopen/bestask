@@ -5,11 +5,10 @@ function addUserRoutes(app) {
     // Users REST API:
 
     // // LIST
-    // app.get(USER_URL, (req, res) => {
-    //     const boardId = req.body        
-    //     userService.query(boardId)
-    //         .then(users => res.json(users))
-    // })
+    app.get(USER_URL, (req, res) => {       
+        userService.query()
+            .then(users => res.json(users))
+    })
 
     // SINGLE - GET Full details including boards
     app.get(`${USER_URL}/:userId`, (req, res) => {

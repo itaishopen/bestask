@@ -7,6 +7,10 @@ const USER_URL = HttpService.getUrl('user')
 
 const resolveData = res => res.data
 
+function getAllUsers() {
+    return HttpService.get(USER_URL).then(resolveData)
+}
+
 function getUserAndBoard(userId) {
     return HttpService.get(`${USER_URL}/${userId}`).then(resolveData)
 }
@@ -33,5 +37,6 @@ export default {
     login,
     signup,
     getEmptyUser,
-    getUserAndBoard
+    getUserAndBoard,
+    getAllUsers
 }

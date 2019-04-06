@@ -2,10 +2,9 @@ const mongoService = require('./mongoService')
 const USERS_DB = 'users';
 const ObjectId = require('mongodb').ObjectId;
 
-function query({ boardId = null }) {
-    if (boardId) boardId = new ObjectId(boardId)
+function query() {
     return mongoService.connect()
-        .then(db => db.collection(USERS_DB).find({}))
+        .then(db => db.collection(USERS_DB).find({}).toArray())
 }
 
 function addUser(user) {

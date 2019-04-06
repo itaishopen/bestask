@@ -25,7 +25,7 @@
         <div class="LabelMenu Orange" v-if="checkCorectColor('#ffd591')"></div>
       </div>
       <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
-        <div v-for="user in card.users.slice(0, 2)" :key="user._id">
+        <div v-for="user in card.users.slice(0,2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
             <div class="logo-user-name">
               <span>{{user.firstName[0]}}{{user.lastName[0]}}</span>

@@ -33,11 +33,16 @@
             >{{board.users.length-2}}</div>
           </section>
           <transition name="slide-fade">
-            <div class="member-modal" v-show="showModalMember">
+            <div class="Users-modal" v-show="showModalMember">
               <button @click="toggleModalMember" class="menu-close-btn">
                 <i class="fas fa-times" style="color:#000000;"></i>
               </button>
-              <h1>members</h1>
+              <h1 class="title-modal-users">Users</h1>
+              <div v-for="user in board.users" :key="user._id">
+                <div class="container-list-members">
+                  <div class="user-name">{{user.firstName}}{{user.lastName}}</div>
+                </div>
+              </div>
             </div>
           </transition>
         </div>
@@ -53,6 +58,7 @@
             </button>
             <h1>Menu</h1>
             <hr class="divider">
+            <pre>{{users}}</pre>
             <div>
               <b-button variant="link" v-on:click="toggleColorBoard">
                 <span v-if="showColorBoard">Hide preferences</span>
@@ -518,6 +524,37 @@ export default {
   transform: translateX(340px);
 }
 
+.Users-modal {
+  display: flex;
+  position: fixed;
+  top: calc(50vh - 150px);
+  right: calc(50vw - 200px);
+  flex-direction: column;
+  width: 400px;
+  height: 300px;
+  max-height: calc(100vh - 87px);
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  margin: 0px 5px;
+  z-index: 500;
+  min-height: 10px;
+  background-color: #6f6cff;
+  .menu-close-btn {
+    outline: none;
+    border: none;
+    align-self: flex-end;
+    background-color: #ffffff;
+  }
+  .container-list-members {
+    background-color: #6ce9ff;
+  }
+  .title-modal-users{
+
+  }
+  .user-name{
+    
+  }
+}
 .member-modal {
   display: flex;
   position: fixed;

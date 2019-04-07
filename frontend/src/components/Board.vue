@@ -400,10 +400,10 @@ export default {
     cursor: pointer;
     color: rgb(255, 255, 255);
     background-color: rgb(82, 82, 82);
-     min-width: 37px;
-      min-height: 37px;
-      border-radius: 50%;
-            line-height: 37px;
+    min-width: 37px;
+    min-height: 37px;
+    border-radius: 50%;
+    line-height: 37px;
 
   }
 

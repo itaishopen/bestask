@@ -18,9 +18,7 @@
       <div class="login">
         <router-link to="/login">
           <span class="user-logedin" v-if="user && user._id" @click="logout()" title="Logout">
-            <span v-if="user.prefs.userPic">
-              <img src="user.prefs.userPic" alt>
-            </span>
+            <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
             <span
               v-else
               class="no-pic-user"
@@ -134,10 +132,17 @@ export default {
     border: 1px solid #0000007a;
   }
   .user-logedin {
-    // margin-bottom: 4px;
     color: #ffffff;
     font-size: 20px;
     border: none;
+    .user-img {
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      background-size: contain;
+      background-repeat: unset;
+      background-position: center;
+    }
     .no-pic-user {
       width: 37px;
       height: 37px;
@@ -147,7 +152,6 @@ export default {
       height: 37px;
       overflow: hidden;
       border: none;
-      // font-size: 22px;
       font-family: Raleway-Regular, "Open Sans", sans-serif;
       font-weight: bold;
       line-height: 37px;

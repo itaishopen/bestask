@@ -48,7 +48,7 @@ export default {
         },
         user() {
             if (this.activity.user[0]) return this.activity.user[0].userName;
-            return '';
+            return 'anonymous';
         }
     },
     methods: {
@@ -65,7 +65,6 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-
     padding: 4px;
     min-width: 320px;
     max-width: 320px;
@@ -73,13 +72,11 @@ export default {
     max-height: 120px;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(230, 230, 230);
-    // border-radius: 10px;
     margin: 0.7px 3px;
     box-shadow: 0px 5px 6px -4px rgba(0, 0, 0, 0.4);
     border-bottom: 0.9px solid rgb(167, 165, 165);
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     transition: 0.2s;
     font-weight: bold;
 }

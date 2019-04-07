@@ -207,9 +207,7 @@ export default {
     users: {
       get() {
         return this.$store.getters.getUsers;
-      }
-      // get() {
-      // }
+      },
     },
     dragOptions() {
       return {

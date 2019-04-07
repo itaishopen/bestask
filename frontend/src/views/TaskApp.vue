@@ -91,111 +91,6 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.collection {
-  height: 100vh;
-  background-image: url("../../img/post-it-notes.jpg");
-  padding-top: 60px;
-  overflow-y: scroll;
-}
-.title-board-prev {
-  margin: 20px 0 30px 0;
-  font-family: Raleway-Regular, "Open Sans", sans-serif;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: underline; 
-}
-.board-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  .board-preview {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 85px;
-    width: 250px;
-    & :hover {
-      // background-color: #ffffff1f;
-    }
-  }
-  .collection-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin: 0 20px 20px 0;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .collection-addBoard {
-    font-family: Raleway-Regular, "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 15px;
-    color: #4d4d4d;
-    margin: 0;
-    padding: 7px;
-    border: 0;
-    outline: 0;
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: 1px solid rgb(73, 73, 73);
-  }
-  .collection-options {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 10px auto;
-    .Button {
-      font-size: 17px;
-      font-weight: bold;
-      color: rgb(73, 73, 73);
-      border: none;
-      border-radius: 5px;
-      padding: 4px 18px;
-      margin: 0 auto;
-      transition: 0.4s;
-      border: 1px solid rgb(73, 73, 73);
-      &:hover {
-        border: 1px solid rgb(24, 24, 24);
-        color: rgb(24, 24, 24);
-      }
-    }
-  }
-  .collection-newItem {
-    // display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 85px;
-    margin: 0 20px 20px 0;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 10px 2% 10px 2%;
-    width: 250px;
-    background-color: #cdd2d4;
-    font-family: Raleway-Regular, "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 21px;
-    color: #4d4d4d;
-    &:hover {
-      background-color: #b6bbbf;
-    }
-    .collection-title {
-      margin: 0 auto;
-      line-height: 70px;
-    }
-  }
-  .collection-newItem-active {
-    background-color: #cdd2d4 !important;
-    &:hover {
-      background-color: #cdd2d4 !important;
-    }
-  }
-}
 .loading {
   position: fixed;
   top: 0;
@@ -203,6 +98,113 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.5);
+}
+.collection {
+  height: 100vh;
+  background: url("../../img/post-it-notes.jpg") no-repeat fixed center
+    rgba(0, 0, 0, 0.3);
+  background-blend-mode: darken;
+  padding-top: 60px;
+  overflow-y: scroll;
+  .title-board-prev {
+    margin: 20px 0 30px 0;
+    font-family: Raleway-Regular, "Open Sans", sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  .board-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    .board-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 85px;
+      width: 250px;
+      &:hover {
+        box-shadow: 2px 3px 4px 0px black;
+      }
+    }
+    .collection-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 0 20px 20px 0;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .collection-addBoard {
+      font-family: Raleway-Regular, "Open Sans", sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      color: #4d4d4d;
+      margin: 0;
+      padding: 7px;
+      border: 0;
+      outline: 0;
+      border-radius: 3px;
+      background-color: #ffffff;
+      border: 1px solid rgb(73, 73, 73);
+    }
+    .collection-options {
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 10px auto;
+      .Button {
+        font-size: 17px;
+        font-weight: bold;
+        color: rgb(73, 73, 73);
+        border: none;
+        border-radius: 5px;
+        padding: 4px 18px;
+        margin: 0 auto;
+        transition: 0.4s;
+        border: 1px solid rgb(73, 73, 73);
+        &:hover {
+          border: 1px solid rgb(24, 24, 24);
+          color: rgb(24, 24, 24);
+        }
+      }
+    }
+    .collection-newItem {
+      justify-content: center;
+      align-items: center;
+      height: 85px;
+      margin: 0 20px 20px 0;
+      border-radius: 3px;
+      cursor: pointer;
+      padding: 10px 2% 10px 2%;
+      width: 250px;
+      background-color: #cdd2d4;
+      font-family: Raleway-Regular, "Open Sans", sans-serif;
+      font-weight: 400;
+      font-size: 21px;
+      color: #4d4d4d;
+      &:hover {
+        background-color: #b6bbbf;
+        box-shadow: 2px 3px 4px 0px black;
+      }
+      .collection-title {
+        margin: 0 auto;
+        line-height: 70px;
+      }
+    }
+    .collection-newItem-active {
+      background-color: #cdd2d4 !important;
+      &:hover {
+        background-color: #cdd2d4 !important;
+      }
+    }
+  }
 }
 </style>
 

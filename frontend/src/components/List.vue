@@ -276,15 +276,8 @@ export default {
       background: rgba(255, 255, 255, 0.815);
       padding-left: 10px;
       background: #ebebeb;
-      // padding-left: 10px;
       margin: 5px -5px 0px;
     }
-    // .btn-title-list {
-    //   border-top-right-radius: 7px;
-    //   height: 32px;
-    //   background: rgba(255, 255, 255, 0.911);
-    //   border: none;
-    // }
   }
   .main {
     max-height: 55vh;
@@ -392,7 +385,6 @@ export default {
 .ghost {
   opacity: 0.3;
   background: #c8ebfb;
-  // transform: rotateZ( 30deg)
 }
 .fun-drag {
   min-height: 50px;
@@ -404,8 +396,4 @@ export default {
   cursor: move;
   min-height: 50px;
 }
-
-// .chosenClass {
-//   transform: rotateZ( 30deg)
-// }
 </style>

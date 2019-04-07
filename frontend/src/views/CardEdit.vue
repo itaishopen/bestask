@@ -117,7 +117,8 @@
                 ></i>
                 <div
                   v-show="!toDo.editStatus"
-                  @click.prevent="openEditor(checklist.id , toDo.id)"
+                  class="todo-name"
+                  @click="openEditor(checklist.id , toDo.id)"
                 >{{toDo.name}}</div>
               </div>
               <div class="flex editTodo" v-show="toDo.editStatus">
@@ -129,6 +130,7 @@
                   v-model="titleToDo"
                   autofocus
                   @shown="focusMyElement"
+                  class="todo-input"
                 />
                 <button
                   class="x-todo-options"
@@ -163,7 +165,6 @@
         <b-button v-b-modal.modal5 class="m-1 btn-block" size="sm">Checklist</b-button>
 
         <label class="m-1">Actions</label>
-        <!-- <b-button class='m-1 btn-block' v-on:click='moveCard'>Move</b-button> -->
         <b-dropdown class="m-1 btn-block" size="sm" text="Move to">
           <b-dropdown-item
             v-for="list in lists"
@@ -179,11 +180,6 @@
           size="sm"
           v-on:click="saveCard(!card.archived)"
         >{{isArchived}}</b-button>
-        <!-- <b-form-checkbox
-                    button
-                    v-model='card.archived'
-                    name='check-button'
-        >Archive {{ card.archived }}</b-form-checkbox>-->
         <b-button v-b-modal.modal7 class="m-1 btn-block" size="sm">Share</b-button>
         <b-button v-b-modal.modal10 class="m-1 btn-block" size="sm">Color card</b-button>
       </div>
@@ -258,7 +254,7 @@
     </b-modal>
     <!-- Share Modal  -->
     <b-modal id="modal7" title="Link to this card" no-close-on-backdrop ok-only>
-      <b-form-input class="m-1" v-model="share" readonly/>
+      <b-form-input class="m-1" v-model="share" autofocus readonly/>
     </b-modal>.
   </b-modal>
   <!-- </section> -->
@@ -297,9 +293,15 @@ export default {
     });
   },
   mounted() {
-    document
-      .querySelector(".modal-dialog")
-      .addEventListener("click", function() {});
+    var thiz = this
+    if (document.querySelector(".modal-dialog")) {
+      document.querySelector(".modal-dialog").addEventListener("click", function (evt) {
+        console.log(evt.target.className);
+        if (evt.target.className !== 'new-todo-options new-todo' && evt.target.className !== 'todo-name' && evt.target.className !== 'todo-input form-control form-control-sm' && evt.target.className !== 'x-todo-options') {
+          thiz.closeTodos();
+        }
+      });
+    }
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {
@@ -474,7 +476,13 @@ export default {
           this.$router.go(-1);
         });
     },
-
+    closeTodos() {
+      this.card.checklists.forEach(checklist => {
+        checklist.toDos.forEach(todo => {
+          todo.editStatus = false;
+        })
+      })
+    },
     addComment() {
       if (this.comment) {
         var date = moment(Date.now()).format("DD/MM/YY hh:mm");
@@ -719,6 +727,7 @@ export default {
   padding: 8px 18px;
   margin: 0 3px;
   transition: 0.3s;
+  z-index: 200;
   &:hover {
     background-color: rgb(34, 231, 93);
   }

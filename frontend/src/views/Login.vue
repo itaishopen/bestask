@@ -88,7 +88,7 @@ export default {
   .btn-new-acount {
     font-size: 18px;
     font-family: PontanoSans-Regular;
-    padding: 10px;
+    padding: 15px;
     width: 350px;
     height: 50px;
     border: 0px solid rgb(31, 31, 31);

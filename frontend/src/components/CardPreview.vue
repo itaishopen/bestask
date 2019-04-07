@@ -33,12 +33,14 @@
           </div>
           <div class="card-preview-footer-right">
             <section class="container-member" v-if="card.users">
-              <div v-for="user in card.users.slice(0, 2)" :key="user._id">
-                <div class="container-name-member">
-                  <div
-                    class="logo-user-name"
+              <div v-for="user in card.users.slice(0,2)" :key="user._id">
+                <div class="container-name-member" v-if="board.members">
+                   <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
+                  <span
+                    v-else
+                    class="no-pic-user"
                     :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
-                  >{{user.firstName[0]}}{{user.lastName[0]}}</div>
+                  >{{user.firstName[0]}}{{user.lastName[0]}}</span>
                 </div>
               </div>
               <div class="logo-user-name" v-if="checkSumMember()">
@@ -185,11 +187,42 @@ export default {
       justify-content: center;
     }
     .card-preview-footer-right {
-      display: flex;
-      flex-direction: row-reverse;
-      min-width: 75px;
-      align-items: center;
-      justify-items: flex-end;
+            display: flex;
+            flex-direction: row-reverse;
+            min-width: 75px;
+            align-items: center;
+            justify-items: flex-end;
+      .container-name-member {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-items: center;
+        justify-content: space-between;
+        .user-img {
+          min-width: 22px;
+          min-height: 22px;
+          border-radius: 50%;
+          background-size: contain;
+          background-repeat: unset;
+          background-position: center;
+        }
+        .no-pic-user {
+          font-size: 10px;
+          min-width: 22px;
+          min-height: 22px;
+          max-width: 22px;
+          max-height: 22px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: none;
+          font-family: Raleway-Regular, "Open Sans", sans-serif;
+          font-weight: bold;
+          line-height: 22px;
+          &:hover {
+            background: #050505a2;
+          }
+        }
+      }
       .container-member {
         display: flex;
         flex-direction: row;

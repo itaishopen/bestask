@@ -29,14 +29,16 @@
           <section class="container-member" @click.stop="toggleModalMember" v-if="board.users">
             <div v-for="user in board.users.slice(0, 2)" :key="user._id">
               <div class="container-name-member">
-                <div
-                  class="logo-user-name"
-                  :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
-                >{{user.firstName[0]}}{{user.lastName[0]}}</div>
-              </div>
+               <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
+            <span
+              v-else
+              class="no-pic-user"
+              :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+            >{{user.firstName[0]}}{{user.lastName[0]}}</span>
+            </div>
             </div>
             <div
-              class="logo-user-name logo-user-more"
+              class="logo-user-more"
               v-if="checkSumMember()"
             >{{board.users.length-2}}</div>
           </section>
@@ -417,21 +419,15 @@ export default {
   border-radius: 12px;
   padding: 5px;
   margin: 5px;
-  .logo-user-name {
-    font-size: 13px;
-    font-weight: bold;
-    min-width: 36px;
-    height: 36px;
-    line-height: 36px;
-    border-radius: 50%;
-    color: black;
-    background-color: rgb(223, 223, 223);
-    justify-content: flex-start;
-  }
   .logo-user-more {
     cursor: pointer;
     color: rgb(255, 255, 255);
     background-color: rgb(82, 82, 82);
+     min-width: 37px;
+      min-height: 37px;
+      border-radius: 50%;
+            line-height: 37px;
+
   }
 
   .container-name-member {
@@ -440,6 +436,29 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+      .user-img {
+      min-width: 37px;
+      min-height: 37px;
+      border-radius: 50%;
+      background-size: contain;
+      background-repeat: unset;
+      background-position: center;
+    }
+    .no-pic-user {
+      min-width: 37px;
+      min-height: 37px;
+      max-width: 37px;
+      max-height: 37px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: none;
+      font-family: Raleway-Regular, "Open Sans", sans-serif;
+      font-weight: bold;
+      line-height: 37px;
+      &:hover {
+        background: #050505a2;
+      }
+    }
     .nav-board-left {
       display: flex;
       flex-direction: row;

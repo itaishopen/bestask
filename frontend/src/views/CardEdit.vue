@@ -26,11 +26,13 @@
       </div>
       <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
         <div v-for="user in card.users.slice(0,2)" :key="user._id">
-          <div class="container-name-member" v-if="checkMember(user._id)">
-            <div
-              class="logo-user-name"
+          <div class="container-name-member">
+               <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
+            <span
+              v-else
+              class="no-pic-user"
               :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
-            >{{user.firstName[0]}}{{user.lastName[0]}}</div>
+            >{{user.firstName[0]}}{{user.lastName[0]}}</span>
           </div>
         </div>
         <div class="logo-user-name" v-if="checkSumMember()">
@@ -225,7 +227,14 @@
       <div v-for="user in board.users" :key="user._id">
         <div class="container-member" @click="memberToCard(user._id , user)">
           <div class="container-name-member">
-            <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+              <div class="container-name-member">
+               <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
+            <span
+              v-else
+              class="no-pic-user"
+              :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+            >{{user.firstName[0]}}{{user.lastName[0]}}</span>
+          </div>
             <div class="name-member">{{user.firstName}} {{user.lastName}} ({{user.userName}})</div>
           </div>
           <div>
@@ -612,6 +621,31 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  align-items: center;
+  justify-content: space-between;
+  .user-img {
+    min-width: 37px;
+    min-height: 37px;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: unset;
+    background-position: center;
+  }
+  .no-pic-user {
+    min-width: 37px;
+    min-height: 37px;
+    max-width: 37px;
+    max-height: 37px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: none;
+    font-family: Raleway-Regular, "Open Sans", sans-serif;
+    font-weight: bold;
+    line-height: 37px;
+    &:hover {
+      background: #050505a2;
+    }
+  }
 }
 .logo-user-name-pic {
   min-width: 35px;

@@ -153,7 +153,6 @@ export default {
 
   data() {
     return {
-      // users: this.$store.dispatch({ type: "getAllUsers" }),
       isAddListClick: false,
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
@@ -194,8 +193,11 @@ export default {
       }
     },
     users: {
+      // get() {
+      //   return this.$store.getters.getUsers;
+      // },
       get() {
-        return this.$store.getters.getUsers;
+       return this.$store.dispatch("getAllUsers")
       }
     },
     dragOptions() {

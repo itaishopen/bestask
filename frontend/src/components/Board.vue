@@ -308,6 +308,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100vw;
+  height: 50px;
   .nav-board-left {
     display: flex;
     flex-direction: row;
@@ -331,8 +332,9 @@ export default {
   width: 200px;
   border: none;
   background: transparent;
-  padding-left: 10px;
+  padding-left: 15px;
   margin-left: 10px;
+  font-family: Lato_bold;
 }
 
 .container-member {

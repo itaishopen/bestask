@@ -17,7 +17,7 @@
         <i class="fas fa-table nav-btn"></i>
       </router-link>
       <div class="login">
-        <router-link to="/login/">
+        <router-link to="/login">
           <span class="user-logedin" v-if="user && user._id" @click="logout()" title="Logout">
             <span v-if="user.prefs.userPic">
               <img src="user.prefs.userPic" alt>
@@ -28,7 +28,7 @@
               :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
             >{{user.firstName[0]}}{{user.lastName[0]}}</span>
           </span>
-          <i v-else class="fas fa-sign-in-alt nav-btn" title="Login"></i>
+          <i v-else class="fas fa-sign-in-alt fa-lg nav-btn no-user" title="Login"></i>
         </router-link>
       </div>
     </div>
@@ -45,7 +45,7 @@ export default {
       userConnect: false
     };
   },
-  created() {},
+  created() { },
   computed: {
     user: {
       get() {
@@ -54,7 +54,7 @@ export default {
           return this.$store.getters.loggedInUser;
         }
       },
-      set(userId) {        
+      set(userId) {
         this.$store.commit("setUser", { card: userId });
       }
     }
@@ -116,30 +116,45 @@ export default {
   color: white;
 }
 .login {
-  font-size: 22px;
-  font-family: Raleway-Regular, "Open Sans", sans-serif;
-  font-weight: bold;
-  line-height: 37px;
-  border-radius: 50%;
-  background-color: #0000007a;
-  color: #ffffff;
   width: 37px;
   height: 37px;
+  border-radius: 50%;
   transition: 0.2s;
-  border: 1px solid #0000007a;
   &:hover {
     background-color: #050505c5;
   }
-  .user-logedin {
-    margin-bottom: 4px;
-    color: #ffffff;
-    font-size: 20px;
-  }
-  .no-pic-user {
+  .no-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 37px;
     height: 37px;
-    &:hover {
-      background-color: #050505c5;
+    border-radius: 50%;
+    background: #0000007a;
+    color: #ffffff;
+    border: 1px solid #0000007a;
+  }
+  .user-logedin {
+    // margin-bottom: 4px;
+    color: #ffffff;
+    font-size: 20px;
+    border: none;
+    .no-pic-user {
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      padding: 6px;
+      width: 37px;
+      height: 37px;
+      overflow: hidden;
+      border: none;
+      // font-size: 22px;
+      font-family: Raleway-Regular, "Open Sans", sans-serif;
+      font-weight: bold;
+      line-height: 37px;
+      &:hover {
+        background: #050505c5;
+      }
     }
   }
 }

@@ -29,7 +29,10 @@
           <section class="container-member" @click.stop="toggleModalMember" v-if="board.users">
             <div v-for="user in board.users.slice(0, 2)" :key="user._id">
               <div class="container-name-member">
-                <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+                <div
+                  class="logo-user-name"
+                  :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+                >{{user.firstName[0]}}{{user.lastName[0]}}</div>
               </div>
             </div>
             <div
@@ -43,7 +46,7 @@
             <div class="nav-modal-members">
               <h1 class="title-modal-users">Users</h1>
               <button @click="toggleModalMember" class="menu-close-btn">
-                <i class="fas fa-times" style="color:#000000;"></i>
+                <i class="fas fa-times"></i>
               </button>
             </div>
             <div v-for="user in users" :key="user._id">
@@ -259,8 +262,7 @@ export default {
       this.isChangeTitle = false;
     },
 
-    moveList(evt) {
-    },
+    moveList(evt) {},
     endMoveList(evt) {
       for (var i = 0; i < this.lists.length; i++) {
         this.lists[i].order = i;
@@ -579,43 +581,60 @@ export default {
   width: 500px;
   height: 400px;
   max-height: calc(100vh - 87px);
-  background-color: #ffffff;
-  border: 1px solid #000000;
+  border-radius: 5px;
   margin: 0px 5px;
   min-height: 10px;
-  background-color: #6f6cff;
+  background-color: #616161e3;
+  padding: 10px;
   .nav-modal-members {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
     .menu-close-btn {
       outline: none;
       border: none;
       align-self: flex-end;
-      background-color: #ffffffb6;
+      background-color: #ffffff00;
+      font-size: 30px;
+      .fa-times {
+        transition: 0.3s;
+        color: #272727;
+        &:hover {
+          color: #000000;
+        }
+      }
     }
   }
   .container-member-modal {
     cursor: pointer;
-    background-color: #4d9cf7b6;
-    height: 30px;
-    border: #000000 1px solid;
-    margin: 2px 0;
-    line-height: 30px;
+    background-color: #f3f3f3be;
+    height: 40px;
+    border-radius: 50px;
+    margin: 4px 0;
+    padding: 0 10px;
+    line-height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    transition: 0.2s;
+    &:hover {
+      background-color: #fffffff6;
+    }
     .user-name {
       margin-left: 5px;
+      font-family: Lato_regular;
     }
     .V {
       margin-right: 5px;
       color: rgba(0, 0, 0, 0.774);
-      // line-height: 30px;
     }
   }
   .title-modal-users {
+    font-family: Lato_regular;
+    font-size: 25px;
   }
 }
 .member-modal {

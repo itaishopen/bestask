@@ -27,9 +27,10 @@
       <div v-b-modal.modal6 class="container-member-nav" v-if="card.users">
         <div v-for="user in card.users.slice(0,2)" :key="user._id">
           <div class="container-name-member" v-if="checkMember(user._id)">
-            <div class="logo-user-name">
-              <span>{{user.firstName[0]}}{{user.lastName[0]}}</span>
-            </div>
+            <div
+              class="logo-user-name"
+              :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+            >{{user.firstName[0]}}{{user.lastName[0]}}</div>
           </div>
         </div>
         <div class="logo-user-name" v-if="checkSumMember()">
@@ -276,7 +277,7 @@ export default {
       openModalMembers: false,
       SumMember: false,
       editStatus: false,
-      modalOpen: false,
+      modalOpen: false
     };
   },
   created() {
@@ -289,8 +290,7 @@ export default {
   mounted() {
     document
       .querySelector(".modal-dialog")
-      .addEventListener("click", function() {
-      });
+      .addEventListener("click", function() {});
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },
   computed: {
@@ -590,7 +590,7 @@ export default {
 }
 .container-member-nav {
   display: grid;
-  grid-template-columns: repeat(4, [col] 25px);
+  grid-template-columns: repeat(4, [col] 30px);
   grid-template-rows: repeat(1, [row] auto);
 }
 .container-member {
@@ -624,9 +624,16 @@ export default {
   max-height: 35px;
   line-height: 35px;
   border-radius: 50%;
-  border: 1px solid rgb(66, 178, 206);
-  background-color: rgb(174, 216, 226);
+  background-color: rgb(100, 100, 100);
   justify-content: flex-start;
+  .fa-plus{
+    color: #ffffff;
+    transition: 0.2s;
+&:hover{
+    color: #cbffb7;
+
+}
+  }
   img {
     min-width: 35px;
     max-width: 35px;

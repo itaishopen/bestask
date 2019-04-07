@@ -2,7 +2,6 @@
   <div class="card-preview">
     <router-link :to="{ name: 'Card Edit', params: { cardId: card._id } }">
       <section class="title-card" :style="{ 'background': getColor}">
-
         <div class="card-middle">
           <div class="title-card-text">{{card.title}}</div>
           <div
@@ -36,7 +35,10 @@
             <section class="container-member" v-if="card.users">
               <div v-for="user in card.users.slice(0, 2)" :key="user._id">
                 <div class="container-name-member">
-                  <div class="logo-user-name">{{user.firstName[0]}}{{user.lastName[0]}}</div>
+                  <div
+                    class="logo-user-name"
+                    :style="{ background: user.prefs.bgColor, color: user.prefs.color }"
+                  >{{user.firstName[0]}}{{user.lastName[0]}}</div>
                 </div>
               </div>
               <div class="logo-user-name" v-if="checkSumMember()">
@@ -83,9 +85,9 @@ export default {
     changeDate() {
       return moment(this.card.dueDate, "YYYY/MM/DD").format("DD/MM");
     },
-    getColor(){
-      if(this.card.prefs) return this.card.prefs.bgColor;
-    },
+    getColor() {
+      if (this.card.prefs) return this.card.prefs.bgColor;
+    }
   },
   methods: {
     checkMember(userId) {

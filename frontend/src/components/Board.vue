@@ -21,6 +21,11 @@
             placeholder="Enter title here..."
             autofocus
           >
+          <section
+            class="btn-container-member"
+            @click.stop="toggleModalMember"
+            v-if="!board.users.length"
+          >Invite</section>
           <section class="container-member" @click.stop="toggleModalMember" v-if="board.users">
             <div v-for="user in board.users.slice(0, 2)" :key="user._id">
               <div class="container-name-member">
@@ -280,11 +285,17 @@ export default {
       this.showModalMember = !this.showModalMember;
     },
     tuglleMemberToBoard(user) {
-      const index = this.board.users.findIndex(Users => Users._id === user._id);
+      const index = this.board.members.findIndex(member => member === user._id);
       if (index === -1) {
-        this.board.users.push(user);
+        this.board.members.push(user._id);
+        this.$store
+          .dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.board._id));
       } else {
-        this.board.users.splice(index, 1);
+        this.board.members.splice(index, 1);
+        this.$store
+          .dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.board._id));
       }
     },
     checkMemberOnBoard(user) {
@@ -366,7 +377,16 @@ export default {
   padding-left: 10px;
   margin-left: 10px;
 }
-
+.btn-container-member {
+  background-color: #959595;
+  border-radius: 4px;
+  width: 56px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
 .container-member {
   display: grid;
   grid-template-columns: repeat(4, [col] 30px);

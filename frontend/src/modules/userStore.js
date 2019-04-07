@@ -30,6 +30,8 @@ export default {
     actions: {
         getAllUsers(context) {
             return UserService.getAllUsers().then(users =>{
+                console.log(users);
+                
                 context.commit({ type: 'setUsers', users })
             })
         },

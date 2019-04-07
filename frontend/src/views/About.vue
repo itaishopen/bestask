@@ -162,12 +162,13 @@ export default {
 
 <style lang='scss' scoped>
 .about {
+  overflow-y: scroll;
   font-family: Acme-Regular;
   background-color: rgba(0, 68, 255, 0.678);
   top: 0;
   left: 0;
   z-index: -1;
-  position: fixed;
+  // position: fixed;
   width: 100%;
   height: 100vh;
   object-fit: cover;
@@ -212,8 +213,7 @@ export default {
   }
   .about-footer {
     padding-top: 140px;
-    // width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: rgb(131, 131, 131);
     font-size: 25px;
     .img-footer-title {
@@ -224,6 +224,8 @@ export default {
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 40px;
       .about-me {
         .img-footer {
           border-radius: 50%;
@@ -273,8 +275,5 @@ export default {
   }
 }
 @media (max-width: 850px) {
-  .about { 
-    
-  }
 }
 </style>

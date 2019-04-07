@@ -32,13 +32,15 @@
               v-if="checkSumMember()"
             >{{board.users.length-2}}</div>
           </section>
+          {{users}}
           <transition name="slide-fade">
-            <div class="Users-modal" v-show="showModalMember">
+            <div class="Users-modal" v-show="showModalMember" v-if="users">
               <button @click="toggleModalMember" class="menu-close-btn">
                 <i class="fas fa-times" style="color:#000000;"></i>
               </button>
               <h1 class="title-modal-users">Users</h1>
-              <div v-for="user in board.users" :key="user._id">
+              <pre>{{users}}</pre>
+              <div v-for="user in users" :key="user._id">
                 <div class="container-list-members">
                   <div class="user-name">{{user.firstName}}{{user.lastName}}</div>
                 </div>
@@ -51,14 +53,13 @@
         </b-button>
       </header>
       <main>
-        <transition name="slide">
+        <transition name="slide" v-if="users">
           <div class="menu-modal" v-show="showMenu">
             <button @click="toggleMenu" class="menu-close-btn">
               <i class="fas fa-times" style="color:#000000;"></i>
             </button>
             <h1>Menu</h1>
             <hr class="divider">
-            <pre>{{users}}</pre>
             <div>
               <b-button variant="link" v-on:click="toggleColorBoard">
                 <span v-if="showColorBoard">Hide preferences</span>
@@ -152,6 +153,7 @@ export default {
 
   data() {
     return {
+      // users: this.$store.dispatch({ type: "getAllUsers" }),
       isAddListClick: false,
       isChangeTitle: false,
       showModal: this.$route.meta.showModal,
@@ -191,6 +193,11 @@ export default {
         this.$store.dispatch("updateLists", lists);
       }
     },
+    users: {
+      get() {
+        return this.$store.getters.getUsers;
+      }
+    },
     dragOptions() {
       return {
         animation: 150,
@@ -203,9 +210,6 @@ export default {
   },
 
   methods: {
-    openModalMember() {
-      console.log("modal member");
-    },
     newList() {
       this.list = ListService.getEmptyList();
       this.isAddListClick = !this.isAddListClick;
@@ -268,6 +272,7 @@ export default {
       this.showMenu = !this.showMenu;
     },
     toggleModalMember() {
+      console.log("modal member", this.users);
       this.showModalMember = !this.showModalMember;
     },
     paintBoard(color) {
@@ -548,11 +553,9 @@ export default {
   .container-list-members {
     background-color: #6ce9ff;
   }
-  .title-modal-users{
-
+  .title-modal-users {
   }
-  .user-name{
-    
+  .user-name {
   }
 }
 .member-modal {

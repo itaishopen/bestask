@@ -81,7 +81,6 @@ export default {
 }
 .fun {
   flex-direction: column;
-  // min-width: 0;
 }
 .nav-board {
   position: fixed;
@@ -99,7 +98,6 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  // justify-content:flex-end;
 }
 .back-to-bord-btn {
   align-self: center;

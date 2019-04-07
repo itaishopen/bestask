@@ -32,11 +32,9 @@ f228d6c 2 days ago
 </template>
 
 <script>
-// import BoardPreview from  '../component/BoardPreview.vue';
 export default {
   name: "home",
   components: {
-    // BoardPreview
   },
   methods: {
     guest() {
@@ -64,13 +62,11 @@ export default {
 .home-btns {
   display: flex;
   align-items: center;
-  // margin-left: 20px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
-  margin-top: 60vh;
+  margin-top: 63vh;
   background-color: rgba(255, 255, 255, 0.76);
-  // border: 1px solid rgb(17, 26, 146);
   border-radius: 2px;
   .login,
   .guest {
@@ -83,14 +79,13 @@ export default {
     transition: 0.3s;
     &:hover {
       color: rgb(0, 14, 209);
-      // background-color: rgba(255, 255, 255, 0.445);
     }
   }
 }
 @media (min-width: 850px) {
   .home-btns {
     width: 100%;
-    margin-top: 57vh;
+    margin-top: 63vh;
     background-color: rgba(255, 255, 255, 0.76);
     border-radius: 0;
     .login,

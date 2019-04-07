@@ -196,8 +196,6 @@ export default {
       get() {
         return this.$store.getters.getUsers;
       },
-      // get() {
-      // }
     },
     dragOptions() {
       return {
@@ -253,7 +251,6 @@ export default {
     },
 
     moveList(evt) {
-      // console.log(evt);
     },
     endMoveList(evt) {
       for (var i = 0; i < this.lists.length; i++) {

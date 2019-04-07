@@ -93,7 +93,8 @@ export default {
 <style lang='scss' scoped>
 .collection {
   height: 100vh;
-  background-image: url("../../img/post-it-notes.jpg");
+  background: url("../../img/post-it-notes.jpg") no-repeat fixed center rgba(0, 0, 0, 0.3);
+  background-blend-mode: darken;
   padding-top: 60px;
   overflow-y: scroll;
 }
@@ -117,7 +118,7 @@ export default {
     height: 85px;
     width: 250px;
     & :hover {
-      // background-color: #ffffff1f;
+      box-shadow: 2px 3px 5px 0px black
     }
   }
   .collection-item {
@@ -167,7 +168,6 @@ export default {
     }
   }
   .collection-newItem {
-    // display: flex;
     justify-content: center;
     align-items: center;
     height: 85px;

@@ -460,9 +460,7 @@ export default {
           );
           this.$store.dispatch({ type: "saveActivity", activity });
           SocketService.send(this.board._id);
-          // setTimeout(() => {
           this.$router.go(-1);
-          // }, 1500);
         })
         .catch(err => {
           this.$router.go(-1);
@@ -713,7 +711,6 @@ export default {
   }
 }
 
-// card color
 .plateColor {
   display: flex;
   flex-direction: column;
@@ -757,75 +754,4 @@ export default {
   flex-direction: row-reverse;
   color: rgba(0, 0, 0, 0.774);
 }
-
-// #modal-container {
-//   position: fixed;
-//   display: table;
-//   height: 100%;
-//   width: 100%;
-//   top: 0;
-//   left: 0;
-//   transform: scale(0);
-//   z-index: 1;
-//   &.one {
-//     transform: scaleY(0.01) scaleX(0);
-//     animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-//     .modal-background {
-//       .modal {
-//         transform: scale(0);
-//         animation: zoomIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-//       }
-//     }
-//     &.out {
-//       transform: scale(1);
-//       animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-//       .modal-background {
-//         .modal {
-//           animation: zoomOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-//         }
-//       }
-//     }
-//   }
-// }
-// @keyframes unfoldIn {
-//   0% {
-//     transform: scaleY(0.005) scaleX(0);
-//   }
-//   50% {
-//     transform: scaleY(0.005) scaleX(1);
-//   }
-//   100% {
-//     transform: scaleY(1) scaleX(1);
-//   }
-// }
-
-// @keyframes unfoldOut {
-//   0% {
-//     transform: scaleY(1) scaleX(1);
-//   }
-//   50% {
-//     transform: scaleY(0.005) scaleX(1);
-//   }
-//   100% {
-//     transform: scaleY(0.005) scaleX(0);
-//   }
-// }
-
-// @keyframes zoomIn {
-//   0% {
-//     transform: scale(0);
-//   }
-//   100% {
-//     transform: scale(1);
-//   }
-// }
-
-// @keyframes zoomOut {
-//   0% {
-//     transform: scale(1);
-//   }
-//   100% {
-//     transform: scale(0);
-//   }
-// }
 </style>

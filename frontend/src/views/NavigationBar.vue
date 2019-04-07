@@ -135,7 +135,6 @@ export default {
     border: 1px solid #0000007a;
   }
   .user-logedin {
-    // margin-bottom: 4px;
     color: #ffffff;
     font-size: 20px;
     border: none;
@@ -148,7 +147,6 @@ export default {
       height: 37px;
       overflow: hidden;
       border: none;
-      // font-size: 22px;
       font-family: Raleway-Regular, "Open Sans", sans-serif;
       font-weight: bold;
       line-height: 37px;

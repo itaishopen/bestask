@@ -168,7 +168,6 @@ export default {
   top: 0;
   left: 0;
   z-index: -1;
-  // position: fixed;
   width: 100%;
   height: 100vh;
   object-fit: cover;
@@ -176,7 +175,6 @@ export default {
   flex-direction: column;
   .about-header {
     margin: 0 auto;
-    // width: 700px;
     margin-top: 120px;
     display: flex;
     justify-content: center;

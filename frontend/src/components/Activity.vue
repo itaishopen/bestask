@@ -1,6 +1,5 @@
 <template>
     <div v-if="activity">
-        <!-- <h1>Activity comp</h1> -->
         <div class="activity flex">
             <h3>Created: {{createdAt}}</h3>
             <h3>Text: {{text}}</h3>

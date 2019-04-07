@@ -1,5 +1,5 @@
 <template>
-  <div v-if="board && activities.length > 0" class="activity">
+  <div v-if="board && activities" class="activity">
     <div v-for="activity in activities" :key="activity._id">
       <activity :activity="activity"></activity>
     </div>

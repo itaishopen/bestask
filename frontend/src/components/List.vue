@@ -117,6 +117,17 @@ export default {
         this.$store.dispatch({ type: "saveList", list: fromList });
         this.$store.dispatch({ type: "saveList", list: toList }).then(() => {
           SocketService.send(this.list.boardId);
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = `moved card ${card.title} from list ${fromList.title} to ${toList.title}`;
+          if (this.$store.getters.isUserLoggedIn)
+          activity.userId = this.$store.getters.isUserLoggedIn ? this.$store.getters.loggedInUser._id : 1;
+          activity.boardId = toList.boardId;
+          activity.listId = toList._id;
+          activity.cardId = card._id;
+          activity.createdAt = moment(Date.now()).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
         });
       } else {
         var card = fromList.cards.find(card => card._id === cardId);
@@ -127,6 +138,16 @@ export default {
         }
         this.$store.dispatch({ type: "saveList", list: fromList }).then(() => {
           SocketService.send(this.list.boardId);
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = `moved card ${card.title} from index ${env.oldIndex} to index ${env.newIndex} in list ${fromList.title}`;
+          activity.userId = this.$store.getters.isUserLoggedIn ? this.$store.getters.loggedInUser._id : 1;
+          activity.boardId = fromList.boardId;
+          activity.listId = fromList._id;
+          activity.cardId = card._id;
+          activity.createdAt = moment(Date.now()).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
         });
       }
     },
@@ -157,7 +178,7 @@ export default {
           this.isAddCard = false;
           var boardId = this.list.boardId;
           let activity = ActivityService.getEmptyActivity();
-          activity.text = " added a new card to list ";
+          activity.text = ` added a new card to list ${this.list.title}`;
           activity.userId = this.$store.getters.loggedInUser._id;
           activity.boardId = boardId;
           activity.listId = this.list._id;
@@ -166,7 +187,7 @@ export default {
             "MMMM Do YYYY, h:mm:ss a"
           );
           this.$store.dispatch({ type: "saveActivity", activity });
-          var cardItem = CardService.getEmptyCard();          
+          var cardItem = CardService.getEmptyCard();
           this.$store.commit("setCard", { card: cardItem });
           this.$store.dispatch({ type: "loadBoard", boardId });
           SocketService.send(boardId);

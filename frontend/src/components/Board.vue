@@ -92,12 +92,12 @@
               </div>
             </div>
             <div>
-              <router-link :to="'/board/' + board._id + '/archive'">
+              <router-link :to="'/board/' + boardId + '/archive'">
                 <b-button variant="link">Archived items</b-button>
               </router-link>
             </div>
             <div>
-              <b-button variant="link" v-on:click="toggleActivity">
+              <b-button variant="link" @click="toggleActivity">
                 <span v-if="showAtivities">Hide Activities</span>
                 <span v-else>Show Activities</span>
               </b-button>
@@ -107,7 +107,7 @@
         </transition>
         <ul class="board-list-ul">
           <draggable v-model="lists" v-bind="dragOptions" @end="endMoveList" class="draggable">
-            <li class="board-list-li" v-for="list in lists" :key="list._id">
+            <li class="board-list-li" v-for="list in lists" :class="list._id" list="list" :key="list._id">
               <list :list="list"/>
             </li>
           </draggable>
@@ -200,8 +200,10 @@ export default {
       get() {
         return this.$store.getters.getLists;
       },
-      set(lists) {
-        this.$store.dispatch("updateLists", lists);
+      set(savedLists) {
+        console.log("1", savedLists);
+        
+        if(savedLists) this.$store.dispatch("updateLists", {lists: savedLists});
       }
     },
     users: {
@@ -229,7 +231,7 @@ export default {
       this.isAddListClick = !this.isAddListClick;
     },
     addList() {
-      this.list.boardId = this.board._id;
+      this.list.boardId = this.boardId;
       this.list.order = this.lists.length + 1;
       this.$store
         .dispatch({ type: "saveNewList", list: this.list })
@@ -237,13 +239,13 @@ export default {
           let activity = ActivityService.getEmptyActivity();
           activity.text = " added a new list to ";
           activity.userId = this.$store.getters.loggedInUser._id;
-          activity.boardId = this.board._id;
+          activity.boardId = this.boardId;
           activity.listId = savedList._id;
           activity.createdAt = moment(Date.now()).format(
             "MMMM Do YYYY, h:mm:ss a"
           );
           this.$store.dispatch({ type: "saveActivity", activity });
-          SocketService.send(this.board._id);
+          SocketService.send(this.boardId);
         });
       this.isAddListClick = !this.isAddListClick;
     },
@@ -252,22 +254,46 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      this.isChangeTitle = false;
-      this.showModalMember = false;
-      this.$store
-        .dispatch({ type: "saveBoard", board: this.board })
-        .then(() => SocketService.send(this.board._id));
-      this.isChangeTitle = false;
+      if (this.isChangeTitle) {
+        this.isChangeTitle = false;
+        this.showModalMember = false;
+        console.log("hello world");
+              
+        this.$store.dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.boardId));
+        this.isChangeTitle = false;
+      }
     },
 
-    moveList(evt) {},
+    moveList(evt) {
+      // dd
+    },
     endMoveList(evt) {
+      var listId = evt.item.className.split(" ")[1];
+      var currList = this.$store.getters.getLists.find(
+        list => list._id === listId
+      );
+      currList.order = evt.newIndex
+      this.lists.splice(evt.oldIndex, 1)
+      this.lists.splice(evt.newIndex, 0, currList)
       for (var i = 0; i < this.lists.length; i++) {
         this.lists[i].order = i;
       }
+      console.log("2", this.lists);
       this.$store
         .dispatch({ type: "updateLists", lists: this.lists })
-        .then(() => SocketService.send(this.board._id));
+        .then(() => {
+          SocketService.send(this.boardId)
+          let activity = ActivityService.getEmptyActivity();
+          activity.text = `moved list ${currList.title} from index ${evt.oldIndex} to index ${evt.newIndex} in board ${this.board.title}`;
+          activity.userId = this.$store.getters.loggedInUser._id;
+          activity.boardId = this.boardId;
+          activity.listId = listId;
+          activity.createdAt = moment(Date.now()).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          );
+          this.$store.dispatch({ type: "saveActivity", activity });
+          });
     },
     toggleActivity() {
       this.showAtivities = !this.showAtivities;
@@ -285,14 +311,12 @@ export default {
       const index = this.board.members.findIndex(member => member === user._id);
       if (index === -1) {
         this.board.members.push(user._id);
-        this.$store
-          .dispatch({ type: "saveBoard", board: this.board })
-          .then(() => SocketService.send(this.board._id));
+        this.$store.dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.boardId));
       } else {
         this.board.members.splice(index, 1);
-        this.$store
-          .dispatch({ type: "saveBoard", board: this.board })
-          .then(() => SocketService.send(this.board._id));
+        this.$store.dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.boardId));
       }
     },
     checkMemberOnBoard(user) {
@@ -308,9 +332,8 @@ export default {
       this.board.prefs.bgColor.color = color;
       this.showColorBoard = !this.showColorBoard;
       this.showMenu = !this.showMenu;
-      this.$store
-        .dispatch({ type: "saveBoard", board: this.board })
-        .then(() => SocketService.send(this.board._id));
+      this.$store.dispatch({ type: "saveBoard", board: this.board })
+        .then(() => SocketService.send(this.boardId));
     },
     checkSumMember() {
       if (this.board.users.length > 2) {

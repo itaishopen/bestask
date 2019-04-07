@@ -22,7 +22,9 @@ function query({ boardId, archived = false }) {
 }
 
 function updateLists(lists) {
-    return Promise.all([lists.map(list => this.saveList(list))]).then(() => lists)
+    console.log(lists);
+    
+    return Promise.all(lists.map(list => this.saveList(list))).then(() => lists)
 }
 
 function saveList(list) {

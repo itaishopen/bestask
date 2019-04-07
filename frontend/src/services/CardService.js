@@ -28,7 +28,7 @@ function removeCard(cardId) {
 }
 
 function updateCards(cards) {
-    return Promise.all([cards.map(card => this.saveCard(card))]).then(() => cards)
+    return Promise.all(cards.map(card => this.saveCard(card))).then(() => cards)
 }
 
 function saveCard(card) {

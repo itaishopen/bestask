@@ -2,11 +2,11 @@
     <div v-if="activity">
         <!-- <h1>Activity comp</h1> -->
         <div class="activity flex">
-            <h2>Board: {{board}}</h2>
-            <h3>Card: {{card}}</h3>
             <h3>Created: {{createdAt}}</h3>
-            <h3>List: {{list}}</h3>
             <h3>Text: {{text}}</h3>
+            <h2>Board: {{board}}</h2>
+            <h3>List: {{list}}</h3>
+            <h3>Card: {{card}}</h3>
             <h3>User: {{user}}</h3>
             <hr>
         </div>
@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         board() {
-            if (this.activity.board[0].title) return this.activity.board[0].title;
+            if (this.activity.board[0]) return this.activity.board[0].title;
             return '';
         },
         card() {

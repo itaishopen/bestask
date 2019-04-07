@@ -21,6 +21,11 @@
             placeholder="Enter title here..."
             autofocus
           >
+          <section
+            class="btn-container-member"
+            @click.stop="toggleModalMember"
+            v-if="!board.users.length"
+          >Invite</section>
           <section class="container-member" @click.stop="toggleModalMember" v-if="board.users">
             <div v-for="user in board.users.slice(0, 2)" :key="user._id">
               <div class="container-name-member">
@@ -32,20 +37,25 @@
               v-if="checkSumMember()"
             >{{board.users.length-2}}</div>
           </section>
-          <transition name="slide-fade">
-            <div class="Users-modal" v-show="showModalMember" v-if="users">
+        </div>
+        <transition name="slide-fade">
+          <div class="Users-modal" v-show="showModalMember" v-if="users">
+            <div class="nav-modal-members">
+              <h1 class="title-modal-users">Users</h1>
               <button @click="toggleModalMember" class="menu-close-btn">
                 <i class="fas fa-times" style="color:#000000;"></i>
               </button>
-              <h1 class="title-modal-users">Users</h1>
-              <div v-for="user in users" :key="user._id">
-                <div class="container-member-modal">
-                  <div class="user-name">{{user.firstName}}  {{user.lastName}}</div>
+            </div>
+            <div v-for="user in users" :key="user._id">
+              <div class="container-member-modal" @click.stop="tuglleMemberToBoard(user)">
+                <div class="user-name">{{user.firstName}} {{user.lastName}}</div>
+                <div class="V" v-if="checkMemberOnBoard(user)">
+                  <i class="fas fa-check"></i>
                 </div>
               </div>
             </div>
-          </transition>
-        </div>
+          </div>
+        </transition>
         <b-button class="menu-btn" v-show="!showMenu" variant="link" @click="toggleMenu">
           <i class="fas fa-bars"></i>
         </b-button>
@@ -165,8 +175,7 @@ export default {
     SocketService.init(this.boardId);
     this.$store.dispatch({ type: "resetBoard", isReset: true });
     this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
-             this.$store.dispatch("getAllUsers")
-
+    this.$store.dispatch("getAllUsers");
   },
   components: {
     list,
@@ -240,8 +249,6 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      console.log("board click");
-
       this.isChangeTitle = false;
       this.showModalMember = false;
       this.$store
@@ -270,8 +277,30 @@ export default {
       this.showMenu = !this.showMenu;
     },
     toggleModalMember() {
-      console.log("modal member", this.users);
       this.showModalMember = !this.showModalMember;
+    },
+    tuglleMemberToBoard(user) {
+      const index = this.board.members.findIndex(member => member === user._id);
+      if (index === -1) {
+        this.board.members.push(user._id);
+        this.$store
+          .dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.board._id));
+      } else {
+        this.board.members.splice(index, 1);
+        this.$store
+          .dispatch({ type: "saveBoard", board: this.board })
+          .then(() => SocketService.send(this.board._id));
+      }
+    },
+    checkMemberOnBoard(user) {
+      var userExists = false;
+      this.board.users.forEach(User => {
+        if (user._id === User._id) {
+          userExists = true;
+        }
+      });
+      return userExists;
     },
     paintBoard(color) {
       this.board.prefs.bgColor.color = color;
@@ -345,7 +374,16 @@ export default {
   margin-left: 10px;
   font-family: Lato_bold;
 }
-
+.btn-container-member {
+  background-color: #959595;
+  border-radius: 4px;
+  width: 56px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
 .container-member {
   display: grid;
   grid-template-columns: repeat(4, [col] 30px);
@@ -530,32 +568,52 @@ export default {
 }
 
 .Users-modal {
+  overflow-y: scroll;
   display: flex;
   position: fixed;
-  top: calc(50vh - 150px);
-  right: calc(50vw - 200px);
+  top: calc(50vh - 200px);
+  right: calc(50vw - 250px);
   flex-direction: column;
-  width: 400px;
-  height: 300px;
+  width: 500px;
+  height: 400px;
   max-height: calc(100vh - 87px);
   background-color: #ffffff;
   border: 1px solid #000000;
   margin: 0px 5px;
-  z-index: 500;
   min-height: 10px;
   background-color: #6f6cff;
-  .menu-close-btn {
-    outline: none;
-    border: none;
-    align-self: flex-end;
-    background-color: #ffffff;
+  .nav-modal-members {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .menu-close-btn {
+      outline: none;
+      border: none;
+      align-self: flex-end;
+      background-color: #ffffffb6;
+    }
   }
-  .container-list-members {
-    background-color: #6ce9ff;
+  .container-member-modal {
+    cursor: pointer;
+    background-color: #4d9cf7b6;
+    height: 30px;
+    border: #000000 1px solid;
+    margin: 2px 0;
+    line-height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .user-name {
+      margin-left: 5px;
+    }
+    .V {
+      margin-right: 5px;
+      color: rgba(0, 0, 0, 0.774);
+      // line-height: 30px;
+    }
   }
   .title-modal-users {
-  }
-  .user-name {
   }
 }
 .member-modal {

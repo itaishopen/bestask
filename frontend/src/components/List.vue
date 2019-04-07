@@ -132,7 +132,6 @@ export default {
     },
     newCard() {
       if (this.$store.getters.isEditMode) {
-        console.log("something else open");
         //todo close another open
       }
       this.$store.commit("setIsEditMode", { isEditMode: true });

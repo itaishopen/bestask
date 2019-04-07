@@ -16,14 +16,12 @@ export default {
             state.user = user
         },
         setUsers(state, { users }) {
-            console.log(users);
-            
             state.users = users
         },
-        setBoards(state, { boards }){
+        setBoards(state, { boards }) {
             state.boards = boards
         },
-        logout(state, { userId }){
+        logout(state, { userId }) {
             if (userId === state.user._id) {
                 state.user = {}
             }
@@ -31,14 +29,13 @@ export default {
     },
     actions: {
         getAllUsers(context) {
-            return UserService.getAllUsers().then(users =>{
-                console.log(users);
+            return UserService.getAllUsers().then(users => {
                 context.commit({ type: 'setUsers', users })
             })
         },
-        updateUser(context, { userId }) {            
+        updateUser(context, { userId }) {
             return UserService.getUserAndBoard(userId)
-                .then(({user, boards}) => {                    
+                .then(({ user, boards }) => {
                     context.commit({ type: 'setUser', user: user[0] })
                     context.commit({ type: 'setBoards', boards })
                 })
@@ -53,11 +50,11 @@ export default {
                 })
         },
         logout(context, { userId }) {
-            context.commit({type:"logout", userId})
+            context.commit({ type: "logout", userId })
         },
         signup(context, { user }) {
             return UserService.signup(user)
-                .then(user => {                    
+                .then(user => {
                     if (user) {
                         context.commit({ type: 'setUser', user: user[0] })
                     }

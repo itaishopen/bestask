@@ -32,17 +32,15 @@
               v-if="checkSumMember()"
             >{{board.users.length-2}}</div>
           </section>
-          {{users}}
           <transition name="slide-fade">
             <div class="Users-modal" v-show="showModalMember" v-if="users">
               <button @click="toggleModalMember" class="menu-close-btn">
                 <i class="fas fa-times" style="color:#000000;"></i>
               </button>
               <h1 class="title-modal-users">Users</h1>
-              <pre>{{users}}</pre>
               <div v-for="user in users" :key="user._id">
-                <div class="container-list-members">
-                  <div class="user-name">{{user.firstName}}{{user.lastName}}</div>
+                <div class="container-member-modal">
+                  <div class="user-name">{{user.firstName}}  {{user.lastName}}</div>
                 </div>
               </div>
             </div>
@@ -167,6 +165,8 @@ export default {
     SocketService.init(this.boardId);
     this.$store.dispatch({ type: "resetBoard", isReset: true });
     this.$store.dispatch({ type: "loadBoard", boardId: this.boardId });
+             this.$store.dispatch("getAllUsers")
+
   },
   components: {
     list,
@@ -193,12 +193,11 @@ export default {
       }
     },
     users: {
-      // get() {
-      //   return this.$store.getters.getUsers;
-      // },
       get() {
-       return this.$store.dispatch("getAllUsers")
-      }
+        return this.$store.getters.getUsers;
+      },
+      // get() {
+      // }
     },
     dragOptions() {
       return {

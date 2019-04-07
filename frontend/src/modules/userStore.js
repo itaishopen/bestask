@@ -16,6 +16,8 @@ export default {
             state.user = user
         },
         setUsers(state, { users }) {
+            console.log(users);
+            
             state.users = users
         },
         setBoards(state, { boards }){

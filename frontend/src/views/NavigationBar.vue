@@ -5,7 +5,6 @@
         <img src="../../img/small-logo.png" class="logo-nav" alt>
       </router-link>
     </div>
-    {{user}}
     <div class="navigation">
       <router-link class="nav-btns" to="/" title="Home">
         <i class="fas fa-home nav-btn"></i>

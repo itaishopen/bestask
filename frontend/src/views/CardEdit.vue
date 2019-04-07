@@ -290,7 +290,6 @@ export default {
     document
       .querySelector(".modal-dialog")
       .addEventListener("click", function() {
-        console.log("click card edit");
       });
     if (this.$refs.myModalRef) this.$refs.myModalRef.show();
   },

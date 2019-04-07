@@ -251,8 +251,6 @@ export default {
       this.$store.commit("setIsEditMode", { isEditMode: true });
     },
     closeEditTitle() {
-      console.log("board click");
-
       this.isChangeTitle = false;
       this.showModalMember = false;
       this.$store
@@ -262,7 +260,6 @@ export default {
     },
 
     moveList(evt) {
-      // console.log(evt);
     },
     endMoveList(evt) {
       for (var i = 0; i < this.lists.length; i++) {

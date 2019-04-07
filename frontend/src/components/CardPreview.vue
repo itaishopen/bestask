@@ -34,7 +34,7 @@
           <div class="card-preview-footer-right">
             <section class="container-member" v-if="card.users">
               <div v-for="user in card.users.slice(0,2)" :key="user._id">
-                <div class="container-name-member" v-if="board.members">
+                <div class="container-name-member" v-if="!checkMemberInBoard(user._id)">
                    <div class="user-img" v-if="user.prefs.userPic" :style='{ "background-image": `url(${user.prefs.userPic})`}'></div>
                   <span
                     v-else
@@ -94,6 +94,9 @@ export default {
   methods: {
     checkMember(userId) {
       return this.card.members.findIndex(member => member === userId) === -1;
+    },
+    checkMemberInBoard(userId){
+      return this.board.members.findIndex(member => member === userId) === -1;
     },
     checkSumMember() {
       if (this.card.users.length > 2) {
@@ -224,8 +227,10 @@ export default {
         }
       }
       .container-member {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+  grid-template-columns: repeat(4, [col] 18px);
+  grid-template-rows: repeat(1, [row] auto);
+  justify-content: space-between;
         .logo-user-name {
           font-size: 10px;
           font-weight: bold;
@@ -233,10 +238,16 @@ export default {
           height: 22px;
           line-height: 22px;
           border-radius: 50%;
-          color: black;
-          border: 1px solid rgb(133, 133, 133);
-          background-color: rgb(243, 243, 243);
+          color: rgb(255, 255, 255);
+          background-color: rgb(58, 58, 58);
           justify-content: flex-start;
+           .fa-plus {
+    color: #ffffff;
+    transition: 0.2s;
+    &:hover {
+      color: #cbffb7;
+    }
+     }
         }
       }
     }

@@ -2,7 +2,6 @@
   <section v-if="board" class="board-preview">
     <router-link class="collection-item" :to="'/board/' + board._id">
       <h1 class="collection-title">{{ board.title }}</h1>
-      <!-- <board :board="board"></board> -->
     </router-link>
   </section>
 </template>

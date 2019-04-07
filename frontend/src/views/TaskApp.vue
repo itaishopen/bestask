@@ -43,8 +43,6 @@
 import BoardPreview from "../components/BoardPreview.vue";
 import BoardService from "../services/BoardService";
 
-// import CardEdit from '@/views/CardEdit.vue';
-
 export default {
   name: "TaskApp",
   data() {
@@ -94,27 +92,24 @@ export default {
 
 <style lang='scss' scoped>
 .collection {
-  padding-top: 70px;
+  height: 100vh;
+  background-image: url("../../img/post-it-notes.jpg");
+  padding-top: 60px;
   overflow-y: scroll;
-  height: calc(100vh - 70px);
 }
 .title-board-prev {
-  margin: 26px;
+  margin: 20px 0 30px 0;
   font-family: Raleway-Regular, "Open Sans", sans-serif;
   font-size: 30px;
+  font-weight: bold;
+  text-decoration: underline; 
 }
 .board-flex {
   display: flex;
-  // flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  // &.board-flex {
-  //   display: flex;
-  //   flex-direction: row;
-  //   // flex-wrap: wrap;
-  // }
   .board-preview {
     display: flex;
     justify-content: center;
@@ -125,7 +120,7 @@ export default {
       // background-color: #ffffff1f;
     }
   }
-  & .collection-item {
+  .collection-item {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +130,7 @@ export default {
     cursor: pointer;
     transition: 0.3s;
   }
-  & .collection-addBoard {
+  .collection-addBoard {
     font-family: Raleway-Regular, "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 15px;
@@ -148,7 +143,7 @@ export default {
     background-color: #ffffff;
     border: 1px solid rgb(73, 73, 73);
   }
-  & .collection-options {
+  .collection-options {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -171,7 +166,7 @@ export default {
       }
     }
   }
-  & .collection-newItem {
+  .collection-newItem {
     // display: flex;
     justify-content: center;
     align-items: center;
@@ -194,7 +189,7 @@ export default {
       line-height: 70px;
     }
   }
-  & .collection-newItem-active {
+  .collection-newItem-active {
     background-color: #cdd2d4 !important;
     &:hover {
       background-color: #cdd2d4 !important;

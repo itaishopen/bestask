@@ -68,7 +68,7 @@ export default {
     min-width: 320px;
     max-width: 320px;
     min-height: 120px;
-    max-height: 120px;
+    max-height: 150px;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(230, 230, 230);
     margin: 0.7px 3px;
@@ -78,5 +78,6 @@ export default {
     flex-direction: column;
     transition: 0.2s;
     font-weight: bold;
+    text-align: initial;
 }
 </style>

@@ -296,7 +296,6 @@ export default {
     var thiz = this
     if (document.querySelector(".modal-dialog")) {
       document.querySelector(".modal-dialog").addEventListener("click", function (evt) {
-        console.log(evt.target.className);
         if (evt.target.className !== 'new-todo-options new-todo' && evt.target.className !== 'todo-name' && evt.target.className !== 'todo-input form-control form-control-sm' && evt.target.className !== 'x-todo-options') {
           thiz.closeTodos();
         }

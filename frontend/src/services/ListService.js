@@ -21,9 +21,7 @@ function query({ boardId, archived = false }) {
     return HttpService.get(LIST_URL, { boardId, archived }).then(resolveData)
 }
 
-function updateLists(lists) {
-    console.log(lists);
-    
+function updateLists(lists) {    
     return Promise.all(lists.map(list => this.saveList(list))).then(() => lists)
 }
 

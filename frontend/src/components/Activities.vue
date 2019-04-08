@@ -16,8 +16,6 @@ export default {
     }
   },
   created() {
-    console.log(this.board);
-
     if (this.board._id) this.$store.dispatch({ type: "loadBoard", boardId: this.board._id })
   },
   components: {

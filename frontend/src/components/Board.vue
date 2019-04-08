@@ -202,9 +202,7 @@ export default {
       get() {
         return this.$store.getters.getLists;
       },
-      set(savedLists) {
-        console.log("1", savedLists);
-        
+      set(savedLists) {        
         if(savedLists) this.$store.dispatch("updateLists", {lists: savedLists});
       }
     },
@@ -258,9 +256,7 @@ export default {
     closeEditTitle() {
       if (this.isChangeTitle) {
         this.isChangeTitle = false;
-        this.showModalMember = false;
-        console.log("hello world");
-              
+        this.showModalMember = false;              
         this.$store.dispatch({ type: "saveBoard", board: this.board })
           .then(() => SocketService.send(this.boardId));
         this.isChangeTitle = false;
@@ -281,7 +277,6 @@ export default {
       for (var i = 0; i < this.lists.length; i++) {
         this.lists[i].order = i;
       }
-      console.log("2", this.lists);
       this.$store
         .dispatch({ type: "updateLists", lists: this.lists })
         .then(() => {

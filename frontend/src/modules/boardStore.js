@@ -29,9 +29,7 @@ export default {
             state.isAddCard = false;
             state.isEditMode = false;
         },
-        setBoard(state, { board }) {
-            console.log(board);
-                        
+        setBoard(state, { board }) {                        
             state.board = board;
         },
         setLists(state, { lists }) {
@@ -94,16 +92,13 @@ export default {
                 context.commit({ type: 'resetState'});
             }
         },
-        saveBoard(context, { board }) {
-            console.log(board);
-            
+        saveBoard(context, { board }) {            
             return BoardService.saveBoard(board).then(savedBoard => {                
                 context.commit({ type: 'setBoard', board: savedBoard[0] })
                 return savedBoard[0]
             })
         },
         updateLists(context, { lists }) {
-            console.log("3", lists);
             return ListService.updateLists(lists).then(savedLists => {
                 context.commit({ type: 'setLists', lists: savedLists });
             })
@@ -141,9 +136,7 @@ export default {
                 })
         },
         saveActivity(context, { activity }) {
-            return ActivityService.saveActivity(activity).then(savedActivity => {
-                console.log(savedActivity);
-                
+            return ActivityService.saveActivity(activity).then(savedActivity => {                
                 context.commit({ type: 'addActivity', savedActivity: savedActivity[0] })
             })
         }

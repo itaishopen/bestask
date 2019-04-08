@@ -1,5 +1,5 @@
 <template>
-  <div v-if="board && activities" class="activity">
+  <div v-if="activities" class="activity">
     <div v-for="activity in activities" :key="activity._id">
       <activity :activity="activity"></activity>
     </div>
@@ -13,22 +13,27 @@ export default {
   props: ['board'],
   data() {
     return {
+      activities: null
     }
   },
   created() {
-    if (this.board._id) this.$store.dispatch({ type: "loadBoard", boardId: this.board._id })
+    if (this.board._id) {
+      this.$store.dispatch({ type: "loadBoard", boardId: this.board._id })
+      .then(res => {
+        this.activities = this.$store.getters.getBoardActivities.reverse();
+      })
+    }
   },
   components: {
     Activity
   },
   computed: {
-    activities() {
-      if (this.$store.getters.getBoardActivities.length > 0) {
-        return this.$store.getters.getBoardActivities.reverse();
-      }
-      return null
-    },
-
+    // activities() {
+    //   if (this.$store.getters.getBoardActivities.length > 0) {
+    //     return this.$store.getters.getBoardActivities.reverse();
+    //   }
+    //   return null
+    // },
   },
   methods: {
 

@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     funToMove(env) {
+      this.$store.commit("setShowAtivities", { showAtivities: false });
       var fromListId = env.from.className.split(" ")[1];
       var toListId = env.to.className.split(" ")[1];
       var cardId = env.item.className.split(" ")[1];

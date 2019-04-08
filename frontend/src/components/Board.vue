@@ -178,7 +178,7 @@ export default {
       showModal: this.$route.meta.showModal,
       showMenu: false,
       showModalMember: false,
-      showAtivities: false,
+      // showAtivities: false,
       showColorBoard: false,
       boardId: this.$route.params.boardId
     };
@@ -226,6 +226,14 @@ export default {
         draggable: ".board-list-li",
         ghostClass: "ghost"
       };
+    },
+    showAtivities:{
+      get() {
+        return this.$store.getters.showAtivities;
+      },
+      set(value){
+        this.$store.commit("setShowAtivities", { showAtivities: value });
+      }
     }
   },
 
@@ -274,6 +282,7 @@ export default {
       // dd
     },
     endMoveList(evt) {
+      this.$store.commit("setShowAtivities", { showAtivities: false });
       var listId = evt.item.className.split(" ")[1];
       var currList = this.$store.getters.getLists.find(
         list => list._id === listId

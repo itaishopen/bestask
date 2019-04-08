@@ -11,6 +11,7 @@ export default {
         currCard: null,
         isAddCard: false,
         isEditMode: false,
+        showAtivities: false
     },
     getters: {
         getBoard: state => state.board,
@@ -19,6 +20,7 @@ export default {
         getCurrCard: state => state.currCard,
         isAddCard: state => state.isAddCard,
         isEditMode: state => state.isEditMode,
+        showAtivities: state => state.showAtivities
     },
     mutations: {
         resetState(state) {
@@ -73,6 +75,9 @@ export default {
         },
         setIsEditMode(state, { isEditMode }) {
             state.isEditMode = isEditMode;
+        },
+        setShowAtivities(state, { showAtivities }) {
+            state.showAtivities = showAtivities;
         }
     },
     actions: {

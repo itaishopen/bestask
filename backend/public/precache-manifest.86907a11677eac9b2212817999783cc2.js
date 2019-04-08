@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/fonts/LeckerliOne-Regular.018c747c.ttf"
   },
   {
-    "revision": "08a07141faa17659cd64",
-    "url": "/css/app.4b6705b8.css"
+    "revision": "1abc6fc1a7b0c50c1ec3",
+    "url": "/css/app.d12f2b3b.css"
   },
   {
     "revision": "a0d4db520b82c341f39c",
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/js/about.b1d5f314.js"
   },
   {
-    "revision": "08a07141faa17659cd64",
-    "url": "/js/app.b02d3c9a.js"
+    "revision": "1abc6fc1a7b0c50c1ec3",
+    "url": "/js/app.a30ade7a.js"
   },
   {
     "revision": "0511c175bbf74b3c5ce97c6790343e69",
@@ -72,19 +72,19 @@ self.__precacheManifest = [
     "url": "/fonts/EmilysCandy-Regular.d0383190.ttf"
   },
   {
-    "revision": "3b9b99039cc0a98dd50c3cbfac57ccb2",
-    "url": "/fonts/Lato_Regular.3b9b9903.ttf"
-  },
-  {
     "revision": "eb9532033c2adf99b1314611b5e9cd0e",
     "url": "/fonts/Lato_Bold.eb953203.ttf"
+  },
+  {
+    "revision": "3b9b99039cc0a98dd50c3cbfac57ccb2",
+    "url": "/fonts/Lato_Regular.3b9b9903.ttf"
   },
   {
     "revision": "70558a3e0e830648227db3e92c27495a",
     "url": "/img/0_D1icAJvr19HzVBd6.70558a3e.gif"
   },
   {
-    "revision": "b541c538b68dda4d1455082ad5e714f2",
+    "revision": "63f8aa69e987c0b415eb052eec2745ce",
     "url": "/index.html"
   },
   {

@@ -5,7 +5,7 @@ function connectToMongo() {
     if (dbConn) return Promise.resolve(dbConn);
     const MongoClient = require('mongodb').MongoClient;
     
-    const url = 'mongodb+srv://<user>:<password>@sprint4-ovxtg.mongodb.net/test?retryWrites=true';
+    const url = 'mongodb+srv://<user>:<password><your URL>';
     const dbName = 'Task_Manager_Db';  
     
     const client = new MongoClient(url, { useNewUrlParser: true });
